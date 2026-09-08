@@ -1,0 +1,239 @@
+=== Evidencia 03_run_tests_pass.txt — M0-T0.1 ===
+Fecha de captura (UTC): 2026-09-08 12:45:59
+Comando: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
+
+
+=== Step 1/6: Resolve Godot binary and verify version ===
+GODOT_BIN resolved to OS default
+Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/6: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[38;2;218;165;32mIt was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed![0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[38;2;218;165;32mIt was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed![0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+
+import pass 2 exit code: 0
+Class cache found: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
+
+=== Step 3/6: Run gdUnit4 test suites ===
+Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path "C:\Users\Leo\Documents\RutaFragil" -s -d --remote-debug tcp://127.0.0.1:0 res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+ERROR: The remote port number must be between 1 and 65535 (inclusive).
+   at: connect_to_host (core/io/stream_peer_tcp.cpp:69)
+ERROR: Remote Debugger: Unable to connect to host '127.0.0.1:0'.
+   at: create_tcp (core/debugger/remote_debugger_peer.cpp:247)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[2J[H[38;2;233;150;122m
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------[0m
+[38;2;0;191;255mDisabled fail fast![0m
+[38;2;0;191;255mSet write reports to C:/Users/Leo/Documents/RutaFragil/reports[0m
+[38;2;218;165;32m
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+[0m
+Scanning for test suites in: res://tests
+[38;2;100;149;237mInstalling GdUnit4 session system hooks.[0m
+[38;2;100;149;237mSession hook 'GdUnitHtmlTestReporter' installed.[0m
+[38;2;100;149;237mSession hook 'GdUnitXMLTestReporter' installed.[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/smoke_test.gd[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;178;34;34m[1m FAILED[0m[38;2;100;149;237m 4ms[0m
+  [38;2;0;206;209m[1m[4mReport:[0m
+  [38;2;128;128;128m[38;2;255;69;0mExpecting:[0m
+ '[38;2;30;144;255m4.7.2-stable (official)[0m'
+ to start with
+ '[38;2;30;144;255m4.7.2.stable[0m'[0m[38;2;173;216;230m	at 'test_engine_is_pinned_to_4_7_2' in res://tests/smoke_test.gd:7[0m[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 5ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 4ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 27ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mOverall Summary:[0m[38;2;255;255;255m 3 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans |[0m
+[38;2;233;150;122mExecuted test suites: (1/1)[0m
+[38;2;233;150;122mExecuted test cases : (3/3)[0m
+[38;2;233;150;122mTotal execution time: 27ms[0m
+[38;2;255;255;255m [0m[38;2;100;149;237mOpen XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml[0m
+[38;2;100;149;237mOpen HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html[0m
+[38;2;178;34;34mExit code: 100[0m
+Run dispose test resources
+
+=== Step 4/6: gdUnit4 exit code ===
+gdUnit4 exit code 100: TEST FAILURES: one or more tests failed
+
+=== Step 5/6: Verify discovered test count in latest JUnit report ===
+Latest JUnit report: C:\Users\Leo\Documents\RutaFragil\reports\report_1\results.xml
+Discovered tests: 3 (minimum required: 3)
+
+=== Step 6/6: Final verdict ===
+FAILURE: TEST FAILURES: one or more tests failed
+
+>>> powershell.exe -File tools/run_tests.ps1 exit code: 100 (confirmado con $? en bash tras la ejecucion)
+
+=== Verificacion adicional: bash tools/run_tests.sh ===
+
+=== Step 1/6: Resolve Godot binary and verify version ===
+GODOT_BIN resolved to OS default
+Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/6: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[38;2;218;165;32mIt was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed![0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importación de Assets (1 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparando archivos para reimportarlos...[39m[0m
+[   0% ] [90m[1mreimport[22m | Ejecutando operaciones de pre-reimportación...[39m[0m
+[   0% ] [90m[1mreimport[22m | logo.png[39m[0m
+[  50% ] [90m[1mreimport[22m | Finalizando la importación de recursos...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importación de Assets (1 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Ejecutando operaciones post-reimportación...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[38;2;218;165;32mIt was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed![0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+import pass 2 exit code: 0
+Class cache found: /c/Users/Leo/Documents/RutaFragil/.godot/global_script_class_cache.cfg
+
+=== Step 3/6: Run gdUnit4 test suites ===
+Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path "/c/Users/Leo/Documents/RutaFragil" -s -d --remote-debug tcp://127.0.0.1:0 res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+ERROR: The remote port number must be between 1 and 65535 (inclusive).
+   at: connect_to_host (core/io/stream_peer_tcp.cpp:69)
+ERROR: Remote Debugger: Unable to connect to host '127.0.0.1:0'.
+   at: create_tcp (core/debugger/remote_debugger_peer.cpp:247)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[2J[H[38;2;233;150;122m
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------[0m
+[38;2;0;191;255mDisabled fail fast![0m
+[38;2;0;191;255mSet write reports to C:/Users/Leo/Documents/RutaFragil/reports[0m
+[38;2;218;165;32m
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+[0m
+Scanning for test suites in: res://tests
+[38;2;100;149;237mInstalling GdUnit4 session system hooks.[0m
+[38;2;100;149;237mSession hook 'GdUnitHtmlTestReporter' installed.[0m
+[38;2;100;149;237mSession hook 'GdUnitXMLTestReporter' installed.[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/smoke_test.gd[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;178;34;34m[1m FAILED[0m[38;2;100;149;237m 5ms[0m
+  [38;2;0;206;209m[1m[4mReport:[0m
+  [38;2;128;128;128m[38;2;255;69;0mExpecting:[0m
+ '[38;2;30;144;255m4.7.2-stable (official)[0m'
+ to start with
+ '[38;2;30;144;255m4.7.2.stable[0m'[0m[38;2;173;216;230m	at 'test_engine_is_pinned_to_4_7_2' in res://tests/smoke_test.gd:7[0m[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 5ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 5ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 33ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mOverall Summary:[0m[38;2;255;255;255m 3 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans |[0m
+[38;2;233;150;122mExecuted test suites: (1/1)[0m
+[38;2;233;150;122mExecuted test cases : (3/3)[0m
+[38;2;233;150;122mTotal execution time: 33ms[0m
+[38;2;255;255;255m [0m[38;2;100;149;237mOpen XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_2/results.xml[0m
+[38;2;100;149;237mOpen HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_2/index.html[0m
+[38;2;178;34;34mExit code: 100[0m
+Run dispose test resources
+
+=== Step 4/6: gdUnit4 exit code ===
+gdUnit4 exit code 100: TEST FAILURES: one or more tests failed
+
+=== Step 5/6: Verify discovered test count in latest JUnit report ===
+Latest JUnit report: /c/Users/Leo/Documents/RutaFragil/reports/report_2/results.xml
+Discovered tests: 3 (minimum required: 3)
+
+=== Step 6/6: Final verdict ===
+FAILURE: TEST FAILURES: one or more tests failed
+
+>>> bash tools/run_tests.sh exit code: 100

@@ -1,0 +1,74 @@
+=== Evidencia 07_git.txt — M0-T0.1 ===
+Fecha de captura (UTC): 2026-09-08 12:56:42
+Capturado con el arbol COMPLETAMENTE STAGEADO (git add -A hecho, paso 8/10),
+inmediatamente ANTES del commit 'feat:' de la rama. El indice == contenido del commit.
+
+--- git log --oneline --all ---
+633d4ba chore: repo scaffold and project docs (M0-T0.1)
+
+--- git status --short --branch ---
+## m0/t0.1-foundations
+A  addons/gdUnit4/LICENSE
+A  addons/gdUnit4/bin/GdUnitCmdTool.gd
+A  addons/gdUnit4/bin/GdUnitCmdTool.gd.uid
+A  addons/gdUnit4/bin/GdUnitCopyLog.gd
+A  addons/gdUnit4/bin/GdUnitCopyLog.gd.uid
+A  addons/gdUnit4/plugin.cfg
+A  addons/gdUnit4/plugin.gd
+A  addons/gdUnit4/plugin.gd.uid
+A  addons/gdUnit4/runtest.cmd
+A  addons/gdUnit4/runtest.sh
+A  addons/gdUnit4/src/Comparator.gd
+A  addons/gdUnit4/src/Comparator.gd.uid
+A  addons/gdUnit4/src/Fuzzers.gd
+A  addons/gdUnit4/src/Fuzzers.gd.uid
+A  addons/gdUnit4/src/GdUnitArrayAssert.gd
+A  addons/gdUnit4/src/GdUnitArrayAssert.gd.uid
+A  addons/gdUnit4/src/GdUnitAssert.gd
+A  addons/gdUnit4/src/GdUnitAssert.gd.uid
+A  addons/gdUnit4/src/GdUnitAwaiter.gd
+A  addons/gdUnit4/src/GdUnitAwaiter.gd.uid
+A  addons/gdUnit4/src/GdUnitBoolAssert.gd
+A  addons/gdUnit4/src/GdUnitBoolAssert.gd.uid
+A  addons/gdUnit4/src/GdUnitConstants.gd
+A  addons/gdUnit4/src/GdUnitConstants.gd.uid
+(... solo entradas 'A' = agregados para el commit feat; listado completo en git)
+
+--- git lfs track ---
+Listing tracked patterns
+    *.glb (.gitattributes)
+    *.gltf (.gitattributes)
+    *.blend (.gitattributes)
+    *.fbx (.gitattributes)
+    *.obj (.gitattributes)
+    *.png (.gitattributes)
+    *.jpg (.gitattributes)
+    *.jpeg (.gitattributes)
+    *.webp (.gitattributes)
+    *.tga (.gitattributes)
+    *.exr (.gitattributes)
+    *.hdr (.gitattributes)
+    *.dds (.gitattributes)
+    *.wav (.gitattributes)
+    *.ogg (.gitattributes)
+    *.mp3 (.gitattributes)
+    *.ttf (.gitattributes)
+    *.otf (.gitattributes)
+    *.ico (.gitattributes)
+    *.scn (.gitattributes)
+    *.res (.gitattributes)
+    *.lmbake (.gitattributes)
+Listing excluded patterns
+
+--- git ls-files | grep -E '\.(uid|import)$' (resumen) ---
+total .uid/.import en el indice: 474
+fuera de addons/:
+icon.svg.import
+tests/smoke_test.gd.uid
+
+--- git ls-files | grep -E '^\.godot/|^reports/' (DEBE SALIR VACIO) ---
+(vacio: .godot/ y reports/ NO estan en el indice)
+
+--- bits ejecutables en el indice (100755) ---
+100755 4de7d7a5569de91259e8efa21aba919f03244aae 0	addons/gdUnit4/runtest.sh
+100755 1c2ec0ed88e1046f8eb7de67cdea5e392caf908f 0	tools/run_tests.sh

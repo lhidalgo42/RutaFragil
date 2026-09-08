@@ -1,0 +1,33 @@
+=== Evidencia 08_gdunit4_pin.txt — M0-T0.1 ===
+Fecha de captura (UTC): 2026-09-08 12:57:23
+
+Repo:    https://github.com/godot-gdunit-labs/gdUnit4
+Tag:     v6.2.1
+Commit:  08ffc7c65b61b1b2edd545616061a99973c13ce1
+Origen en el proyecto: carpeta addons/gdUnit4/ copiada del clone --depth 1 --branch v6.2.1
+(solo esa carpeta; sin project.godot/.csproj/.sln del raiz del repo de gdUnit4).
+Registrado en: DECISIONS.md (D32) y CREDITS.md.
+
+--- Verificacion contra origen (git ls-remote, R11) ---
+08ffc7c65b61b1b2edd545616061a99973c13ce1	refs/tags/v6.2.1
+(tag ligero: apunta directo al commit; coincide con el pin registrado)
+
+--- ls de primer nivel de addons/gdUnit4/ ---
+total 42
+drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 .
+drwxr-xr-x 1 Leo 197121    0 Sep  8 00:37 ..
+-rw-r--r-- 1 Leo 197121 1069 Sep  8 00:37 LICENSE
+drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 bin
+-rw-r--r-- 1 Leo 197121  137 Sep  8 00:37 plugin.cfg
+-rw-r--r-- 1 Leo 197121 3924 Sep  8 00:37 plugin.gd
+-rw-r--r-- 1 Leo 197121   19 Sep  8 09:45 plugin.gd.uid
+-rw-r--r-- 1 Leo 197121 2011 Sep  8 00:37 runtest.cmd
+-rwxr-xr-x 1 Leo 197121 2156 Sep  8 00:37 runtest.sh
+drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 src
+drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 test
+
+--- Conteo de contenido versionado del addon ---
+archivos bajo addons/gdUnit4/ en el indice: 1076
+caso conocido: 17 .gd de addons/gdUnit4/test/ (fixtures de auto-test del addon) sin .uid;
+y 1 binario vendored: test/core/resources/scenes/simple_scene.scn (excepcion R14 reportada;
+quitarlo romperia la paridad byte-exacta con el tag pineado).

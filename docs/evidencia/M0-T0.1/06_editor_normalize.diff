@@ -1,0 +1,88 @@
+=== Evidencia 06_editor_normalize.diff — M0-T0.1 (paso 7) ===
+Fecha de captura (UTC): 2026-09-08 12:53:32
+Comando (DOS veces, con ventana): "C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe" --editor --path . --quit
+Nota: project.godot aun no estaba versionado al capturar esto; el diff es contra una copia previa.
+
+##### ARRANQUE 1: diff project.godot (pre-editor -> post-editor) — ACEPTADO #####
+editor run 1 exit code: 0
+Cierre del editor con warnings esperados de apagado (ObjectDB leaks / resources in use at exit);
+no afectan al archivo. Contenido del diff:
+
+--- /tmp/project.godot.pre_editor	2026-09-08 09:52:26.257306800 -0300
++++ project.godot	2026-09-08 09:52:31.480097000 -0300
+@@ -1,32 +1,46 @@
++; Engine configuration file.
++; It's best edited using the editor UI and not directly,
++; since the parameters that go here are not all obvious.
++;
++; Format:
++;   [section] ; section goes between []
++;   param=value ; assign values to parameters
++
+ config_version=5
+ 
+ [application]
++
+ config/name="RutaFragil"
+ config/features=PackedStringArray("4.7", "Forward Plus")
+ config/icon="res://icon.svg"
+ 
+ [debug]
++
+ gdscript/warnings/untyped_declaration=2
+ gdscript/warnings/inferred_declaration=2
+-gdscript/warnings/unsafe_method_access=1
+ gdscript/warnings/unsafe_property_access=1
++gdscript/warnings/unsafe_method_access=1
+ gdscript/warnings/unsafe_cast=1
+ gdscript/warnings/unsafe_call_argument=1
+ 
+ [display]
++
+ window/stretch/mode="canvas_items"
+ window/stretch/aspect="expand"
+ 
+ [editor_plugins]
++
+ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+ 
+ [gdunit4]
++
+ settings/test/test_lookup_folder="tests"
+ 
+ [physics]
++
+ 3d/physics_engine="Jolt Physics"
+ common/physics_interpolation=true
+ 
+ [rendering]
+-renderer/rendering_method="forward_plus"
++
+ rendering_device/driver.windows="d3d12"
+
+Cambios aceptados: cabecera estandar del editor, lineas en blanco por seccion,
+reorden de claves de warnings, y borrado de renderer/rendering_method="forward_plus"
+(es default del motor; el plan paso 3 lo anticipa como aceptable:
+config/features conserva "Forward Plus"). get_setting devuelve el default forward_plus.
+
+##### ARRANQUE 2: diff project.godot (post-editor1 -> post-editor2) #####
+editor run 2 exit code: 0
+SIN CAMBIOS (segundo arranque idempotente, diff vacio)
+
+##### git status --short tras el segundo arranque #####
+?? addons/
+?? assets/
+?? data/
+?? docs/evidencia/
+?? icon.svg
+?? icon.svg.import
+?? project.godot
+?? scenes/
+?? src/
+?? tests/
+?? tools/
+
+Nota: 'limpio' en este punto significa SIN MODIFICACIONES respecto al estado aceptado;
+las entradas '??' son los archivos del proyecto aun sin versionar que entran en el commit
+del paso 8/12 de esta misma tarea (addons/, project.godot, icon.svg, tests/, tools/, etc.).
+'icon.svg.import' aparece: generado por --import; se versiona en el paso 8 (D-plan, sidecars).

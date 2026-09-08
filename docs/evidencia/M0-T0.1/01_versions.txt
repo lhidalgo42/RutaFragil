@@ -1,0 +1,15 @@
+=== Evidencia 01_versions.txt — M0-T0.1 ===
+Fecha de captura (UTC): 2026-09-08 12:44:46
+Maquina: Windows, Git Bash
+
+--- git --version ---
+git version 2.51.0.windows.1
+exit code: 0
+
+--- git lfs version ---
+git-lfs/3.7.0 (GitHub; windows amd64; go 1.24.4; git 92dddf56)
+exit code: 0
+
+--- GODOT_BIN --version ---
+4.7.2.stable.official.ed1daf0bf
+exit code: 0
