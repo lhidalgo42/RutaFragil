@@ -1,0 +1,41 @@
+* text=auto eol=lf
+
+# Archivos de texto de Godot y del repo: LF fijo.
+*.gd       text eol=lf
+*.tscn     text eol=lf
+*.tres     text eol=lf
+*.godot    text eol=lf
+*.import   text eol=lf
+*.cfg      text eol=lf
+*.uid      text eol=lf
+*.gdshader text eol=lf
+*.md       text eol=lf
+
+# Binarios vía Git LFS.
+*.glb     filter=lfs diff=lfs merge=lfs -text
+*.gltf    filter=lfs diff=lfs merge=lfs -text
+*.blend   filter=lfs diff=lfs merge=lfs -text
+*.fbx     filter=lfs diff=lfs merge=lfs -text
+*.obj     filter=lfs diff=lfs merge=lfs -text
+*.png     filter=lfs diff=lfs merge=lfs -text
+*.jpg     filter=lfs diff=lfs merge=lfs -text
+*.jpeg    filter=lfs diff=lfs merge=lfs -text
+*.webp    filter=lfs diff=lfs merge=lfs -text
+*.tga     filter=lfs diff=lfs merge=lfs -text
+*.exr     filter=lfs diff=lfs merge=lfs -text
+*.hdr     filter=lfs diff=lfs merge=lfs -text
+*.dds     filter=lfs diff=lfs merge=lfs -text
+*.wav     filter=lfs diff=lfs merge=lfs -text
+*.ogg     filter=lfs diff=lfs merge=lfs -text
+*.mp3     filter=lfs diff=lfs merge=lfs -text
+*.ttf     filter=lfs diff=lfs merge=lfs -text
+*.otf     filter=lfs diff=lfs merge=lfs -text
+*.ico     filter=lfs diff=lfs merge=lfs -text
+*.scn     filter=lfs diff=lfs merge=lfs -text
+*.res     filter=lfs diff=lfs merge=lfs -text
+*.lmbake  filter=lfs diff=lfs merge=lfs -text
+
+# D36 — Desvío deliberado del ejemplo de la documentación de Godot:
+# *.svg NO va a LFS. SVG es texto diffable y, en GitHub, los objetos
+# LFS son permanentes (borrarlos no libera cuota). icon.svg y cualquier
+# .svg se versionan en Git normal.

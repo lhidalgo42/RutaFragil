@@ -1,0 +1,27 @@
+# Godot 4 — archivos generados (no versionar)
+.godot/
+/android/
+
+# Godot — importaciones de Android / exports
+.nomedia
+*.translation
+
+# Temporales
+*.tmp
+
+# Credenciales y configuración local de exportación
+# (export_presets.cfg SÍ se versiona)
+export_credentials.cfg
+export.cfg
+
+# Salida de gdUnit4
+/reports/
+
+# Ruta local al ejecutable de Godot (D39)
+tools/godot_bin.local
+
+# Basura de SO
+.DS_Store
+._*
+Thumbs.db
+[Dd]esktop.ini
