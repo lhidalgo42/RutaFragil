@@ -559,3 +559,26 @@ $ git ls-files | grep -E '^\.godot/|^reports/'   (debe ser vacio: ni .godot/ ni 
 (salida vacia: ningun archivo de .godot/ ni de reports/ esta versionado; codigo de salida de grep: 1)
 
 Generado antes del commit final de la ronda 2; el coordinador actualizará esta evidencia tras ese commit si el estado difiere.
+
+=== ACTUALIZACION POST-COMMIT (coordinador, ronda 2) ===
+Fecha UTC: 2026-09-08 15:29:56
+
+--- git log --oneline --all ---
+6e95b5d fix: round 2 — hardened test harness, complete docs, recaptured evidence (M0-T0.1)
+a07eb8a docs: review 01, plan v1.1, master and briefing from owner text (M0-T0.1)
+62fa3a3 docs: post-commit git state in evidence 07 (M0-T0.1)
+2114d56 feat: Godot 4.7.2 project foundations, gdUnit4 harness and smoke tests (M0-T0.1)
+633d4ba chore: repo scaffold and project docs (M0-T0.1)
+
+--- git status --short ---
+(vacio = arbol limpio)
+
+--- git ls-files | grep -E '\.(uid|import)$' | wc -l ---
+474
+
+--- git ls-files -s | grep 100755 ---
+100755 4de7d7a5569de91259e8efa21aba919f03244aae 0	addons/gdUnit4/runtest.sh
+100755 1bdca08c13ddee07fdef45751f1e3aec8563e22d 0	tools/run_tests.sh
+
+--- git ls-files | grep -E '^\.godot/|^reports/' ---
+(salida vacia: .godot/ y reports/ fuera del indice; codigo grep: 1)
