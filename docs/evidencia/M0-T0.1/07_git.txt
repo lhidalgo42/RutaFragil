@@ -72,3 +72,23 @@ tests/smoke_test.gd.uid
 --- bits ejecutables en el indice (100755) ---
 100755 4de7d7a5569de91259e8efa21aba919f03244aae 0	addons/gdUnit4/runtest.sh
 100755 1c2ec0ed88e1046f8eb7de67cdea5e392caf908f 0	tools/run_tests.sh
+
+##### SECCION POST-COMMIT (anadida tras el commit feat, estado real final) #####
+Fecha de captura (UTC): 2026-09-08 12:58:39
+
+--- git log --oneline --all ---
+2114d56 feat: Godot 4.7.2 project foundations, gdUnit4 harness and smoke tests (M0-T0.1)
+633d4ba chore: repo scaffold and project docs (M0-T0.1)
+
+--- git status --short --branch ---
+## m0/t0.1-foundations
+(sin entradas de archivos = arbol limpio)
+
+--- git ls-files | grep -E '\.(uid|import)$' (conteo final) ---
+474
+
+--- git ls-files | grep -E '^\.godot/|^reports/' (DEBE SALIR VACIO) ---
+(vacio: .godot/ y reports/ NUNCA entraron al indice)
+
+--- godot_bin.local ignorado (check-ignore -v) ---
+.gitignore:21:tools/godot_bin.local	tools/godot_bin.local
