@@ -66,7 +66,8 @@ La razón del cambio a Godot es que la IA pueda **desarrollar y probar sin un hu
 ## Comandos verificados (plan M0-T0.1, pasos 5–7)
 
 ```powershell
-# Suite de tests gdUnit4 (verifica versión, importa, corre tests/, exige ≥3 tests descubiertos)
+# Suite de tests gdUnit4 (verifica versión, limpia reports/ y crea reports/.gdignore,
+# importa, corre tests/, exige ≥3 tests descubiertos y falla ante "No test cases found")
 tools/run_tests.ps1    # Windows
 tools/run_tests.sh     # macOS / Linux
 ```
@@ -81,11 +82,14 @@ tools/run_tests.sh     # macOS / Linux
 ```
 
 ```bash
-# gdUnit4 headless (forma exacta del paso 6; NUNCA poner `--` o `++` antes de las opciones de gdUnit4)
-"$GODOT_BIN" --headless --path <raíz> -s -d --remote-debug tcp://127.0.0.1:0 res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+# gdUnit4 headless (forma exacta del paso 6 v1.1 + D40: SIN `-d` ni `--remote-debug`;
+# con esos flags cada corrida imprimía dos líneas ERROR por el puerto 0, y se verificó
+# que sin ellos los errores de script siguen saliendo con backtrace y código 105.
+# NUNCA poner `--` o `++` antes de las opciones de gdUnit4)
+"$GODOT_BIN" --headless --path <raíz> -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
 ```
 
-Códigos de salida de gdUnit4: `0` ok · `100` fallos · `101` warnings · `103` headless rechazado · `104` versión de Godot no soportada · `105` errores de script en el descubrimiento · cualquier otro (444, 134, 0xC0000005…) = fallo de infraestructura.
+Códigos de salida de gdUnit4: `0` ok · `100` fallos · `101` orphans (nodos huérfanos) · `103` headless rechazado · `104` versión de Godot no soportada · `105` errores de script en el descubrimiento · cualquier otro (444, 134, 0xC0000005…) = fallo de infraestructura.
 
 ```bash
 # Normalización de project.godot: UNA sola ejecución con ventana (headless nunca lo reescribe).
@@ -99,5 +103,6 @@ Códigos de salida de gdUnit4: `0` ok · `100` fallos · `101` warnings · `103`
   - Windows: `C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe`
   - macOS: `/Applications/Godot.app/Contents/MacOS/Godot`
 - Versión pineada del motor (ADR-000): `4.7.2.stable.official.ed1daf0bf` — solo parches 4.7.x, nunca dev/beta.
+- Al subir de parche 4.7.x hay que actualizar la versión pineada en cuatro archivos: `tests/smoke_test.gd`, `tools/run_tests.ps1`, `tools/run_tests.sh`, `README.md` (revisión 01, m8).
 - Suites de tests en `tests/` (D33); reportes en `reports/` (ignorado).
 - Decisiones: `DECISIONS.md` · Pendientes: `BACKLOG.md` · Plan vigente: `docs/planes/` · Revisiones: `docs/revisiones/`.

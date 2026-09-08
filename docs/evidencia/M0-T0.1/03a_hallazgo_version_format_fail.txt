@@ -1,4 +1,5 @@
-=== Evidencia 03_run_tests_pass.txt — M0-T0.1 ===
+=== Evidencia 03a_hallazgo_version_format_fail.txt — M0-T0.1 ===
+(cabecera corregida en ronda 2: antes decia erroneamente "03_run_tests_pass.txt"; el volcado no se toco)
 Fecha de captura (UTC): 2026-09-08 12:45:59
 Comando: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
 

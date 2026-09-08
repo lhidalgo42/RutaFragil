@@ -8,6 +8,8 @@ El título es provisional (Apéndice C del maestro); el nombre interno del proye
 
 **Solo parches 4.7.x, nunca dev/beta.** El test `test_engine_is_pinned_to_4_7_2` (`tests/smoke_test.gd`) lo hace cumplir en ambas máquinas.
 
+Al subir de parche 4.7.x hay que actualizar la versión pineada en cuatro archivos: `tests/smoke_test.gd`, `tools/run_tests.ps1`, `tools/run_tests.sh`, `README.md` (m8 de la revisión 01).
+
 ## Instalación del motor
 
 ### Windows
@@ -15,10 +17,11 @@ El título es provisional (Apéndice C del maestro); el nombre interno del proye
 1. Descargar el build **estándar (no .NET)** de Godot 4.7.2 desde godotengine.org.
 2. Instalar en `C:\Godot\4.7.2\`.
 3. Desde terminal usar siempre `Godot_v4.7.2-stable_win64_console.exe`: propaga el código de salida; el `.exe` sin sufijo `_console` no.
+4. `git lfs install` (Git LFS viene incluido en Git para Windows) y `git config --global core.autocrlf input`.
 
 ### macOS
 
-1. macOS ≥ 11 (mínimo de Godot 4.7).
+1. macOS ≥ 11 solo en Mac Intel; en Apple Silicon el mínimo es **macOS ≥ 13** (requisitos oficiales de Godot 4.7).
 2. Descargar `Godot_v4.7.2-stable_macos.universal.zip` (build estándar, no .NET) desde godotengine.org; está firmado y notarizado, se extrae y se ejecuta.
 3. Mover `Godot.app` a `/Applications`. El ejecutable CLI es `/Applications/Godot.app/Contents/MacOS/Godot`.
 4. `brew install git-lfs && git lfs install` y `git config --global core.autocrlf input`.
@@ -39,13 +42,14 @@ Los scripts del repo resuelven el ejecutable de Godot en este orden:
 ## Comandos
 
 ```powershell
-# Windows — suite de tests gdUnit4 headless
-tools/run_tests.ps1
+# Windows — suite de tests gdUnit4 headless (forma verificada; con política
+# Restricted la forma corta `tools/run_tests.ps1` falla)
+powershell -ExecutionPolicy Bypass -File tools/run_tests.ps1
 ```
 
 ```bash
-# macOS / Linux — suite de tests gdUnit4 headless
-tools/run_tests.sh
+# macOS / Linux — suite de tests gdUnit4 headless (forma verificada)
+bash tools/run_tests.sh
 ```
 
 Ambos verifican la versión del motor, importan el proyecto y corren `tests/`; dejan el reporte JUnit en `reports/` (ignorado por Git).
@@ -77,5 +81,5 @@ docs/       documentación del proyecto (con .gdignore)
 - Física 3D: Jolt (`physics/3d/physics_engine="Jolt Physics"`, declarado a mano: el DEFAULT del motor sigue siendo GodotPhysics3D).
 - Render: Forward+; driver en Windows `d3d12` (D31).
 - `*.uid` e `*.import` **se versionan**; `.godot/` y `reports/` no. `export_presets.cfg` se versiona (M4).
-- Git LFS trackea los binarios listados en `.gitattributes`. Los `.svg` van en Git normal (D36).
+- Git LFS trackea los binarios listados en `.gitattributes`. Los `.svg` van en Git normal (D36). El remoto debe tener **LFS habilitado ANTES del primer push**: ya existen 13 punteros LFS (10 objetos únicos) por los PNG del addon gdUnit4.
 - Documentos de referencia: `AGENTS.md` (reglas para agentes), `DECISIONS.md`, `BACKLOG.md`, `CREDITS.md`, `docs/planes/M0-T0.1_plan.md`.

@@ -10,7 +10,7 @@
 ## Jolt Physics
 
 - Licencia: **MIT**. Incluido en Godot; este proyecto lo usa como motor de física 3D (`physics/3d/physics_engine="Jolt Physics"`).
-- Copyright (c) 2021 Jorrit Rouwe.
+- Copyright 2021 Jorrit Rouwe.
 - https://github.com/jrouwe/JoltPhysics
 
 ## gdUnit4

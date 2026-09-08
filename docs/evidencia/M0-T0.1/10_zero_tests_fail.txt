@@ -1,20 +1,125 @@
-=== Evidencia 04_run_tests_fail.txt ‚Äî M0-T0.1 (ronda 2, recaptura post-normalizaci√≥n) ===
+=== Evidencia 10_zero_tests_fail.txt ‚Äî M0-T0.1 (NUEVA, ronda 2) ===
 Maquina: Windows, repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
-Comando: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
-Setup: tests/tmp_fail_test.gd temporal (suite tipada, extends GdUnitTestSuite, funcion -> void,
-       assert_bool(false).is_true()). NO versionado; borrado tras la captura junto con su .uid.
-Esperado: el arn√©s detecta el fallo, mapea el c√≥digo 100 y propaga 100.
+Comando: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1 con tests/ VACIO
+Prueba la correccion #1 al maestro (plan v1.1, M1 de la revision 01): gdUnit4 sale 0 sin
+escribir reporte cuando no descubre tests; el arn√©s debe FALLAR por el guardia
+('No test cases found' en la salida y/o 0 tests en el JUnit), no aprobar un no-op.
 
---- Contenido exacto del test temporal ---
-extends GdUnitTestSuite
+Setup: tests/smoke_test.gd y tests/smoke_test.gd.uid movidos fuera del repo
+(a /tmp/m0t01_stash/) antes de la corrida; restaurados despues (ver seccion final).
+
+$ ls -la tests/   # antes de la corrida: vacio
+total 4
+drwxr-xr-x 1 Leo 197121 0 Sep  8 12:25 .
+drwxr-xr-x 1 Leo 197121 0 Sep  8 12:24 ..
+
+Captura inicio (UTC): 2026-09-08 15:25:41
+
+$ powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+GODOT_BIN resolved to OS default
+Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/7: Clean reports directory ===
+Deleted previous reports: C:\Users\Leo\Documents\RutaFragil\reports
+Reports directory ready: C:\Users\Leo\Documents\RutaFragil\reports (with .gdignore)
+
+=== Step 3/7: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicializaci«¸n del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga autom«≠tica...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando dise«Òo del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[ DONE ] loading_editor_layout
 
 
-func test_fails_on_purpose_for_evidence_04() -> void:
-	var expected: bool = false
-	assert_bool(expected).is_true()
-------------------------------------------
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-Captura inicio (UTC): 2026-09-08 15:23:03
+[   0% ] first_scan_filesystem | Started Inicializaci«¸n del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga autom«≠tica...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando dise«Òo del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[ DONE ] loading_editor_layout
+
+
+import pass 2 exit code: 0
+Class cache found: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
+
+=== Step 4/7: Run gdUnit4 test suites ===
+Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path C:\Users\Leo\Documents\RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Scanning for test suites in: res://tests
+No test cases found, abort test run!
+Exit code: 0
+Run dispose test resources
+
+
+=== Step 5/7: gdUnit4 exit code ===
+gdUnit4 exit code 0: OK: all discovered tests passed
+
+=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
+WARNING: no results.xml found under C:\Users\Leo\Documents\RutaFragil\reports
+Discovered tests: 0 (minimum required: 3)
+
+=== Step 7/7: Final verdict ===
+FAILURE: gdUnit4 reported 'No test cases found, abort test run!' (exit 0, no report written). Refusing to accept a silent no-op run.
+
+$ echo $?
+1
+
+VERIFICADO: el arn√©s FALLA con codigo 1 (distinto de 0). El runner reporto
+  "No test cases found, abort test run!" y "Exit code: 0" (gdUnit4 NO falla solo),
+  no escribio results.xml ("WARNING: no results.xml found"), "Discovered tests: 0",
+  y el guardia respondio:
+  "FAILURE: gdUnit4 reported No test cases found, abort test run! (exit 0, no report written). Refusing to accept a silent no-op run."
+
+################################################################
+# RESTAURACION ‚Äî smoke_test.gd + .uid devueltos a tests/ y
+# corrida final del arn√©s para verificar que todo vuelve a verde
+# Captura inicio (UTC): 2026-09-08 15:26:06
+################################################################
+
+$ ls tests/
+smoke_test.gd
+smoke_test.gd.uid
 
 $ powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
 
@@ -96,138 +201,33 @@ Run Test Suite: res://tests/smoke_test.gd
   res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 4ms
 
   res://tests/smoke_test.gd > test_physics_engine_is_jolt STARTED
-  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 5ms
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 4ms
 
   res://tests/smoke_test.gd > test_rendering_method_is_forward_plus STARTED
   res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 4ms
 
-Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 31ms
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 27ms
 
 
-Run Test Suite: res://tests/tmp_fail_test.gd
-  res://tests/tmp_fail_test.gd > test_fails_on_purpose_for_evidence_04 STARTED
-  res://tests/tmp_fail_test.gd > test_fails_on_purpose_for_evidence_04 FAILED 4ms
-  Report:
-  Expecting: 'true' but is 'false'	at 'test_fails_on_purpose_for_evidence_04' in res://tests/tmp_fail_test.gd:6
-
-Statistics: 1 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 13ms
-
-
-Overall Summary: 4 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans |
-Executed test suites: (2/2)
-Executed test cases : (4/4)
-Total execution time: 44ms
+Overall Summary: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (1/1)
+Executed test cases : (3/3)
+Total execution time: 27ms
  Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
 Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html
-Exit code: 100
+Exit code: 0
 Run dispose test resources
 
 
 === Step 5/7: gdUnit4 exit code ===
-gdUnit4 exit code 100: TEST FAILURES: one or more tests failed
+gdUnit4 exit code 0: OK: all discovered tests passed
 
 === Step 6/7: Verify discovered test count in the fresh JUnit report ===
 JUnit report: C:\Users\Leo\Documents\RutaFragil\reports\report_1\results.xml
-Discovered tests: 4 (minimum required: 3)
+Discovered tests: 3 (minimum required: 3)
 
 === Step 7/7: Final verdict ===
-FAILURE: TEST FAILURES: one or more tests failed
+SUCCESS: all tests passed and 3 tests were discovered.
 
 $ echo $?
-100
-
-VERIFICADO: c√≥digo de salida 100 (TEST FAILURES) con el mensaje del mapeo:
-  "gdUnit4 exit code 100: TEST FAILURES: one or more tests failed"
-  "FAILURE: TEST FAILURES: one or more tests failed"
-
-################################################################
-# ANEXO ‚Äî intento previo de esta misma captura (15:21:12 UTC):
-# salio con codigo 1 (INFRASTRUCTURE FAILURE), NO 100. Causa:
-# .godot/global_script_class_cache.cfg quedo VACIO (0 lineas)
-# tras las dos pasadas de --import del arn√©s, y GdUnitCmdTool.gd
-# no pudo parsear (GdUnitTestCIRunner no declarado). Un --import
-# manual inmediato regenero la cache (2801 lineas) con exit 0 y
-# la repeticion de la corrida dio el 100 esperado. Hallazgo de
-# infraestructura (cache de clases vaciada transitoriamente por
-# el import lanzado desde PowerShell); se reporta tal cual, no se
-# maquilla. Volcado completo de ese intento:
-################################################################
-
-$ powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1   # intento 15:21:12 UTC
-
-=== Step 1/7: Resolve Godot binary and verify version ===
-GODOT_BIN resolved to OS default
-Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
-godot --version: 4.7.2.stable.official.ed1daf0bf
-
-=== Step 2/7: Clean reports directory ===
-Deleted previous reports: C:\Users\Leo\Documents\RutaFragil\reports
-Reports directory ready: C:\Users\Leo\Documents\RutaFragil\reports (with .gdignore)
-
-=== Step 3/7: Headless import (two passes) ===
---- import pass 1/2 ---
-Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
-
-[   0% ] first_scan_filesystem | Started Inicializaci«¸n del proyecto (5 steps)
-[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
-[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
-[  33% ] first_scan_filesystem | Verificando GDExtensions...
-[  50% ] first_scan_filesystem | Creando scripts de carga autom«≠tica...
-[  66% ] first_scan_filesystem | Inicializando plugins...
-It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
-[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
-[ DONE ] first_scan_filesystem
-
-[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
-[   0% ] loading_editor_layout | Cargando dise«Òo del editor...
-[  16% ] loading_editor_layout | Cargando docks...
-[ DONE ] loading_editor_layout
-
-
-import pass 1 exit code: 0
---- import pass 2/2 ---
-Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
-
-[   0% ] first_scan_filesystem | Started Inicializaci«¸n del proyecto (5 steps)
-[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
-[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
-[  33% ] first_scan_filesystem | Verificando GDExtensions...
-[  50% ] first_scan_filesystem | Creando scripts de carga autom«≠tica...
-[  66% ] first_scan_filesystem | Inicializando plugins...
-It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
-[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
-[ DONE ] first_scan_filesystem
-
-[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
-[   0% ] loading_editor_layout | Cargando dise«Òo del editor...
-[  16% ] loading_editor_layout | Cargando docks...
-[ DONE ] loading_editor_layout
-
-
-import pass 2 exit code: 0
-Class cache found: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
-
-=== Step 4/7: Run gdUnit4 test suites ===
-Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path C:\Users\Leo\Documents\RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
-Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
-
-SCRIPT ERROR: Parse Error: Could not find type "GdUnitTestCIRunner" in the current scope.
-   at: GDScript::reload (res://addons/gdUnit4/bin/GdUnitCmdTool.gd:5)
-SCRIPT ERROR: Parse Error: Identifier "GdUnitTestCIRunner" not declared in the current scope.
-   at: GDScript::reload (res://addons/gdUnit4/bin/GdUnitCmdTool.gd:10)
-ERROR: Failed to load script "res://addons/gdUnit4/bin/GdUnitCmdTool.gd" with error "Parse error".
-   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
-
-
-=== Step 5/7: gdUnit4 exit code ===
-gdUnit4 exit code 1: INFRASTRUCTURE FAILURE (unexpected exit code)
-
-=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
-WARNING: no results.xml found under C:\Users\Leo\Documents\RutaFragil\reports
-Discovered tests: 0 (minimum required: 3)
-
-=== Step 7/7: Final verdict ===
-FAILURE: INFRASTRUCTURE FAILURE (unexpected exit code)
-
-$ echo $?
-1
+0
