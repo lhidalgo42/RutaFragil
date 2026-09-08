@@ -4,34 +4,64 @@ Reglas para agentes de código que trabajen en este repo.
 
 **Jerarquía:** maestro v0.2 > briefing v0.2 > plan de la tarea > criterio del agente. Las contradicciones se reportan, no se resuelven en silencio.
 
-## Reglas R1–R14 (maestro §0.3)
+**Fuente:** las secciones §0.3, §0.4 y §0.8 de abajo son copia **textual** de `docs/RUTA_FRAGIL_documento_maestro_v0.2_godot.md`. Si difieren, manda el maestro. Escritas por Claude el 2026-09-08 con autorización del dueño (revisión 01 de M0-T0.1, hallazgo B1).
 
-> ⚠️ El texto original de R1–R14 no está disponible: el maestro llegó por chat y su archivo (`docs/RUTA_FRAGIL_documento_maestro_v0.2_godot.md`) está pendiente de rellenar.
-> Las reglas marcadas como reconstruidas se derivan únicamente de las referencias «R#» que aparecen en `docs/planes/M0-T0.1_plan.md`.
-> **Reemplazar todo por el texto textual del maestro §0.3** cuando el dueño lo deposite (el checklist de revisión exige diff vacío contra §0.3).
+## Reglas R1–R14 (maestro §0.3, textual)
 
-- **R1** — PENDIENTE: texto original del maestro §0.3.
-- **R2** — PENDIENTE: texto original del maestro §0.3.
-- **R3** — Tipado de declaraciones obligatorio: declaraciones sin tipo (`untyped_declaration`) y con tipo inferido (`inferred_declaration`) son error de proyecto (forzado por configuración, D34). *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
-- **R4** — PENDIENTE: texto original del maestro §0.3.
-- **R5** — Ningún addon sin aprobación explícita del dueño. *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
-- **R6** — Alcance de la tarea: lo declarado «fuera» no se toca; un paso bloqueado detiene la tarea y se reporta, no se salta. *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
-- **R7** — Reportar explícitamente todo criterio NO verificado, con el motivo. *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
-- **R8** — Scripts propios de ≤400 líneas y en inglés. *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
-- **R9** — Identificadores en snake_case. *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
-- **R10** — Sin TODOs silenciosos: todo pendiente se registra en `BACKLOG.md`. *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
-- **R11** — Las afirmaciones sobre motor/herramientas se verifican contra fuentes primarias. *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
-- **R12** — PENDIENTE: texto original del maestro §0.3.
-- **R13** — PENDIENTE: texto original del maestro §0.3.
-- **R14** — Sin escenas/recursos binarios (`.scn`, `.res`) ni cifrado en el repo: todo texto. *(reconstruida desde el plan; texto original PENDIENTE del maestro)*
+```
+REGLAS DEL PROYECTO RUTA FRÁGIL — OBLIGATORIAS EN TODA SESIÓN (v0.2 Godot)
+R1  Nunca hardcodear el número de jugadores. Leer siempre GameConfig.max_players.
+    Toda UI de lobby/HUD se genera dinámicamente para N jugadores.
+R2  Todo contenido (paquetes, biomas, contratos, herramientas, sistemas del bus)
+    se define en Resources (.tres) con espejo JSON en res://data/ y carga desde
+    user://mods/. Prohibido definir contenido en código.
+R3  GDScript con tipado estático en TODAS las declaraciones (variables, parámetros,
+    retornos). Prohibido C#, GDExtension o addons nuevos sin ADR aprobado.
+R4  Autoridad de red: el peer con autoridad sobre el bus (ADR-006) simula el bus y
+    los paquetes sueltos en su interior; el host es dueño de economía, contratos,
+    spawns y estado de sistemas. Nadie simula física de lo que no le pertenece.
+R5  Prohibido agregar addons/dependencias sin aprobación humana explícita.
+R6  Una tarea por sesión. No tocar archivos fuera del alcance declarado en el plan.
+R7  Antes de declarar una tarea terminada: (a) el proyecto abre sin errores en
+    consola, (b) los tests gdUnit4 pasan en headless, (c) los criterios de
+    aceptación se probaron con evidencia adjunta (salida de tests, log, screenshot).
+    Si un criterio no se puede probar desde CLI/editor, decirlo; nunca marcarlo.
+R8  Scripts de máximo 400 líneas; escenas de máximo 60 nodos. Si crece, dividir.
+R9  Código, nodos y archivos en inglés, snake_case. Comentarios solo para el porqué.
+R10 No dejar TODOs silenciosos: todo pendiente se registra en BACKLOG.md.
+R11 No inventar APIs. Verificar en la documentación de Godot 4.7 / GodotSteam antes
+    de escribir; si hay duda, pedirla.
+R12 Ediciones destructivas (borrar archivos, reescribir escenas existentes)
+    requieren confirmación humana previa.
+R13 Todo sistema de gameplay nuevo entrega con al menos un test gdUnit4 que lo
+    ejercite sin editor abierto.
+R14 Escenas y recursos siempre en formato texto (.tscn/.tres). Prohibido .scn/.res
+    binarios. Prohibido cifrar scripts (moddabilidad, D11).
+```
 
-## Protocolo (maestro §0.4)
+## Protocolo por tarea (maestro §0.4, textual)
 
-PENDIENTE: reemplazar esta sección con el texto del maestro §0.4.
+1. Humano pega: reglas §0.3 + tarea completa (Parte 3) + rutas relevantes.
+2. Agente responde con **plan** (archivos, enfoque, riesgos). Humano aprueba o corrige.
+3. Agente implementa → `godot --headless` corre tests → adjunta evidencia.
+4. Humano ejecuta el **GATE** (§0.7). Solo entonces merge.
+5. Tres intentos fallidos = detenerse y replantear, no forzar.
 
-## Frontera de autonomía (maestro §0.8)
+## Frontera de autonomía (maestro §0.8, textual)
 
-PENDIENTE: reemplazar esta sección con el texto del maestro §0.8.
+La razón del cambio a Godot es que la IA pueda **desarrollar y probar sin un humano en cada iteración**. Eso es cierto para una clase de pruebas y falso para otra; esta es la frontera exacta.
+
+**El agente ejecuta sin supervisión, tantas veces como quiera:**
+
+- Correr el proyecto en headless (`godot --headless`) y los tests gdUnit4: unitarios y de simulación (decaimiento de paquetes, ventanas de sincronía de `CoopInteractable`, física del bus en el circuito automático del Playground — Jolt corre sin render).
+- **Pruebas de red multi-instancia automáticas (T0.4):** lanzar 1 host + N clientes headless en procesos separados sobre ENet en la misma máquina, ejecutar un guion scriptado y afirmar convergencia de estado (posiciones de paquetes, dinero, ocupación de puestos, cambio de autoridad del bus). Esto no era posible sin editor en Unity; es la ventaja concreta de D17.
+- Exportar builds por CLI a una carpeta de staging (nunca subirlas).
+- Capturar screenshots por script en una ejecución con ventana (en la máquina de desarrollo) y compararlas contra referencias.
+- Iterar código → test → código hasta que todo esté verde, sin pedir permiso entre iteraciones.
+
+**El agente NO hace sin humano, nunca:** merge a `main` · crear o cambiar ADRs · agregar dependencias (R5) · borrar o reescribir escenas (R12) · tocar Steamworks, subir builds o gastar dinero · marcar un gate como pasado · declarar que algo "se siente bien".
+
+**Lo que ninguna prueba automática mide (por eso existen los gates §0.7):** jitter *perceptible*, game feel, diversión, legibilidad visual, calidad de voz, comportamiento bajo latencia real de internet y con cuentas Steam reales. Un test verde en headless dice "la lógica converge"; no dice "es jugable". La supervisión no desaparece: **se mueve de cada iteración a cada gate.** Un agente que reporta verde sin que un humano lo reproduzca es exactamente cómo un co-op llega a Steam con 40% de reseñas positivas.
 
 ## Comandos verificados (plan M0-T0.1, pasos 5–7)
 
@@ -70,4 +100,4 @@ Códigos de salida de gdUnit4: `0` ok · `100` fallos · `101` warnings · `103`
   - macOS: `/Applications/Godot.app/Contents/MacOS/Godot`
 - Versión pineada del motor (ADR-000): `4.7.2.stable.official.ed1daf0bf` — solo parches 4.7.x, nunca dev/beta.
 - Suites de tests en `tests/` (D33); reportes en `reports/` (ignorado).
-- Decisiones: `DECISIONS.md` · Pendientes: `BACKLOG.md` · Plan vigente: `docs/planes/`.
+- Decisiones: `DECISIONS.md` · Pendientes: `BACKLOG.md` · Plan vigente: `docs/planes/` · Revisiones: `docs/revisiones/`.
