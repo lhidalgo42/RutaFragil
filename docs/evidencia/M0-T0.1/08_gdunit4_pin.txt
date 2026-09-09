@@ -1,20 +1,35 @@
 === Evidencia 08_gdunit4_pin.txt — M0-T0.1 ===
-Fecha de captura (UTC): 2026-09-08 12:57:23
+Fecha de captura (UTC): 2026-09-09 14:00 UTC
+Maquina: Windows 11 (Git Bash), Godot 4.7.2 en C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
+Recapturada en la ronda 3 tras el borrado AUTORIZADO de addons/gdUnit4/test/
+(el dueno confirmo R12=SI el 2026-09-08; la autorizacion quedo registrada en
+DECISIONS.md, fila D32).
+
+Comandos volcados en esta evidencia:
+  git ls-remote https://github.com/godot-gdunit-labs/gdUnit4 refs/tags/v6.2.1   (captura de la ronda 1)
+  ls -la addons/gdUnit4/
+  git ls-files addons/gdUnit4 | wc -l
+  grep -c 'res://addons/gdUnit4/test/' .godot/global_script_class_cache.cfg
+  git ls-files | grep '\.scn'
 
 Repo:    https://github.com/godot-gdunit-labs/gdUnit4
 Tag:     v6.2.1
 Commit:  08ffc7c65b61b1b2edd545616061a99973c13ce1
 Origen en el proyecto: carpeta addons/gdUnit4/ copiada del clone --depth 1 --branch v6.2.1
 (solo esa carpeta; sin project.godot/.csproj/.sln del raiz del repo de gdUnit4).
-Registrado en: DECISIONS.md (D32) y CREDITS.md.
+La subcarpeta addons/gdUnit4/test/ (auto-tests del addon, 559 archivos) se borro en la
+ronda 3 con autorizacion R12 del dueno (2026-09-08); la distribucion oficial zip/AssetLib
+la excluye por export-ignore. src/dotnet/GdUnit4CSharpApi.cs es parte de la distribucion
+y queda inerte en build estandar.
+Registrado en: DECISIONS.md (D32, con la nota de autorizacion R12) y CREDITS.md.
 
---- Verificacion contra origen (git ls-remote, R11) ---
+--- Verificacion contra origen (git ls-remote, R11; capturada 2026-09-08, sin cambios) ---
 08ffc7c65b61b1b2edd545616061a99973c13ce1	refs/tags/v6.2.1
 (tag ligero: apunta directo al commit; coincide con el pin registrado)
 
---- ls de primer nivel de addons/gdUnit4/ ---
-total 42
-drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 .
+--- ls -la addons/gdUnit4/ (primer nivel; NO muestra test/) ---
+total 34
+drwxr-xr-x 1 Leo 197121    0 Sep  9 10:57 .
 drwxr-xr-x 1 Leo 197121    0 Sep  8 00:37 ..
 -rw-r--r-- 1 Leo 197121 1069 Sep  8 00:37 LICENSE
 drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 bin
@@ -24,10 +39,18 @@ drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 bin
 -rw-r--r-- 1 Leo 197121 2011 Sep  8 00:37 runtest.cmd
 -rwxr-xr-x 1 Leo 197121 2156 Sep  8 00:37 runtest.sh
 drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 src
-drwxr-xr-x 1 Leo 197121    0 Sep  8 09:45 test
 
 --- Conteo de contenido versionado del addon ---
-archivos bajo addons/gdUnit4/ en el indice: 1076
-caso conocido: 17 .gd de addons/gdUnit4/test/ (fixtures de auto-test del addon) sin .uid;
-y 1 binario vendored: test/core/resources/scenes/simple_scene.scn (excepcion R14 reportada;
-quitarlo romperia la paridad byte-exacta con el tag pineado).
+$ git ls-files addons/gdUnit4 | wc -l
+517
+
+--- Cache global de clases tras el borrado y re-import (x2 via arnes) ---
+$ grep -c 'res://addons/gdUnit4/test/' .godot/global_script_class_cache.cfg
+0
+(grep sale con codigo 1: ninguna coincidencia; antes del borrado habia 148)
+
+--- Escenas binarias en el indice ---
+$ git ls-files | grep '\.scn'
+(sin salida; grep sale con codigo 1: no queda ningun .scn versionado.
+ El unico que habia, test/core/resources/scenes/simple_scene.scn, desaparecio
+ con el borrado autorizado de test/.)

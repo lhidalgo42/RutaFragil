@@ -1,21 +1,24 @@
-=== Evidencia 10_zero_tests_fail.txt — M0-T0.1 (NUEVA, ronda 2) ===
-Maquina: Windows, repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
-Comando: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1 con tests/ VACIO
-Prueba la correccion #1 al maestro (plan v1.1, M1 de la revision 01): gdUnit4 sale 0 sin
+=== Evidencia 10_zero_tests_fail.txt — M0-T0.1 (ronda 3: recaptura UTF-8 de la sección PowerShell + NUEVA sección bash, m-2.5) ===
+Máquina: Windows (Git Bash + PowerShell 5.1), repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
+Comandos: (A) powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1 ; (B) bash tools/run_tests.sh — ambos con tests/ VACÍO
+Prueba la corrección #1 al maestro (plan v1.1, M1 de la revisión 01): gdUnit4 sale 0 sin
 escribir reporte cuando no descubre tests; el arnés debe FALLAR por el guardia
 ('No test cases found' en la salida y/o 0 tests en el JUnit), no aprobar un no-op.
 
 Setup: tests/smoke_test.gd y tests/smoke_test.gd.uid movidos fuera del repo
-(a /tmp/m0t01_stash/) antes de la corrida; restaurados despues (ver seccion final).
+(a /tmp/m0r3/stash10/) antes de las corridas; restaurados después (ver sección final).
 
-$ ls -la tests/   # antes de la corrida: vacio
+$ ls -la tests/   # antes de las corridas: vacío
 total 4
-drwxr-xr-x 1 Leo 197121 0 Sep  8 12:25 .
-drwxr-xr-x 1 Leo 197121 0 Sep  8 12:24 ..
-
-Captura inicio (UTC): 2026-09-08 15:25:41
+drwxr-xr-x 1 Leo 197121 0 Sep  9 11:38 .
+drwxr-xr-x 1 Leo 197121 0 Sep  9 11:37 ..
+################################################################
+# SECCIÓN A — tools/run_tests.ps1 (PowerShell)
+# Captura inicio (UTC): 2026-09-09 14:38:36
+################################################################
 
 $ powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
+
 
 === Step 1/7: Resolve Godot binary and verify version ===
 GODOT_BIN resolved to OS default
@@ -30,18 +33,18 @@ Reports directory ready: C:\Users\Leo\Documents\RutaFragil\reports (with .gdigno
 --- import pass 1/2 ---
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-[   0% ] first_scan_filesystem | Started Inicializaci��n del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
 [   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
 [  16% ] first_scan_filesystem | Cargando nombres de clases globales...
 [  33% ] first_scan_filesystem | Verificando GDExtensions...
-[  50% ] first_scan_filesystem | Creando scripts de carga automǭtica...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
 [  66% ] first_scan_filesystem | Inicializando plugins...
 It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
 [  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
 [ DONE ] first_scan_filesystem
 
 [   0% ] loading_editor_layout | Started Cargando editor (5 steps)
-[   0% ] loading_editor_layout | Cargando dise��o del editor...
+[   0% ] loading_editor_layout | Cargando diseño del editor...
 [  16% ] loading_editor_layout | Cargando docks...
 [ DONE ] loading_editor_layout
 
@@ -50,24 +53,24 @@ import pass 1 exit code: 0
 --- import pass 2/2 ---
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-[   0% ] first_scan_filesystem | Started Inicializaci��n del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
 [   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
 [  16% ] first_scan_filesystem | Cargando nombres de clases globales...
 [  33% ] first_scan_filesystem | Verificando GDExtensions...
-[  50% ] first_scan_filesystem | Creando scripts de carga automǭtica...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
 [  66% ] first_scan_filesystem | Inicializando plugins...
 It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
 [  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
 [ DONE ] first_scan_filesystem
 
 [   0% ] loading_editor_layout | Started Cargando editor (5 steps)
-[   0% ] loading_editor_layout | Cargando dise��o del editor...
+[   0% ] loading_editor_layout | Cargando diseño del editor...
 [  16% ] loading_editor_layout | Cargando docks...
 [ DONE ] loading_editor_layout
 
 
 import pass 2 exit code: 0
-Class cache found: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
+Class cache verified: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
 
 === Step 4/7: Run gdUnit4 test suites ===
 Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path C:\Users\Leo\Documents\RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
@@ -105,16 +108,111 @@ FAILURE: gdUnit4 reported 'No test cases found, abort test run!' (exit 0, no rep
 $ echo $?
 1
 
-VERIFICADO: el arnés FALLA con codigo 1 (distinto de 0). El runner reporto
-  "No test cases found, abort test run!" y "Exit code: 0" (gdUnit4 NO falla solo),
-  no escribio results.xml ("WARNING: no results.xml found"), "Discovered tests: 0",
-  y el guardia respondio:
-  "FAILURE: gdUnit4 reported No test cases found, abort test run! (exit 0, no report written). Refusing to accept a silent no-op run."
+################################################################
+# SECCIÓN B — tools/run_tests.sh (Git Bash) — NUEVA en ronda 3 (m-2.5)
+# Captura inicio (UTC): 2026-09-09 14:38:57
+# NOTA: la salida del runner conserva los códigos de color ANSI
+# (run_tests.sh no los filtra). Es la salida real.
+################################################################
+
+$ bash tools/run_tests.sh
+
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+GODOT_BIN resolved to OS default
+Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/7: Clean reports directory ===
+Deleted previous reports: /c/Users/Leo/Documents/RutaFragil/reports
+Reports directory ready: /c/Users/Leo/Documents/RutaFragil/reports (with .gdignore)
+
+=== Step 3/7: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[38;2;218;165;32mIt was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed![0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[38;2;218;165;32mIt was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed![0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+import pass 2 exit code: 0
+Class cache verified: /c/Users/Leo/Documents/RutaFragil/.godot/global_script_class_cache.cfg
+
+=== Step 4/7: Run gdUnit4 test suites ===
+Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path /c/Users/Leo/Documents/RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[2J[H[38;2;233;150;122m
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------[0m
+[38;2;0;191;255mDisabled fail fast![0m
+[38;2;0;191;255mSet write reports to C:/Users/Leo/Documents/RutaFragil/reports[0m
+[38;2;218;165;32m
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+[0m
+Scanning for test suites in: res://tests
+[38;2;255;255;0mNo test cases found, abort test run![0m
+[38;2;233;150;122mExit code: 0[0m
+Run dispose test resources
+
+=== Step 5/7: gdUnit4 exit code ===
+gdUnit4 exit code 0: OK: all discovered tests passed
+
+=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
+WARNING: no results.xml found under /c/Users/Leo/Documents/RutaFragil/reports
+Discovered tests: 0 (minimum required: 3)
+
+=== Step 7/7: Final verdict ===
+FAILURE: gdUnit4 reported 'No test cases found, abort test run!' (exit 0, no report written). Refusing to accept a silent no-op run.
+
+$ echo $?
+1
+
+VERIFICADO (A y B): ambos arneses FALLAN con código 1 (distinto de 0). En ambas
+salidas el runner reportó "No test cases found, abort test run!" y "Exit code: 0"
+(gdUnit4 NO falla por sí solo), no escribió results.xml ("WARNING: no results.xml
+found"), "Discovered tests: 0", y el guardia respondió:
+  "FAILURE: gdUnit4 reported 'No test cases found, abort test run!' (exit 0, no report written). Refusing to accept a silent no-op run."
 
 ################################################################
-# RESTAURACION — smoke_test.gd + .uid devueltos a tests/ y
-# corrida final del arnés para verificar que todo vuelve a verde
-# Captura inicio (UTC): 2026-09-08 15:26:06
+# RESTAURACIÓN — smoke_test.gd + .uid devueltos a tests/ y corrida
+# final del arnés para verificar que todo vuelve a verde
+# Captura inicio (UTC): 2026-09-09 14:39:14
 ################################################################
 
 $ ls tests/
@@ -122,6 +220,7 @@ smoke_test.gd
 smoke_test.gd.uid
 
 $ powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
+
 
 === Step 1/7: Resolve Godot binary and verify version ===
 GODOT_BIN resolved to OS default
@@ -136,18 +235,18 @@ Reports directory ready: C:\Users\Leo\Documents\RutaFragil\reports (with .gdigno
 --- import pass 1/2 ---
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-[   0% ] first_scan_filesystem | Started Inicializaci��n del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
 [   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
 [  16% ] first_scan_filesystem | Cargando nombres de clases globales...
 [  33% ] first_scan_filesystem | Verificando GDExtensions...
-[  50% ] first_scan_filesystem | Creando scripts de carga automǭtica...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
 [  66% ] first_scan_filesystem | Inicializando plugins...
 It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
 [  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
 [ DONE ] first_scan_filesystem
 
 [   0% ] loading_editor_layout | Started Cargando editor (5 steps)
-[   0% ] loading_editor_layout | Cargando dise��o del editor...
+[   0% ] loading_editor_layout | Cargando diseño del editor...
 [  16% ] loading_editor_layout | Cargando docks...
 [ DONE ] loading_editor_layout
 
@@ -156,24 +255,24 @@ import pass 1 exit code: 0
 --- import pass 2/2 ---
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
-[   0% ] first_scan_filesystem | Started Inicializaci��n del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
 [   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
 [  16% ] first_scan_filesystem | Cargando nombres de clases globales...
 [  33% ] first_scan_filesystem | Verificando GDExtensions...
-[  50% ] first_scan_filesystem | Creando scripts de carga automǭtica...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
 [  66% ] first_scan_filesystem | Inicializando plugins...
 It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
 [  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
 [ DONE ] first_scan_filesystem
 
 [   0% ] loading_editor_layout | Started Cargando editor (5 steps)
-[   0% ] loading_editor_layout | Cargando dise��o del editor...
+[   0% ] loading_editor_layout | Cargando diseño del editor...
 [  16% ] loading_editor_layout | Cargando docks...
 [ DONE ] loading_editor_layout
 
 
 import pass 2 exit code: 0
-Class cache found: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
+Class cache verified: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
 
 === Step 4/7: Run gdUnit4 test suites ===
 Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path C:\Users\Leo\Documents\RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
@@ -201,18 +300,18 @@ Run Test Suite: res://tests/smoke_test.gd
   res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 4ms
 
   res://tests/smoke_test.gd > test_physics_engine_is_jolt STARTED
-  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 4ms
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 3ms
 
   res://tests/smoke_test.gd > test_rendering_method_is_forward_plus STARTED
   res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 4ms
 
-Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 27ms
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 24ms
 
 
 Overall Summary: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
 Executed test suites: (1/1)
 Executed test cases : (3/3)
-Total execution time: 27ms
+Total execution time: 24ms
  Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
 Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html
 Exit code: 0
@@ -231,3 +330,10 @@ SUCCESS: all tests passed and 3 tests were discovered.
 
 $ echo $?
 0
+
+$ git status --short -- tests/
+gs-exit=0
+(salida vacía salvo el "gs-exit=0" de control: tests/ quedó idéntico al índice —
+sin modificados ni temporales sin versionar; el volcado completo de
+git status --short de todo el repo está en la sección ACTUALIZACIÓN RONDA 3
+de la evidencia 07_git.txt)

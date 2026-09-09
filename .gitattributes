@@ -31,6 +31,9 @@
 *.ttf     filter=lfs diff=lfs merge=lfs -text
 *.otf     filter=lfs diff=lfs merge=lfs -text
 *.ico     filter=lfs diff=lfs merge=lfs -text
+# *.scn / *.res (binarios de Godot): R14 los prohíbe en el proyecto — escenas y
+# recursos van siempre en texto (.tscn/.tres). Estas líneas LFS son solo una red
+# de seguridad por si un archivo así entra al índice por error (revisión 01, notas).
 *.scn     filter=lfs diff=lfs merge=lfs -text
 *.res     filter=lfs diff=lfs merge=lfs -text
 *.lmbake  filter=lfs diff=lfs merge=lfs -text

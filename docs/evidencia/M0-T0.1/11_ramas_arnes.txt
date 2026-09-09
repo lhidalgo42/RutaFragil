@@ -1,12 +1,26 @@
-=== Evidencia 03_run_tests_pass.txt — M0-T0.1 (ronda 3, recaptura con codificación UTF-8 corregida, m-2.1) ===
+=== Evidencia 11_ramas_arnes.txt — M0-T0.1 (NUEVA, ronda 3, m-2.6) ===
 Máquina: Windows (Git Bash + PowerShell 5.1), repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
-Comandos: (A) powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1 ; (B) bash tools/run_tests.sh
-Ambas secciones recapturadas hoy; la ronda 2 quedó con mojibake por la re-impresión OEM de PS 5.1 (corregido en el arnés).
+Fecha de captura (UTC): 2026-09-09 14:40:52 y siguientes (cada sección lleva su timestamp)
+Comandos: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1 y bash tools/run_tests.sh en tres escenarios
+Ejercita tres ramas del arnés: (a) guardia de mínimo 3 tests descubiertos,
+(b) tools/godot_bin.local con BOM UTF-8 + comillas, (c) abort por versión del motor.
 
 ################################################################
-# SECCIÓN A — tools/run_tests.ps1 (PowerShell)
-# Captura inicio (UTC): 2026-09-09 14:20:17
+# RAMA (a) — guardia numérico: UN solo test descubierto (< 3)
+# Setup: smoke_test.gd + .uid movidos fuera (a /tmp/m0r3/stash10/) y un
+# test trivial tipado temporal en tests/tmp_single_test.gd. Esperado: el
+# test PASA (gdUnit4 exit 0) pero el arnés FALLA por el guardia ">= 3".
+# Captura inicio (UTC): 2026-09-09 14:40:52
 ################################################################
+
+--- Contenido exacto de tests/tmp_single_test.gd ---
+extends GdUnitTestSuite
+
+
+func test_single_for_evidence_11a() -> void:
+	var one: int = 1
+	assert_int(one).is_equal(1)
+------------------------------------------------------
 
 $ powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
 
@@ -84,23 +98,17 @@ Scanning for test suites in: res://tests
 Installing GdUnit4 session system hooks.
 Session hook 'GdUnitHtmlTestReporter' installed.
 Session hook 'GdUnitXMLTestReporter' installed.
-Run Test Suite: res://tests/smoke_test.gd
-  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 STARTED
-  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 5ms
+Run Test Suite: res://tests/tmp_single_test.gd
+  res://tests/tmp_single_test.gd > test_single_for_evidence_11a STARTED
+  res://tests/tmp_single_test.gd > test_single_for_evidence_11a PASSED 6ms
 
-  res://tests/smoke_test.gd > test_physics_engine_is_jolt STARTED
-  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 5ms
-
-  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus STARTED
-  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 4ms
-
-Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 29ms
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 14ms
 
 
-Overall Summary: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Overall Summary: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
 Executed test suites: (1/1)
-Executed test cases : (3/3)
-Total execution time: 29ms
+Executed test cases : (1/1)
+Total execution time: 14ms
  Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
 Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html
 Exit code: 0
@@ -112,26 +120,44 @@ gdUnit4 exit code 0: OK: all discovered tests passed
 
 === Step 6/7: Verify discovered test count in the fresh JUnit report ===
 JUnit report: C:\Users\Leo\Documents\RutaFragil\reports\report_1\results.xml
-Discovered tests: 3 (minimum required: 3)
+Discovered tests: 1 (minimum required: 3)
 
 === Step 7/7: Final verdict ===
-SUCCESS: all tests passed and 3 tests were discovered.
+FAILURE: only 1 tests discovered (< 3). gdUnit4 exits 0 even when it discovers nothing; refusing to accept a silent no-op run.
 
 $ echo $?
-0
+1
+
+VERIFICADO (a): el test pasó ("test_single_for_evidence_11a PASSED",
+"gdUnit4 exit code 0: OK") y aun así el arnés FALLÓ con código 1:
+  "Discovered tests: 1 (minimum required: 3)"
+  "FAILURE: only 1 tests discovered (< 3). gdUnit4 exits 0 even when it discovers nothing; refusing to accept a silent no-op run."
+Restauración inmediata tras la corrida: tmp_single_test.gd (+ .uid) borrado,
+smoke_test.gd + .uid devueltos a tests/. Estado final:
+
+$ ls tests/
+smoke_test.gd
+smoke_test.gd.uid
 
 ################################################################
-# SECCIÓN B — tools/run_tests.sh (Git Bash)
-# Captura inicio (UTC): 2026-09-09 14:20:52
-# NOTA: la salida del runner conserva los códigos de color ANSI
-# (run_tests.sh no los filtra; run_tests.ps1 sí). Es la salida real.
+# RAMA (b) — tools/godot_bin.local con BOM UTF-8 + comillas dobles
+# (ambos scripts). El archivo se escribió con bytes exactos:
+#   EF BB BF '"' 'C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe' '"' CR LF
+# Esperado: ambos arneses leen la ruta (toleran BOM y comillas) y corren verde.
 ################################################################
+
+$ xxd tools/godot_bin.local
+00000000: efbb bf22 433a 5c47 6f64 6f74 5c34 2e37  ..."C:\Godot\4.7
+00000010: 2e32 5c47 6f64 6f74 5f76 342e 372e 322d  .2\Godot_v4.7.2-
+00000020: 7374 6162 6c65 5f77 696e 3634 5f63 6f6e  stable_win64_con
+00000030: 736f 6c65 2e65 7865 220d 0a              sole.exe"..
+--- Corrida bash (Captura inicio UTC: 2026-09-09 14:43:29) ---
 
 $ bash tools/run_tests.sh
 
 
 === Step 1/7: Resolve Godot binary and verify version ===
-GODOT_BIN resolved to OS default
+GODOT_BIN read from tools/godot_bin.local
 Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
 godot --version: 4.7.2.stable.official.ed1daf0bf
 
@@ -203,21 +229,21 @@ Scanning for test suites in: res://tests
 [38;2;100;149;237mSession hook 'GdUnitXMLTestReporter' installed.[0m
 [38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/smoke_test.gd[0m
   [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
-  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 94ms[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 80ms[0m
 [38;2;128;128;128m[0m
   [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
-  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 93ms[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 77ms[0m
 [38;2;128;128;128m[0m
   [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
-  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 92ms[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 93ms[0m
 [38;2;128;128;128m[0m
-[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 696ms[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 653ms[0m
 [38;2;128;128;128m[0m
 [38;2;128;128;128m[0m
 [38;2;30;144;255mOverall Summary:[0m[38;2;255;255;255m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m
 [38;2;233;150;122mExecuted test suites: (1/1)[0m
 [38;2;233;150;122mExecuted test cases : (3/3)[0m
-[38;2;233;150;122mTotal execution time: 696ms[0m
+[38;2;233;150;122mTotal execution time: 653ms[0m
 [38;2;255;255;255m [0m[38;2;100;149;237mOpen XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml[0m
 [38;2;100;149;237mOpen HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html[0m
 [38;2;233;150;122mExit code: 0[0m
@@ -235,3 +261,155 @@ SUCCESS: all tests passed and 3 tests were discovered.
 
 $ echo $?
 0
+
+--- Corrida PowerShell (Captura inicio UTC: 2026-09-09 14:43:49) ---
+
+$ powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
+
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+GODOT_BIN read from tools\godot_bin.local
+Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/7: Clean reports directory ===
+Deleted previous reports: C:\Users\Leo\Documents\RutaFragil\reports
+Reports directory ready: C:\Users\Leo\Documents\RutaFragil\reports (with .gdignore)
+
+=== Step 3/7: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando diseño del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[ DONE ] loading_editor_layout
+
+
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando diseño del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[ DONE ] loading_editor_layout
+
+
+import pass 2 exit code: 0
+Class cache verified: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
+
+=== Step 4/7: Run gdUnit4 test suites ===
+Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path C:\Users\Leo\Documents\RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Scanning for test suites in: res://tests
+Installing GdUnit4 session system hooks.
+Session hook 'GdUnitHtmlTestReporter' installed.
+Session hook 'GdUnitXMLTestReporter' installed.
+Run Test Suite: res://tests/smoke_test.gd
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 STARTED
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 4ms
+
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt STARTED
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 4ms
+
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus STARTED
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 3ms
+
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 26ms
+
+
+Overall Summary: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (1/1)
+Executed test cases : (3/3)
+Total execution time: 26ms
+ Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
+Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html
+Exit code: 0
+Run dispose test resources
+
+
+=== Step 5/7: gdUnit4 exit code ===
+gdUnit4 exit code 0: OK: all discovered tests passed
+
+=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
+JUnit report: C:\Users\Leo\Documents\RutaFragil\reports\report_1\results.xml
+Discovered tests: 3 (minimum required: 3)
+
+=== Step 7/7: Final verdict ===
+SUCCESS: all tests passed and 3 tests were discovered.
+
+$ echo $?
+0
+
+VERIFICADO (b): ambos arneses resolvieron el binario desde tools/godot_bin.local
+("GODOT_BIN read from tools/godot_bin.local", ruta correcta sin BOM ni comillas
+en la línea "Godot binary:") y terminaron en verde (exit 0, 3 tests).
+tools/godot_bin.local se BORRÓ al terminar (está en .gitignore, no debe quedar
+en el árbol):
+
+$ grep -n "godot_bin.local" .gitignore
+21:tools/godot_bin.local
+$ ls -a tools/   # tras el borrado (sin godot_bin.local; se omiten . y ..)
+.gdignore
+run_tests.ps1
+run_tests.sh
+
+################################################################
+# RAMA (c) — abort por versión del motor: NO EJERCITABLE en esta máquina
+################################################################
+El guardia exige que `godot --version` empiece por "4.7.2.stable" y aborta con
+código 1 en caso contrario ("Engine version must start with '4.7.2.stable'...").
+Para ejercitarlo haría falta un ejecutable de Godot de OTRA versión y correr
+`GODOT_BIN=<ese> tools/run_tests.*`. En esta máquina NO existe otro ejecutable
+de Godot (búsqueda real abajo): solo la 4.7.2 pineada. Por tanto esta rama queda
+DECLARADA sin ejercitar (también registrado en 09_no_verificado.txt).
+
+$ where godot
+INFORMACIÓN: no se pudo encontrar ningún archivo para los patrones dados.
+exit: 1
+
+$ ls /c/Godot/
+4.7.2
+
+$ ls /c/Godot/*/
+Godot_v4.7.2-stable_win64.exe
+Godot_v4.7.2-stable_win64_console.exe
+
+$ ls ~/Downloads | grep -i godot
+Godot_v4.7.2-stable_win64.exe.zip
+(solo el zip del instalador 4.7.2; no hay otro ejecutable en la máquina)

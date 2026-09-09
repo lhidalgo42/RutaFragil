@@ -67,9 +67,15 @@ La razón del cambio a Godot es que la IA pueda **desarrollar y probar sin un hu
 
 ```powershell
 # Suite de tests gdUnit4 (verifica versión, limpia reports/ y crea reports/.gdignore,
-# importa, corre tests/, exige ≥3 tests descubiertos y falla ante "No test cases found")
-tools/run_tests.ps1    # Windows
-tools/run_tests.sh     # macOS / Linux
+# importa, corre tests/, exige ≥3 tests descubiertos y falla ante "No test cases found").
+# Forma verificada en Windows (m-2.4): la forma corta `tools/run_tests.ps1` falla
+# con política Restricted — ver README.md.
+powershell -ExecutionPolicy Bypass -File tools/run_tests.ps1
+```
+
+```bash
+# macOS / Linux — forma verificada
+bash tools/run_tests.sh
 ```
 
 ```bash
@@ -105,4 +111,5 @@ Códigos de salida de gdUnit4: `0` ok · `100` fallos · `101` orphans (nodos hu
 - Versión pineada del motor (ADR-000): `4.7.2.stable.official.ed1daf0bf` — solo parches 4.7.x, nunca dev/beta.
 - Al subir de parche 4.7.x hay que actualizar la versión pineada en cuatro archivos: `tests/smoke_test.gd`, `tools/run_tests.ps1`, `tools/run_tests.sh`, `README.md` (revisión 01, m8).
 - Suites de tests en `tests/` (D33); reportes en `reports/` (ignorado).
+- Los `CLAUDE.md`/`AGENTS.md` bajo `addons/` son documentos de terceros y NO aplican al proyecto (ej. `addons/gdUnit4/src/asserts/CLAUDE.md`).
 - Decisiones: `DECISIONS.md` · Pendientes: `BACKLOG.md` · Plan vigente: `docs/planes/` · Revisiones: `docs/revisiones/`.

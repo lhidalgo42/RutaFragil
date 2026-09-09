@@ -86,3 +86,19 @@ Nota: 'limpio' en este punto significa SIN MODIFICACIONES respecto al estado ace
 las entradas '??' son los archivos del proyecto aun sin versionar que entran en el commit
 del paso 8/12 de esta misma tarea (addons/, project.godot, icon.svg, tests/, tools/, etc.).
 'icon.svg.import' aparece: generado por --import; se versiona en el paso 8 (D-plan, sidecars).
+
+------------------------------------------------------------------------
+Nota añadida en ronda 3 (2026-09-09): El diff original comparó contra una copia
+en `/tmp/project.godot.pre_editor` no conservada (irreproducible); la
+idempotencia posterior está probada por `git status` limpio tras arranques con
+ventana (evidencia 07 y reproducción del revisor en la revisión 01).
+
+Aclaración de hecho (ronda 3): esa copia de /tmp RESULTA existir todavía en esta
+máquina (/tmp es el %TEMP% de Git Bash; ver salida real abajo), pero es efímera,
+está fuera del repo y no forma parte de la evidencia versionada, así que el diff
+sigue siendo irreproducible desde la evidencia sola. Si alguien quiere
+revalidarlo hoy, el archivo está ahí; mañana puede no estar.
+
+$ ls -la /tmp/project.godot.pre_editor /tmp/project.godot.post_editor1
+-rw-r--r-- 1 Leo 197121 978 Sep  8 09:52 /tmp/project.godot.post_editor1
+-rw-r--r-- 1 Leo 197121 770 Sep  8 09:52 /tmp/project.godot.pre_editor

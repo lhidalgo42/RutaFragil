@@ -11,7 +11,12 @@
 #      previous run would fool the >=3 test guard into accepting a no-op run;
 #      and without .gdignore Godot imports the report HTML PNGs on every
 #      --import pass.
-#   3. Run a headless import TWICE and verify the global script class cache.
+#   3. Run a headless import TWICE and strongly verify the global script
+#      class cache: it must exist, be non-empty and contain the gdUnit4
+#      runner/suite class entries (an empty cache once passed the old bare
+#      existence check and the runner then died with 'Could not find type
+#      "GdUnitTestCIRunner"'). If the check fails, run ONE extra import
+#      pass, re-verify, then fail pointing at the cache file.
 #      A non-zero import exit code is logged as a finding (with its exact
 #      output), not trusted as a failure: in 4.7 the shutdown with editor
 #      plugins enabled can return != 0 although the import completed
@@ -27,7 +32,9 @@
 #   7. Exit 0 only if every step passed.
 #
 # Exit codes: 0 = success; 1 = harness/infrastructure failure; otherwise the
-# gdUnit4 runner exit code is propagated (100, 101, 103, 104, 105, ...).
+# gdUnit4 runner exit code is propagated RAW: mapped codes (100, 101, 103,
+# 104, 105) and unmapped ones alike (e.g. 444, 134) pass through unchanged,
+# never normalized to 1.
 
 exit_infra_failure=1
 
@@ -38,6 +45,16 @@ log_step() {
 fail() {
     printf 'ERROR: %s\n' "$1" >&2
     exit "$exit_infra_failure"
+}
+
+# Strong check: the file must exist, be non-empty and contain the gdUnit4
+# runner/suite class entries. A bare existence check once passed an EMPTY
+# cache and the runner then died with 'Could not find type
+# "GdUnitTestCIRunner"'. No line counting: it changes when test/ goes.
+class_cache_ok() {
+    [ -f "$cache_file" ] && [ -s "$cache_file" ] \
+        && grep -qF '"class": &"GdUnitTestCIRunner"' "$cache_file" \
+        && grep -qF '"class": &"GdUnitTestSuite"' "$cache_file"
 }
 
 # --- Locate the repo root (parent of tools/) ----------------------------------
@@ -55,7 +72,12 @@ if [ -z "$godot_bin" ]; then
     if [ -f "$godot_bin_file" ]; then
         # Tolerate an empty file, a UTF-8 BOM, surrounding quotes, stray
         # whitespace and CRLF; fall through to the OS default on any of them.
-        godot_bin="$(head -n 1 "$godot_bin_file" | tr -d '\r\n' | sed 's/^\xEF\xBB\xBF//' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | sed "s/^[\"']//; s/[\"']\$//")"
+        # The BOM strip is POSIX (printf octal + prefix removal): GNU sed's
+        # \xHH escapes are not understood by the BSD sed on macOS (m-2.3).
+        godot_bin="$(head -n 1 "$godot_bin_file" | tr -d '\r\n')"
+        bom="$(printf '\357\273\277')"
+        godot_bin="${godot_bin#"$bom"}"
+        godot_bin="$(printf '%s' "$godot_bin" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^[\"']//; s/[\"']\$//")"
         if [ -n "$godot_bin" ]; then
             printf 'GODOT_BIN read from tools/godot_bin.local\n'
         fi
@@ -99,6 +121,11 @@ log_step "Step 2/7: Clean reports directory"
 if [ -d "$reports_dir" ]; then
     rm -rf "$reports_dir"
     printf 'Deleted previous reports: %s\n' "$reports_dir"
+    # rm -rf does not stop on a locked file; the >=3 test guard below needs a
+    # guaranteed fresh report, so a surviving directory is fatal.
+    if [ -d "$reports_dir" ]; then
+        fail "Could not delete reports directory: $reports_dir (a locked file?). Delete it manually and re-run."
+    fi
 fi
 mkdir -p "$reports_dir"
 # Without this marker Godot scans and imports reports/ (report HTML PNGs) on
@@ -108,7 +135,7 @@ if [ ! -f "$reports_dir/.gdignore" ]; then
 fi
 printf 'Reports directory ready: %s (with .gdignore)\n' "$reports_dir"
 
-# --- Step 3: headless import, two passes --------------------------------------
+# --- Step 3: headless import, two passes (plus one retry) ---------------------
 log_step "Step 3/7: Headless import (two passes)"
 
 for import_pass in 1 2; do
@@ -118,14 +145,21 @@ for import_pass in 1 2; do
     printf '%s\n' "$import_output"
     printf 'import pass %d exit code: %d\n' "$import_pass" "$import_exit_code"
     if [ "$import_exit_code" -ne 0 ]; then
-        printf 'FINDING: import pass %d exited with code %d (exact output above). Continuing: the class cache check below is the source of truth.\n' "$import_pass" "$import_exit_code"
+        printf 'FINDING: import pass %d exited with code %d (exact output above). Continuing: the strong class cache content check below is the source of truth.\n' "$import_pass" "$import_exit_code"
     fi
 done
 
-if [ ! -f "$cache_file" ]; then
-    fail "Class cache missing after two import passes: $cache_file (gdUnit4 discovery would find no suites)."
+if ! class_cache_ok; then
+    printf 'Class cache check failed after two import passes; running one more import pass.\n'
+    retry_output="$("$godot_bin" --headless --path "$repo_root" --import 2>&1)"
+    retry_exit_code=$?
+    printf '%s\n' "$retry_output"
+    printf 'import pass 3 exit code: %d\n' "$retry_exit_code"
+    if ! class_cache_ok; then
+        fail "Class cache invalid after three import passes: $cache_file (it must exist, be non-empty and contain the GdUnitTestCIRunner/GdUnitTestSuite class entries; gdUnit4 discovery would find no suites)."
+    fi
 fi
-printf 'Class cache found: %s\n' "$cache_file"
+printf 'Class cache verified: %s\n' "$cache_file"
 
 # --- Step 4: run gdUnit4 against res://tests ----------------------------------
 log_step "Step 4/7: Run gdUnit4 test suites"

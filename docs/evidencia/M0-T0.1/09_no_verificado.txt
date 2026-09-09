@@ -1,41 +1,52 @@
-=== Evidencia 09_no_verificado.txt — M0-T0.1 (NUEVA, ronda 2) ===
-Maquina: Windows, repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
-Fecha de captura (UTC): 2026-09-08 15:26 UTC
-Sin comandos: este archivo es la lista explicita de criterios NO verificados que exige R7
+=== Evidencia 09_no_verificado.txt — M0-T0.1 (ronda 3, actualizada) ===
+Máquina: Windows, repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
+Fecha de captura (UTC): 2026-09-09 14:47 UTC
+Sin comandos: este archivo es la lista explícita de criterios NO verificados que exige R7
 (“si un criterio no se puede probar desde CLI/editor, decirlo; nunca marcarlo”)
-y el hallazgo M4 de la revision 01.
+y el hallazgo M4 de la revisión 01.
 
-CRITERIOS NO VERIFICADOS EN ESTA RONDA:
+Cerrado en ronda 3 (ya no figuran como pendientes): el borrado de
+addons/gdUnit4/test/ se ejecutó (R12=SÍ del dueño) y está escenado en el índice;
+la sección bash del guardia "0 tests" se añadió a la evidencia 10 (m-2.5); la
+tolerancia de tools/godot_bin.local a BOM UTF-8 + comillas se ejercitó en la
+evidencia 11, rama (b), con ambos arneses en verde.
+
+CRITERIOS NO VERIFICADOS TRAS ESTA RONDA:
 
 1. run_tests.sh en la Mac con hash ed1daf0bf.
    Lo ejecuta el dueño (plan §6, checklist §8 “Solo el dueño”). No verificable desde
-   esta maquina Windows. El criterio de aceptacion “run_tests pasa en ambas maquinas”
+   esta máquina Windows. El criterio de aceptación “run_tests pasa en ambas máquinas”
    queda pendiente de esa corrida.
 
 2. Remoto Git + LFS + primer push.
-   Lo hace el dueño. Nota de la revision 01: ya existen 13 punteros LFS (10 objetos
-   unicos) por los PNG del addon; el remoto debe tener LFS habilitado antes del
-   primer push (GitHub Free: 10 GiB almacenamiento, 10 GiB/mes de ancho de banda,
-   objetos LFS permanentes).
+   Lo hace el dueño. Ya existen punteros LFS por los PNG del addon (9 con "*"
+   más los 4 con "-" que desaparecen con el borrado escenado de test/, ver la
+   sección ACTUALIZACIÓN RONDA 3 de 07_git.txt); el remoto debe tener LFS
+   habilitado antes del primer push (GitHub Free: 10 GiB almacenamiento,
+   10 GiB/mes de ancho de banda, objetos LFS permanentes).
 
 3. Carga del plugin gdUnit4 en el editor con ventana (dock visible).
    No verificable desde CLI/headless: el plugin se autodesactiva al detectar el
    entorno de tests (“It was recognized that GdUnit4 is running in a test
    environment, therefore the GdUnit4 plugin will not be executed!”) y el dock
-   solo existe en una sesion grafica. El paso 7 (normalizacion con ventana) abrio
-   el editor, pero nadie inspecciono visualmente el dock. Requiere humano.
+   solo existe en una sesión gráfica. El paso 7 (normalización con ventana) abrió
+   el editor, pero nadie inspeccionó visualmente el dock. Requiere humano.
 
-4. El borrado de addons/gdUnit4/test/ NO se hizo.
-   Bloqueado: pendiente de la confirmacion R12 del dueño (edicion destructiva;
-   el campo del prompt de ronda 2 quedo sin rellenar con un SI). En consecuencia
-   los hallazgos M2 (test/ vendorizado, 559 archivos, 154 class_name globales,
-   .scn binario) y M3 (la “excepcion R14” de simple_scene.scn) de la revision 01
-   quedan ABIERTOS, y la evidencia 08_gdunit4_pin.txt NO se actualizo (sigue
-   describiendo el arbol CON test/).
+4. Abort por versión del motor (guardia "4.7.2.stable" del arnés).
+   NO ejercitable en esta máquina: no existe ningún ejecutable de Godot distinto
+   de la 4.7.2 pineada (búsqueda real volcada en la evidencia 11, rama (c):
+   `where godot` sin resultados, C:\Godot\ contiene solo 4.7.2, en Downloads solo
+   el zip del instalador 4.7.2). Haría falta otra versión instalada para correr
+   `GODOT_BIN=<esa> tools/run_tests.*` y capturar el abort. Ítem m-2.6 declarado
+   sin ejercitar.
 
-5. Comportamiento del guardia “0 tests” en la Mac.
-   La evidencia 10 solo cubre Windows/PowerShell; la forma bash del guardia se
-   ejercito con tests verdes (evidencia 03, seccion B) pero no con tests/ vacio.
+5. La comparación original de la evidencia 06 contra /tmp no es reproducible.
+   El diff del arranque 1 comparó contra una copia previa en
+   /tmp/project.godot.pre_editor que no forma parte de la evidencia versionada;
+   declarado en la nota añadida al final de 06_editor_normalize.diff en esta
+   ronda (la copia efímera existe aún en esta máquina, pero fuera del repo).
+   La idempotencia posterior sí está probada (git status limpio tras arranques
+   con ventana, evidencia 07 y reproducción del revisor en la revisión 01).
 
 6. Game feel / nada perceptible.
    Fuera del alcance de T0.1 y de cualquier prueba headless (§0.8 del maestro).

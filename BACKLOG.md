@@ -5,10 +5,10 @@ Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código
 ## Milestones (Parte 3 del maestro)
 
 - **M0 — Fundaciones**
-  - **T0.1** Fundaciones: proyecto Godot 4.7.2, Forward+, Jolt, estructura §20, Git+LFS, `AGENTS.md`, gdUnit4 corriendo headless con un test trivial, puente MCP elegido y documentado. Acepta: `run_tests` pasa en ambas máquinas; commit inicial.
-  - **T0.2** GameConfig / TuningTable
-  - **T0.3** Playground
-  - **T0.4** Arnés de red
+  - **T0.1** Proyecto Godot 4.7.2, Forward+, Jolt, estructura §20, Git+LFS, `AGENTS.md`, gdUnit4 corriendo headless con un test trivial, puente MCP elegido y documentado. ✅ *Acepta:* `run_tests` pasa en ambas máquinas; commit inicial.
+  - **T0.2** `GameConfig` + `TuningTable` (Resources + JSON) con loader que fusiona `user://mods/`. ✅ *Acepta:* cambiar un JSON sin reabrir el editor altera el juego; un JSON en mods sobreescribe base; test cubre la fusión.
+  - **T0.3** Escena `Playground` (plano, rampas, baches, agua) + modo demo automático (§21). ✅ *Acepta:* existe, carga, el bus placeholder recorre el circuito solo.
+  - **T0.4** Arnés de pruebas de red multi-instancia (§0.8): script que lanza 1 host + N clientes headless sobre ENet en la misma máquina, ejecuta un guion (spawn, agarrar, amarrar, conducir el circuito automático) y afirma convergencia de estado; integrado en `run_tests`. ✅ *Acepta:* 1 host + 3 clientes headless completan el guion y los asserts pasan en ambas máquinas; el arnés queda como herramienta permanente y es prerrequisito del gate M4.
 - **M1 — Bus y conducción (single, local)**
   - **T1.1** ADR-007: bus con suspensión por raycast, cámara conductor + exterior (§9.1). ✅ *Gate humano de feel (3 min).*
   - **T1.2** Recursos Combustible/Integridad/Desgaste; motor muere en 0; empuje. Bidón como prop físico con `fuel_liters`; toma exterior con vertido de 8 s y derrame en marcha. ✅ *Acepta:* tablero placeholder muestra valores; tests de drenaje, vertido y derrame; el bidón se cae si no está amarrado.
@@ -60,13 +60,14 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 
 ## Pendientes propios de la ejecución de M0-T0.1 (M5 de la revisión 01)
 
-- **Borrado de `addons/gdUnit4/test/`** (M2/M3 de la revisión 01): 559 archivos vendorizados de la suite de auto-tests de gdUnit4 (154 `class_name` globales, un `.scn` binario, C# en el árbol) que la distribución oficial excluye. **BLOQUEADO: requiere el "sí" del dueño (R12).** Al ejecutarlo: `--import` ×2, `run_tests`, recontar `.uid`, actualizar D32, `CREDITS.md` y la evidencia 08; verificar que `global_script_class_cache.cfg` ya no lista `res://addons/gdUnit4/test/`.
-- **17 `.gd` de `addons/gdUnit4/test/` sin `.uid`** (ruido menor). Se vuelve irrelevante si el dueño confirma el borrado de `test/` (ítem anterior, bloqueado por R12).
 - **Corrección del plan/maestro por formato de versión:** `Engine.get_version_info()["string"]` devuelve `4.7.2-stable (official)` (guion y paréntesis); el formato con puntos (`4.7.2.stable`) es solo el de `godot --version`. Defecto del plan v1.0 nº 1, corregido en el plan v1.1; queda como referencia para cualquier documento que cite el formato.
 - **Al subir de parche 4.7.x** (ADR-000) hay que tocar cuatro archivos: `tests/smoke_test.gd`, `tools/run_tests.ps1`, `tools/run_tests.sh`, `README.md` (m8 de la revisión 01; la lista también está en `AGENTS.md` y en `README.md`).
-- **`--import` dejó una vez la caché global vacía** (observado en la ronda 2, captura de la evidencia 04): `.godot/global_script_class_cache.cfg` quedó con 0 líneas tras las dos pasadas del arnés y el runner falló con código 1 ("Could not find type GdUnitTestCIRunner"); un `--import` manual la regeneró (2801 líneas). Fallo transitorio de infraestructura, documentado en `docs/evidencia/M0-T0.1/04_run_tests_fail.txt` (anexo). Considerar en una tarea futura que el arnés verifique que la caché no está vacía, no solo que existe.
+- **Cierre de M0-T0.1 (solo el dueño, revisión 02 "Qué hace falta para cerrar"):** correr `bash tools/run_tests.sh` en la Mac con el mismo hash del arnés y crear el remoto con Git LFS + primer push.
 
-## Cerrados en la ronda 2 de M0-T0.1
+## Cerrados en las rondas 2 y 3 de M0-T0.1
 
+- **Borrado de `addons/gdUnit4/test/`** (M2/M3 de la revisión 01): ejecutado en la ronda 3 tras R12=SÍ (2026-09-08). 559 archivos eliminados con `git rm -r`; la caché global ya no lista `res://addons/gdUnit4/test/` (conteo 0) y no queda ningún `.scn` en el índice. Registrado en D32, `CREDITS.md` y la evidencia 08.
+- **17 `.gd` de `addons/gdUnit4/test/` sin `.uid`**: resuelto/irrelevante — esos archivos ya no existen en el árbol tras el borrado autorizado de `test/` (ronda 3).
 - **m1 RESUELTO por D40:** gdUnit4 headless corre sin `-d` ni `--remote-debug tcp://127.0.0.1:0`; desaparecen las dos líneas `ERROR` por el puerto 0 y los errores de script siguen saliendo con backtrace GDScript completo y código 105 (experimento del 2026-09-08).
 - **`reports/` reimportado por Godot en cada `--import`** (m2): resuelto — el arnés crea `reports/.gdignore` si no existe antes de correr.
+- **Caché global vacía tras `--import`** (transitorio observado en la ronda 2, anexo de la evidencia 04; causa no determinada): `.godot/global_script_class_cache.cfg` quedó una vez con 0 líneas tras las dos pasadas del arnés y el runner falló con código 1 ("Could not find type GdUnitTestCIRunner"); un `--import` manual la regeneró (2801 líneas). Resuelto en la ronda 3 (m-2.2): el arnés exige caché existente, no vacía y con `GdUnitTestCIRunner`/`GdUnitTestSuite`, con tercera pasada de `--import` antes de fallar.

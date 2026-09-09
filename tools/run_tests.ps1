@@ -12,7 +12,12 @@
          previous run would fool the >=3 test guard into accepting a no-op run;
          and without .gdignore Godot imports the report HTML PNGs on every
          --import pass.
-      3. Run a headless import TWICE and verify the global script class cache.
+      3. Run a headless import TWICE and strongly verify the global script
+         class cache: it must exist, be non-empty and contain the gdUnit4
+         runner/suite class entries (an empty cache once passed the old bare
+         existence check and the runner then died with 'Could not find type
+         "GdUnitTestCIRunner"'). If the check fails, run ONE extra import
+         pass, re-verify, then fail pointing at the cache file.
          A non-zero import exit code is logged as a finding (with its exact
          output), not trusted as a failure: in 4.7 the shutdown with editor
          plugins enabled can return != 0 although the import completed
@@ -30,11 +35,22 @@
     powershell -ExecutionPolicy Bypass -File tools\run_tests.ps1
 .NOTES
     Exit codes: 0 = success; 1 = harness/infrastructure failure; otherwise the
-    gdUnit4 runner exit code is propagated (100, 101, 103, 104, 105, ...).
+    gdUnit4 runner exit code is propagated RAW: mapped codes (100, 101, 103,
+    104, 105) and unmapped ones alike (e.g. 444, 134) pass through unchanged,
+    never normalized to 1.
 #>
 
 # PowerShell 5.1: never leave this at the user/profile default (m4).
 $ErrorActionPreference = "Continue"
+
+# Reprinted Godot output must stay valid UTF-8 in captured evidence (m-2.1):
+# PS 5.1 writes redirected output using the OEM console codepage (e.g. CP850),
+# which would re-corrupt the accents that the -Encoding UTF8 reads below just
+# decoded. Only touch the encoding when redirected, so an interactive console
+# keeps rendering with its own codepage.
+if ([Console]::IsOutputRedirected) {
+    [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+}
 
 $exit_infra_failure = 1
 
@@ -66,18 +82,40 @@ function invoke_process([string]$exe, [string[]]$arguments) {
     }) -join ' '
     try {
         $process = Start-Process -FilePath $exe -ArgumentList $argument_line -NoNewWindow -Wait -PassThru `
-            -RedirectStandardOutput $stdout_file -RedirectStandardError $stderr_file
-        $exit_code = $process.ExitCode
+            -RedirectStandardOutput $stdout_file -RedirectStandardError $stderr_file -ErrorAction Stop
+        # [int] cast: a null ExitCode would otherwise turn the caller's
+        # "exit $code" into a silent exit 0.
+        $exit_code = [int]$process.ExitCode
         $output = ""
-        $stdout_content = Get-Content $stdout_file -Raw -ErrorAction SilentlyContinue
-        $stderr_content = Get-Content $stderr_file -Raw -ErrorAction SilentlyContinue
+        # Godot writes UTF-8; without -Encoding, PS 5.1 decodes as Windows-1252
+        # and mangles non-ASCII characters (accents in paths, test names).
+        $stdout_content = Get-Content $stdout_file -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
+        $stderr_content = Get-Content $stderr_file -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
+        # stdout and stderr are concatenated without relative order.
         if ($null -ne $stdout_content) { $output += $stdout_content }
         if ($null -ne $stderr_content) { $output += $stderr_content }
         return @{ exit_code = $exit_code; output = $output }
     }
+    catch {
+        # A process that never started must fail here, not fall through with a
+        # null exit code that prints FAILURE and then exits 0.
+        fail "Could not start process '$exe' ($argument_line): $($_.Exception.Message)"
+    }
     finally {
         Remove-Item $stdout_file, $stderr_file -Force -ErrorAction SilentlyContinue
     }
+}
+
+function test_class_cache([string]$path) {
+    # Strong check: the file must exist, be non-empty and contain the gdUnit4
+    # runner/suite class entries. A bare existence check once passed an EMPTY
+    # cache and the runner then died with 'Could not find type
+    # "GdUnitTestCIRunner"'. No line counting: it changes when test/ goes.
+    if (-not (Test-Path $path)) { return $false }
+    if ((Get-Item $path).Length -eq 0) { return $false }
+    $has_runner = Select-String -Path $path -SimpleMatch '"class": &"GdUnitTestCIRunner"' -Quiet
+    $has_suite = Select-String -Path $path -SimpleMatch '"class": &"GdUnitTestSuite"' -Quiet
+    return ($has_runner -and $has_suite)
 }
 
 # --- Locate the repo root (parent of tools\) -----------------------------------
@@ -147,6 +185,11 @@ write_step "Step 2/7: Clean reports directory"
 if (Test-Path $reports_dir) {
     Remove-Item -Recurse -Force $reports_dir
     Write-Host "Deleted previous reports: $reports_dir"
+    # Remove-Item does not stop on a locked file; the >=3 test guard below
+    # needs a guaranteed fresh report, so a surviving directory is fatal.
+    if (Test-Path $reports_dir) {
+        fail "Could not delete reports directory: $reports_dir (a locked file?). Delete it manually and re-run."
+    }
 }
 New-Item -ItemType Directory -Force $reports_dir | Out-Null
 # Without this marker Godot scans and imports reports\ (report HTML PNGs) on
@@ -157,7 +200,7 @@ if (-not (Test-Path $reports_gdignore)) {
 }
 Write-Host "Reports directory ready: $reports_dir (with .gdignore)"
 
-# --- Step 3: headless import, two passes ---------------------------------------
+# --- Step 3: headless import, two passes (plus one retry) ----------------------
 write_step "Step 3/7: Headless import (two passes)"
 
 foreach ($import_pass in 1..2) {
@@ -166,14 +209,20 @@ foreach ($import_pass in 1..2) {
     Write-Host (strip_ansi $import_result.output)
     Write-Host "import pass $import_pass exit code: $($import_result.exit_code)"
     if ($import_result.exit_code -ne 0) {
-        Write-Host "FINDING: import pass $import_pass exited with code $($import_result.exit_code) (exact output above). Continuing: the class cache check below is the source of truth."
+        Write-Host "FINDING: import pass $import_pass exited with code $($import_result.exit_code) (exact output above). Continuing: the strong class cache content check below is the source of truth."
     }
 }
 
-if (-not (Test-Path $cache_file)) {
-    fail "Class cache missing after two import passes: $cache_file (gdUnit4 discovery would find no suites)."
+if (-not (test_class_cache $cache_file)) {
+    Write-Host "Class cache check failed after two import passes; running one more import pass."
+    $retry_result = invoke_process $godot_bin @("--headless", "--path", $repo_root, "--import")
+    Write-Host (strip_ansi $retry_result.output)
+    Write-Host "import pass 3 exit code: $($retry_result.exit_code)"
+    if (-not (test_class_cache $cache_file)) {
+        fail "Class cache invalid after three import passes: $cache_file (it must exist, be non-empty and contain the GdUnitTestCIRunner/GdUnitTestSuite class entries; gdUnit4 discovery would find no suites)."
+    }
 }
-Write-Host "Class cache found: $cache_file"
+Write-Host "Class cache verified: $cache_file"
 
 # --- Step 4: run gdUnit4 against res://tests -----------------------------------
 write_step "Step 4/7: Run gdUnit4 test suites"
@@ -216,7 +265,8 @@ if (-not [string]::IsNullOrWhiteSpace($results_xml)) {
     # Sum the "tests" attribute of every <testsuite> element.
     $junit_doc = $null
     try {
-        [xml]$junit_doc = Get-Content $results_xml -Raw
+        # gdUnit4 writes the JUnit XML as UTF-8 (m-2.1).
+        [xml]$junit_doc = Get-Content $results_xml -Raw -Encoding UTF8
     }
     catch {
         Write-Host "WARNING: could not parse '$results_xml' as XML: $($_.Exception.Message)"
