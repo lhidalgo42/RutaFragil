@@ -1,9 +1,10 @@
-=== Evidencia 11_ramas_arnes.txt — M0-T0.1 (NUEVA, ronda 3, m-2.6) ===
+=== Evidencia 11_ramas_arnes.txt — M0-T0.1 (ronda 3, m-2.6; ampliada en ronda 4: m-3.4, m-3.5 y notas) ===
 Máquina: Windows (Git Bash + PowerShell 5.1), repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
-Fecha de captura (UTC): 2026-09-09 14:40:52 y siguientes (cada sección lleva su timestamp)
-Comandos: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1 y bash tools/run_tests.sh en tres escenarios
-Ejercita tres ramas del arnés: (a) guardia de mínimo 3 tests descubiertos,
-(b) tools/godot_bin.local con BOM UTF-8 + comillas, (c) abort por versión del motor.
+Fecha de captura (UTC): ronda 3 el 2026-09-09 14:40:52 y siguientes; ronda 4 el 2026-09-09 18:36:09 a 18:39:05 (cada sección lleva su timestamp)
+Comandos: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1 y bash tools/run_tests.sh en cuatro escenarios
+Ejercita cuatro ramas del arnés: (a) guardia de mínimo 3 tests descubiertos (PowerShell en ronda 3; bash añadido en ronda 4),
+(b) tools/godot_bin.local con BOM UTF-8 + comillas (ambos), (c) abort por versión del motor (ambos, ejercitado en ronda 4),
+(d) proceso que no arranca: catch con GODOT_BIN existente pero no ejecutable (solo PowerShell, ronda 4).
 
 ################################################################
 # RAMA (a) — guardia numérico: UN solo test descubierto (< 3)
@@ -132,6 +133,137 @@ VERIFICADO (a): el test pasó ("test_single_for_evidence_11a PASSED",
 "gdUnit4 exit code 0: OK") y aun así el arnés FALLÓ con código 1:
   "Discovered tests: 1 (minimum required: 3)"
   "FAILURE: only 1 tests discovered (< 3). gdUnit4 exits 0 even when it discovers nothing; refusing to accept a silent no-op run."
+Restauración inmediata tras la corrida: tmp_single_test.gd (+ .uid) borrado,
+smoke_test.gd + .uid devueltos a tests/. Estado final:
+
+$ ls tests/
+smoke_test.gd
+smoke_test.gd.uid
+
+### Subsección bash — NUEVA ronda 4 (m-3.4); la subsección de arriba es la de PowerShell (ronda 3) ###
+# Setup: smoke_test.gd + .uid movidos fuera (a /tmp/m0r4/stash11a/) y un test
+# trivial tipado temporal en tests/tmp_single_test.gd. Esperado: el test PASA
+# (gdUnit4 exit 0) pero el arnés bash FALLA por el guardia ">= 3".
+# Captura inicio (UTC): 2026-09-09 18:36:09
+
+--- Contenido exacto de tests/tmp_single_test.gd ---
+extends GdUnitTestSuite
+
+
+func test_single_for_evidence_11a_bash() -> void:
+	var one: int = 1
+	assert_int(one).is_equal(1)
+------------------------------------------------------
+
+$ bash tools/run_tests.sh
+
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+GODOT_BIN resolved to OS default
+Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/7: Clean reports directory ===
+Deleted previous reports: /c/Users/Leo/Documents/RutaFragil/reports
+Reports directory ready: /c/Users/Leo/Documents/RutaFragil/reports (with .gdignore)
+
+=== Step 3/7: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[38;2;218;165;32mIt was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed![0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Inicialización del proyecto (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Escaneando la estructura del archivo...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Cargando nombres de clases globales...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verificando GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creando scripts de carga automática...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Inicializando plugins...[39m[0m
+[38;2;218;165;32mIt was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed![0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Iniciando escaneo de archivos...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Cargando editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Cargando diseño del editor...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Cargando docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+import pass 2 exit code: 0
+Class cache verified: /c/Users/Leo/Documents/RutaFragil/.godot/global_script_class_cache.cfg
+
+=== Step 4/7: Run gdUnit4 test suites ===
+Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path /c/Users/Leo/Documents/RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[2J[H[38;2;233;150;122m
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------[0m
+[38;2;0;191;255mDisabled fail fast![0m
+[38;2;0;191;255mSet write reports to C:/Users/Leo/Documents/RutaFragil/reports[0m
+[38;2;218;165;32m
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+[0m
+Scanning for test suites in: res://tests
+[38;2;100;149;237mInstalling GdUnit4 session system hooks.[0m
+[38;2;100;149;237mSession hook 'GdUnitHtmlTestReporter' installed.[0m
+[38;2;100;149;237mSession hook 'GdUnitXMLTestReporter' installed.[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/tmp_single_test.gd[0m
+  [38;2;250;235;215mres://tests/tmp_single_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_single_for_evidence_11a_bash[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/tmp_single_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_single_for_evidence_11a_bash[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 80ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 250ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mOverall Summary:[0m[38;2;255;255;255m 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m
+[38;2;233;150;122mExecuted test suites: (1/1)[0m
+[38;2;233;150;122mExecuted test cases : (1/1)[0m
+[38;2;233;150;122mTotal execution time: 250ms[0m
+[38;2;255;255;255m [0m[38;2;100;149;237mOpen XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml[0m
+[38;2;100;149;237mOpen HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html[0m
+[38;2;233;150;122mExit code: 0[0m
+Run dispose test resources
+
+=== Step 5/7: gdUnit4 exit code ===
+gdUnit4 exit code 0: OK: all discovered tests passed
+
+=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
+JUnit report: /c/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
+Discovered tests: 1 (minimum required: 3)
+
+=== Step 7/7: Final verdict ===
+FAILURE: only 1 tests discovered (< 3). gdUnit4 exits 0 even when it discovers nothing; refusing to accept a silent no-op run.
+
+$ echo $?
+1
+
+VERIFICADO (a, bash): el test pasó ("test_single_for_evidence_11a_bash PASSED",
+"gdUnit4 exit code 0: OK") y aun así el arnés bash FALLÓ con código 1:
+  "Discovered tests: 1 (minimum required: 3)"
+  "FAILURE: only 1 tests discovered (< 3). gdUnit4 exits 0 even when it discovers nothing; refusing to accept a silent no-op run."
+La implementación bash del guardia (grep -oE 'tests="[0-9]+"' + suma con awk)
+queda así ejercitada, no solo la de PowerShell (m-3.4 cerrado).
 Restauración inmediata tras la corrida: tmp_single_test.gd (+ .uid) borrado,
 smoke_test.gd + .uid devueltos a tests/. Estado final:
 
@@ -389,27 +521,91 @@ $ ls -a tools/   # tras el borrado (sin godot_bin.local; se omiten . y ..)
 run_tests.ps1
 run_tests.sh
 
+NOTA (ronda 4, percance con los escapes octales de printf): la primera tentativa
+de escribir tools/godot_bin.local para esta prueba puso la ruta en el FORMATO de
+printf (printf '...C:\Godot\4.7.2\...') y printf expandió el \4 de "C:\Godot\4.7.2"
+como escape octal, corrompiendo la ruta. El revisor tropezó con lo mismo al
+reproducir (revisión 03). Forma correcta: pasar la ruta como ARGUMENTO
+(printf '%s' 'C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe') o escribir
+los bytes literales; el archivo final de esta prueba se escribió con bytes
+exactos (volcado xxd de arriba).
+
 ################################################################
-# RAMA (c) — abort por versión del motor: NO EJERCITABLE en esta máquina
+# RAMA (c) — abort por versión del motor (ambos scripts) — EJERCITADA en ronda 4 (m-3.5)
 ################################################################
-El guardia exige que `godot --version` empiece por "4.7.2.stable" y aborta con
-código 1 en caso contrario ("Engine version must start with '4.7.2.stable'...").
-Para ejercitarlo haría falta un ejecutable de Godot de OTRA versión y correr
-`GODOT_BIN=<ese> tools/run_tests.*`. En esta máquina NO existe otro ejecutable
-de Godot (búsqueda real abajo): solo la 4.7.2 pineada. Por tanto esta rama queda
-DECLARADA sin ejercitar (también registrado en 09_no_verificado.txt).
+# Setup: GODOT_BIN apuntando a un ejecutable AJENO que sí existe:
+# C:\Windows\System32\cmd.exe. El guardia exige que la primera línea de
+# `--version` empiece por "4.7.2.stable"; cmd.exe ignora el flag, imprime el
+# banner de Windows y sale por EOF de stdin, así que ambos arneses abortan en
+# el paso 1 con código 1. Esto reemplaza la sección "NO EJERCITABLE en esta
+# máquina" de la ronda 3 (borrada): no hacía falta otra versión de Godot
+# instalada, basta un ejecutable ajeno (m-3.5). El antiguo ítem 4 de
+# 09_no_verificado.txt queda retirado en esta misma ronda.
+# Nota de codificación: cmd.exe imprime en la página de códigos OEM de la
+# consola; en la corrida bash el byte de la "ó" ("Versión") se conserva crudo
+# tal cual salió; en la corrida PowerShell salió UTF-8 correcto (bytes C3 B3).
+# En ambas, stdin va desde /dev/null y timeout 120 era solo un guardián
+# anti-cuelgue: NO disparó (los códigos 1 de abajo son del arnés, no 124).
 
-$ where godot
-INFORMACIÓN: no se pudo encontrar ningún archivo para los patrones dados.
-exit: 1
+--- Corrida bash (Captura inicio UTC: 2026-09-09 18:37:36) ---
 
-$ ls /c/Godot/
-4.7.2
+$ GODOT_BIN='C:\Windows\System32\cmd.exe' timeout 120 bash tools/run_tests.sh < /dev/null
 
-$ ls /c/Godot/*/
-Godot_v4.7.2-stable_win64.exe
-Godot_v4.7.2-stable_win64_console.exe
 
-$ ls ~/Downloads | grep -i godot
-Godot_v4.7.2-stable_win64.exe.zip
-(solo el zip del instalador 4.7.2; no hay otro ejecutable en la máquina)
+=== Step 1/7: Resolve Godot binary and verify version ===
+Godot binary: C:\Windows\System32\cmd.exe
+godot --version: Microsoft Windows [Versi�n 10.0.26200.9168]
+ERROR: Engine version must start with '4.7.2.stable' but got 'Microsoft Windows [Versi�n 10.0.26200.9168]'. Aborting (rule: only 4.7.x patches, pinned to 4.7.2).
+
+$ echo $?
+1
+
+--- Corrida PowerShell (Captura inicio UTC: 2026-09-09 18:38:31) ---
+
+$ powershell.exe -NoProfile -Command "$env:GODOT_BIN='C:\Windows\System32\cmd.exe'; powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1; exit $LASTEXITCODE" < /dev/null
+(forma equivalente dentro de una sesión PowerShell:
+ $env:GODOT_BIN='C:\Windows\System32\cmd.exe'; powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1)
+
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+Godot binary: C:\Windows\System32\cmd.exe
+godot --version: Microsoft Windows [Versión 10.0.26200.9168]
+ERROR: Engine version must start with '4.7.2.stable' but got 'Microsoft Windows [Versión 10.0.26200.9168]'. Aborting (rule: only 4.7.x patches, pinned to 4.7.2).
+
+$ echo $?
+1
+
+VERIFICADO (c): ambos arneses abortaron en el paso 1/7 con código 1 y el
+mensaje del guardia de versión (tal cual, con el banner capturado):
+  bash: "ERROR: Engine version must start with '4.7.2.stable' but got 'Microsoft Windows [Versión 10.0.26200.9168]'. Aborting (rule: only 4.7.x patches, pinned to 4.7.2)."
+  ps1:  "ERROR: Engine version must start with '4.7.2.stable' but got 'Microsoft Windows [Versión 10.0.26200.9168]'. Aborting (rule: only 4.7.x patches, pinned to 4.7.2)."
+
+################################################################
+# RAMA (d) — proceso que no arranca (catch de invoke_process), solo PowerShell — NUEVA ronda 4
+################################################################
+# Setup: GODOT_BIN apuntando a un archivo EXISTENTE pero NO ejecutable:
+# C:\Users\Leo\Documents\RutaFragil\README.md. Test-Path pasa; Start-Process
+# con -RedirectStandardOutput/-RedirectStandardError fuerza CreateProcess
+# (UseShellExecute=false) y un .md no es una aplicación Win32 -> excepción
+# capturada por el catch de invoke_process (lanzado con -ErrorAction Stop).
+# Esperado: fallo controlado con mensaje claro y código distinto de 0, nunca
+# un "exit 0 silencioso" (lo garantizan el catch y el null-check de ExitCode).
+# Captura inicio (UTC): 2026-09-09 18:39:05
+
+$ powershell.exe -NoProfile -Command "$env:GODOT_BIN='C:\Users\Leo\Documents\RutaFragil\README.md'; powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1; exit $LASTEXITCODE" < /dev/null
+(forma equivalente dentro de una sesión PowerShell:
+ $env:GODOT_BIN='C:\Users\Leo\Documents\RutaFragil\README.md'; powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1)
+
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+Godot binary: C:\Users\Leo\Documents\RutaFragil\README.md
+ERROR: Could not start process 'C:\Users\Leo\Documents\RutaFragil\README.md' (--version): Este comando no se puede ejecutar debido al error: %1 no es una aplicación Win32 válida.
+
+$ echo $?
+1
+
+VERIFICADO (d): el arnés falló controladamente con código 1 en el paso 1/7:
+  "ERROR: Could not start process 'C:\Users\Leo\Documents\RutaFragil\README.md' (--version): Este comando no se puede ejecutar debido al error: %1 no es una aplicación Win32 válida."
+Sin falso 0, sin excepción sin capturar y sin abrir la aplicación asociada al
+.md (la redirección de salida impide ShellExecute). timeout 120 fue solo
+guardián anti-cuelgue y no disparó.

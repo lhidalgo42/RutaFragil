@@ -31,10 +31,10 @@
 #      discovered tests (gdUnit4 returns 0 even when it discovers nothing).
 #   7. Exit 0 only if every step passed.
 #
-# Exit codes: 0 = success; 1 = harness/infrastructure failure; otherwise the
-# gdUnit4 runner exit code is propagated RAW: mapped codes (100, 101, 103,
-# 104, 105) and unmapped ones alike (e.g. 444, 134) pass through unchanged,
-# never normalized to 1.
+# Exit codes: 0 = success. All other codes are propagated as delivered by the
+# shell; POSIX truncates them to 0-255 (an exit(444) from the runner arrives as
+# 188; under Git Bash, Windows crashes appear as 128+signal). Only 1 is
+# reserved for the harness itself.
 
 exit_infra_failure=1
 
@@ -155,6 +155,9 @@ if ! class_cache_ok; then
     retry_exit_code=$?
     printf '%s\n' "$retry_output"
     printf 'import pass 3 exit code: %d\n' "$retry_exit_code"
+    if [ "$retry_exit_code" -ne 0 ]; then
+        printf 'FINDING: import pass 3 exited with code %d (exact output above). Continuing: the strong class cache content check below is the source of truth.\n' "$retry_exit_code"
+    fi
     if ! class_cache_ok; then
         fail "Class cache invalid after three import passes: $cache_file (it must exist, be non-empty and contain the GdUnitTestCIRunner/GdUnitTestSuite class entries; gdUnit4 discovery would find no suites)."
     fi

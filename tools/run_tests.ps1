@@ -37,7 +37,7 @@
     Exit codes: 0 = success; 1 = harness/infrastructure failure; otherwise the
     gdUnit4 runner exit code is propagated RAW: mapped codes (100, 101, 103,
     104, 105) and unmapped ones alike (e.g. 444, 134) pass through unchanged,
-    never normalized to 1.
+    never normalized to 1. Windows preserves the full 32-bit exit code.
 #>
 
 # PowerShell 5.1: never leave this at the user/profile default (m4).
@@ -83,8 +83,13 @@ function invoke_process([string]$exe, [string[]]$arguments) {
     try {
         $process = Start-Process -FilePath $exe -ArgumentList $argument_line -NoNewWindow -Wait -PassThru `
             -RedirectStandardOutput $stdout_file -RedirectStandardError $stderr_file -ErrorAction Stop
-        # [int] cast: a null ExitCode would otherwise turn the caller's
-        # "exit $code" into a silent exit 0.
+        # The catch below covers a process that never started; this null check
+        # covers a started process that reports no exit code. The [int] cast is
+        # only a type guarantee: [int]$null is 0, so the cast alone would turn
+        # a missing exit code into a silent exit 0.
+        if ($null -eq $process.ExitCode) {
+            fail "Process '$exe' returned no exit code"
+        }
         $exit_code = [int]$process.ExitCode
         $output = ""
         # Godot writes UTF-8; without -Encoding, PS 5.1 decodes as Windows-1252
@@ -133,7 +138,10 @@ if ([string]::IsNullOrWhiteSpace($godot_bin)) {
     if (Test-Path $godot_bin_file) {
         # Tolerate an empty file, a UTF-8 BOM, surrounding quotes and stray
         # whitespace; fall through to the OS default on any of them.
-        $raw = Get-Content $godot_bin_file -First 1 -ErrorAction SilentlyContinue
+        # -Encoding UTF8: without it PS 5.1 decodes as ANSI and a BOM-less file
+        # with a non-ASCII path (e.g. C:\Users\Jose with accents) reads as
+        # mojibake; the Trim([char]0xFEFF) below already covers the BOM case.
+        $raw = Get-Content $godot_bin_file -First 1 -Encoding UTF8 -ErrorAction SilentlyContinue
         if ($null -ne $raw) {
             $candidate = "$raw".Trim().Trim([char]0xFEFF).Trim(@('"', "'")).Trim()
             if (-not [string]::IsNullOrWhiteSpace($candidate)) {
@@ -218,6 +226,9 @@ if (-not (test_class_cache $cache_file)) {
     $retry_result = invoke_process $godot_bin @("--headless", "--path", $repo_root, "--import")
     Write-Host (strip_ansi $retry_result.output)
     Write-Host "import pass 3 exit code: $($retry_result.exit_code)"
+    if ($retry_result.exit_code -ne 0) {
+        Write-Host "FINDING: import pass 3 exited with code $($retry_result.exit_code) (exact output above). Continuing: the strong class cache content check below is the source of truth."
+    }
     if (-not (test_class_cache $cache_file)) {
         fail "Class cache invalid after three import passes: $cache_file (it must exist, be non-empty and contain the GdUnitTestCIRunner/GdUnitTestSuite class entries; gdUnit4 discovery would find no suites)."
     }

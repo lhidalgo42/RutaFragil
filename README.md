@@ -54,6 +54,8 @@ bash tools/run_tests.sh
 
 Ambos verifican la versión del motor, importan el proyecto y corren `tests/`; dejan el reporte JUnit en `reports/` (ignorado por Git).
 
+> **D42 (decisión del dueño, 2026-09-09):** la corrida de `run_tests.sh` en la Mac está **diferida hasta antes del gate M4** (red real Mac + Windows, D13) y **ya no bloquea el cierre de M0-T0.1**: T0.1 se acepta con `run_tests` verde solo en Windows. La receta macOS de esta página se conserva para cuando toque esa corrida. Residuo declarado: el arreglo de BOM POSIX de `run_tests.sh` (m-2.3) solo está probado bajo Git Bash; su prueba real en BSD sed queda para esa corrida.
+
 ## Mapa de carpetas (§20)
 
 ```
@@ -81,5 +83,5 @@ docs/       documentación del proyecto (con .gdignore)
 - Física 3D: Jolt (`physics/3d/physics_engine="Jolt Physics"`, declarado a mano: el DEFAULT del motor sigue siendo GodotPhysics3D).
 - Render: Forward+; driver en Windows `d3d12` (D31).
 - `*.uid` e `*.import` **se versionan**; `.godot/` y `reports/` no. `export_presets.cfg` se versiona (M4).
-- Git LFS trackea los binarios listados en `.gitattributes`. Los `.svg` van en Git normal (D36). El remoto debe tener **LFS habilitado ANTES del primer push**: ya existen 13 punteros LFS (10 objetos únicos) por los PNG del addon gdUnit4.
+- Git LFS trackea los binarios listados en `.gitattributes`. Los `.svg` van en Git normal (D36). El remoto debe tener **LFS habilitado ANTES del primer push**: el índice ya contiene punteros LFS (ver `git lfs ls-files`; hoy todos son PNG del addon gdUnit4).
 - Documentos de referencia: `AGENTS.md` (reglas para agentes), `DECISIONS.md`, `BACKLOG.md`, `CREDITS.md`, `docs/planes/M0-T0.1_plan.md`.

@@ -1,3 +1,12 @@
+=== CABECERA AÑADIDA EN RONDA 4 (2026-09-09, nota de la revisión 03) ===
+Este archivo es la captura de la RONDA 1 (2026-09-08), ANTERIOR al borrado de
+addons/gdUnit4/test/ ejecutado en la ronda 3. Por eso su volcado registra el
+árbol completo del addon (463 steps en update_scripts_classes, etc.). Las
+pasadas de --import POSTERIORES al borrado están dentro de
+03_run_tests_pass.txt, 04_run_tests_fail.txt, 05_run_tests_untyped.txt y
+10_zero_tests_fail.txt. El volcado histórico de abajo NO se ha tocado.
+==============================================================================
+
 === Evidencia 02_import.txt — M0-T0.1 ===
 Fecha de captura (UTC): 2026-09-08 12:45:19
 Comando por pasada: "C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe" --headless --path . --import

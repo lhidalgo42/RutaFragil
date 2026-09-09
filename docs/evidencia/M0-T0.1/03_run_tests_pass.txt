@@ -1,11 +1,14 @@
-=== Evidencia 03_run_tests_pass.txt — M0-T0.1 (ronda 3, recaptura con codificación UTF-8 corregida, m-2.1) ===
+=== Evidencia 03_run_tests_pass.txt — M0-T0.1 (ronda 4, recaptura con el arnés FINAL) ===
 Máquina: Windows (Git Bash + PowerShell 5.1), repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
+Fecha de captura (UTC): 2026-09-09 18:39:31 (sección A) y 2026-09-09 18:39:54 (sección B)
 Comandos: (A) powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1 ; (B) bash tools/run_tests.sh
-Ambas secciones recapturadas hoy; la ronda 2 quedó con mojibake por la re-impresión OEM de PS 5.1 (corregido en el arnés).
+Recaptura de la ronda 4 con el arnés final (-Encoding UTF8 en las lecturas, null-check de
+ExitCode, contrato de códigos reformulado, FINDING en pasada 3, verificación fuerte de la
+caché de clases, limpieza de reports/). Sustituye a la captura de la ronda 3 (m-2.1).
 
 ################################################################
 # SECCIÓN A — tools/run_tests.ps1 (PowerShell)
-# Captura inicio (UTC): 2026-09-09 14:20:17
+# Captura inicio (UTC): 2026-09-09 18:39:31
 ################################################################
 
 $ powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
@@ -86,21 +89,21 @@ Session hook 'GdUnitHtmlTestReporter' installed.
 Session hook 'GdUnitXMLTestReporter' installed.
 Run Test Suite: res://tests/smoke_test.gd
   res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 STARTED
-  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 5ms
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 4ms
 
   res://tests/smoke_test.gd > test_physics_engine_is_jolt STARTED
   res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 5ms
 
   res://tests/smoke_test.gd > test_rendering_method_is_forward_plus STARTED
-  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 4ms
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 5ms
 
-Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 29ms
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 28ms
 
 
 Overall Summary: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
 Executed test suites: (1/1)
 Executed test cases : (3/3)
-Total execution time: 29ms
+Total execution time: 28ms
  Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
 Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html
 Exit code: 0
@@ -122,9 +125,7 @@ $ echo $?
 
 ################################################################
 # SECCIÓN B — tools/run_tests.sh (Git Bash)
-# Captura inicio (UTC): 2026-09-09 14:20:52
-# NOTA: la salida del runner conserva los códigos de color ANSI
-# (run_tests.sh no los filtra; run_tests.ps1 sí). Es la salida real.
+# Captura inicio (UTC): 2026-09-09 18:39:54
 ################################################################
 
 $ bash tools/run_tests.sh
@@ -203,21 +204,21 @@ Scanning for test suites in: res://tests
 [38;2;100;149;237mSession hook 'GdUnitXMLTestReporter' installed.[0m
 [38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/smoke_test.gd[0m
   [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
-  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 94ms[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_engine_is_pinned_to_4_7_2[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 93ms[0m
 [38;2;128;128;128m[0m
   [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
-  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 93ms[0m
+  [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_physics_engine_is_jolt[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 92ms[0m
 [38;2;128;128;128m[0m
   [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
   [38;2;250;235;215mres://tests/smoke_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_rendering_method_is_forward_plus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 92ms[0m
 [38;2;128;128;128m[0m
-[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 696ms[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 695ms[0m
 [38;2;128;128;128m[0m
 [38;2;128;128;128m[0m
 [38;2;30;144;255mOverall Summary:[0m[38;2;255;255;255m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m
 [38;2;233;150;122mExecuted test suites: (1/1)[0m
 [38;2;233;150;122mExecuted test cases : (3/3)[0m
-[38;2;233;150;122mTotal execution time: 696ms[0m
+[38;2;233;150;122mTotal execution time: 695ms[0m
 [38;2;255;255;255m [0m[38;2;100;149;237mOpen XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml[0m
 [38;2;100;149;237mOpen HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html[0m
 [38;2;233;150;122mExit code: 0[0m
@@ -235,3 +236,8 @@ SUCCESS: all tests passed and 3 tests were discovered.
 
 $ echo $?
 0
+
+VERIFICADO: ambas formas del arnés final terminan con código 0, "Class cache
+verified", "gdUnit4 exit code 0: OK: all discovered tests passed", "Discovered
+tests: 3 (minimum required: 3)" y "SUCCESS: all tests passed and 3 tests were
+discovered."

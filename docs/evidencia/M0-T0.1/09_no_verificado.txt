@@ -1,9 +1,16 @@
-=== Evidencia 09_no_verificado.txt — M0-T0.1 (ronda 3, actualizada) ===
+=== Evidencia 09_no_verificado.txt — M0-T0.1 (ronda 4, actualizada) ===
 Máquina: Windows, repo C:\Users\Leo\Documents\RutaFragil, rama m0/t0.1-foundations
-Fecha de captura (UTC): 2026-09-09 14:47 UTC
+Fecha de captura (UTC): 2026-09-09 18:53 UTC
 Sin comandos: este archivo es la lista explícita de criterios NO verificados que exige R7
 (“si un criterio no se puede probar desde CLI/editor, decirlo; nunca marcarlo”)
 y el hallazgo M4 de la revisión 01.
+
+Cerrado en ronda 4 (ya no figuran como pendientes): la sección bash del guardia
+numérico "< 3 tests" se ejercitó en la evidencia 11, rama (a) — m-3.4; el abort
+por versión del motor se ejercitó con GODOT_BIN=C:\Windows\System32\cmd.exe en
+ambos arneses, evidencia 11, rama (c) — m-3.5 (era el antiguo ítem 4 de esta
+lista); la rama "proceso que no arranca" (catch con GODOT_BIN no ejecutable) se
+ejercitó en la evidencia 11, rama (d), nueva en esta ronda.
 
 Cerrado en ronda 3 (ya no figuran como pendientes): el borrado de
 addons/gdUnit4/test/ se ejecutó (R12=SÍ del dueño) y está escenado en el índice;
@@ -13,38 +20,51 @@ evidencia 11, rama (b), con ambos arneses en verde.
 
 CRITERIOS NO VERIFICADOS TRAS ESTA RONDA:
 
-1. run_tests.sh en la Mac con hash ed1daf0bf.
-   Lo ejecuta el dueño (plan §6, checklist §8 “Solo el dueño”). No verificable desde
-   esta máquina Windows. El criterio de aceptación “run_tests pasa en ambas máquinas”
-   queda pendiente de esa corrida.
+1. run_tests.sh en la Mac con hash ed1daf0bf — DIFERIDO por decisión del dueño
+   (D42, 2026-09-09): T0.1 se acepta con Windows; la Mac vuelve a ser
+   obligatoria antes del gate M4 (red real Mac + Windows). Residuo declarado:
+   el fix BOM POSIX de m-2.3 (printf octal + ${var#"$bom"}) solo está probado
+   bajo Git Bash; su prueba real sobre BSD sed queda para esa corrida.
+   Receta para cuando toque: Godot 4.7.2 estándar (macOS ≥ 13 en Apple Silicon,
+   ≥ 11 en Intel), brew install git-lfs && git lfs install,
+   git config --global core.autocrlf input, clonar el repo,
+   export GODOT_BIN=/Applications/Godot.app/Contents/MacOS/Godot,
+   bash tools/run_tests.sh. Debe imprimir 4.7.2.stable.official.ed1daf0bf,
+   "Class cache verified" y "SUCCESS … 3 tests".
 
 2. Remoto Git + LFS + primer push.
-   Lo hace el dueño. Ya existen punteros LFS por los PNG del addon (9 con "*"
-   más los 4 con "-" que desaparecen con el borrado escenado de test/, ver la
-   sección ACTUALIZACIÓN RONDA 3 de 07_git.txt); el remoto debe tener LFS
-   habilitado antes del primer push (GitHub Free: 10 GiB almacenamiento,
+   Lo hace el dueño. Ya existen punteros LFS por los PNG del addon (9 con "*",
+   ver la sección ACTUALIZACIÓN RONDA 3 de 07_git.txt); el remoto debe tener
+   LFS habilitado antes del primer push (GitHub Free: 10 GiB almacenamiento,
    10 GiB/mes de ancho de banda, objetos LFS permanentes).
 
-3. Carga del plugin gdUnit4 en el editor con ventana (dock visible).
-   No verificable desde CLI/headless: el plugin se autodesactiva al detectar el
-   entorno de tests (“It was recognized that GdUnit4 is running in a test
-   environment, therefore the GdUnit4 plugin will not be executed!”) y el dock
-   solo existe en una sesión gráfica. El paso 7 (normalización con ventana) abrió
-   el editor, pero nadie inspeccionó visualmente el dock. Requiere humano.
+3. Dock del plugin gdUnit4 en el editor con ventana (visible).
+   Lo hace el dueño. No verificable desde CLI/headless: el plugin se
+   autodesactiva al detectar el entorno de tests (“It was recognized that
+   GdUnit4 is running in a test environment, therefore the GdUnit4 plugin
+   will not be executed!”) y el dock solo existe en una sesión gráfica. El
+   paso 7 (normalización con ventana) abrió el editor, pero nadie inspeccionó
+   visualmente el dock.
 
-4. Abort por versión del motor (guardia "4.7.2.stable" del arnés).
-   NO ejercitable en esta máquina: no existe ningún ejecutable de Godot distinto
-   de la 4.7.2 pineada (búsqueda real volcada en la evidencia 11, rama (c):
-   `where godot` sin resultados, C:\Godot\ contiene solo 4.7.2, en Downloads solo
-   el zip del instalador 4.7.2). Haría falta otra versión instalada para correr
-   `GODOT_BIN=<esa> tools/run_tests.*` y capturar el abort. Ítem m-2.6 declarado
-   sin ejercitar.
+4. Ramas del arnés no provocables de forma determinista (declaradas, no
+   ejercitadas):
+   a) Tercera pasada de --import: solo se dispara si la caché global de clases
+      queda inválida tras dos pasadas reales; no hay forma fiable de forzarlo
+      sin sabotear el .godot/ del repo (fuera de alcance).
+   b) Fallo por caché inválida persistente (fail tras la tercera pasada):
+      mismo motivo que (a).
+   c) reports/ bloqueado que no se deja borrar (un archivo mantenido abierto
+      por otro proceso durante toda la corrida): no se puede reproducir de
+      forma controlada desde el propio arnés sin un bloqueo externo
+      permanente.
+   En cambio la rama "proceso que no arranca" (catch con GODOT_BIN existente
+   pero no ejecutable) SÍ quedó ejercitada en la ronda 4: evidencia 11, rama (d).
 
 5. La comparación original de la evidencia 06 contra /tmp no es reproducible.
    El diff del arranque 1 comparó contra una copia previa en
    /tmp/project.godot.pre_editor que no forma parte de la evidencia versionada;
-   declarado en la nota añadida al final de 06_editor_normalize.diff en esta
-   ronda (la copia efímera existe aún en esta máquina, pero fuera del repo).
+   declarado en la nota añadida al final de 06_editor_normalize.diff en la
+   ronda 3 (la copia efímera existe aún en esta máquina, pero fuera del repo).
    La idempotencia posterior sí está probada (git status limpio tras arranques
    con ventana, evidencia 07 y reproducción del revisor en la revisión 01).
 
