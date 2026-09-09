@@ -1235,3 +1235,292 @@ addons/gdUnit4/src/GdUnitAwaiter.gd.uid
 517
 
 Generado antes del commit final de la ronda 3; el coordinador actualizará tras ese commit si el estado difiere.
+
+=== ACTUALIZACION RONDA 3 POST-COMMIT (coordinador) ===
+Fecha UTC: 2026-09-09 14:52:42
+
+--- git log --oneline --all ---
+c5f4ac8 fix: round 3 — remove gdUnit4 test/ (R12 approved), hardened harness, complete evidence (M0-T0.1)
+9755e2e docs: review 02 and round-3 prompt (M0-T0.1)
+41bea42 docs: post-commit git state in evidence 07, round 2 (M0-T0.1)
+6e95b5d fix: round 2 — hardened test harness, complete docs, recaptured evidence (M0-T0.1)
+a07eb8a docs: review 01, plan v1.1, master and briefing from owner text (M0-T0.1)
+62fa3a3 docs: post-commit git state in evidence 07 (M0-T0.1)
+2114d56 feat: Godot 4.7.2 project foundations, gdUnit4 harness and smoke tests (M0-T0.1)
+633d4ba chore: repo scaffold and project docs (M0-T0.1)
+
+--- git status --short ---
+(vacio = arbol limpio)
+
+--- git lfs ls-files ---
+e709c40067 * addons/gdUnit4/src/core/assets/touch-button.png
+ed176306a0 * addons/gdUnit4/src/reporters/html/template/css/logo.png
+ed176306a0 * addons/gdUnit4/src/ui/settings/logo.png
+37a4070934 * addons/gdUnit4/src/update/assets/border_bottom.png
+ca6f5d7f59 * addons/gdUnit4/src/update/assets/border_top.png
+f37474a8d5 * addons/gdUnit4/src/update/assets/dot1.png
+c12758bd1b * addons/gdUnit4/src/update/assets/dot2.png
+08cead78bb * addons/gdUnit4/src/update/assets/embedded.png
+fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
+
+--- git ls-files | grep -E '\.(uid|import)$' ---
+addons/gdUnit4/bin/GdUnitCmdTool.gd.uid
+addons/gdUnit4/bin/GdUnitCopyLog.gd.uid
+addons/gdUnit4/plugin.gd.uid
+addons/gdUnit4/src/Comparator.gd.uid
+addons/gdUnit4/src/Fuzzers.gd.uid
+addons/gdUnit4/src/GdUnitArrayAssert.gd.uid
+addons/gdUnit4/src/GdUnitAssert.gd.uid
+addons/gdUnit4/src/GdUnitAwaiter.gd.uid
+addons/gdUnit4/src/GdUnitBoolAssert.gd.uid
+addons/gdUnit4/src/GdUnitConstants.gd.uid
+addons/gdUnit4/src/GdUnitDictionaryAssert.gd.uid
+addons/gdUnit4/src/GdUnitFailureAssert.gd.uid
+addons/gdUnit4/src/GdUnitFileAssert.gd.uid
+addons/gdUnit4/src/GdUnitFloatAssert.gd.uid
+addons/gdUnit4/src/GdUnitFuncAssert.gd.uid
+addons/gdUnit4/src/GdUnitGodotErrorAssert.gd.uid
+addons/gdUnit4/src/GdUnitIntAssert.gd.uid
+addons/gdUnit4/src/GdUnitObjectAssert.gd.uid
+addons/gdUnit4/src/GdUnitResultAssert.gd.uid
+addons/gdUnit4/src/GdUnitSceneRunner.gd.uid
+addons/gdUnit4/src/GdUnitSignalAssert.gd.uid
+addons/gdUnit4/src/GdUnitStringAssert.gd.uid
+addons/gdUnit4/src/GdUnitTestSuite.gd.uid
+addons/gdUnit4/src/GdUnitTuple.gd.uid
+addons/gdUnit4/src/GdUnitValueExtractor.gd.uid
+addons/gdUnit4/src/GdUnitVectorAssert.gd.uid
+addons/gdUnit4/src/asserts/CallBackValueProvider.gd.uid
+addons/gdUnit4/src/asserts/DefaultValueProvider.gd.uid
+addons/gdUnit4/src/asserts/GdAssertMessages.gd.uid
+addons/gdUnit4/src/asserts/GdAssertReports.gd.uid
+addons/gdUnit4/src/asserts/GdUnitArrayAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitAssertions.gd.uid
+addons/gdUnit4/src/asserts/GdUnitBoolAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitDictionaryAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitFailureAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitFileAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitFloatAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitIntAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitObjectAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitResultAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitSignalAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitStringAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/GdUnitVectorAssertImpl.gd.uid
+addons/gdUnit4/src/asserts/ValueProvider.gd.uid
+addons/gdUnit4/src/cmd/CmdArgumentParser.gd.uid
+addons/gdUnit4/src/cmd/CmdCommand.gd.uid
+addons/gdUnit4/src/cmd/CmdCommandHandler.gd.uid
+addons/gdUnit4/src/cmd/CmdOption.gd.uid
+addons/gdUnit4/src/cmd/CmdOptions.gd.uid
+addons/gdUnit4/src/core/GdArrayTools.gd.uid
+addons/gdUnit4/src/core/GdDiffTool.gd.uid
+addons/gdUnit4/src/core/GdObjects.gd.uid
+addons/gdUnit4/src/core/GdUnit4Version.gd.uid
+addons/gdUnit4/src/core/GdUnitFileAccess.gd.uid
+addons/gdUnit4/src/core/GdUnitProperty.gd.uid
+addons/gdUnit4/src/core/GdUnitResult.gd.uid
+addons/gdUnit4/src/core/GdUnitRunnerConfig.gd.uid
+addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd.uid
+addons/gdUnit4/src/core/GdUnitSettings.gd.uid
+addons/gdUnit4/src/core/GdUnitSignalAwaiter.gd.uid
+addons/gdUnit4/src/core/GdUnitSignalCollector.gd.uid
+addons/gdUnit4/src/core/GdUnitSignals.gd.uid
+addons/gdUnit4/src/core/GdUnitSingleton.gd.uid
+addons/gdUnit4/src/core/GdUnitStackTrace.gd.uid
+addons/gdUnit4/src/core/GdUnitStackTraceElement.gd.uid
+addons/gdUnit4/src/core/GdUnitTestResourceLoader.gd.uid
+addons/gdUnit4/src/core/GdUnitTestSuiteBuilder.gd.uid
+addons/gdUnit4/src/core/GdUnitTestSuiteScanner.gd.uid
+addons/gdUnit4/src/core/GdUnitTools.gd.uid
+addons/gdUnit4/src/core/GodotVersionFixures.gd.uid
+addons/gdUnit4/src/core/LocalTime.gd.uid
+addons/gdUnit4/src/core/_TestCase.gd.uid
+addons/gdUnit4/src/core/assets/touch-button.png.import
+addons/gdUnit4/src/core/attributes/TestCaseAttribute.gd.uid
+addons/gdUnit4/src/core/command/GdUnitBaseCommand.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandFileSystem.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandFileSystemDebugTests.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandFileSystemRunTests.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandHandler.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandInspectorDebugTests.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandInspectorRerunTestsUntilFailure.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandInspectorRunTests.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandInspectorTreeCollapse.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandInspectorTreeExpand.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandRunTestsOverall.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandScriptEditor.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandScriptEditorCreateTest.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandScriptEditorDebugTests.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandScriptEditorRunTests.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandStopTestSession.gd.uid
+addons/gdUnit4/src/core/command/GdUnitCommandTestSession.gd.uid
+addons/gdUnit4/src/core/command/GdUnitShortcut.gd.uid
+addons/gdUnit4/src/core/discovery/GdUnitGUID.gd.uid
+addons/gdUnit4/src/core/discovery/GdUnitTestCase.gd.uid
+addons/gdUnit4/src/core/discovery/GdUnitTestDiscoverGuard.gd.uid
+addons/gdUnit4/src/core/discovery/GdUnitTestDiscoverSink.gd.uid
+addons/gdUnit4/src/core/discovery/GdUnitTestDiscoverer.gd.uid
+addons/gdUnit4/src/core/event/GdUnitEvent.gd.uid
+addons/gdUnit4/src/core/event/GdUnitEventInit.gd.uid
+addons/gdUnit4/src/core/event/GdUnitEventStop.gd.uid
+addons/gdUnit4/src/core/event/GdUnitEventTestDiscoverEnd.gd.uid
+addons/gdUnit4/src/core/event/GdUnitEventTestDiscoverStart.gd.uid
+addons/gdUnit4/src/core/event/GdUnitSessionClose.gd.uid
+addons/gdUnit4/src/core/event/GdUnitSessionStart.gd.uid
+addons/gdUnit4/src/core/execution/GdUnitExecutionContext.gd.uid
+addons/gdUnit4/src/core/execution/GdUnitMemoryObserver.gd.uid
+addons/gdUnit4/src/core/execution/GdUnitProjectSettingsSnapshot.gd.uid
+addons/gdUnit4/src/core/execution/GdUnitTestReportCollector.gd.uid
+addons/gdUnit4/src/core/execution/GdUnitTestSuiteExecutor.gd.uid
+addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseAfterStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseBeforeStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteAfterStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteBeforeStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/fuzzed/GdUnitTestCaseFuzzedExecutionStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/fuzzed/GdUnitTestCaseFuzzedTestStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd.uid
+addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd.uid
+addons/gdUnit4/src/core/hooks/GdUnitBaseReporterTestSessionHook.gd.uid
+addons/gdUnit4/src/core/hooks/GdUnitHtmlReporterTestSessionHook.gd.uid
+addons/gdUnit4/src/core/hooks/GdUnitTestSessionHook.gd.uid
+addons/gdUnit4/src/core/hooks/GdUnitTestSessionHookService.gd.uid
+addons/gdUnit4/src/core/hooks/GdUnitXMLReporterTestSessionHook.gd.uid
+addons/gdUnit4/src/core/parameters/GdBuiltinConstants.gd.uid
+addons/gdUnit4/src/core/parameters/GdCallableParameterSetResolver.gd.uid
+addons/gdUnit4/src/core/parameters/GdInlineParameterSetResolver.gd.uid
+addons/gdUnit4/src/core/parameters/GdParameterSetResolver.gd.uid
+addons/gdUnit4/src/core/parameters/GdParameterSetResolverFactory.gd.uid
+addons/gdUnit4/src/core/parameters/GdPropertyParameterSetResolver.gd.uid
+addons/gdUnit4/src/core/parse/GdClassDescriptor.gd.uid
+addons/gdUnit4/src/core/parse/GdDefaultValueDecoder.gd.uid
+addons/gdUnit4/src/core/parse/GdFunctionArgument.gd.uid
+addons/gdUnit4/src/core/parse/GdFunctionDescriptor.gd.uid
+addons/gdUnit4/src/core/parse/GdScriptParser.gd.uid
+addons/gdUnit4/src/core/parse/GdUnitExpressionRunner.gd.uid
+addons/gdUnit4/src/core/report/GdUnitError.gd.uid
+addons/gdUnit4/src/core/report/GdUnitReport.gd.uid
+addons/gdUnit4/src/core/runners/GdUnitScriptErrorCollector.gd.uid
+addons/gdUnit4/src/core/runners/GdUnitTestCIRunner.gd.uid
+addons/gdUnit4/src/core/runners/GdUnitTestRunner.gd.uid
+addons/gdUnit4/src/core/runners/GdUnitTestSession.gd.uid
+addons/gdUnit4/src/core/runners/GdUnitTestSessionRunner.gd.uid
+addons/gdUnit4/src/core/templates/test_suite/GdUnitTestSuiteDefaultTemplate.gd.uid
+addons/gdUnit4/src/core/templates/test_suite/GdUnitTestSuiteTemplate.gd.uid
+addons/gdUnit4/src/core/thread/GdUnitThreadContext.gd.uid
+addons/gdUnit4/src/core/thread/GdUnitThreadManager.gd.uid
+addons/gdUnit4/src/core/writers/GdUnitCSIMessageWriter.gd.uid
+addons/gdUnit4/src/core/writers/GdUnitMessageWriter.gd.uid
+addons/gdUnit4/src/core/writers/GdUnitRichTextMessageWriter.gd.uid
+addons/gdUnit4/src/dotnet/GdUnit4CSharpApiLoader.gd.uid
+addons/gdUnit4/src/doubler/CallableDoubler.gd.uid
+addons/gdUnit4/src/doubler/GdFunctionDoubler.gd.uid
+addons/gdUnit4/src/doubler/GdUnitClassDoubler.gd.uid
+addons/gdUnit4/src/doubler/GdUnitFunctionDoublerBuilder.gd.uid
+addons/gdUnit4/src/doubler/GdUnitMockFunctionDoubler.gd.uid
+addons/gdUnit4/src/doubler/GdUnitObjectInteractions.gd.uid
+addons/gdUnit4/src/doubler/GdUnitObjectInteractionsVerifier.gd.uid
+addons/gdUnit4/src/doubler/GdUnitSpyFunctionDoubler.gd.uid
+addons/gdUnit4/src/extractors/GdUnitFuncValueExtractor.gd.uid
+addons/gdUnit4/src/fuzzers/BoolFuzzer.gd.uid
+addons/gdUnit4/src/fuzzers/FloatFuzzer.gd.uid
+addons/gdUnit4/src/fuzzers/Fuzzer.gd.uid
+addons/gdUnit4/src/fuzzers/IntFuzzer.gd.uid
+addons/gdUnit4/src/fuzzers/StringFuzzer.gd.uid
+addons/gdUnit4/src/fuzzers/Vector2Fuzzer.gd.uid
+addons/gdUnit4/src/fuzzers/Vector3Fuzzer.gd.uid
+addons/gdUnit4/src/matchers/AnyArgumentMatcher.gd.uid
+addons/gdUnit4/src/matchers/AnyBuildInTypeArgumentMatcher.gd.uid
+addons/gdUnit4/src/matchers/AnyClazzArgumentMatcher.gd.uid
+addons/gdUnit4/src/matchers/ChainedArgumentMatcher.gd.uid
+addons/gdUnit4/src/matchers/EqualsArgumentMatcher.gd.uid
+addons/gdUnit4/src/matchers/GdUnitArgumentMatcher.gd.uid
+addons/gdUnit4/src/matchers/GdUnitArgumentMatchers.gd.uid
+addons/gdUnit4/src/mocking/GdUnitMock.gd.uid
+addons/gdUnit4/src/mocking/GdUnitMockBuilder.gd.uid
+addons/gdUnit4/src/mocking/GdUnitMockImpl.gd.uid
+addons/gdUnit4/src/monitor/ErrorLogEntry.gd.uid
+addons/gdUnit4/src/monitor/GdUnitMonitor.gd.uid
+addons/gdUnit4/src/monitor/GdUnitOrphanNodeInfo.gd.uid
+addons/gdUnit4/src/monitor/GdUnitOrphanNodesMonitor.gd.uid
+addons/gdUnit4/src/monitor/GodotGdErrorMonitor.gd.uid
+addons/gdUnit4/src/network/GdUnitServer.gd.uid
+addons/gdUnit4/src/network/GdUnitServerConstants.gd.uid
+addons/gdUnit4/src/network/GdUnitTask.gd.uid
+addons/gdUnit4/src/network/GdUnitTcpClient.gd.uid
+addons/gdUnit4/src/network/GdUnitTcpNode.gd.uid
+addons/gdUnit4/src/network/GdUnitTcpServer.gd.uid
+addons/gdUnit4/src/network/rpc/RPC.gd.uid
+addons/gdUnit4/src/network/rpc/RPCClientConnect.gd.uid
+addons/gdUnit4/src/network/rpc/RPCClientDisconnect.gd.uid
+addons/gdUnit4/src/network/rpc/RPCGdUnitEvent.gd.uid
+addons/gdUnit4/src/network/rpc/RPCMessage.gd.uid
+addons/gdUnit4/src/reporters/GdUnitReportSummary.gd.uid
+addons/gdUnit4/src/reporters/GdUnitReportWriter.gd.uid
+addons/gdUnit4/src/reporters/GdUnitTestCaseReport.gd.uid
+addons/gdUnit4/src/reporters/GdUnitTestReporter.gd.uid
+addons/gdUnit4/src/reporters/GdUnitTestSuiteReport.gd.uid
+addons/gdUnit4/src/reporters/console/GdUnitConsoleTestReporter.gd.uid
+addons/gdUnit4/src/reporters/html/GdUnitByPathReport.gd.uid
+addons/gdUnit4/src/reporters/html/GdUnitHtmlEncoder.gd.uid
+addons/gdUnit4/src/reporters/html/GdUnitHtmlPatterns.gd.uid
+addons/gdUnit4/src/reporters/html/GdUnitHtmlReportWriter.gd.uid
+addons/gdUnit4/src/reporters/xml/JUnitXmlReportWriter.gd.uid
+addons/gdUnit4/src/reporters/xml/XmlElement.gd.uid
+addons/gdUnit4/src/spy/GdUnitSpyBuilder.gd.uid
+addons/gdUnit4/src/spy/GdUnitSpyImpl.gd.uid
+addons/gdUnit4/src/ui/GdUnitConsole.gd.uid
+addons/gdUnit4/src/ui/GdUnitFonts.gd.uid
+addons/gdUnit4/src/ui/GdUnitInspector.gd.uid
+addons/gdUnit4/src/ui/GdUnitInspectorTreeConstants.gd.uid
+addons/gdUnit4/src/ui/GdUnitScriptEditorControls.gd.uid
+addons/gdUnit4/src/ui/GdUnitUiTools.gd.uid
+addons/gdUnit4/src/ui/menu/GdUnitContextMenuItem.gd.uid
+addons/gdUnit4/src/ui/menu/GdUnitEditorFileSystemContextMenuHandler.gd.uid
+addons/gdUnit4/src/ui/menu/GdUnitInspectorContextMenu.gd.uid
+addons/gdUnit4/src/ui/menu/GdUnitScriptEditorContextMenuHandler.gd.uid
+addons/gdUnit4/src/ui/parts/GdUnitInspectorProgressBar.gd.uid
+addons/gdUnit4/src/ui/parts/GdUnitInspectorStatusBar.gd.uid
+addons/gdUnit4/src/ui/parts/GdUnitInspectorToolBar.gd.uid
+addons/gdUnit4/src/ui/parts/GdUnitInspectorTreeMainPanel.gd.uid
+addons/gdUnit4/src/ui/parts/GdUnitReportPanel.gd.uid
+addons/gdUnit4/src/ui/settings/GdUnitInputCapture.gd.uid
+addons/gdUnit4/src/ui/settings/GdUnitSettingsDialog.gd.uid
+addons/gdUnit4/src/ui/settings/GdUnitSettingsTabHooks.gd.uid
+addons/gdUnit4/src/ui/settings/logo.png.import
+addons/gdUnit4/src/ui/templates/GdUnitTestSuiteTemplatePanel.gd.uid
+addons/gdUnit4/src/ui/utils/GdUnitEditorColorTheme.gd.uid
+addons/gdUnit4/src/update/GdMarkDownReader.gd.uid
+addons/gdUnit4/src/update/GdUnitPatch.gd.uid
+addons/gdUnit4/src/update/GdUnitPatcher.gd.uid
+addons/gdUnit4/src/update/GdUnitUpdate.gd.uid
+addons/gdUnit4/src/update/GdUnitUpdateClient.gd.uid
+addons/gdUnit4/src/update/GdUnitUpdateNotify.gd.uid
+addons/gdUnit4/src/update/assets/border_bottom.png.import
+addons/gdUnit4/src/update/assets/border_top.png.import
+addons/gdUnit4/src/update/assets/dot1.png.import
+addons/gdUnit4/src/update/assets/dot2.png.import
+addons/gdUnit4/src/update/assets/embedded.png.import
+addons/gdUnit4/src/update/assets/horizontal-line2.png.import
+icon.svg.import
+tests/smoke_test.gd.uid
+
+--- git ls-files -s | grep 100755 ---
+100755 4de7d7a5569de91259e8efa21aba919f03244aae 0	addons/gdUnit4/runtest.sh
+100755 136244e42f505aa0fc2ce4729fbafdbbca8f3aae 0	tools/run_tests.sh
+
+--- git ls-files | grep '\.scn' ---
+(salida vacia: ningun .scn versionado; codigo grep: 1)
+
+--- git ls-files | grep -E '^\.godot/|^reports/' ---
+(salida vacia: .godot/ y reports/ fuera del indice; codigo grep: 1)
+
+--- git ls-files | grep -c 'addons/gdUnit4/test/' ---
+0
+(0 = test/ fuera del indice)
