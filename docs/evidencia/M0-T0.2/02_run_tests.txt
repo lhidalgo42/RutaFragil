@@ -1,0 +1,514 @@
+=== Evidencia 02_run_tests.txt — M0-T0.2 ===
+Fecha de captura (UTC): 2026-09-10 02:14:38
+Máquina: Windows, Git Bash (PowerShell vía powershell.exe)
+Comandos ejecutados:
+  1) powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
+  2) bash tools/run_tests.sh
+  3) extracción del listado de suites desde reports/report_1/results.xml
+Resultado: ambos arneses en verde (exit 0), 40 tests descubiertos, 7/7 suites.
+
+######################################################################
+# Corrida 1: powershell.exe -ExecutionPolicy Bypass -File tools/run_tests.ps1
+######################################################################
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+Godot binary: C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/7: Clean reports directory ===
+Deleted previous reports: C:\Users\Leo\Documents\RutaFragil\reports
+Reports directory ready: C:\Users\Leo\Documents\RutaFragil\reports (with .gdignore)
+
+=== Step 3/7: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando diseño del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[ DONE ] loading_editor_layout
+
+
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando diseño del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[ DONE ] loading_editor_layout
+
+
+import pass 2 exit code: 0
+Class cache verified: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
+
+=== Step 4/7: Run gdUnit4 test suites ===
+Running: "C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe" --headless --path C:\Users\Leo\Documents\RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Scanning for test suites in: res://tests
+Installing GdUnit4 session system hooks.
+Session hook 'GdUnitHtmlTestReporter' installed.
+Session hook 'GdUnitXMLTestReporter' installed.
+Run Test Suite: res://tests/autoloads/game_config_autoload_test.gd
+  res://tests/autoloads/game_config_autoload_test.gd > test_autoload_exists_in_runner STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_autoload_exists_in_runner PASSED 6ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_data_and_tuning_are_present STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_data_and_tuning_are_present PASSED 6ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_max_players_comes_from_the_data STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_max_players_comes_from_the_data PASSED 7ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_emits_reloaded STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_emits_reloaded PASSED 9ms
+
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 52ms
+
+
+Run Test Suite: res://tests/core/data/data_mirror_test.gd
+  res://tests/core/data/data_mirror_test.gd > test_real_data_mirror_is_in_sync STARTED
+  res://tests/core/data/data_mirror_test.gd > test_real_data_mirror_is_in_sync PASSED 9ms
+
+  res://tests/core/data/data_mirror_test.gd > test_write_and_check_round_trip_in_temp_dir STARTED
+  res://tests/core/data/data_mirror_test.gd > test_write_and_check_round_trip_in_temp_dir PASSED 13ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 43ms
+
+
+Run Test Suite: res://tests/core/data/game_data_loader_test.gd
+  res://tests/core/data/game_data_loader_test.gd > test_base_only_loads_values STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_base_only_loads_values PASSED 12ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_reload_picks_up_json_rewrite_in_same_process STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_reload_picks_up_json_rewrite_in_same_process PASSED 13ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mod_overrides_base STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mod_overrides_base PASSED 13ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_two_mods_apply_in_alphabetical_order STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_two_mods_apply_in_alphabetical_order PASSED 12ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_partial_mod_preserves_untouched_siblings STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_partial_mod_preserves_untouched_siblings PASSED 11ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_error_is_rejected_entirely STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_error_is_rejected_entirely PASSED 14ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_invalid_base_json_marks_report_not_ok STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_invalid_base_json_marks_report_not_ok PASSED 11ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_real_res_data_loads_without_errors STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_real_res_data_loads_without_errors PASSED 11ms
+
+Statistics: 8 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 143ms
+
+
+Run Test Suite: res://tests/core/data/json_file_test.gd
+  res://tests/core/data/json_file_test.gd > test_read_valid_file_returns_object STARTED
+  res://tests/core/data/json_file_test.gd > test_read_valid_file_returns_object PASSED 13ms
+
+  res://tests/core/data/json_file_test.gd > test_missing_file_records_error_and_returns_empty STARTED
+  res://tests/core/data/json_file_test.gd > test_missing_file_records_error_and_returns_empty PASSED 10ms
+
+  res://tests/core/data/json_file_test.gd > test_malformed_json_reports_line_and_message STARTED
+  res://tests/core/data/json_file_test.gd > test_malformed_json_reports_line_and_message PASSED 12ms
+
+  res://tests/core/data/json_file_test.gd > test_root_array_is_rejected STARTED
+  res://tests/core/data/json_file_test.gd > test_root_array_is_rejected PASSED 13ms
+
+  res://tests/core/data/json_file_test.gd > test_list_json_files_is_sorted_and_filtered STARTED
+  res://tests/core/data/json_file_test.gd > test_list_json_files_is_sorted_and_filtered PASSED 10ms
+
+  res://tests/core/data/json_file_test.gd > test_list_json_files_on_missing_dir_is_empty_without_engine_error STARTED
+  res://tests/core/data/json_file_test.gd > test_list_json_files_on_missing_dir_is_empty_without_engine_error PASSED 10ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 113ms
+
+
+Run Test Suite: res://tests/core/data/json_merge_test.gd
+  res://tests/core/data/json_merge_test.gd > test_scalar_override_replaces_value STARTED
+  res://tests/core/data/json_merge_test.gd > test_scalar_override_replaces_value PASSED 7ms
+
+  res://tests/core/data/json_merge_test.gd > test_nested_dictionaries_keep_sibling_keys STARTED
+  res://tests/core/data/json_merge_test.gd > test_nested_dictionaries_keep_sibling_keys PASSED 7ms
+
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_base_is_kept STARTED
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_base_is_kept PASSED 7ms
+
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_override_is_added STARTED
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_override_is_added PASSED 7ms
+
+  res://tests/core/data/json_merge_test.gd > test_arrays_are_replaced_not_concatenated STARTED
+  res://tests/core/data/json_merge_test.gd > test_arrays_are_replaced_not_concatenated PASSED 7ms
+
+  res://tests/core/data/json_merge_test.gd > test_scalar_over_dictionary_replaces_it STARTED
+  res://tests/core/data/json_merge_test.gd > test_scalar_over_dictionary_replaces_it PASSED 7ms
+
+  res://tests/core/data/json_merge_test.gd > test_inputs_are_never_mutated STARTED
+  res://tests/core/data/json_merge_test.gd > test_inputs_are_never_mutated PASSED 6ms
+
+Statistics: 7 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 88ms
+
+
+Run Test Suite: res://tests/core/data/resource_json_codec_test.gd
+  res://tests/core/data/resource_json_codec_test.gd > test_schema_contains_only_exported_fields STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_schema_contains_only_exported_fields PASSED 7ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_neutral_defaults_are_zero_and_empty STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_neutral_defaults_are_zero_and_empty PASSED 5ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_accepts_integral_float STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_accepts_integral_float PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_fractional_float_and_keeps_previous_value STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_fractional_float_and_keeps_previous_value PASSED 7ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_string STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_string PASSED 7ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_bool_field_accepts_bool_and_rejects_number_and_string STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_bool_field_accepts_bool_and_rejects_number_and_string PASSED 5ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_a_warning_in_mod_mode STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_a_warning_in_mod_mode PASSED 7ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_an_error_in_base_mode STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_an_error_in_base_mode PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_typed_dictionary_is_validated_and_applied_with_assign STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_typed_dictionary_is_validated_and_applied_with_assign PASSED 7ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_to_dictionary_round_trip_through_apply STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_to_dictionary_round_trip_through_apply PASSED 7ms
+
+Statistics: 10 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 125ms
+
+
+Run Test Suite: res://tests/smoke_test.gd
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 STARTED
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 6ms
+
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt STARTED
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 6ms
+
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus STARTED
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 7ms
+
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 41ms
+
+
+Overall Summary: 40 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (7/7)
+Executed test cases : (40/40)
+Total execution time: 605ms
+ Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
+Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html
+Exit code: 0
+Run dispose test resources
+
+
+=== Step 5/7: gdUnit4 exit code ===
+gdUnit4 exit code 0: OK: all discovered tests passed
+
+=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
+JUnit report: C:\Users\Leo\Documents\RutaFragil\reports\report_1\results.xml
+Discovered tests: 40 (minimum required: 3)
+
+=== Step 7/7: Final verdict ===
+SUCCESS: all tests passed and 40 tests were discovered.
+
+exit code de la corrida 1: 0
+
+######################################################################
+# Corrida 2: bash tools/run_tests.sh
+# (códigos de color ANSI retirados para legibilidad; contenido intacto)
+######################################################################
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+Godot binary: C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/7: Clean reports directory ===
+Deleted previous reports: /c/Users/Leo/Documents/RutaFragil/reports
+Reports directory ready: /c/Users/Leo/Documents/RutaFragil/reports (with .gdignore)
+
+=== Step 3/7: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando diseño del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[ DONE ] loading_editor_layout
+
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando diseño del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[ DONE ] loading_editor_layout
+
+import pass 2 exit code: 0
+Class cache verified: /c/Users/Leo/Documents/RutaFragil/.godot/global_script_class_cache.cfg
+
+=== Step 4/7: Run gdUnit4 test suites ===
+Running: "C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe" --headless --path /c/Users/Leo/Documents/RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Scanning for test suites in: res://tests
+Installing GdUnit4 session system hooks.
+Session hook 'GdUnitHtmlTestReporter' installed.
+Session hook 'GdUnitXMLTestReporter' installed.
+Run Test Suite: res://tests/autoloads/game_config_autoload_test.gd
+  res://tests/autoloads/game_config_autoload_test.gd > test_autoload_exists_in_runner STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_autoload_exists_in_runner PASSED 93ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_data_and_tuning_are_present STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_data_and_tuning_are_present PASSED 93ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_max_players_comes_from_the_data STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_max_players_comes_from_the_data PASSED 91ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_emits_reloaded STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_emits_reloaded PASSED 96ms
+
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 870ms
+
+
+Run Test Suite: res://tests/core/data/data_mirror_test.gd
+  res://tests/core/data/data_mirror_test.gd > test_real_data_mirror_is_in_sync STARTED
+  res://tests/core/data/data_mirror_test.gd > test_real_data_mirror_is_in_sync PASSED 95ms
+
+  res://tests/core/data/data_mirror_test.gd > test_write_and_check_round_trip_in_temp_dir STARTED
+  res://tests/core/data/data_mirror_test.gd > test_write_and_check_round_trip_in_temp_dir PASSED 99ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 449ms
+
+
+Run Test Suite: res://tests/core/data/game_data_loader_test.gd
+  res://tests/core/data/game_data_loader_test.gd > test_base_only_loads_values STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_base_only_loads_values PASSED 105ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_reload_picks_up_json_rewrite_in_same_process STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_reload_picks_up_json_rewrite_in_same_process PASSED 98ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mod_overrides_base STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mod_overrides_base PASSED 51ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_two_mods_apply_in_alphabetical_order STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_two_mods_apply_in_alphabetical_order PASSED 81ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_partial_mod_preserves_untouched_siblings STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_partial_mod_preserves_untouched_siblings PASSED 99ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_error_is_rejected_entirely STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_error_is_rejected_entirely PASSED 97ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_invalid_base_json_marks_report_not_ok STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_invalid_base_json_marks_report_not_ok PASSED 95ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_real_res_data_loads_without_errors STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_real_res_data_loads_without_errors PASSED 100ms
+
+Statistics: 8 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 701ms
+
+
+Run Test Suite: res://tests/core/data/json_file_test.gd
+  res://tests/core/data/json_file_test.gd > test_read_valid_file_returns_object STARTED
+  res://tests/core/data/json_file_test.gd > test_read_valid_file_returns_object PASSED 83ms
+
+  res://tests/core/data/json_file_test.gd > test_missing_file_records_error_and_returns_empty STARTED
+  res://tests/core/data/json_file_test.gd > test_missing_file_records_error_and_returns_empty PASSED 96ms
+
+  res://tests/core/data/json_file_test.gd > test_malformed_json_reports_line_and_message STARTED
+  res://tests/core/data/json_file_test.gd > test_malformed_json_reports_line_and_message PASSED 94ms
+
+  res://tests/core/data/json_file_test.gd > test_root_array_is_rejected STARTED
+  res://tests/core/data/json_file_test.gd > test_root_array_is_rejected PASSED 94ms
+
+  res://tests/core/data/json_file_test.gd > test_list_json_files_is_sorted_and_filtered STARTED
+  res://tests/core/data/json_file_test.gd > test_list_json_files_is_sorted_and_filtered PASSED 95ms
+
+  res://tests/core/data/json_file_test.gd > test_list_json_files_on_missing_dir_is_empty_without_engine_error STARTED
+  res://tests/core/data/json_file_test.gd > test_list_json_files_on_missing_dir_is_empty_without_engine_error PASSED 77ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 307ms
+
+
+Run Test Suite: res://tests/core/data/json_merge_test.gd
+  res://tests/core/data/json_merge_test.gd > test_scalar_override_replaces_value STARTED
+  res://tests/core/data/json_merge_test.gd > test_scalar_override_replaces_value PASSED 95ms
+
+  res://tests/core/data/json_merge_test.gd > test_nested_dictionaries_keep_sibling_keys STARTED
+  res://tests/core/data/json_merge_test.gd > test_nested_dictionaries_keep_sibling_keys PASSED 91ms
+
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_base_is_kept STARTED
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_base_is_kept PASSED 92ms
+
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_override_is_added STARTED
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_override_is_added PASSED 92ms
+
+  res://tests/core/data/json_merge_test.gd > test_arrays_are_replaced_not_concatenated STARTED
+  res://tests/core/data/json_merge_test.gd > test_arrays_are_replaced_not_concatenated PASSED 93ms
+
+  res://tests/core/data/json_merge_test.gd > test_scalar_over_dictionary_replaces_it STARTED
+  res://tests/core/data/json_merge_test.gd > test_scalar_over_dictionary_replaces_it PASSED 75ms
+
+  res://tests/core/data/json_merge_test.gd > test_inputs_are_never_mutated STARTED
+  res://tests/core/data/json_merge_test.gd > test_inputs_are_never_mutated PASSED 77ms
+
+Statistics: 7 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 498ms
+
+
+Run Test Suite: res://tests/core/data/resource_json_codec_test.gd
+  res://tests/core/data/resource_json_codec_test.gd > test_schema_contains_only_exported_fields STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_schema_contains_only_exported_fields PASSED 78ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_neutral_defaults_are_zero_and_empty STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_neutral_defaults_are_zero_and_empty PASSED 63ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_accepts_integral_float STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_accepts_integral_float PASSED 76ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_fractional_float_and_keeps_previous_value STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_fractional_float_and_keeps_previous_value PASSED 91ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_string STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_string PASSED 93ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_bool_field_accepts_bool_and_rejects_number_and_string STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_bool_field_accepts_bool_and_rejects_number_and_string PASSED 92ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_a_warning_in_mod_mode STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_a_warning_in_mod_mode PASSED 90ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_an_error_in_base_mode STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_an_error_in_base_mode PASSED 77ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_typed_dictionary_is_validated_and_applied_with_assign STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_typed_dictionary_is_validated_and_applied_with_assign PASSED 90ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_to_dictionary_round_trip_through_apply STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_to_dictionary_round_trip_through_apply PASSED 78ms
+
+Statistics: 10 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 2s 50ms
+
+
+Run Test Suite: res://tests/smoke_test.gd
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 STARTED
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 16ms
+
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt STARTED
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 92ms
+
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus STARTED
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 93ms
+
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 572ms
+
+
+Overall Summary: 40 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (7/7)
+Executed test cases : (40/40)
+Total execution time: 8s 447ms
+ Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
+Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html
+Exit code: 0
+Run dispose test resources
+
+=== Step 5/7: gdUnit4 exit code ===
+gdUnit4 exit code 0: OK: all discovered tests passed
+
+=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
+JUnit report: /c/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
+Discovered tests: 40 (minimum required: 3)
+
+=== Step 7/7: Final verdict ===
+SUCCESS: all tests passed and 40 tests were discovered.
+
+exit code de la corrida 2: 0
+
+######################################################################
+# Listado de suites del reporte JUnit (reports/report_1/results.xml,
+# generado por la corrida 2). Comando de extracción:
+#   grep -o '<testsuite [^>]*' reports/report_1/results.xml
+# Conteo de casos: grep -c '<testcase' reports/report_1/results.xml
+######################################################################
+<testsuite id="0" name="game_config_autoload_test" package="tests/autoloads" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.870"
+<testsuite id="1" name="data_mirror_test" package="tests/core/data" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.449"
+<testsuite id="2" name="game_data_loader_test" package="tests/core/data" tests="8" failures="0" errors="0" skipped="0" flaky="0" time="1.701"
+<testsuite id="3" name="json_file_test" package="tests/core/data" tests="6" failures="0" errors="0" skipped="0" flaky="0" time="1.307"
+<testsuite id="4" name="json_merge_test" package="tests/core/data" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="1.498"
+<testsuite id="5" name="resource_json_codec_test" package="tests/core/data" tests="10" failures="0" errors="0" skipped="0" flaky="0" time="2.050"
+<testsuite id="6" name="smoke_test" package="tests" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.572"
+
+Total de <testcase> en results.xml: 40

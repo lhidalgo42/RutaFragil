@@ -1,0 +1,127 @@
+=== Evidencia 07_git.txt — M0-T0.2 ===
+Fecha de captura (UTC): 2026-09-10 02:21:21
+Máquina: Windows, Git Bash
+Rama: m0/t0.2-game-config — HEAD: e5fa554
+Comandos: git log --oneline main..HEAD; git status --short; git ls-files src data tests docs/datos; git diff --stat main..HEAD
+
+--- git log --oneline main..HEAD ---
+e5fa554 feat: GameConfig + TuningTable resources, JSON loader with mods fusion, autoload, tests (M0-T0.2)
+3c52438 docs: plan and round-1 prompt (M0-T0.2)
+exit code: 0
+
+--- git status --short ---
+?? docs/evidencia/M0-T0.2/
+exit code: 0
+(la única entrada es el directorio de evidencia nuevo, untracked; ningún archivo trackeado modificado)
+
+--- git ls-files src data tests docs/datos ---
+data/game_config.json
+data/game_config.tres
+data/tuning.json
+data/tuning.tres
+docs/datos/esquema_v1.md
+src/autoloads/game_config.gd
+src/autoloads/game_config.gd.uid
+src/biomes/.gitkeep
+src/core/.gitkeep
+src/core/data/data_load_report.gd
+src/core/data/data_load_report.gd.uid
+src/core/data/data_mirror.gd
+src/core/data/data_mirror.gd.uid
+src/core/data/game_config_data.gd
+src/core/data/game_config_data.gd.uid
+src/core/data/game_data_loader.gd
+src/core/data/game_data_loader.gd.uid
+src/core/data/json_file.gd
+src/core/data/json_file.gd.uid
+src/core/data/json_merge.gd
+src/core/data/json_merge.gd.uid
+src/core/data/resource_json_codec.gd
+src/core/data/resource_json_codec.gd.uid
+src/core/data/tuning_table.gd
+src/core/data/tuning_table.gd.uid
+src/crew/.gitkeep
+src/net/.gitkeep
+src/packages/.gitkeep
+src/tooling/import_data_mirror.gd
+src/tooling/import_data_mirror.gd.uid
+src/tooling/print_game_data.gd
+src/tooling/print_game_data.gd.uid
+src/tooling/write_data_mirror.gd
+src/tooling/write_data_mirror.gd.uid
+src/ui/.gitkeep
+src/vehicle/.gitkeep
+tests/autoloads/game_config_autoload_test.gd
+tests/autoloads/game_config_autoload_test.gd.uid
+tests/core/data/data_mirror_test.gd
+tests/core/data/data_mirror_test.gd.uid
+tests/core/data/fixtures/codec_fixture.gd
+tests/core/data/fixtures/codec_fixture.gd.uid
+tests/core/data/game_data_loader_test.gd
+tests/core/data/game_data_loader_test.gd.uid
+tests/core/data/json_file_test.gd
+tests/core/data/json_file_test.gd.uid
+tests/core/data/json_merge_test.gd
+tests/core/data/json_merge_test.gd.uid
+tests/core/data/resource_json_codec_test.gd
+tests/core/data/resource_json_codec_test.gd.uid
+tests/smoke_test.gd
+tests/smoke_test.gd.uid
+exit code: 0
+
+--- git diff --stat main..HEAD ---
+ BACKLOG.md                                       |   9 +-
+ DECISIONS.md                                     |   7 +-
+ README.md                                        |  25 ++-
+ data/.gitkeep                                    |   0
+ data/game_config.json                            |   7 +
+ data/game_config.tres                            |   9 ++
+ data/tuning.json                                 |  55 +++++++
+ data/tuning.tres                                 |  57 +++++++
+ docs/datos/esquema_v1.md                         | 164 +++++++++++++++++++
+ docs/planes/M0-T0.2_plan.md                      | 195 +++++++++++++++++++++++
+ docs/planes/M0-T0.2_ronda1_prompt.md             |  42 +++++
+ project.godot                                    |   4 +
+ src/autoloads/.gitkeep                           |   0
+ src/autoloads/game_config.gd                     |  37 +++++
+ src/autoloads/game_config.gd.uid                 |   1 +
+ src/core/data/data_load_report.gd                |  36 +++++
+ src/core/data/data_load_report.gd.uid            |   1 +
+ src/core/data/data_mirror.gd                     |  44 +++++
+ src/core/data/data_mirror.gd.uid                 |   1 +
+ src/core/data/game_config_data.gd                |  15 ++
+ src/core/data/game_config_data.gd.uid            |   1 +
+ src/core/data/game_data_loader.gd                | 148 +++++++++++++++++
+ src/core/data/game_data_loader.gd.uid            |   1 +
+ src/core/data/json_file.gd                       |  51 ++++++
+ src/core/data/json_file.gd.uid                   |   1 +
+ src/core/data/json_merge.gd                      |  25 +++
+ src/core/data/json_merge.gd.uid                  |   1 +
+ src/core/data/resource_json_codec.gd             | 181 +++++++++++++++++++++
+ src/core/data/resource_json_codec.gd.uid         |   1 +
+ src/core/data/tuning_table.gd                    |  63 ++++++++
+ src/core/data/tuning_table.gd.uid                |   1 +
+ src/tooling/import_data_mirror.gd                |  54 +++++++
+ src/tooling/import_data_mirror.gd.uid            |   1 +
+ src/tooling/print_game_data.gd                   |  30 ++++
+ src/tooling/print_game_data.gd.uid               |   1 +
+ src/tooling/write_data_mirror.gd                 |  38 +++++
+ src/tooling/write_data_mirror.gd.uid             |   1 +
+ tests/autoloads/game_config_autoload_test.gd     |  45 ++++++
+ tests/autoloads/game_config_autoload_test.gd.uid |   1 +
+ tests/core/data/data_mirror_test.gd              |  57 +++++++
+ tests/core/data/data_mirror_test.gd.uid          |   1 +
+ tests/core/data/fixtures/codec_fixture.gd        |  14 ++
+ tests/core/data/fixtures/codec_fixture.gd.uid    |   1 +
+ tests/core/data/game_data_loader_test.gd         | 126 +++++++++++++++
+ tests/core/data/game_data_loader_test.gd.uid     |   1 +
+ tests/core/data/json_file_test.gd                |  77 +++++++++
+ tests/core/data/json_file_test.gd.uid            |   1 +
+ tests/core/data/json_merge_test.gd               |  61 +++++++
+ tests/core/data/json_merge_test.gd.uid           |   1 +
+ tests/core/data/resource_json_codec_test.gd      | 164 +++++++++++++++++++
+ tests/core/data/resource_json_codec_test.gd.uid  |   1 +
+ 51 files changed, 1856 insertions(+), 3 deletions(-)
+exit code: 0
+
+Generado tras el commit e5fa554 y antes del commit de esta evidencia; el coordinador actualizará si el estado difiere.

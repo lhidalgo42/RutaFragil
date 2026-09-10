@@ -1,0 +1,114 @@
+=== Evidencia 05_mod_invalid.txt — M0-T0.2 ===
+Fecha de captura (UTC): 2026-09-10 02:19:38
+Máquina: Windows, Git Bash
+Criterio 3 a nivel de proceso: un mod con valor inválido y un mod con JSON
+malformado se RECHAZAN con warning; el juego carga con valores base y el
+proceso termina con código 0 (los mods inválidos son warnings, no errores).
+user:// en Windows = C:\Users\Leo\AppData\Roaming\Godot\app_userdata\RutaFragil\mods
+GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+
+Comandos ejecutados, en orden:
+  1) printf '{"tuning": {"starting_money": "mucho"}}' > "$APPDATA/Godot/app_userdata/RutaFragil/mods/bad_value.json"
+  2) printf '{"tuning": ' > "$APPDATA/Godot/app_userdata/RutaFragil/mods/bad_json.json"
+  3) timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/print_game_data.gd; echo $?
+  4) rm de ambos archivos
+
+######################################################################
+# Contenido de los dos mods inválidos (writes exit code: 0)
+######################################################################
+--- user://mods/bad_value.json ---
+{"tuning": {"starting_money": "mucho"}}
+--- user://mods/bad_json.json (malformado, truncado) ---
+{"tuning": 
+
+######################################################################
+# Corrida con ambos mods inválidos presentes
+######################################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{
+	"game_config": {
+		"max_players": 4,
+		"max_players_hard_limit": 8,
+		"schema_version": 1
+	}
+}
+{
+	"tuning": {
+		"barrel_liters_max": 30,
+		"barrel_liters_min": 10,
+		"base_pay": {
+			"aquatic": 140,
+			"floating": 100,
+			"fragile": 120,
+			"normal": 60
+		},
+		"bus_integrity_max": 100,
+		"bus_mass_kg": 3000,
+		"bus_wear_per_contract_max": 5,
+		"contract_destinations_max": 3,
+		"contract_destinations_min": 1,
+		"contract_packages_max": 5,
+		"contract_packages_min": 3,
+		"defeat_keep_fraction": 0.25,
+		"empty_jerrycans_per_route_max": 3,
+		"empty_jerrycans_per_route_min": 1,
+		"fuel_consumption_l_per_km": 4,
+		"fuel_mud_multiplier": 2.0,
+		"fuel_price_per_liter": 3,
+		"fuel_slope_multiplier": 1.5,
+		"fuel_tank_liters": 40,
+		"fuel_zones_per_route_max": 2,
+		"fuel_zones_per_route_min": 1,
+		"interaction_reach_m": 2.5,
+		"jerrycan_fill_seconds": 20.0,
+		"jerrycan_fill_seconds_two_players": 10.0,
+		"jerrycan_liters": 10,
+		"jerrycan_pour_seconds": 8.0,
+		"maintenance_cost": 150,
+		"player_jump_height_m": 1.0,
+		"player_sprint_speed_mps": 6.0,
+		"player_walk_speed_mps": 4.0,
+		"rent_every_contracts": 3,
+		"rent_increase_per_cycle": 0.15,
+		"rent_quota": 900,
+		"repair_cost_per_integrity_point": 3,
+		"route_km_max": 10,
+		"route_km_min": 6,
+		"shop_prices": {
+			"armor": 250,
+			"cushion": 30,
+			"float": 80,
+			"jerrycan": 40,
+			"kit": 100,
+			"medkit": 120
+		},
+		"starting_money": 500,
+		"target_minutes_max": 25,
+		"target_minutes_min": 15
+	}
+}
+data load: 4 applied, 2 warning(s), 0 error(s)
+  [applied] res://data/game_config.tres
+  [applied] res://data/game_config.json
+  [applied] res://data/tuning.tres
+  [applied] res://data/tuning.json
+  [warning] REJECTED mod:bad_json.json: user://mods/bad_json.json:0: Expected value, got 'EOF'
+  [warning] REJECTED mod:bad_value.json: key 'starting_money': expected an int, got String
+
+exit code del proceso (echo $?): 0
+
+Lectura del resultado:
+  - starting_money quedó en el valor base 500 (ningún mod se aplicó).
+  - El resumen lista 2 warnings y 0 errores:
+      REJECTED mod:bad_value.json (valor inválido: expected an int, got String)
+      REJECTED mod:bad_json.json  (malformado: línea 0, Expected value, got 'EOF')
+  - Exit code 0: los mods inválidos nunca tumban la carga (DataLoadReport.is_ok).
+
+######################################################################
+# Limpieza: rm de ambos archivos (exit code: 0); mods/ queda vacío
+######################################################################
+$ ls -la "$APPDATA/Godot/app_userdata/RutaFragil/mods"
+total 0
+drwxr-xr-x 1 Leo 197121 0 Sep  9 23:19 .
+drwxr-xr-x 1 Leo 197121 0 Sep  9 23:13 ..
