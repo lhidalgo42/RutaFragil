@@ -386,3 +386,164 @@ warning: in the working copy of 'docs/evidencia/M0-T0.2/06_mirror.txt', CRLF wil
 exit code: 0
 
 Sección post-commit capturada tras el commit de código de la ronda 3, commiteada en un commit de docs aparte.
+
+=== RONDA 3 POST-COMMIT (e3, parte 2) ===
+Fecha de captura (UTC): 2026-09-10 16:03:20
+Máquina: Windows, Git Bash
+Rama: m0/t0.2-game-config — HEAD: a30ae7a
+Estado capturado: DESPUÉS del commit de código de la ronda 3
+(a30ae7a, "fix: round 3 — MR1-MR3 test coverage, reload() signature, evidence
+recapture (M0-T0.2)"), que el coordinador hizo sobre la captura PRE-COMMIT de
+la sección anterior. El git log de abajo lista a30ae7a como primera entrada,
+como pide e3. git status sale LIMPIO: el commit incluyó también las evidencias
+recapturadas en la etapa 1 (02-08); la única modificación posterior es esta
+propia sección, escrita después de capturar el status (07 no se lista a sí
+mismo, igual que en la parte 1). Esta sección se commitea en un commit de
+docs aparte ("docs: evidence 07 post-commit (M0-T0.2)"), como en T0.1.
+Comandos: git log --oneline main..HEAD; git status --short;
+  git diff --stat main..HEAD; git ls-files src data tests docs/datos
+
+--- git log --oneline main..HEAD ---
+a30ae7a fix: round 3 — MR1-MR3 test coverage, reload() signature, evidence recapture (M0-T0.2)
+0645a87 docs: review 02, plan v1.1 and round-3 prompt (M0-T0.2)
+6656a8c fix: round 2 — M1-M4 coverage, loader error semantics, codec hardening, docs and evidence (M0-T0.2)
+98c7b77 docs: review 01 and round-2 prompt (M0-T0.2)
+73305e8 docs: execution evidence 01-08 (M0-T0.2)
+e5fa554 feat: GameConfig + TuningTable resources, JSON loader with mods fusion, autoload, tests (M0-T0.2)
+3c52438 docs: plan and round-1 prompt (M0-T0.2)
+exit code: 0
+
+--- git status --short (completo; vacío = árbol limpio tras a30ae7a) ---
+exit code: 0
+
+--- git diff --stat main..HEAD ---
+ BACKLOG.md                                       |  17 +-
+ DECISIONS.md                                     |   7 +-
+ README.md                                        |  36 +-
+ data/.gitkeep                                    |   0
+ data/game_config.json                            |   7 +
+ data/game_config.tres                            |   9 +
+ data/tuning.json                                 |  55 ++
+ data/tuning.tres                                 |  57 ++
+ docs/datos/esquema_v1.md                         | 178 +++++
+ docs/evidencia/M0-T0.2/01_versions.txt           |  21 +
+ docs/evidencia/M0-T0.2/02_run_tests.txt          | 814 +++++++++++++++++++++++
+ docs/evidencia/M0-T0.2/03_hot_edit.txt           | 274 ++++++++
+ docs/evidencia/M0-T0.2/04_mod_override.txt       | 182 +++++
+ docs/evidencia/M0-T0.2/05_mod_invalid.txt        | 137 ++++
+ docs/evidencia/M0-T0.2/06_mirror.txt             | 578 ++++++++++++++++
+ docs/evidencia/M0-T0.2/07_git.txt                | 388 +++++++++++
+ docs/evidencia/M0-T0.2/08_no_verificado.txt      | 133 ++++
+ docs/evidencia/M0-T0.2/09_no_data.txt            | 208 ++++++
+ docs/planes/M0-T0.2_plan.md                      | 210 ++++++
+ docs/planes/M0-T0.2_ronda1_prompt.md             |  42 ++
+ docs/planes/M0-T0.2_ronda2_prompt.md             |  59 ++
+ docs/planes/M0-T0.2_ronda3_prompt.md             |  47 ++
+ docs/revisiones/M0-T0.2_revision_01.md           |  99 +++
+ docs/revisiones/M0-T0.2_revision_02.md           |  86 +++
+ project.godot                                    |   4 +
+ src/autoloads/.gitkeep                           |   0
+ src/autoloads/game_config.gd                     |  46 ++
+ src/autoloads/game_config.gd.uid                 |   1 +
+ src/core/data/data_load_report.gd                |  36 +
+ src/core/data/data_load_report.gd.uid            |   1 +
+ src/core/data/data_mirror.gd                     |  45 ++
+ src/core/data/data_mirror.gd.uid                 |   1 +
+ src/core/data/game_config_data.gd                |  15 +
+ src/core/data/game_config_data.gd.uid            |   1 +
+ src/core/data/game_data_loader.gd                | 191 ++++++
+ src/core/data/game_data_loader.gd.uid            |   1 +
+ src/core/data/json_file.gd                       |  51 ++
+ src/core/data/json_file.gd.uid                   |   1 +
+ src/core/data/json_merge.gd                      |  25 +
+ src/core/data/json_merge.gd.uid                  |   1 +
+ src/core/data/resource_json_codec.gd             | 186 ++++++
+ src/core/data/resource_json_codec.gd.uid         |   1 +
+ src/core/data/tuning_table.gd                    |  63 ++
+ src/core/data/tuning_table.gd.uid                |   1 +
+ src/tooling/import_data_mirror.gd                |  63 ++
+ src/tooling/import_data_mirror.gd.uid            |   1 +
+ src/tooling/print_game_data.gd                   |  30 +
+ src/tooling/print_game_data.gd.uid               |   1 +
+ src/tooling/write_data_mirror.gd                 |  38 ++
+ src/tooling/write_data_mirror.gd.uid             |   1 +
+ tests/autoloads/game_config_autoload_test.gd     |  80 +++
+ tests/autoloads/game_config_autoload_test.gd.uid |   1 +
+ tests/core/data/data_load_report_test.gd         |  56 ++
+ tests/core/data/data_load_report_test.gd.uid     |   1 +
+ tests/core/data/data_mirror_test.gd              |  71 ++
+ tests/core/data/data_mirror_test.gd.uid          |   1 +
+ tests/core/data/fixtures/codec_fixture.gd        |  14 +
+ tests/core/data/fixtures/codec_fixture.gd.uid    |   1 +
+ tests/core/data/game_data_loader_test.gd         | 339 ++++++++++
+ tests/core/data/game_data_loader_test.gd.uid     |   1 +
+ tests/core/data/json_file_test.gd                |  82 +++
+ tests/core/data/json_file_test.gd.uid            |   1 +
+ tests/core/data/json_merge_test.gd               |  61 ++
+ tests/core/data/json_merge_test.gd.uid           |   1 +
+ tests/core/data/resource_json_codec_test.gd      | 231 +++++++
+ tests/core/data/resource_json_codec_test.gd.uid  |   1 +
+ 66 files changed, 5388 insertions(+), 3 deletions(-)
+exit code: 0
+
+--- git ls-files src data tests docs/datos ---
+data/game_config.json
+data/game_config.tres
+data/tuning.json
+data/tuning.tres
+docs/datos/esquema_v1.md
+src/autoloads/game_config.gd
+src/autoloads/game_config.gd.uid
+src/biomes/.gitkeep
+src/core/.gitkeep
+src/core/data/data_load_report.gd
+src/core/data/data_load_report.gd.uid
+src/core/data/data_mirror.gd
+src/core/data/data_mirror.gd.uid
+src/core/data/game_config_data.gd
+src/core/data/game_config_data.gd.uid
+src/core/data/game_data_loader.gd
+src/core/data/game_data_loader.gd.uid
+src/core/data/json_file.gd
+src/core/data/json_file.gd.uid
+src/core/data/json_merge.gd
+src/core/data/json_merge.gd.uid
+src/core/data/resource_json_codec.gd
+src/core/data/resource_json_codec.gd.uid
+src/core/data/tuning_table.gd
+src/core/data/tuning_table.gd.uid
+src/crew/.gitkeep
+src/net/.gitkeep
+src/packages/.gitkeep
+src/tooling/import_data_mirror.gd
+src/tooling/import_data_mirror.gd.uid
+src/tooling/print_game_data.gd
+src/tooling/print_game_data.gd.uid
+src/tooling/write_data_mirror.gd
+src/tooling/write_data_mirror.gd.uid
+src/ui/.gitkeep
+src/vehicle/.gitkeep
+tests/autoloads/game_config_autoload_test.gd
+tests/autoloads/game_config_autoload_test.gd.uid
+tests/core/data/data_load_report_test.gd
+tests/core/data/data_load_report_test.gd.uid
+tests/core/data/data_mirror_test.gd
+tests/core/data/data_mirror_test.gd.uid
+tests/core/data/fixtures/codec_fixture.gd
+tests/core/data/fixtures/codec_fixture.gd.uid
+tests/core/data/game_data_loader_test.gd
+tests/core/data/game_data_loader_test.gd.uid
+tests/core/data/json_file_test.gd
+tests/core/data/json_file_test.gd.uid
+tests/core/data/json_merge_test.gd
+tests/core/data/json_merge_test.gd.uid
+tests/core/data/resource_json_codec_test.gd
+tests/core/data/resource_json_codec_test.gd.uid
+tests/smoke_test.gd
+tests/smoke_test.gd.uid
+exit code: 0
+
+Cierre de e3: la parte 1 (PRE-COMMIT) quedó commiteada dentro del commit de
+código a30ae7a y esta parte 2 (POST-COMMIT) lo lista en su git log, con el
+árbol limpio. La recaptura de evidencias de la etapa 1 también quedó dentro de
+a30ae7a (el commit las incluyó junto al código de la ronda 3).
