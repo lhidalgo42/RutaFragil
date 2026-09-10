@@ -210,3 +210,22 @@ func test_string_field_rejects_non_string_and_keeps_previous_value() -> void:
 	if label_v is String:
 		var label: String = label_v
 		assert_str(label).is_equal("original")
+
+
+func test_mc2_int_field_rejects_non_finite_float() -> void:
+	# mc2: JSON "1e400" parses to +inf; the finitude guard must reject it
+	# before roundi(), whose result is undefined for non-finite floats.
+	var json: JSON = JSON.new()
+	assert_int(json.parse("{\"starting_money\": 1e400}")).is_equal(OK)
+	var data_v: Variant = json.data
+	assert_bool(data_v is Dictionary).is_true()
+	if data_v is Dictionary:
+		var raw: Dictionary = data_v
+		var tuning: TuningTable = TuningTable.new()
+		var report: DataLoadReport = DataLoadReport.new()
+		var valid: Dictionary = ResourceJsonCodec.validate(tuning, raw, report, "test", true)
+		assert_bool(report.is_ok()).is_false()
+		assert_dict(valid).is_empty()
+		assert_str(report.errors[0]).is_equal(
+			"test: key 'starting_money': expected a finite int64-range number, got inf"
+		)

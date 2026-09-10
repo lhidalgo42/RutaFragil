@@ -77,6 +77,7 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **`schema_version` sin comprobar en v1:** se carga pero nadie lo valida ni hay migración; informativo hasta que exista una v2 del esquema.
 - **Contradicción §13/§19 (reportada, decidir en T3.1):** §13 exige IDs con namespace para el contenido y §19 sitúa `base_pay` dentro de `PackageDefinition`, mientras v1 lo lleva plano en `TuningTable`. Decidir el dueño único de `base_pay` y su mapeo a IDs.
 - **`reload()` reemplaza los objetos `data`/`tuning`:** los consumidores que guarden referencias a los Resources deben reengancharse en la señal `reloaded(report)` (T0.3+).
+- **Observación:** editor con ventana: un segmentation fault al cerrar observado una vez bajo `timeout` (2026-09-10), no reproducido en dos intentos sin `timeout`; bug de apagado de 4.7 con plugins, fix en 4.8; sin acción.
 
 ## Cerrados en las rondas 2 y 3 de M0-T0.1
 

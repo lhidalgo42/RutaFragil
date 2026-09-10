@@ -1,9 +1,15 @@
-=== Evidencia 03_hot_edit.txt — M0-T0.2 ===
-Fecha de captura (UTC): 2026-09-10 02:17:16
+=== Evidencia 03_hot_edit.txt — M0-T0.2 (ronda 3, recaptura) ===
+Fecha de captura (UTC): 2026-09-10 15:47:58
 Máquina: Windows, Git Bash
 Criterio 1 a nivel de proceso: editar data/tuning.json y rerunnar la herramienta
 CLI recoge el cambio SIN abrir el editor de Godot.
 GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+
+Recaptura de la ronda 3 (e6): el volcado muestra el contenido vigente de HEAD
+(6656a8c, ronda 2 commiteada): la clave renombrada bus_integrity_max_loss_per_contract
+y fuel_consumption_l_per_km como float 4.0. Antes de la captura se verificó
+git status --short -- data/ vacío (data/ limpio en HEAD), así que el
+git checkout -- del paso 4 restaura exactamente el estado correcto.
 
 Comandos ejecutados, en orden:
   1) timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/print_game_data.gd
@@ -36,8 +42,8 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 			"normal": 60
 		},
 		"bus_integrity_max": 100,
+		"bus_integrity_max_loss_per_contract": 5,
 		"bus_mass_kg": 3000,
-		"bus_wear_per_contract_max": 5,
 		"contract_destinations_max": 3,
 		"contract_destinations_min": 1,
 		"contract_packages_max": 5,
@@ -45,7 +51,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 		"defeat_keep_fraction": 0.25,
 		"empty_jerrycans_per_route_max": 3,
 		"empty_jerrycans_per_route_min": 1,
-		"fuel_consumption_l_per_km": 4,
+		"fuel_consumption_l_per_km": 4.0,
 		"fuel_mud_multiplier": 2.0,
 		"fuel_price_per_liter": 3,
 		"fuel_slope_multiplier": 1.5,
@@ -117,8 +123,8 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 			"normal": 60
 		},
 		"bus_integrity_max": 100,
+		"bus_integrity_max_loss_per_contract": 5,
 		"bus_mass_kg": 3000,
-		"bus_wear_per_contract_max": 5,
 		"contract_destinations_max": 3,
 		"contract_destinations_min": 1,
 		"contract_packages_max": 5,
@@ -126,7 +132,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 		"defeat_keep_fraction": 0.25,
 		"empty_jerrycans_per_route_max": 3,
 		"empty_jerrycans_per_route_min": 1,
-		"fuel_consumption_l_per_km": 4,
+		"fuel_consumption_l_per_km": 4.0,
 		"fuel_mud_multiplier": 2.0,
 		"fuel_price_per_liter": 3,
 		"fuel_slope_multiplier": 1.5,
@@ -198,8 +204,8 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 			"normal": 60
 		},
 		"bus_integrity_max": 100,
+		"bus_integrity_max_loss_per_contract": 5,
 		"bus_mass_kg": 3000,
-		"bus_wear_per_contract_max": 5,
 		"contract_destinations_max": 3,
 		"contract_destinations_min": 1,
 		"contract_packages_max": 5,
@@ -207,7 +213,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 		"defeat_keep_fraction": 0.25,
 		"empty_jerrycans_per_route_max": 3,
 		"empty_jerrycans_per_route_min": 1,
-		"fuel_consumption_l_per_km": 4,
+		"fuel_consumption_l_per_km": 4.0,
 		"fuel_mud_multiplier": 2.0,
 		"fuel_price_per_liter": 3,
 		"fuel_slope_multiplier": 1.5,
@@ -252,7 +258,17 @@ exit code: 0
 ######################################################################
 # git status --short final
 ######################################################################
-?? docs/evidencia/M0-T0.2/
+ M BACKLOG.md
+ M DECISIONS.md
+ M README.md
+ M docs/datos/esquema_v1.md
+ M src/autoloads/game_config.gd
+ M src/core/data/game_data_loader.gd
+ M tests/autoloads/game_config_autoload_test.gd
+ M tests/core/data/game_data_loader_test.gd
+ M tests/core/data/resource_json_codec_test.gd
 
-Sin cambios en archivos trackeados: data/tuning.json quedó restaurado a 500.
-La única entrada es el directorio de evidencia nuevo (untracked), esperado en esta fase.
+Sin cambios en data/: tuning.json quedó restaurado a 500 (exit 0 en las tres
+corridas). Las entradas M son el trabajo de código/tests/docs de la ronda 3
+aún sin commitear (lo comete el coordinador tras esta etapa); ninguna es de
+data/ ni de esta evidencia, que aún no estaba escrita al capturar el status.

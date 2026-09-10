@@ -1,11 +1,22 @@
-=== Evidencia 05_mod_invalid.txt — M0-T0.2 ===
-Fecha de captura (UTC): 2026-09-10 02:19:38
+=== Evidencia 05_mod_invalid.txt — M0-T0.2 (ronda 3, recaptura) ===
+Fecha de captura (UTC): 2026-09-10 15:52:01
 Máquina: Windows, Git Bash
 Criterio 3 a nivel de proceso: un mod con valor inválido y un mod con JSON
 malformado se RECHAZAN con warning; el juego carga con valores base y el
 proceso termina con código 0 (los mods inválidos son warnings, no errores).
 user:// en Windows = C:\Users\Leo\AppData\Roaming\Godot\app_userdata\RutaFragil\mods
 GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+
+Recaptura de la ronda 3 (e6): el volcado muestra el contenido vigente de HEAD
+(6656a8c): bus_integrity_max_loss_per_contract y fuel_consumption_l_per_km 4.0.
+
+NUEVO respecto a las rondas 1-2 (anotación esperada, no anomalía): el volcado
+incluye dos líneas "WARNING: REJECTED mod:..." con su backtrace. Es el
+push_warning del autoload GameConfig (src/autoloads/game_config.gd:35, llamado
+desde _ready:26), comportamiento M4 introducido en la ronda 2: en modo -s con
+print_game_data.gd los autoloads SÍ se instancian, así que cada warning del
+reporte se imprime además como WARNING del motor. El resumen "data load:" que
+imprime la herramienta lista los mismos dos REJECTED con su etiqueta [warning].
 
 Comandos ejecutados, en orden:
   1) printf '{"tuning": {"starting_money": "mucho"}}' > "$APPDATA/Godot/app_userdata/RutaFragil/mods/bad_value.json"
@@ -44,8 +55,8 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 			"normal": 60
 		},
 		"bus_integrity_max": 100,
+		"bus_integrity_max_loss_per_contract": 5,
 		"bus_mass_kg": 3000,
-		"bus_wear_per_contract_max": 5,
 		"contract_destinations_max": 3,
 		"contract_destinations_min": 1,
 		"contract_packages_max": 5,
@@ -53,7 +64,7 @@ Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 		"defeat_keep_fraction": 0.25,
 		"empty_jerrycans_per_route_max": 3,
 		"empty_jerrycans_per_route_min": 1,
-		"fuel_consumption_l_per_km": 4,
+		"fuel_consumption_l_per_km": 4.0,
 		"fuel_mud_multiplier": 2.0,
 		"fuel_price_per_liter": 3,
 		"fuel_slope_multiplier": 1.5,
@@ -95,7 +106,16 @@ data load: 4 applied, 2 warning(s), 0 error(s)
   [applied] res://data/tuning.json
   [warning] REJECTED mod:bad_json.json: user://mods/bad_json.json:0: Expected value, got 'EOF'
   [warning] REJECTED mod:bad_value.json: key 'starting_money': expected an int, got String
-
+WARNING: REJECTED mod:bad_json.json: user://mods/bad_json.json:0: Expected value, got 'EOF'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] reload (res://src/autoloads/game_config.gd:35)
+       [1] _ready (res://src/autoloads/game_config.gd:26)
+WARNING: REJECTED mod:bad_value.json: key 'starting_money': expected an int, got String
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] reload (res://src/autoloads/game_config.gd:35)
+       [1] _ready (res://src/autoloads/game_config.gd:26)
 exit code del proceso (echo $?): 0
 
 Lectura del resultado:
@@ -103,6 +123,9 @@ Lectura del resultado:
   - El resumen lista 2 warnings y 0 errores:
       REJECTED mod:bad_value.json (valor inválido: expected an int, got String)
       REJECTED mod:bad_json.json  (malformado: línea 0, Expected value, got 'EOF')
+  - Las dos líneas "WARNING: REJECTED ..." con backtrace a
+    game_config.gd:35 <- _ready:26 son el push_warning del autoload (M4),
+    salida esperada desde la ronda 2; no son un fallo del proceso.
   - Exit code 0: los mods inválidos nunca tumban la carga (DataLoadReport.is_ok).
 
 ######################################################################
@@ -110,5 +133,5 @@ Lectura del resultado:
 ######################################################################
 $ ls -la "$APPDATA/Godot/app_userdata/RutaFragil/mods"
 total 0
-drwxr-xr-x 1 Leo 197121 0 Sep  9 23:19 .
-drwxr-xr-x 1 Leo 197121 0 Sep  9 23:13 ..
+drwxr-xr-x 1 Leo 197121 0 Sep 10 12:52 .
+drwxr-xr-x 1 Leo 197121 0 Sep 10 12:41 ..

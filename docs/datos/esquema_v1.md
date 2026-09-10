@@ -7,9 +7,9 @@
 
 - **Esquema en código** (R2, D44): los Resources `GameConfigData` (`src/core/data/game_config_data.gd`) y `TuningTable` (`src/core/data/tuning_table.gd`) declaran cada campo como `@export` con **defaults neutros** (`0`, `0.0`, `{}`). Ningún valor de §8.1 vive en un `.gd`: `TuningTable.new().starting_money == 0`.
 - **Valores en datos** (D44), ambos versionados en `res://data/`:
-  - `game_config.tres` / `tuning.tres` — artefacto **autoritativo para el editor** (R2, R14: texto, con `script_class`). En caliente gana la **última capa** aplicada (el JSON base va encima del `.tres`); el test de deriva impide que lleguen distintos al repo. Los `.tres` se regeneran **solo con la herramienta** (`import_data_mirror.gd`): no guardar desde el Inspector (un guardado manual añadiría `uid` y la herramienta lo quitaría).
+  - `game_config.tres` / `tuning.tres` — artefacto **autoritativo para el editor/Inspector** (R2, R14: texto, con `script_class`). En caliente gana la **última capa** aplicada (el JSON base va encima del `.tres`); el test de deriva impide que lleguen distintos al repo. Los `.tres` se regeneran **solo con la herramienta** (`import_data_mirror.gd`): no guardar desde el Inspector (un guardado manual añadiría `uid` y la herramienta lo quitaría).
   - `game_config.json` / `tuning.json` — espejo JSON: formato de modding y edición en caliente. Un test de deriva exige igualdad `.tres` = JSON; dos herramientas headless sincronizan en ambos sentidos (ver README, "Datos y mods").
-- **Autoload** `GameConfig` (`src/autoloads/game_config.gd`, D43): expone `data: GameConfigData`, `tuning: TuningTable`, la propiedad delegada `max_players` (la expresión literal de R1, `GameConfig.max_players`), `reload() -> DataLoadReport` y la señal `reloaded(report)` (D46).
+- **Autoload** `GameConfig` (`src/autoloads/game_config.gd`, D43): expone `data: GameConfigData`, `tuning: TuningTable`, la propiedad delegada `max_players` (la expresión literal de R1, `GameConfig.max_players`), `reload(base_dir: String = "res://data", mods_dir: String = "user://mods") -> DataLoadReport` (los argumentos existen para pruebas; el juego usa los defaults) y la señal `reloaded(report)` (D46).
 - **Mods** (§13): archivos planos `user://mods/*.json`, aplicados en **orden de bytes (ASCII)** — `B.json` < `a.json`; se recomienda minúsculas en los nombres de archivo de mod.
 
 ## 2. El sobre (envelope) por documento
@@ -122,7 +122,7 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 
 **Orden de carga** (cada capa se fusiona sobre el resultado de la anterior):
 
-1. `res://data/<doc>.tres` (valores base autoritativos).
+1. `res://data/<doc>.tres` (valores base autoritativos **para el editor/Inspector**; en caliente gana la última capa; el test de deriva mantiene `.tres` y espejo iguales).
 2. `res://data/<doc>.json` (espejo; edición en caliente de desarrollo).
 3. `user://mods/*.json` en **orden de bytes (ASCII)** (`aa.json` antes que `zz.json`, pero `B.json` antes que `a.json`: las mayúsculas van primero; el último en aplicar gana). Recomendación: minúsculas en los nombres de archivo de mod.
 
@@ -141,11 +141,15 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 
 **Rechazo, claves desconocidas y política de errores:**
 
-- Un archivo de mod con **cualquier** error (JSON malformado, tipo inválido, raíz no-objeto) se **rechaza entero** y queda listado en el reporte de carga: un archivo aplica completo o no aplica.
-- Clave desconocida: **aviso** en mods, **error** en la base.
+- Un archivo de mod con **cualquier** error (JSON malformado, tipo inválido, raíz no-objeto, clave de sección no-string, sección que no es objeto) se **rechaza entero** y queda listado en el reporte de carga: **un archivo con errores no aplica nada; un archivo sin errores aplica todas sus secciones conocidas (aunque sean cero)**.
+- Un mod `{}` bien formado **no es rechazo**: aviso "no sections; nothing to apply" y el archivo entra igual en `applied_files` (aplica cero secciones).
+- Un mod con **solo secciones desconocidas** tampoco es rechazo: un aviso "unknown section … ignored" por cada una y el archivo entra en `applied_files` sin tocar ningún valor.
+- Clave desconocida dentro de una sección conocida: **aviso** en mods, **error** en la base.
+- `.tres` de **clase equivocada** (el recurso no es de la clase del documento): **error** `tres:<ruta>` y la capa se omite.
+- Base JSON `{}` o **sin la sección `<doc>`**: **error** "missing object section" (`base:<ruta>`) y la capa se omite.
 - Base JSON inválido: la capa se omite, `is_ok()` pasa a falso y el juego sigue con los valores del `.tres`.
 - Un documento **sin ninguna capa aplicada** (ni `.tres` ni JSON base) es **error**, no aviso: es un fallo de integridad de los datos, no un problema de mod.
-- La API del reporte es `is_ok()`. El `push_error` vive solo en el autoload (`_ready`/`reload()`) y se emite si `!is_ok()`; el autoload además emite un `push_warning` por cada aviso del reporte, así los modders ven sus rechazos.
+- La API del reporte es `is_ok()`. El `push_error` **del reporte** vive en el autoload (`_ready`/`reload()`) y se emite si `!is_ok()`; los demás `push_error` del código son de rutas de bug (p. ej. id de documento desconocido en el loader), no del reporte. El autoload además emite un `push_warning` por cada aviso del reporte, así los modders ven sus rechazos.
 - `print_game_data` (`src/tooling/print_game_data.gd`) termina con código de salida 1 si `!is_ok()`.
 
 ## 6. Ejemplo de mod

@@ -10,6 +10,10 @@ func _autoload() -> Node:
 	return get_tree().root.get_node_or_null("GameConfig")
 
 
+func _write_json(path: String, text: String) -> void:
+	assert_int(JsonFile.write_text(path, text)).is_equal(OK)
+
+
 func test_autoload_exists_in_runner() -> void:
 	# If the autoload script fails to load, the runner continues without it:
 	# this test is what catches that situation.
@@ -43,3 +47,34 @@ func test_reload_emits_reloaded() -> void:
 	emitter.call("reload")
 	# The signal carries the report, so the match needs one any() argument.
 	await assert_signal(emitter).is_emitted("reloaded", any())
+
+
+func test_reload_push_warning_on_rejected_mod() -> void:
+	# MR3: a rejected mod must surface as a push_warning with the REJECTED
+	# text, so a modder sees it in the console. Own instance, never added to
+	# the tree: _ready() must not run the real res://data load, reload() is
+	# driven by hand with the injected directories.
+	var base_dir: String = create_temp_dir("autoload_reject_base")
+	var mods_dir: String = create_temp_dir("autoload_reject_mods")
+	_write_json(base_dir + "/game_config.json", "{\"game_config\": {\"max_players\": 6}}")
+	_write_json(base_dir + "/tuning.json", "{\"tuning\": {\"starting_money\": 500}}")
+	_write_json(mods_dir + "/bad.json", "{\"tuning\": {\"starting_money\": \"mucho\"}}")
+	var node: Node = auto_free(load("res://src/autoloads/game_config.gd").new())
+	await assert_error(func() -> void: node.call("reload", base_dir, mods_dir)).is_push_warning(
+		"REJECTED mod:bad.json: key 'starting_money': expected an int, got String"
+	)
+
+
+func test_reload_push_error_on_empty_dirs() -> void:
+	# MR3: with no data at all the report fails (M4) and the autoload raises
+	# it as a push_error carrying the report summary.
+	var base_dir: String = create_temp_dir("autoload_empty_base")
+	var mods_dir: String = create_temp_dir("autoload_empty_mods")
+	var node: Node = auto_free(load("res://src/autoloads/game_config.gd").new())
+	await assert_error(func() -> void: node.call("reload", base_dir, mods_dir)).is_push_error(
+		(
+			"data load: 0 applied, 0 warning(s), 2 error(s)"
+			+ "\n  [error] doc:game_config: no .tres or base .json layer applied"
+			+ "\n  [error] doc:tuning: no .tres or base .json layer applied"
+		)
+	)

@@ -200,20 +200,28 @@ func test_base_json_wins_over_tres_layer() -> void:
 	assert_int(report.applied_files.size()).is_equal(3)
 
 
-func test_invalid_base_json_marks_report_not_ok() -> void:
-	# M1(c): broken base JSON omits the layer and fails the report, but the
-	# game keeps the .tres values (D45).
+func test_invalid_base_json_error_points_at_the_truncated_file() -> void:
+	# M1(c): a broken base JSON omits the layer and fails the report, but the
+	# game keeps the .tres values (D45). The game_config base layer is present
+	# on purpose: with it, the single reported error must come from the
+	# truncated tuning.json itself and not from a document with no layer (M4).
 	var base_dir: String = create_temp_dir("loader_bad_base_base")
 	var mods_dir: String = create_temp_dir("loader_bad_base_mods")
+	_write_base_game_config(base_dir)
 	_write_tuning_tres(base_dir, 321)
 	_write_json(base_dir + "/tuning.json", "{\"tuning\": ")
 	var loader: GameDataLoader = GameDataLoader.new(base_dir, mods_dir)
 	var report: DataLoadReport = loader.load_all()
 	assert_bool(report.is_ok()).is_false()
 	assert_int(loader.tuning.starting_money).is_equal(321)
+	assert_int(report.errors.size()).is_equal(1)
+	assert_bool(
+		report.errors[0].begins_with("base:" + base_dir + "/tuning.json")
+	).is_true()
 	var applied: PackedStringArray = report.applied_files
-	assert_int(applied.size()).is_equal(1)
-	assert_str(applied[0]).is_equal(base_dir + "/tuning.tres")
+	assert_int(applied.size()).is_equal(2)
+	assert_str(applied[0]).is_equal(base_dir + "/game_config.json")
+	assert_str(applied[1]).is_equal(base_dir + "/tuning.tres")
 
 
 func test_tres_layer_reload_rereads_the_file() -> void:
@@ -232,6 +240,87 @@ func test_tres_layer_reload_rereads_the_file() -> void:
 	var second_report: DataLoadReport = loader.load_all()
 	assert_bool(second_report.is_ok()).is_true()
 	assert_int(loader.tuning.starting_money).is_equal(654)
+
+
+func test_empty_dirs_fail_with_one_error_per_document() -> void:
+	# M4 (MR1): with no data at all, every document reports its own load
+	# error; without data the game would otherwise run on zeroes in silence.
+	var base_dir: String = create_temp_dir("loader_empty_base")
+	var mods_dir: String = create_temp_dir("loader_empty_mods")
+	var loader: GameDataLoader = GameDataLoader.new(base_dir, mods_dir)
+	var report: DataLoadReport = loader.load_all()
+	assert_bool(report.is_ok()).is_false()
+	assert_int(report.errors.size()).is_equal(2)
+	# DOCS iterates game_config first, then tuning.
+	assert_str(report.errors[0]).is_equal(
+		"doc:game_config: no .tres or base .json layer applied"
+	)
+	assert_str(report.errors[1]).is_equal("doc:tuning: no .tres or base .json layer applied")
+	assert_int(report.applied_files.size()).is_equal(0)
+
+
+func test_mc1a_empty_object_base_json_is_an_error() -> void:
+	# mc1: a base JSON of "{}" parses fine but carries no document section, so
+	# it is a load error naming the file, and the document still counts as
+	# having no applied layer (M4).
+	var base_dir: String = create_temp_dir("loader_mc1a_base")
+	var mods_dir: String = create_temp_dir("loader_mc1a_mods")
+	_write_json(base_dir + "/game_config.json", "{}")
+	_write_json(base_dir + "/tuning.json", "{\"tuning\": {\"starting_money\": 500}}")
+	var loader: GameDataLoader = GameDataLoader.new(base_dir, mods_dir)
+	var report: DataLoadReport = loader.load_all()
+	assert_bool(report.is_ok()).is_false()
+	assert_int(report.errors.size()).is_equal(2)
+	assert_str(report.errors[0]).is_equal(
+		"base:" + base_dir + "/game_config.json: missing object section 'game_config'"
+	)
+	assert_str(report.errors[1]).is_equal(
+		"doc:game_config: no .tres or base .json layer applied"
+	)
+	assert_int(loader.tuning.starting_money).is_equal(500)
+
+
+func test_mc1b_empty_object_mod_applies_with_a_warning() -> void:
+	# mc1: a mod of "{}" is well-formed and empty, not a rejection: it lands
+	# in applied_files with a "no sections" warning and changes nothing.
+	var base_dir: String = create_temp_dir("loader_mc1b_base")
+	var mods_dir: String = create_temp_dir("loader_mc1b_mods")
+	_write_base_game_config(base_dir)
+	_write_json(base_dir + "/tuning.json", "{\"tuning\": {\"starting_money\": 500}}")
+	_write_json(mods_dir + "/empty.json", "{}")
+	var loader: GameDataLoader = GameDataLoader.new(base_dir, mods_dir)
+	var report: DataLoadReport = loader.load_all()
+	assert_bool(report.is_ok()).is_true()
+	assert_int(loader.tuning.starting_money).is_equal(500)
+	assert_int(report.warnings.size()).is_equal(1)
+	assert_str(report.warnings[0]).is_equal("mod:empty.json: no sections; nothing to apply")
+	var applied: PackedStringArray = report.applied_files
+	assert_int(applied.size()).is_equal(3)
+	assert_str(applied[2]).is_equal(mods_dir + "/empty.json")
+
+
+func test_mc3_tres_of_wrong_class_is_an_error() -> void:
+	# mc3: a .tres holding another document class must not merge foreign keys
+	# into the document; the layer is rejected as an error and the base JSON
+	# still applies.
+	var base_dir: String = create_temp_dir("loader_mc3_base")
+	var mods_dir: String = create_temp_dir("loader_mc3_mods")
+	_write_base_game_config(base_dir)
+	_write_json(base_dir + "/tuning.json", "{\"tuning\": {\"starting_money\": 500}}")
+	assert_int(
+		ResourceSaver.save(GameConfigData.new(), base_dir + "/tuning.tres")
+	).is_equal(OK)
+	var loader: GameDataLoader = GameDataLoader.new(base_dir, mods_dir)
+	var report: DataLoadReport = loader.load_all()
+	assert_bool(report.is_ok()).is_false()
+	assert_int(report.errors.size()).is_equal(1)
+	assert_str(report.errors[0]).is_equal(
+		(
+			"tres:" + base_dir + "/tuning.tres:"
+			+ " resource is not a res://src/core/data/tuning_table.gd"
+		)
+	)
+	assert_int(loader.tuning.starting_money).is_equal(500)
 
 
 func test_real_res_data_loads_without_errors() -> void:

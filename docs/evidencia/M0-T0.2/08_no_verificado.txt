@@ -1,5 +1,5 @@
-=== Evidencia 08_no_verificado.txt — M0-T0.2 (ronda 2, actualizada) ===
-Fecha de captura (UTC): 2026-09-10 14:59:50
+=== Evidencia 08_no_verificado.txt — M0-T0.2 (ronda 3, actualizada) ===
+Fecha de captura (UTC): 2026-09-10 15:59:26
 Máquina: Windows, Git Bash
 
 Lista explícita de lo NO verificado en esta tarea (regla R7: si un criterio no
@@ -7,8 +7,8 @@ se puede probar desde CLI/editor headless, se dice; nunca se marca). Nada de lo
 siguiente fue comprobado por el agente; corresponde al gate humano (§0.7) o a
 tareas futuras.
 
-Hechos que la revisión 01 dejó sobre la mesa y SÍ quedaron verificados
-(no son pendientes; se registran aquí para que la lista se lea completa):
+Hechos verificados por test o por evidencia (no son pendientes; se registran
+aquí para que la lista se lea completa):
 
   V1. Dictionary == es estricta int/float también en los VALORES (no solo en
       las claves), verificado en 4.7.2. Por eso check_mirror NO compara el
@@ -24,12 +24,29 @@ Hechos que la revisión 01 dejó sobre la mesa y SÍ quedaron verificados
       .json en disco es BYTE-IDÉNTICO a la salida de write_mirror
       (tests/core/data/data_mirror_test.gd, bloque mt6), así que la
       comparación semántica no puede enmascarar deriva de formato.
-  V2. Los dos .gitkeep borrados en la ronda 2 (data/.gitkeep y
-      src/autoloads/.gitkeep) eran placeholders vacíos (0 bytes, sin
+  V2. Los dos .gitkeep borrados (data/.gitkeep y src/autoloads/.gitkeep) se
+      borraron en e5fa554 (RONDA 1 — corregido en ronda 3, e5: esta entrada
+      decía "ronda 2" por error). Eran placeholders vacíos (0 bytes, sin
       contenido): su borrado se declaró bajo R12 y ambos directorios ya
       contienen archivos reales trackeados. Verificable en 07_git.txt:
       git ls-files ya no los lista y el diff contra main los muestra con
       0 líneas cambiadas.
+  V3. La rama push_warning del autoload (game_config.gd:35, cada warning del
+      reporte se imprime con push_warning, M4) SÍ está verificada por test
+      desde la ronda 3 (MR3 — e5: antes figuraba solo como laguna):
+      test_reload_push_warning_on_rejected_mod afirma el push_warning con el
+      texto exacto "REJECTED mod:bad.json: key 'starting_money': expected an
+      int, got String", y test_reload_push_error_on_empty_dirs afirma el
+      push_error con el summary completo del reporte (game_config.gd:37).
+      Ambos en tests/autoloads/game_config_autoload_test.gd, verdes en los
+      dos arneses (evidencia 02). A nivel de proceso, las líneas WARNING del
+      autoload quedan además visibles en la evidencia 05.
+  V4. Las rutas nuevas de la ronda 2-3 que la revisión 02 marcó sin test ya
+      tienen test, todos verdes en evidencia 02: MR1 (sin datos:
+      test_empty_dirs_fail_with_one_error_per_document), MR2 (M1c:
+      test_invalid_base_json_error_points_at_the_truncated_file), mc1a/mc1b
+      ({} como base / como mod), mc2 (1e400 no finito), mc3 (.tres de clase
+      equivocada).
 
 NO verificado (sigue pendiente del gate humano o de tareas futuras):
 
@@ -46,7 +63,7 @@ NO verificado (sigue pendiente del gate humano o de tareas futuras):
 
 3. Inspector del editor mostrando data/tuning.tres con los valores de §8.1
    (con la clave renombrada bus_integrity_max_loss_per_contract y
-   fuel_consumption_l_per_km como float, según la ronda 2).
+   fuel_consumption_l_per_km como float, vigente desde la ronda 2).
    Verificación visual con el editor abierto: la hace el dueño en el gate.
    En headless no existe Inspector; lo que sí quedó probado por CLI es que el
    .tres y el .json contienen los mismos valores (test de deriva, evidencia 06)
@@ -61,22 +78,24 @@ NO verificado (sigue pendiente del gate humano o de tareas futuras):
 
 5. Recarga en caliente dentro de una escena de juego corriendo con ventana.
    GameConfig.reload() y la señal reloaded(report) quedan ejercitados por el
-   test de autoload en headless (game_config_autoload_test, 4 tests en verde),
-   pero no se corrió una escena jugable con ventana: las pruebas fueron todas
-   headless. Nada de game feel ni presentación visual es medible aquí (§0.8).
+   test de autoload en headless (game_config_autoload_test, 6 tests en verde
+   tras la ronda 3), pero no se corrió una escena jugable con ventana: las
+   pruebas fueron todas headless. Nada de game feel ni presentación visual es
+   medible aquí (§0.8).
 
 6. Escala de mods.
    A nivel de proceso se probó con 1 mod válido (evidencia 04) y 2 inválidos
-   (evidencia 05). El orden alfabético de aplicación (aa.json < zz.json) y los
-   casos de fusión de la sección 6 del plan están cubiertos por tests
-   unitarios en verde (json_merge_test: 7 tests; game_data_loader_test: 12
-   tests), pero no se probó con un directorio de mods grande real.
+   (evidencia 05). El orden de aplicación por bytes (ASCII) (zz.json antes que
+   aa.json con claves distintas, mt1) y los casos de fusión de la sección 6
+   del plan están cubiertos por tests unitarios en verde (json_merge_test: 7
+   tests; game_data_loader_test: 16 tests), pero no se probó con un directorio
+   de mods grande real.
 
 7. Red.
    M0 no incluye propagación de configuración a peers; nada de net fue
    verificado (no aplica a esta tarea).
 
-8. Ramas defensivas/de fallo de E/S sin disparador determinista (ronda 2).
+8. Ramas defensivas/de fallo de E/S sin disparador determinista.
    No existe forma determinista de provocarlas desde CLI/datos/mods en este
    entorno; quedan cubiertas por revisión de código, no por tests:
    - game_data_loader.gd _resource_for: push_error "unknown doc id" — solo
@@ -94,11 +113,21 @@ NO verificado (sigue pendiente del gate humano o de tareas futuras):
      requeriría que JSON.parse falle sobre la salida de JSON.stringify; no
      alcanzable en la práctica.
 
-Anomalías observadas durante la generación de la evidencia de la ronda 2:
+Sin verificar de la ronda 3 específicamente: nada nuevo. Los cambios de la
+ronda 3 son la firma reload(base_dir, mods_dir) del autoload (cubierta por los
+dos tests MR3) y tests/documentos; no introducen comportamiento sin probar.
+
+Anomalías observadas durante la generación de la evidencia de la ronda 3:
 ninguna inesperada. Ambos arneses (run_tests.ps1 y run_tests.sh) terminaron
-con exit 0 (53 tests descubiertos, 8/8 suites); los dos pases de --import
-devolvieron 0 en esta máquina. Nota aclaratoria (no anomalía): la corrida SIN
-datos de la evidencia 09 imprime un bloque "ERROR ... at: push_error" con
-backtrace — es el push_error intencional del autoload GameConfig
-(src/autoloads/game_config.gd:35) cuando el reporte no es ok; el proceso
-terminó limpio con el código 1 esperado.
+con exit 0 (60 tests descubiertos, 8/8 suites); los dos pases de --import
+devolvieron 0 en esta máquina. Dos notas aclaratorias (no anomalías):
+  - Los volcados del arnés (evidencias 02 y 06) incluyen una línea
+    "WARNING: REJECTED mod:bad.json..." y un bloque "ERROR: data load:
+    0 applied, 0 warning(s), 2 error(s)" con backtrace hacia
+    game_config_autoload_test.gd:63/:74: son los push_warning/push_error que
+    los tests MR3 provocan a propósito y que gdUnit4 captura y afirma; los
+    tests PASAN. Salida esperada, no un fallo.
+  - La corrida SIN datos de la evidencia 09 imprime un bloque "ERROR ... at:
+    push_error" con backtrace — es el push_error intencional del autoload
+    GameConfig (src/autoloads/game_config.gd:37) cuando el reporte no es ok;
+    el proceso terminó limpio con el código 1 esperado.

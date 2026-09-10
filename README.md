@@ -60,11 +60,13 @@ Ambos verifican la versión del motor, importan el proyecto y corren `tests/`; d
 
 Dónde viven los datos del juego (R2, D44/D45; esquema completo en `docs/datos/esquema_v1.md`; plan de la tarea en `docs/planes/M0-T0.2_plan.md`):
 
-- `data/*.tres` — artefacto **autoritativo para el editor** (`game_config.tres`, `tuning.tres`).
+- `data/*.tres` — artefacto **autoritativo para el editor/Inspector** (`game_config.tres`, `tuning.tres`).
 - `data/*.json` — **espejo** editable del `.tres`; formato de modding y edición en caliente. Un test de deriva exige que ambos coincidan.
 - `user://mods/*.json` — mods del juego: archivos planos aplicados sobre la base en **orden de bytes ASCII** (`B.json` < `a.json`: las mayúsculas van primero; usa minúsculas en los nombres de archivo de mod). En Windows, `user://` = `%APPDATA%\Godot\app_userdata\RutaFragil`. Ojo: `res://` es de **solo lectura en los exports** — editar el JSON base es función de desarrollo; los mods en `user://` son la vía publicada.
 
-Autoridad entre capas: el `.tres` es autoritativo **para el editor**; en caliente gana la última capa aplicada (el JSON base va encima del `.tres`, y los mods encima de ambos). El test de deriva mantiene `.tres` y espejo iguales. Los `.tres` se regeneran **solo con la herramienta** (`import_data_mirror.gd`); no guardar desde el Inspector.
+Autoridad entre capas: el `.tres` es autoritativo **para el editor/Inspector**; en caliente gana la última capa (el JSON base va encima del `.tres`, y los mods encima de ambos); el test de deriva mantiene ambos iguales. Los `.tres` se regeneran **solo con la herramienta** (`import_data_mirror.gd`); no guardar desde el Inspector.
+
+Recarga en caliente (D46): `GameConfig.reload(base_dir: String = "res://data", mods_dir: String = "user://mods") -> DataLoadReport` — los argumentos existen para pruebas; el juego usa los defaults.
 
 Un mod mínimo (`user://mods/zz_mi_mod.json`):
 
@@ -81,7 +83,7 @@ timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/import_data_mi
 # .tres → JSON (reescribe los espejos; tras regenerar, `git status` debe quedar limpio)
 timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/write_data_mirror.gd
 
-# Imprime lo cargado (base + mods) y el resumen del reporte — prueba los criterios de T0.2
+# Imprime lo cargado (base + mods) y el resumen del reporte — prueba los criterios de T0.2; sale con código 1 si !is_ok()
 timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/print_game_data.gd
 ```
 

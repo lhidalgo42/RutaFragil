@@ -3,6 +3,8 @@ extends Node
 ## Autoload (D43): single access point for the validated game data.
 ## reload() re-reads the layer stack (res://data -> user://mods) through
 ## GameDataLoader, so a data edit never requires reopening the project.
+## The directories are defaulted arguments so tests can inject temp dirs;
+## the game always runs on the defaults.
 ## Every load surfaces each report warning with push_warning (modders must see
 ## their rejections, M4) and a failing report with push_error.
 
@@ -24,8 +26,8 @@ func _ready() -> void:
 	reload()
 
 
-func reload() -> DataLoadReport:
-	var loader: GameDataLoader = GameDataLoader.new("res://data", "user://mods")
+func reload(base_dir: String = "res://data", mods_dir: String = "user://mods") -> DataLoadReport:
+	var loader: GameDataLoader = GameDataLoader.new(base_dir, mods_dir)
 	last_report = loader.load_all()
 	data = loader.game_config
 	tuning = loader.tuning

@@ -2,7 +2,7 @@ class_name GameDataLoader
 extends RefCounted
 
 ## Loads the game data documents in layers (D45):
-##   <doc>.tres -> <base_dir>/<doc>.json -> <mods_dir>/*.json (alphabetical).
+##   <doc>.tres -> <base_dir>/<doc>.json -> <mods_dir>/*.json (byte/ASCII order).
 ## Each layer is validated on its own, then deep-merged (nested dictionaries
 ## key by key, arrays replaced) and applied once per document at the end.
 ## Directories are injected so tests can point at create_temp_dir() instead of
