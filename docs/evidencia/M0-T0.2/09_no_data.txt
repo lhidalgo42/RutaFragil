@@ -1,0 +1,218 @@
+=== Evidencia 09_no_data.txt — M0-T0.2 (ronda 2; anotada en la ronda 4, r3.7) ===
+Fecha de captura (UTC): 2026-09-10 14:47:19
+Máquina: Windows, Git Bash
+Criterio de aceptación (semántica M4/mc de la ronda 2): un documento sin
+ninguna capa aplicada es un ERROR de integridad (DataLoadReport.is_ok() falso),
+no un caso de "valores por defecto". Con data/ ausente, print_game_data.gd debe
+terminar con código 1 y el resumen debe listar un error por documento
+(doc:game_config, doc:tuning). Tras restaurar data/, debe volver a código 0 con
+las 4 capas aplicadas.
+GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+
+Comandos ejecutados, en orden:
+  1) git status --short -- data/            (estado previo: solo los cambios de
+                                             la ronda 2 en tuning.json/.tres)
+  2) mv data data_disabled_r2
+  3) timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/print_game_data.gd; echo $?
+  4) mv data_disabled_r2 data
+  5) git status --short -- data/            (tras restaurar)
+  6) timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/print_game_data.gd; echo $?
+  7) git status --short -- data/            (verificación final)
+
+######################################################################
+# Paso 1: estado previo de data/ (git status --short -- data/, exit 0)
+######################################################################
+ M data/tuning.json
+ M data/tuning.tres
+(Las dos modificaciones son el trabajo SIN commitear de la ronda 2:
+renombrado bus_wear_per_contract_max -> bus_integrity_max_loss_per_contract y
+fuel_consumption_l_per_km como float. Nada más.)
+
+######################################################################
+# Paso 2-3: data/ renombrada a data_disabled_r2/ y corrida SIN datos
+# Resultado esperado: exit 1 y un [error] por documento en el resumen
+######################################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{
+	"game_config": {
+		"max_players": 0,
+		"max_players_hard_limit": 0,
+		"schema_version": 0
+	}
+}
+{
+	"tuning": {
+		"barrel_liters_max": 0,
+		"barrel_liters_min": 0,
+		"base_pay": {},
+		"bus_integrity_max": 0,
+		"bus_integrity_max_loss_per_contract": 0,
+		"bus_mass_kg": 0,
+		"contract_destinations_max": 0,
+		"contract_destinations_min": 0,
+		"contract_packages_max": 0,
+		"contract_packages_min": 0,
+		"defeat_keep_fraction": 0.0,
+		"empty_jerrycans_per_route_max": 0,
+		"empty_jerrycans_per_route_min": 0,
+		"fuel_consumption_l_per_km": 0.0,
+		"fuel_mud_multiplier": 0.0,
+		"fuel_price_per_liter": 0,
+		"fuel_slope_multiplier": 0.0,
+		"fuel_tank_liters": 0,
+		"fuel_zones_per_route_max": 0,
+		"fuel_zones_per_route_min": 0,
+		"interaction_reach_m": 0.0,
+		"jerrycan_fill_seconds": 0.0,
+		"jerrycan_fill_seconds_two_players": 0.0,
+		"jerrycan_liters": 0,
+		"jerrycan_pour_seconds": 0.0,
+		"maintenance_cost": 0,
+		"player_jump_height_m": 0.0,
+		"player_sprint_speed_mps": 0.0,
+		"player_walk_speed_mps": 0.0,
+		"rent_every_contracts": 0,
+		"rent_increase_per_cycle": 0.0,
+		"rent_quota": 0,
+		"repair_cost_per_integrity_point": 0,
+		"route_km_max": 0,
+		"route_km_min": 0,
+		"shop_prices": {},
+		"starting_money": 0,
+		"target_minutes_max": 0,
+		"target_minutes_min": 0
+	}
+}
+data load: 0 applied, 0 warning(s), 2 error(s)
+  [error] doc:game_config: no .tres or base .json layer applied
+  [error] doc:tuning: no .tres or base .json layer applied
+ERROR: data load: 0 applied, 0 warning(s), 2 error(s)
+  [error] doc:game_config: no .tres or base .json layer applied
+  [error] doc:tuning: no .tres or base .json layer applied
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] reload (res://src/autoloads/game_config.gd:35)
+       [1] _ready (res://src/autoloads/game_config.gd:24)
+exit_code: 1
+
+Lectura del resultado:
+  - exit code 1 (echo $? real): sin capas aplicadas el reporte NO es ok y
+    print_game_data.gd sale con código 1 (quit(1)).
+  - El resumen lista 0 applied y un [error] por cada documento:
+      doc:game_config: no .tres or base .json layer applied
+      doc:tuning: no .tres or base .json layer applied
+  - Los valores impresos son todos neutros (0 / 0.0 / {}): sin datos el juego
+    correría sobre ceros — exactamente el fallo de integridad que M4 convierte
+    en error en vez de dejar pasar en silencio.
+  - El bloque "ERROR: ... at: push_error" con backtrace NO viene de
+    print_game_data.gd: es el autoload GameConfig, que carga al arrancar el
+    proyecto y hace push_error(last_report.summary()) cuando el reporte falla
+    (src/autoloads/game_config.gd:35, llamado desde _ready línea 24). Es el
+    comportamiento documentado del autoload (visibilidad del fallo), no un
+    crash: el proceso terminó limpio con código 1.
+
+Nota añadida en la ronda 4 (r3.7) sobre los números de línea de los
+backtraces de ESTE volcado: game_config.gd:35 (el push_error dentro de
+reload) y game_config.gd:24 (la llamada reload() dentro de _ready)
+corresponden al archivo tal como estaba en 6656a8c, el commit vigente cuando
+se capturó esta evidencia (ronda 2). El docstring que la ronda 3 añadió al
+autoload desplazó ambas dos líneas: en HEAD (a30ae7a) esas mismas sentencias
+son game_config.gd:37 y game_config.gd:26 — de hecho los backtraces
+recapturados en la ronda 3 (evidencias 02 y 05) ya muestran :37 y :26. El
+texto del mensaje y la semántica no cambiaron; solo las líneas.
+
+######################################################################
+# Paso 4-5: data/ restaurada (mv exit 0) y git status --short -- data/
+######################################################################
+ M data/tuning.json
+ M data/tuning.tres
+Idéntico al estado previo: la corrida sin datos no tocó nada bajo data/
+(no hubo --import ni regeneración de .import; el run -s no escanea el
+filesystem como el editor). No hizo falta git checkout -- data/.
+
+######################################################################
+# Paso 6: corrida CON data/ restaurada
+# Resultado esperado: exit 0 y 4 capas aplicadas
+######################################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+{
+	"game_config": {
+		"max_players": 4,
+		"max_players_hard_limit": 8,
+		"schema_version": 1
+	}
+}
+{
+	"tuning": {
+		"barrel_liters_max": 30,
+		"barrel_liters_min": 10,
+		"base_pay": {
+			"aquatic": 140,
+			"floating": 100,
+			"fragile": 120,
+			"normal": 60
+		},
+		"bus_integrity_max": 100,
+		"bus_integrity_max_loss_per_contract": 5,
+		"bus_mass_kg": 3000,
+		"contract_destinations_max": 3,
+		"contract_destinations_min": 1,
+		"contract_packages_max": 5,
+		"contract_packages_min": 3,
+		"defeat_keep_fraction": 0.25,
+		"empty_jerrycans_per_route_max": 3,
+		"empty_jerrycans_per_route_min": 1,
+		"fuel_consumption_l_per_km": 4.0,
+		"fuel_mud_multiplier": 2.0,
+		"fuel_price_per_liter": 3,
+		"fuel_slope_multiplier": 1.5,
+		"fuel_tank_liters": 40,
+		"fuel_zones_per_route_max": 2,
+		"fuel_zones_per_route_min": 1,
+		"interaction_reach_m": 2.5,
+		"jerrycan_fill_seconds": 20.0,
+		"jerrycan_fill_seconds_two_players": 10.0,
+		"jerrycan_liters": 10,
+		"jerrycan_pour_seconds": 8.0,
+		"maintenance_cost": 150,
+		"player_jump_height_m": 1.0,
+		"player_sprint_speed_mps": 6.0,
+		"player_walk_speed_mps": 4.0,
+		"rent_every_contracts": 3,
+		"rent_increase_per_cycle": 0.15,
+		"rent_quota": 900,
+		"repair_cost_per_integrity_point": 3,
+		"route_km_max": 10,
+		"route_km_min": 6,
+		"shop_prices": {
+			"armor": 250,
+			"cushion": 30,
+			"float": 80,
+			"jerrycan": 40,
+			"kit": 100,
+			"medkit": 120
+		},
+		"starting_money": 500,
+		"target_minutes_max": 25,
+		"target_minutes_min": 15
+	}
+}
+data load: 4 applied, 0 warning(s), 0 error(s)
+  [applied] res://data/game_config.tres
+  [applied] res://data/game_config.json
+  [applied] res://data/tuning.tres
+  [applied] res://data/tuning.json
+exit_code: 0
+
+(El volcado refleja la ronda 2: la clave renombrada
+bus_integrity_max_loss_per_contract: 5 y fuel_consumption_l_per_km: 4.0 float.)
+
+######################################################################
+# Paso 7: verificación final — git status --short -- data/ (exit 0)
+######################################################################
+ M data/tuning.json
+ M data/tuning.tres
+data/ quedó intacta: solo las dos modificaciones de la ronda 2, presentes desde
+antes de la prueba. La carpeta data_disabled_r2/ ya no existe (mv de vuelta).

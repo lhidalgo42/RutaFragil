@@ -1,0 +1,150 @@
+=== Evidencia 08_no_verificado.txt — M0-T0.2 (ronda 4, actualizada) ===
+Fecha de captura (UTC): 2026-09-10 17:29:09
+Máquina: Windows, Git Bash
+
+Lista explícita de lo NO verificado en esta tarea (regla R7: si un criterio no
+se puede probar desde CLI/editor headless, se dice; nunca se marca). Nada de lo
+siguiente fue comprobado por el agente; corresponde al gate humano (§0.7) o a
+tareas futuras.
+
+Hechos verificados por test o por evidencia (no son pendientes; se registran
+aquí para que la lista se lea completa):
+
+  V1. Dictionary == es estricta int/float también en los VALORES (no solo en
+      las claves), verificado en 4.7.2. Por eso check_mirror NO compara el
+      Dictionary del recurso contra el JSON parseado en crudo: primero
+      canonicaliza el lado recurso con un round trip JSON
+      (JSON.stringify + parse), de modo que ambos lados sean diccionarios no
+      tipados de floats y la comparación sea semántica (un .json escrito a
+      mano con 500.0 o claves reordenadas pasa). Documentado en
+      src/core/data/data_mirror.gd (comentario sobre la línea 14) y
+      ejercitado por data_mirror_test (2/2 PASSED en evidencia 06).
+      Además, el texto exacto del espejo lo fija el test de deriva reforzado
+      (mt6): test_real_data_mirror_is_in_sync ahora también afirma que el
+      .json en disco es BYTE-IDÉNTICO a la salida de write_mirror
+      (tests/core/data/data_mirror_test.gd, bloque mt6), así que la
+      comparación semántica no puede enmascarar deriva de formato.
+  V2. Los dos .gitkeep borrados (data/.gitkeep y src/autoloads/.gitkeep) se
+      borraron en e5fa554 (RONDA 1 — corregido en ronda 3, e5: esta entrada
+      decía "ronda 2" por error). Eran placeholders vacíos (0 bytes, sin
+      contenido): su borrado se declaró bajo R12 y ambos directorios ya
+      contienen archivos reales trackeados. Verificable en 07_git.txt:
+      git ls-files ya no los lista y el diff contra main los muestra con
+      0 líneas cambiadas.
+  V3. La rama push_warning del autoload (game_config.gd:35, cada warning del
+      reporte se imprime con push_warning, M4) SÍ está verificada por test
+      desde la ronda 3 (MR3 — e5: antes figuraba solo como laguna):
+      test_reload_push_warning_on_rejected_mod afirma el push_warning con el
+      texto exacto "REJECTED mod:bad.json: key 'starting_money': expected an
+      int, got String", y test_reload_push_error_on_empty_dirs afirma el
+      push_error con el summary completo del reporte (game_config.gd:37).
+      Ambos en tests/autoloads/game_config_autoload_test.gd, verdes en los
+      dos arneses (evidencia 02). A nivel de proceso, las líneas WARNING del
+      autoload quedan además visibles en la evidencia 05.
+  V4. Las rutas nuevas de la ronda 2-3 que la revisión 02 marcó sin test ya
+      tienen test, todos verdes en evidencia 02: MR1 (sin datos:
+      test_empty_dirs_fail_with_one_error_per_document), MR2 (M1c:
+      test_invalid_base_json_error_points_at_the_truncated_file), mc1a/mc1b
+      ({} como base / como mod), mc2 (1e400 no finito), mc3 (.tres de clase
+      equivocada).
+
+NO verificado (sigue pendiente del gate humano o de tareas futuras):
+
+1. Comportamiento en build exportada (res:// solo lectura).
+   La pila de capas (res://data/*.tres -> *.json -> user://mods/*.json) se
+   verificó corriendo desde el árbol fuente. En una build exportada res:// es
+   de solo lectura y los recursos van empacados; que el loader y la escritura
+   de user://mods funcionen igual en ese contexto NO se verificó. Requiere
+   exportar una build, fuera del alcance de M0.
+
+2. Mods empaquetados como .pck con load_resource_pack.
+   Solo se probaron mods como archivos .json sueltos en user://mods/. La carga
+   de mods empaquetados (.pck) está diferida a M4 según el documento maestro.
+
+3. Inspector del editor mostrando data/tuning.tres con los valores de §8.1
+   (con la clave renombrada bus_integrity_max_loss_per_contract y
+   fuel_consumption_l_per_km como float, vigente desde la ronda 2).
+   Verificación visual con el editor abierto: la hace el dueño en el gate.
+   En headless no existe Inspector; lo que sí quedó probado por CLI es que el
+   .tres y el .json contienen los mismos valores (test de deriva, evidencia 06)
+   y que print_game_data.gd imprime los valores efectivos (evidencias 03 y 09).
+
+4. Detección de cambios con el editor ABIERTO.
+   El criterio 1 se probó a nivel de proceso (rerun del binario headless tras
+   editar el .json, evidencia 03), tal como fija la decisión D46 del plan
+   (recarga explícita vía GameConfig.reload(); sin vigilante automático de
+   mtime en T0.2 — registrado en BACKLOG). Que el editor en ejecución refresque
+   sus vistas tras una edición externa NO se probó y no es parte del criterio.
+
+5. Recarga en caliente dentro de una escena de juego corriendo con ventana.
+   GameConfig.reload() y la señal reloaded(report) quedan ejercitados por el
+   test de autoload en headless (game_config_autoload_test, 6 tests en verde
+   tras la ronda 4), pero no se corrió una escena jugable con ventana: las
+   pruebas fueron todas headless. Nada de game feel ni presentación visual es
+   medible aquí (§0.8).
+
+6. Escala de mods.
+   A nivel de proceso se probó con 1 mod válido (evidencia 04) y 2 inválidos
+   (evidencia 05). El orden de aplicación por bytes (ASCII) (zz.json antes que
+   aa.json con claves distintas, mt1) y los casos de fusión de la sección 6
+   del plan están cubiertos por tests unitarios en verde (json_merge_test: 7
+   tests; game_data_loader_test: 17 tests), pero no se probó con un directorio
+   de mods grande real.
+
+7. Red.
+   M0 no incluye propagación de configuración a peers; nada de net fue
+   verificado (no aplica a esta tarea).
+
+8. Ramas defensivas/de fallo de E/S sin disparador determinista.
+   No existe forma determinista de provocarlas desde CLI/datos/mods en este
+   entorno; quedan cubiertas por revisión de código, no por tests:
+   - game_data_loader.gd _resource_for: push_error "unknown doc id" — solo
+     saltaría con un id que no esté en DOCS, es decir, con un bug de código
+     (DOCS es el único punto donde se declaran ids); igual para las dos ramas
+     push_error de _new_document en import_data_mirror.gd.
+   - Fallos de escritura/lectura reales: ResourceSaver.save fallido en
+     import_data_mirror.gd, JsonFile.write_text fallido en write_data_mirror.gd
+     (rama "failed to write"), mkdir de user://mods fallido en
+     game_config.gd/print_game_data.gd, y "failed to load" de un .tres que
+     exists() acaba de afirmar (carrera o archivo corrupto). Todas requieren
+     un fallo de disco/permisos o una carrera, no reproducibles de forma
+     determinista aquí.
+   - data_mirror.gd check_mirror: "cannot canonicalize the resource values" —
+     requeriría que JSON.parse falle sobre la salida de JSON.stringify; no
+     alcanzable en la práctica.
+
+Sin verificar de la ronda 3 específicamente: nada nuevo. Los cambios de la
+ronda 3 son la firma reload(base_dir, mods_dir) del autoload (cubierta por los
+dos tests MR3) y tests/documentos; no introducen comportamiento sin probar.
+
+Sin verificar de la ronda 4 específicamente: nada nuevo. La ronda 4 solo toca
+tests (orden por bytes —ASCII, nunca alfabético insensible a mayúsculas—
+fijado en json_file_test con "B.json" antes que "a.json" y en el renombrado
+test_two_mods_apply_in_byte_order; el nuevo
+test_mod_with_only_unknown_sections_applies_with_warning; los refuerzos MR3
+que leen last_report tras el push_warning/push_error) y documentos
+(DECISIONS D46, esquema §7): no hay cambios en src/ ni en data/, así que no
+introduce comportamiento sin probar. La sonda unsafe_*=2 (warnings
+gdscript/unsafe_* elevados de 1 a 2 en project.godot, revertido tras la
+corrida) también salió en verde: exit 0, 61/61 (evidencia 02, sección
+"Sonda unsafe_*=2").
+
+Anomalías observadas durante la generación de la evidencia de la ronda 4:
+ninguna inesperada. Ambos arneses (run_tests.ps1 y run_tests.sh) terminaron
+con exit 0 (61 tests descubiertos, 8/8 suites) y la sonda unsafe_*=2 también
+(exit 0, 61/61); los dos pases de --import devolvieron 0 en esta máquina.
+Dos notas aclaratorias (no anomalías):
+  - Los volcados del arnés (evidencias 02 y 06) incluyen una línea
+    "WARNING: REJECTED mod:bad.json..." y un bloque "ERROR: data load:
+    0 applied, 0 warning(s), 2 error(s)" con backtrace hacia
+    game_config_autoload_test.gd:70/:87 (:63/:74 antes de la ronda 4, que
+    añadió el docstring y los refuerzos MR3 a esa suite): son los
+    push_warning/push_error que los tests MR3 provocan a propósito y que
+    gdUnit4 captura y afirma; los tests PASAN. Salida esperada, no un fallo.
+  - La corrida SIN datos de la evidencia 09 imprime un bloque "ERROR ... at:
+    push_error" con backtrace — es el push_error intencional del autoload
+    GameConfig cuando el reporte no es ok; el proceso terminó limpio con el
+    código 1 esperado. Los números de línea de ESE backtrace
+    (game_config.gd:35 y :24) son los del archivo en 6656a8c; la nota r3.7
+    que lo declara (y su traslación a :37/:26 en HEAD) vive en la evidencia
+    09, no en este archivo.

@@ -56,13 +56,28 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **Headless no entrega InputEvents:** cualquier test que simule input necesita sesión con ventana. Diseñar los tests de gameplay (T0.3+) como simulación de lógica, no de input.
 - Re-verificar gdUnit4 cuando salga **v6.2.2** (si añade 4.7.2 a la tabla de compatibilidad).
 - 4.8-dev4 prohíbe strings como comentarios en GDScript: lint preventivo si algún día se salta a 4.8.
-- **Correcciones al maestro para proponer al dueño:** §21 comando de gdUnit4; §15/D13 "Vulkan/MoltenVK" → backend por plataforma (D31); §0.2/T0.1 "`run_tests` pasa" → exigir conteo mínimo; §20 añadir `docs/`; §0.2, §20 y T0.1 dan por hecho un puente MCP y el proyecto decidió ninguno en M0 (D30/ADR-009); T0.1 'en ambas máquinas' → 'en Windows; Mac antes de M4' (D42).
+- **Correcciones al maestro para proponer al dueño:** §21 comando de gdUnit4; §15/D13 "Vulkan/MoltenVK" → backend por plataforma (D31); §0.2/T0.1 "`run_tests` pasa" → exigir conteo mínimo; §20 añadir `docs/`; §0.2, §20 y T0.1 dan por hecho un puente MCP y el proyecto decidió ninguno en M0 (D30/ADR-009); T0.1 'en ambas máquinas' → 'en Windows; Mac antes de M4' (D42); §19 nombra `GameConfig` al Resource y §20 al autoload; Godot no permite ambos → Resource `GameConfigData` + autoload `GameConfig` (D43).
 
 ## Pendientes propios de la ejecución de M0-T0.1 (M5 de la revisión 01)
 
 - **Corrección del plan/maestro por formato de versión:** `Engine.get_version_info()["string"]` devuelve `4.7.2-stable (official)` (guion y paréntesis); el formato con puntos (`4.7.2.stable`) es solo el de `godot --version`. Defecto del plan v1.0 nº 1, corregido en el plan v1.1; queda como referencia para cualquier documento que cite el formato.
 - **Al subir de parche 4.7.x** (ADR-000) hay que tocar cuatro archivos: `tests/smoke_test.gd`, `tools/run_tests.ps1`, `tools/run_tests.sh`, `README.md` (m8 de la revisión 01; la lista también está en `AGENTS.md` y en `README.md`).
 - **Cierre de M0-T0.1 (solo el dueño, revisión 02 "Qué hace falta para cerrar"; actualizado por D42, 2026-09-09):** la corrida de `bash tools/run_tests.sh` en la Mac con el mismo hash del arnés queda **diferida por D42 hasta antes del gate M4** (red real Mac + Windows, D13) — ya no bloquea T0.1, que se acepta con `run_tests` verde solo en Windows. Residuo declarado: el arreglo de BOM POSIX de `run_tests.sh` (m-2.3) solo está probado bajo Git Bash; su prueba real en BSD sed queda para esa corrida. Siguen pendientes del dueño: crear el remoto con Git LFS habilitado + primer push, y comprobar el dock de gdUnit4 en el editor con ventana (revisión 01, ítem M4).
+
+## Pendientes propios de la ejecución de M0-T0.2
+
+- **M4:** mods empaquetados `.pck` con `ProjectSettings.load_resource_pack` (monta un `.pck` sobre `res://`, puede reemplazar `res://data/*.tres`); requiere export templates (§13, plan M0-T0.2 §3).
+- **Vigilante automático de `mtime`** para recargar al cambiar un JSON sin llamar a `reload()`: diferido por D46 (un `Timer` + resolución de 1 s de `FileAccess.get_modified_time()` en Windows no aportan al criterio de T0.2).
+- **Carpetas de mod con manifiesto:** cuando exista un segundo tipo de contenido (D45); en v1 los mods son archivos planos `user://mods/*.json`.
+- **"Derrame ∝ velocidad" sin número en §8.1** (fila Bidón): no se inventó un campo en v1 (D47); definir el parámetro y su nombre en T1.2 (vertido y derrame del bidón).
+- **Codec sin `Array` ni otros `Dictionary[K, V]`** (v1 solo soporta `Dictionary[String, int]`): ampliar `ResourceJsonCodec` antes de T3.1 (D45 promete extensibilidad a colecciones, p. ej. `{"packages": [...]}`).
+- **Validación semántica pendiente:** `max_players ≥ 1`, `≤ max_players_hard_limit`, `min ≤ max` en los pares de rango, fracciones en [0,1]. Hoy un mod `{"game_config": {"max_players": 0}}` pasa la validación de tipos. Destino: lobby T4.1.
+- **`*.json` en el filtro de export (decidir en M4):** por defecto Godot no empaqueta `*.json`; la capa base JSON se omitiría y el juego correría sobre el `.tres` (idéntico por el test de deriva). Decidir si el export incluye los JSON base.
+- **Reglas cualitativas de §8.1 sin parámetro:** "Flotador ×4" (el conteo por bus no es un campo; `shop_prices.float` es precio por unidad) y "surtidor ilimitado / gratis en zonas". Definir si necesitan parámetro cuando entren sus mecánicas (T1.2/T5.2).
+- **`schema_version` sin comprobar en v1:** se carga pero nadie lo valida ni hay migración; informativo hasta que exista una v2 del esquema.
+- **Contradicción §13/§19 (reportada, decidir en T3.1):** §13 exige IDs con namespace para el contenido y §19 sitúa `base_pay` dentro de `PackageDefinition`, mientras v1 lo lleva plano en `TuningTable`. Decidir el dueño único de `base_pay` y su mapeo a IDs.
+- **`reload()` reemplaza los objetos `data`/`tuning`:** los consumidores que guarden referencias a los Resources deben reengancharse en la señal `reloaded(report)` (T0.3+).
+- **Observación:** editor con ventana: un segmentation fault al cerrar observado una vez bajo `timeout` (2026-09-10), no reproducido en dos intentos sin `timeout`; bug de apagado de 4.7 con plugins, fix en 4.8; sin acción.
 
 ## Cerrados en las rondas 2 y 3 de M0-T0.1
 
