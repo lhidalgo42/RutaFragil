@@ -1,0 +1,7 @@
+{
+	"game_config": {
+		"max_players": 4,
+		"max_players_hard_limit": 8,
+		"schema_version": 1
+	}
+}

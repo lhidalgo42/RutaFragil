@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GameConfigData" format=3]
+
+[ext_resource type="Script" path="res://src/core/data/game_config_data.gd" id="1_pwh6o"]
+
+[resource]
+script = ExtResource("1_pwh6o")
+schema_version = 1
+max_players = 4
+max_players_hard_limit = 8

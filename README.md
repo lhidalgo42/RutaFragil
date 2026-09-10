@@ -56,6 +56,29 @@ Ambos verifican la versión del motor, importan el proyecto y corren `tests/`; d
 
 > **D42 (decisión del dueño, 2026-09-09):** la corrida de `run_tests.sh` en la Mac está **diferida hasta antes del gate M4** (red real Mac + Windows, D13) y **ya no bloquea el cierre de M0-T0.1**: T0.1 se acepta con `run_tests` verde solo en Windows. La receta macOS de esta página se conserva para cuando toque esa corrida. Residuo declarado: el arreglo de BOM POSIX de `run_tests.sh` (m-2.3) solo está probado bajo Git Bash; su prueba real en BSD sed queda para esa corrida.
 
+## Datos y mods
+
+Dónde viven los datos del juego (R2, D44/D45; esquema completo en `docs/datos/esquema_v1.md`):
+
+- `data/*.tres` — artefacto **autoritativo** para el motor (`game_config.tres`, `tuning.tres`).
+- `data/*.json` — **espejo** editable del `.tres`; formato de modding y edición en caliente. Un test de deriva exige que ambos coincidan.
+- `user://mods/*.json` — mods del juego: archivos planos aplicados en orden alfabético sobre la base. En Windows, `user://` = `%APPDATA%\Godot\app_userdata\RutaFragil`. Ojo: `res://` es de **solo lectura en los exports** — editar el JSON base es función de desarrollo; los mods en `user://` son la vía publicada.
+
+Tres herramientas headless (ejecutar siempre con `timeout 120`; forma verificada en M0-T0.2):
+
+```bash
+# JSON → .tres (regenera los Resources desde los espejos)
+timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/import_data_mirror.gd
+
+# .tres → JSON (reescribe los espejos; tras regenerar, `git status` debe quedar limpio)
+timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/write_data_mirror.gd
+
+# Imprime lo cargado (base + mods) y el resumen del reporte — prueba los criterios de T0.2
+timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/print_game_data.gd
+```
+
+**R1:** nunca hardcodear el número de jugadores. Toda UI de lobby/HUD se genera para N jugadores leyendo `GameConfig.max_players` (el autoload lo expone como propiedad delegada del dato, D43).
+
 ## Mapa de carpetas (§20)
 
 ```
@@ -84,4 +107,4 @@ docs/       documentación del proyecto (con .gdignore)
 - Render: Forward+; driver en Windows `d3d12` (D31).
 - `*.uid` e `*.import` **se versionan**; `.godot/` y `reports/` no. `export_presets.cfg` se versiona (M4).
 - Git LFS trackea los binarios listados en `.gitattributes`. Los `.svg` van en Git normal (D36). El remoto debe tener **LFS habilitado ANTES del primer push**: el índice ya contiene punteros LFS (ver `git lfs ls-files`; hoy todos son PNG del addon gdUnit4).
-- Documentos de referencia: `AGENTS.md` (reglas para agentes), `DECISIONS.md`, `BACKLOG.md`, `CREDITS.md`, `docs/planes/M0-T0.1_plan.md`.
+- Documentos de referencia: `AGENTS.md` (reglas para agentes), `DECISIONS.md`, `BACKLOG.md`, `CREDITS.md`, `docs/planes/M0-T0.1_plan.md`, `docs/datos/esquema_v1.md` (esquema de datos v1).
