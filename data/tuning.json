@@ -8,9 +8,11 @@
 			"fragile": 120,
 			"normal": 60
 		},
+		"bus_accel_0_60_kmh_s": 5.0,
 		"bus_integrity_max": 100,
 		"bus_integrity_max_loss_per_contract": 5,
 		"bus_mass_kg": 3000,
+		"bus_max_speed_kmh": 90.0,
 		"contract_destinations_max": 3,
 		"contract_destinations_min": 1,
 		"contract_packages_max": 5,

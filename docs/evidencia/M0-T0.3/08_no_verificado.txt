@@ -1,0 +1,59 @@
+=== Evidencia 08_no_verificado.txt — M0-T0.3 ===
+Fecha de captura (UTC): 2026-09-10 21:20:00
+Máquina: Windows, Git Bash
+Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
+Qué es (R7): la lista honesta de lo que esta tarea NO verificó, con el porqué.
+Nada de lo siguiente se marcó como probado en ninguna otra evidencia.
+
+1. Feel / controlabilidad del bus. El bus de T0.3 es un placeholder greybox
+   ("disco con motor", D48) que T1.1 reemplaza; el feel es gate de M1
+   ("conducir 3 minutos en el Playground", §0.7), no de T0.3. Aquí solo se
+   verificó que el conductor automático completa la vuelta (evidencias 03/04)
+   y que la física responde (tests de tests/vehicle/). NADIE declaró que "se
+   siente bien": lo prohíbe §0.8.
+
+2. Aspecto visual más allá de la captura 05. La evidencia 05 es UNA captura
+   1152×648 a los ~4 s de demo (bus sobre la rampa, agua al fondo). No se
+   verificó: legibilidad visual, colores contra el style board (D16), el
+   aspecto de los baches en cuadro (el circuito los atraviesa — waypoints
+   9→10 de las evidencias 03/04 — pero ninguna captura los enseña), ni el
+   comportamiento de la ChaseCamera a ojo (suavidad, oclusiones).
+
+3. Mac (D42). Todo se corrió solo en Windows. La corrida en macOS queda
+   diferida por D42 hasta antes del gate M4 (igual que en T0.1/T0.2).
+
+4. physics_ticks_per_second ≠ 60. Todas las corridas (tests, run_demo en
+   fixed-fps y en tiempo real) usan el valor por defecto de 60 Hz. El modo
+   opcional de 120 Hz (§15) queda para M2 (BACKLOG): nadie corrió la demo ni
+   los tests a otra frecuencia de física.
+
+5. El `uid` de las escenas al primer guardado del dueño. Las dos escenas
+   nuevas (scenes/playground.tscn, src/vehicle/placeholder_bus.tscn) se
+   escribieron a mano SIN atributo uid (verificado por el revisor en §3 del
+   plan: cargan sin avisos y --import no las reescribe). Cuando el dueño las
+   guarde por primera vez desde el editor aparecerá un diff de una línea por
+   escena añadiendo el uid: es ESPERADO y está anotado en BACKLOG.
+
+6. El impulso de escalón (climb hop) visto en F5. La asistencia de escalón
+   del placeholder (climb_hop_up_speed / climb_hop_fwd_speed /
+   climb_wedge_seconds, marcada greybox en placeholder_bus.gd) es una ficción
+   documentada que T1.1 borra (D48): está ejercitada indirectamente por la
+   demo (el circuito cruza baches y rampa sin atascarse, evidencias 03/04),
+   pero nadie la VIO comportarse con ventana más allá de la captura 05, ni se
+   midió su efecto aislado (con/sin hop) en esta tarea.
+
+7. Ciclo límite de la dirección pre-fix. Durante el desarrollo del placeholder
+   se observó que la dirección bang-bang sin amortiguación entra en ciclo
+   límite (el bus zigzaguea fuera del rumbo); el fix es yaw_damping = 12.0
+   (comentario en placeholder_bus.gd). Ese comportamiento pre-fix quedó
+   observado de forma cualitativa en las corridas de desarrollo, sin medición
+   guardada (frecuencia/amplitud de la oscilación nunca se registraron); con
+   el fix aplicado, todas las corridas de la evidencia 03 son idénticas y sin
+   zigzag medible en los timestamps de waypoint.
+
+8. Red / multi-instancia. Fuera de alcance (T0.4): nada de esta tarea probó
+   el Playground en red.
+
+9. Latencia real de internet, cuentas Steam reales, game feel y diversión:
+   §0.8 los reserva a los gates humanos; ninguna prueba automática de esta
+   tarea los mide ni los midió.

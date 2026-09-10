@@ -1,0 +1,91 @@
+=== Evidencia 07_git.txt — M0-T0.3 (PRE-COMMIT, parte 1) ===
+Fecha de captura (UTC): 2026-09-10 21:21:24
+Máquina: Windows, Git Bash
+Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
+Estado capturado: la tarea completa SIN commitear sobre el último commit
+(5c6d1d2). El coordinador comete el código después de esta captura; la
+sección post-commit (parte 2) se captura tras ese commit y se commitea en un
+commit de docs aparte. Nota de autoconsistencia: este mismo archivo (07) SÍ
+aparece en el git status de abajo como untracked, porque la redirección del
+shell lo crea antes de que corran los comandos (mismo fenómeno que la ronda 4
+de M0-T0.2); su contenido final se completa después de la captura.
+Comandos: git log --oneline main..HEAD; git status --short;
+  git diff --stat main..HEAD; git diff main..HEAD -- project.godot;
+  git diff main -- project.godot (árbol de trabajo contra main)
+
+--- git log --oneline main..HEAD ---
+5c6d1d2 docs: plan and round-1 prompt (M0-T0.3)
+exit code: 0
+
+--- git status --short (completo) ---
+ M AGENTS.md
+ M BACKLOG.md
+ M DECISIONS.md
+ M README.md
+ M data/tuning.json
+ M data/tuning.tres
+ M docs/datos/esquema_v1.md
+A  docs/evidencia/M0-T0.3/05_playground.png
+ M project.godot
+ M src/core/data/tuning_table.gd
+ M tests/autoloads/game_config_autoload_test.gd
+?? docs/evidencia/M0-T0.3/01_versions.txt
+?? docs/evidencia/M0-T0.3/02_run_tests.txt
+?? docs/evidencia/M0-T0.3/03_demo_fixed_fps.txt
+?? docs/evidencia/M0-T0.3/04_demo_realtime.txt
+?? docs/evidencia/M0-T0.3/05_screenshot.txt
+?? docs/evidencia/M0-T0.3/06_editor.txt
+?? docs/evidencia/M0-T0.3/07_git.txt
+?? docs/evidencia/M0-T0.3/08_no_verificado.txt
+?? docs/evidencia/M0-T0.3/09_limits.txt
+?? scenes/playground.tscn
+?? src/biomes/playground/
+?? src/tooling/run_demo.gd
+?? src/tooling/run_demo.gd.uid
+?? src/vehicle/chase_camera.gd
+?? src/vehicle/chase_camera.gd.uid
+?? src/vehicle/demo_driver.gd
+?? src/vehicle/demo_driver.gd.uid
+?? src/vehicle/demo_steering.gd
+?? src/vehicle/demo_steering.gd.uid
+?? src/vehicle/placeholder_bus.gd
+?? src/vehicle/placeholder_bus.gd.uid
+?? src/vehicle/placeholder_bus.tscn
+?? tests/biomes/
+?? tests/vehicle/
+exit code: 0
+(Modificados: trabajo de la tarea en raíz/data/src/tests + project.godot
+(solo run/main_scene, ver abajo). Staged 'A': SOLO el PNG de la evidencia 05
+(único archivo autorizado a entrar al índice en esta etapa; es puntero LFS,
+ver 05_screenshot.txt). Untracked: escena, scripts nuevos, tests nuevos y las
+evidencias 01-06/08/09 de docs/evidencia/M0-T0.3/.)
+
+--- git diff --stat main..HEAD ---
+ docs/planes/M0-T0.3_plan.md          | 172 +++++++++++++++++++++++++++++++++++
+ docs/planes/M0-T0.3_ronda1_prompt.md |  28 ++++++
+ 2 files changed, 200 insertions(+)
+exit code: 0
+
+--- git diff main..HEAD -- project.godot ---
+exit code: 0
+(VACÍO a propósito: el cambio de project.godot todavía no está commiteado —
+HEAD es 5c6d1d2 y la línea run/main_scene vive en el árbol de trabajo. Para
+demostrar que el cambio es SOLO esa línea se adjunta el diff contra main del
+árbol de trabajo:)
+
+--- git diff main -- project.godot (árbol de trabajo; debe mostrar SOLO run/main_scene) ---
+diff --git a/project.godot b/project.godot
+index 14f43e9..37384e1 100644
+--- a/project.godot
++++ b/project.godot
+@@ -11,6 +11,7 @@ config_version=5
+ [application]
+ 
+ config/name="RutaFragil"
++run/main_scene="res://scenes/playground.tscn"
+ config/features=PackedStringArray("4.7", "Forward Plus")
+ config/icon="res://icon.svg"
+ 
+exit code: 0
+
+Sección post-commit capturada tras el commit de código, en un commit de docs aparte.

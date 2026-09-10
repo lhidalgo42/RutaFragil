@@ -1,0 +1,57 @@
+=== Evidencia 05_screenshot.txt — M0-T0.3 ===
+Fecha de captura (UTC): 2026-09-10 21:16:51
+Máquina: Windows, Git Bash (corrida con ventana)
+Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
+Comando exacto de la captura:
+  timeout 120 "$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ seconds=20 screenshot=user://playground.png screenshot_at=4.0
+GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+Qué demuestra: la escena corre con ventana (renderer real D3D12/Forward+) y el
+bus placeholder recorre el circuito solo; la captura a los ~4 s de juego
+muestra el bus SOBRE LA RAMPA (subida/meseta visibles bajo él) con la zona de
+agua al fondo. Verificación visual hecha leyendo el PNG: bus y rampa claramente
+visibles (la verificación de baches queda cubierta por los tests y por el paso
+del circuito por el campo de baches, waypoints 9→10, evidencias 03/04).
+
+Notas:
+ - El plan §8 pide la captura 'a los ~10 s de demo'. Con el valor por defecto
+   (screenshot_at=10) el bus está llegando a la zona de agua y NI la rampa NI
+   los baches quedan en cuadro (primera toma descartada: bus + agua); por eso
+   esta toma usa screenshot_at=4.0, cuando el bus cruza la rampa (waypoint 1
+   en la meseta a t=5,0 s), para que la captura enseñe lo que pide el plan.
+ - seconds=20 corta la demo antes de la vuelta completa (36,3 s): el exit code
+   1 con result=timeout es ESPERADO en esta corrida (no es un fallo; el lap
+   completo está probado en las evidencias 03/04 con exit 0).
+ - El PNG quedó en %APPDATA%\Godot\app_userdata\RutaFragil\playground.png
+   (user://) y se copió tal cual a docs/evidencia/M0-T0.3/05_playground.png.
+
+--- archivo copiado ---
+-rw-r--r-- 1 Leo 197121 135475 Sep 10 18:03 docs/evidencia/M0-T0.3/05_playground.png
+docs/evidencia/M0-T0.3/05_playground.png: PNG image data, 1152 x 648, 8-bit/color RGB, non-interlaced
+
+Tamaño/dimensiones: 135.475 bytes (≤ 300 KB) y 1152 × 648 (≤ 1280 × 720):
+NO hizo falta reducirlo; no se usó ninguna herramienta de reescalado.
+
+--- git lfs ls-files (tras git add SOLO de este PNG) ---
+Comando: git add docs/evidencia/M0-T0.3/05_playground.png && git lfs ls-files
+a89cd1718a * docs/evidencia/M0-T0.3/05_playground.png
+e709c40067 * addons/gdUnit4/src/core/assets/touch-button.png
+ed176306a0 * addons/gdUnit4/src/reporters/html/template/css/logo.png
+ed176306a0 * addons/gdUnit4/src/ui/settings/logo.png
+37a4070934 * addons/gdUnit4/src/update/assets/border_bottom.png
+ca6f5d7f59 * addons/gdUnit4/src/update/assets/border_top.png
+f37474a8d5 * addons/gdUnit4/src/update/assets/dot1.png
+c12758bd1b * addons/gdUnit4/src/update/assets/dot2.png
+08cead78bb * addons/gdUnit4/src/update/assets/embedded.png
+fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
+exit code: 0
+(la primera línea, a89cd1718a, es el PNG de esta evidencia registrado como
+puntero LFS por la regla '*.png' de .gitattributes; el resto son los PNG
+vendorizados de gdUnit4)
+
+--- git status --short docs/evidencia/ (el PNG queda staged como 'A') ---
+A  docs/evidencia/M0-T0.3/05_playground.png
+?? docs/evidencia/M0-T0.3/01_versions.txt
+?? docs/evidencia/M0-T0.3/03_demo_fixed_fps.txt
+?? docs/evidencia/M0-T0.3/04_demo_realtime.txt
+?? docs/evidencia/M0-T0.3/05_screenshot.txt
+?? docs/evidencia/M0-T0.3/09_limits.txt

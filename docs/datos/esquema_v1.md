@@ -115,6 +115,8 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 | `bus_mass_kg` | `int` | kg | 3000 | "masa 3000 kg" |
 | `bus_integrity_max` | `int` | puntos | 100 | "Integridad 100" |
 | `bus_integrity_max_loss_per_contract` | `int` | puntos/contrato | 5 | "Desgaste −5 al máximo por contrato" |
+| `bus_max_speed_kmh` | `float` | km/h | 90.0 | §4.5 del maestro |
+| `bus_accel_0_60_kmh_s` | `float` | s | 5.0 | §4.5 del maestro |
 
 `bus_integrity_max_loss_per_contract` es una **magnitud positiva que se resta** de `bus_integrity_max` por cada contrato (§8.1: "−5 al máximo por contrato"): con el valor v0, la integridad máxima pasa de 100 a 95 tras el primer contrato.
 

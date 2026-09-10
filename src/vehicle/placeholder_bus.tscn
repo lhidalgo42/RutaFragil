@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/vehicle/placeholder_bus.gd" id="1_bus"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bus"]
+friction = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bus"]
+size = Vector3(2.5, 2.2, 8.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bus"]
+size = Vector3(2.5, 2.2, 8.0)
+
+[node name="PlaceholderBus" type="RigidBody3D" groups=["bus"]]
+mass = 1.0
+physics_material_override = SubResource("PhysicsMaterial_bus")
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, -0.6, 0)
+contact_monitor = true
+max_contacts_reported = 8
+can_sleep = false
+script = ExtResource("1_bus")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_bus")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_bus")

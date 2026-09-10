@@ -1,0 +1,22 @@
+=== Evidencia 01_versions.txt — M0-T0.3 ===
+Fecha de captura (UTC): 2026-09-10 21:14:04
+Máquina: Windows, Git Bash
+Comandos: git --version; git lfs version; "$GODOT_BIN" --version; git rev-parse main
+GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
+
+--- git --version ---
+git version 2.51.0.windows.1
+exit code: 0
+
+--- git lfs version ---
+git-lfs/3.7.0 (GitHub; windows amd64; go 1.24.4; git 92dddf56)
+exit code: 0
+
+--- "$GODOT_BIN" --version ---
+4.7.2.stable.official.ed1daf0bf
+exit code: 0
+
+--- git rev-parse main (hash de main de partida; esperado 1f021cb) ---
+1f021cb9f470c4eb4f3550a569a274f2df24d8fe
+exit code: 0

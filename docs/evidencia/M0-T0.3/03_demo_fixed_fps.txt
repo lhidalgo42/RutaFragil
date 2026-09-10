@@ -1,0 +1,72 @@
+=== Evidencia 03_demo_fixed_fps.txt — M0-T0.3 ===
+Fecha de captura (UTC): 2026-09-10 21:14:48
+Máquina: Windows, Git Bash
+Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
+Comando (DOS corridas): timeout 120 "$GODOT_BIN" --headless --fixed-fps 60 --path . -s res://src/tooling/run_demo.gd
+GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+Qué demuestra: el modo demo automático completa una vuelta del circuito sin
+humano (criterio ✅ de T0.3) en modo determinista --fixed-fps 60 (1 tick de
+física por frame, ~150x más rápido que el reloj); código de salida 0 solo con
+result=lap_completed. Las DOS corridas se comparan con diff para anotar el
+determinismo (plan §8, evidencia 03; §10.5: idéntico en la misma máquina es
+esperado, no exigido entre máquinas).
+
+######################################################################
+# CORRIDA 1 — inicio UTC 2026-09-10T21:10:03Z — exit code 0
+######################################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+DEMO waypoint 0 t=2.5s
+DEMO waypoint 1 t=5.0s
+DEMO waypoint 2 t=8.0s
+DEMO waypoint 3 t=8.8s
+DEMO waypoint 4 t=9.8s
+DEMO waypoint 5 t=12.0s
+DEMO water_entered t=12.0s
+DEMO waypoint 6 t=13.8s
+DEMO waypoint 7 t=16.2s
+DEMO waypoint 8 t=16.9s
+DEMO waypoint 9 t=20.8s
+DEMO waypoint 10 t=28.8s
+DEMO waypoint 11 t=30.6s
+DEMO waypoint 12 t=31.9s
+DEMO waypoint 13 t=33.5s
+DEMO waypoint 14 t=34.5s
+DEMO waypoint 15 t=35.5s
+DEMO waypoint 16 t=36.3s
+DEMO result=lap_completed t=36.3s waypoints=17 max_speed_kmh=52.8 min_upright=0.96
+[exit code de la corrida 1: 0]
+
+######################################################################
+# CORRIDA 2 — inicio UTC 2026-09-10T21:10:07Z — exit code 0
+######################################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+DEMO waypoint 0 t=2.5s
+DEMO waypoint 1 t=5.0s
+DEMO waypoint 2 t=8.0s
+DEMO waypoint 3 t=8.8s
+DEMO waypoint 4 t=9.8s
+DEMO waypoint 5 t=12.0s
+DEMO water_entered t=12.0s
+DEMO waypoint 6 t=13.8s
+DEMO waypoint 7 t=16.2s
+DEMO waypoint 8 t=16.9s
+DEMO waypoint 9 t=20.8s
+DEMO waypoint 10 t=28.8s
+DEMO waypoint 11 t=30.6s
+DEMO waypoint 12 t=31.9s
+DEMO waypoint 13 t=33.5s
+DEMO waypoint 14 t=34.5s
+DEMO waypoint 15 t=35.5s
+DEMO waypoint 16 t=36.3s
+DEMO result=lap_completed t=36.3s waypoints=17 max_speed_kmh=52.8 min_upright=0.96
+[exit code de la corrida 2: 0]
+
+######################################################################
+# DETERMINISMO — diff entre las dos salidas completas
+######################################################################
+Comando: diff <(corrida 1) <(corrida 2)
+(diff vacío: las dos salidas son IDÉNTICAS, incluidos todos los
+timestamps de waypoint y el reporte final — determinismo total en esta máquina)
+exit code del diff: 0 (0 = sin diferencias)

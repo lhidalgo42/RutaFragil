@@ -79,6 +79,19 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **`reload()` reemplaza los objetos `data`/`tuning`:** los consumidores que guarden referencias a los Resources deben reengancharse en la señal `reloaded(report)` (T0.3+).
 - **Observación:** editor con ventana: un segmentation fault al cerrar observado una vez bajo `timeout` (2026-09-10), no reproducido en dos intentos sin `timeout`; bug de apagado de 4.7 con plugins, fix en 4.8; sin acción.
 
+## Pendientes propios de la ejecución de M0-T0.3
+
+- **T1.1 reemplaza el bus placeholder** y hereda la interfaz `set_drive(throttle, steer, brake)`; los `@export` greybox del placeholder se eliminan ahí (D48).
+- **Proponer al dueño:** incorporar los dos números de §4.5 (90 km/h, 0–60 en 5 s) a la tabla §8.1 del maestro (hoy viven en el esquema v1 como origen §4.5).
+- **`WaterZone` se promueve** a `src/core/` o `src/biomes/` común en M7 (flotación/hundimiento, T7.2).
+- **`src/tooling/run_demo.gd` es la base del guion de red de T0.4.**
+- **El `uid` de las escenas `.tscn`** aparecerá al primer guardado desde el editor (diff de una línea por escena, esperado; §3 del plan M0-T0.3).
+- **`physics_ticks_per_second` 120 Hz opcional** (§15) queda para M2.
+- **Un `.tscn` escrito a mano necesita `node_paths=[...]`** en la cabecera `[node]` para que los `@export` tipados-Node se resuelvan: sin ese atributo cargan `null` en silencio (ni error ni warning). Cualquier escena manual con referencias `@export var x: Node` debe declarar `node_paths` (lección de la escritura a mano de `scenes/playground.tscn`).
+- **En scripts `-s` no se pueden referenciar estáticamente clases que tocan un autoload:** compilan antes de que el autoload esté registrado y la cadena de tipos llega hasta él. `src/tooling/run_demo.gd` lo resuelve con duck-typing tipado (inspección por nombre de nodo/señal y lecturas `Variant` seguras); misma regla para futuras herramientas headless.
+- **`apply_central_impulse` se descarta si ese mismo tick se asigna `linear_velocity` después** (orden de operaciones dentro de `_physics_process`): la asignación pisa el impulso. Quien combine impulsos con correcciones directas de velocidad debe fijar el orden con cuidado (lección del ajuste del bus placeholder).
+- **El impulso de escalón (climb hop) del bus placeholder es una ficción greybox documentada** (ayuda a subir los baches sin suspensión): T1.1 la borra junto al placeholder (D48); no es un comportamiento del bus real.
+
 ## Cerrados en las rondas 2 y 3 de M0-T0.1
 
 - **Borrado de `addons/gdUnit4/test/`** (M2/M3 de la revisión 01): ejecutado en la ronda 3 tras R12=SÍ (2026-09-08). 559 archivos eliminados con `git rm -r`; la caché global ya no lista `res://addons/gdUnit4/test/` (conteo 0) y no queda ningún `.scn` en el índice. Registrado en D32, `CREDITS.md` y la evidencia 08.
