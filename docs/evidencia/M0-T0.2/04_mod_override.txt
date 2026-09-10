@@ -5,8 +5,11 @@ Criterio 2 a nivel de proceso: un mod en user://mods/ pisa el valor base;
 al borrarlo, vuelve el valor base. user:// en Windows = C:\Users\Leo\AppData\Roaming\Godot\app_userdata\RutaFragil\mods
 GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
 
-Recaptura de la ronda 3 (e6): el volcado muestra el contenido vigente de HEAD
-(6656a8c): bus_integrity_max_loss_per_contract y fuel_consumption_l_per_km 4.0.
+Recaptura de la ronda 3 (e6; cabecera corregida en la ronda 4, r3.3): el
+volcado muestra el contenido vigente de HEAD 0645a87; data/ no cambió desde
+6656a8c (la ronda 3 solo tocó docs/código/tests — git diff
+6656a8c..0645a87 -- data/ sale vacío): bus_integrity_max_loss_per_contract
+y fuel_consumption_l_per_km 4.0.
 
 Comandos ejecutados, en orden:
   1) printf '{"tuning": {"starting_money": 999}}' > "$APPDATA/Godot/app_userdata/RutaFragil/mods/zz_test.json"

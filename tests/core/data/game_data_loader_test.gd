@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 
 ## GameDataLoader contract (D45): layers .tres -> base .json -> mods/*.json,
-## deep merge per document, alphabetical mod order, whole-mod rejection on
+## deep merge per document, byte (ASCII) mod order, whole-mod rejection on
 ## any error. Directories are injected from create_temp_dir, never the real
 ## user://mods. A document with no applied layer is a load error (M4), so
 ## fixtures that assert is_ok() write a base layer for both documents.
@@ -74,7 +74,7 @@ func test_mod_overrides_base() -> void:
 	assert_int(loader.tuning.starting_money).is_equal(999)
 
 
-func test_two_mods_apply_in_alphabetical_order() -> void:
+func test_two_mods_apply_in_byte_order() -> void:
 	var base_dir: String = create_temp_dir("loader_mod_order_base")
 	var mods_dir: String = create_temp_dir("loader_mod_order_mods")
 	_write_base_game_config(base_dir)
@@ -92,7 +92,7 @@ func test_two_mods_apply_in_alphabetical_order() -> void:
 	# Each mod contributes the key the other does not touch.
 	assert_int(loader.tuning.starting_money).is_equal(700)
 	assert_int(loader.tuning.rent_quota).is_equal(950)
-	# Base layers first, then the mods in alphabetical order.
+	# Base layers first, then the mods in byte (ASCII) order.
 	var applied: PackedStringArray = report.applied_files
 	assert_int(applied.size()).is_equal(4)
 	assert_str(applied[0]).is_equal(base_dir + "/game_config.json")
@@ -215,9 +215,7 @@ func test_invalid_base_json_error_points_at_the_truncated_file() -> void:
 	assert_bool(report.is_ok()).is_false()
 	assert_int(loader.tuning.starting_money).is_equal(321)
 	assert_int(report.errors.size()).is_equal(1)
-	assert_bool(
-		report.errors[0].begins_with("base:" + base_dir + "/tuning.json")
-	).is_true()
+	assert_str(report.errors[0]).starts_with("base:" + base_dir + "/tuning.json")
 	var applied: PackedStringArray = report.applied_files
 	assert_int(applied.size()).is_equal(2)
 	assert_str(applied[0]).is_equal(base_dir + "/game_config.json")
@@ -297,6 +295,27 @@ func test_mc1b_empty_object_mod_applies_with_a_warning() -> void:
 	var applied: PackedStringArray = report.applied_files
 	assert_int(applied.size()).is_equal(3)
 	assert_str(applied[2]).is_equal(mods_dir + "/empty.json")
+
+
+func test_mod_with_only_unknown_sections_applies_with_warning() -> void:
+	# A mod whose sections are all unknown is not a rejection (D45): each one
+	# becomes a warning and the file still lands in applied_files.
+	var base_dir: String = create_temp_dir("loader_unknown_mod_base")
+	var mods_dir: String = create_temp_dir("loader_unknown_mod_mods")
+	_write_base_game_config(base_dir)
+	_write_json(base_dir + "/tuning.json", "{\"tuning\": {\"starting_money\": 500}}")
+	_write_json(mods_dir + "/mystery.json", "{\"workshop\": {\"bench\": 1}}")
+	var loader: GameDataLoader = GameDataLoader.new(base_dir, mods_dir)
+	var report: DataLoadReport = loader.load_all()
+	assert_bool(report.is_ok()).is_true()
+	assert_int(loader.tuning.starting_money).is_equal(500)
+	assert_int(report.warnings.size()).is_equal(1)
+	assert_str(report.warnings[0]).is_equal(
+		"mod:mystery.json: unknown section 'workshop' ignored"
+	)
+	var applied: PackedStringArray = report.applied_files
+	assert_int(applied.size()).is_equal(3)
+	assert_str(applied[2]).is_equal(mods_dir + "/mystery.json")
 
 
 func test_mc3_tres_of_wrong_class_is_an_error() -> void:

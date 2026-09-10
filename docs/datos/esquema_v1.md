@@ -172,7 +172,7 @@ Efecto: `starting_money` pasa a 999; `base_pay.fragile` pasa a 150 conservando e
 
 ## 7. Recarga, edición en caliente y límites
 
-- **Recarga explícita** (D46): `GameConfig.reload() -> DataLoadReport` + señal `reloaded(report)`; no hay vigilante automático de `mtime` en v1 (BACKLOG).
+- **Recarga explícita** (D46): `GameConfig.reload(base_dir: String = "res://data", mods_dir: String = "user://mods") -> DataLoadReport` + señal `reloaded(report)`; los argumentos existen para pruebas (el juego usa los defaults); no hay vigilante automático de `mtime` en v1 (BACKLOG).
 - Los JSON se leen con `FileAccess` (nunca con `load()`), que es lo que hace verdadero "cambiar un JSON sin reabrir el editor"; los `.tres` se releen con `ResourceLoader.CACHE_MODE_IGNORE`.
 - **`res://` es de solo lectura en los exports**: la edición en caliente del JSON base es una función de **desarrollo**; la vía publicada para modders es `user://mods/*.json`.
 - Mods empaquetados `.pck` (`ProjectSettings.load_resource_pack`, §13): fuera de v1, planeados para M4 (BACKLOG).

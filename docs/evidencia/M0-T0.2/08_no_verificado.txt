@@ -1,5 +1,5 @@
-=== Evidencia 08_no_verificado.txt — M0-T0.2 (ronda 3, actualizada) ===
-Fecha de captura (UTC): 2026-09-10 15:59:26
+=== Evidencia 08_no_verificado.txt — M0-T0.2 (ronda 4, actualizada) ===
+Fecha de captura (UTC): 2026-09-10 17:29:09
 Máquina: Windows, Git Bash
 
 Lista explícita de lo NO verificado en esta tarea (regla R7: si un criterio no
@@ -79,7 +79,7 @@ NO verificado (sigue pendiente del gate humano o de tareas futuras):
 5. Recarga en caliente dentro de una escena de juego corriendo con ventana.
    GameConfig.reload() y la señal reloaded(report) quedan ejercitados por el
    test de autoload en headless (game_config_autoload_test, 6 tests en verde
-   tras la ronda 3), pero no se corrió una escena jugable con ventana: las
+   tras la ronda 4), pero no se corrió una escena jugable con ventana: las
    pruebas fueron todas headless. Nada de game feel ni presentación visual es
    medible aquí (§0.8).
 
@@ -88,7 +88,7 @@ NO verificado (sigue pendiente del gate humano o de tareas futuras):
    (evidencia 05). El orden de aplicación por bytes (ASCII) (zz.json antes que
    aa.json con claves distintas, mt1) y los casos de fusión de la sección 6
    del plan están cubiertos por tests unitarios en verde (json_merge_test: 7
-   tests; game_data_loader_test: 16 tests), pero no se probó con un directorio
+   tests; game_data_loader_test: 17 tests), pero no se probó con un directorio
    de mods grande real.
 
 7. Red.
@@ -117,17 +117,34 @@ Sin verificar de la ronda 3 específicamente: nada nuevo. Los cambios de la
 ronda 3 son la firma reload(base_dir, mods_dir) del autoload (cubierta por los
 dos tests MR3) y tests/documentos; no introducen comportamiento sin probar.
 
-Anomalías observadas durante la generación de la evidencia de la ronda 3:
+Sin verificar de la ronda 4 específicamente: nada nuevo. La ronda 4 solo toca
+tests (orden por bytes —ASCII, nunca alfabético insensible a mayúsculas—
+fijado en json_file_test con "B.json" antes que "a.json" y en el renombrado
+test_two_mods_apply_in_byte_order; el nuevo
+test_mod_with_only_unknown_sections_applies_with_warning; los refuerzos MR3
+que leen last_report tras el push_warning/push_error) y documentos
+(DECISIONS D46, esquema §7): no hay cambios en src/ ni en data/, así que no
+introduce comportamiento sin probar. La sonda unsafe_*=2 (warnings
+gdscript/unsafe_* elevados de 1 a 2 en project.godot, revertido tras la
+corrida) también salió en verde: exit 0, 61/61 (evidencia 02, sección
+"Sonda unsafe_*=2").
+
+Anomalías observadas durante la generación de la evidencia de la ronda 4:
 ninguna inesperada. Ambos arneses (run_tests.ps1 y run_tests.sh) terminaron
-con exit 0 (60 tests descubiertos, 8/8 suites); los dos pases de --import
-devolvieron 0 en esta máquina. Dos notas aclaratorias (no anomalías):
+con exit 0 (61 tests descubiertos, 8/8 suites) y la sonda unsafe_*=2 también
+(exit 0, 61/61); los dos pases de --import devolvieron 0 en esta máquina.
+Dos notas aclaratorias (no anomalías):
   - Los volcados del arnés (evidencias 02 y 06) incluyen una línea
     "WARNING: REJECTED mod:bad.json..." y un bloque "ERROR: data load:
     0 applied, 0 warning(s), 2 error(s)" con backtrace hacia
-    game_config_autoload_test.gd:63/:74: son los push_warning/push_error que
-    los tests MR3 provocan a propósito y que gdUnit4 captura y afirma; los
-    tests PASAN. Salida esperada, no un fallo.
+    game_config_autoload_test.gd:70/:87 (:63/:74 antes de la ronda 4, que
+    añadió el docstring y los refuerzos MR3 a esa suite): son los
+    push_warning/push_error que los tests MR3 provocan a propósito y que
+    gdUnit4 captura y afirma; los tests PASAN. Salida esperada, no un fallo.
   - La corrida SIN datos de la evidencia 09 imprime un bloque "ERROR ... at:
     push_error" con backtrace — es el push_error intencional del autoload
-    GameConfig (src/autoloads/game_config.gd:37) cuando el reporte no es ok;
-    el proceso terminó limpio con el código 1 esperado.
+    GameConfig cuando el reporte no es ok; el proceso terminó limpio con el
+    código 1 esperado. Los números de línea de ESE backtrace
+    (game_config.gd:35 y :24) son los del archivo en 6656a8c; la nota r3.7
+    que lo declara (y su traslación a :37/:26 en HEAD) vive en la evidencia
+    09, no en este archivo.

@@ -547,3 +547,170 @@ Cierre de e3: la parte 1 (PRE-COMMIT) quedó commiteada dentro del commit de
 código a30ae7a y esta parte 2 (POST-COMMIT) lo lista en su git log, con el
 árbol limpio. La recaptura de evidencias de la etapa 1 también quedó dentro de
 a30ae7a (el commit las incluyó junto al código de la ronda 3).
+
+=== RONDA 4 PRE-COMMIT ===
+Fecha de captura (UTC): 2026-09-10 17:35:20
+Máquina: Windows, Git Bash
+Rama: m0/t0.2-game-config — HEAD: e59591a
+Estado capturado: ronda 4 completa SIN commitear sobre el último commit
+(e59591a, "docs: review 03 and round-4 prompt"): tests r3.1/r3.4/r3.6/r3.7 +
+DECISIONS/esquema (bloques A/B) y la evidencia del bloque C (02 recapturada
+con la sonda unsafe_*=2, cabeceras de 03/04/05 corregidas — r3.3, nota r3.7
+en 09, 08 actualizada). El coordinador comete el código después de esta
+captura; la sección post-commit se captura tras ese commit y se commitea en
+un commit de docs aparte. Nota sobre la autoconsistencia: a diferencia de las
+rondas 2-3, el status de abajo SÍ lista 07_git.txt como modificado, porque la
+captura corrió mientras esta misma sección se escribía (los comandos git se
+ejecutaron con el bloque de cabecera ya volcado al archivo); por la misma
+razón el git diff --stat del árbol muestra 07 con el tamaño parcial que
+tenía en ese instante (118 líneas añadidas), no el final.
+Comandos: git log --oneline main..HEAD; git status --short;
+  git diff --stat main..HEAD; git diff --stat   (árbol de trabajo, lo sin
+  commitear); git diff main..HEAD -- project.godot
+
+--- git log --oneline main..HEAD ---
+e59591a docs: review 03 and round-4 prompt (M0-T0.2)
+17a788a docs: evidence 07 post-commit (M0-T0.2)
+a30ae7a fix: round 3 — MR1-MR3 test coverage, reload() signature, evidence recapture (M0-T0.2)
+0645a87 docs: review 02, plan v1.1 and round-3 prompt (M0-T0.2)
+6656a8c fix: round 2 — M1-M4 coverage, loader error semantics, codec hardening, docs and evidence (M0-T0.2)
+98c7b77 docs: review 01 and round-2 prompt (M0-T0.2)
+73305e8 docs: execution evidence 01-08 (M0-T0.2)
+e5fa554 feat: GameConfig + TuningTable resources, JSON loader with mods fusion, autoload, tests (M0-T0.2)
+3c52438 docs: plan and round-1 prompt (M0-T0.2)
+exit code: 0
+
+--- git status --short (completo) ---
+ M DECISIONS.md
+ M docs/datos/esquema_v1.md
+ M docs/evidencia/M0-T0.2/02_run_tests.txt
+ M docs/evidencia/M0-T0.2/03_hot_edit.txt
+ M docs/evidencia/M0-T0.2/04_mod_override.txt
+ M docs/evidencia/M0-T0.2/05_mod_invalid.txt
+ M docs/evidencia/M0-T0.2/07_git.txt
+ M docs/evidencia/M0-T0.2/08_no_verificado.txt
+ M docs/evidencia/M0-T0.2/09_no_data.txt
+ M tests/autoloads/game_config_autoload_test.gd
+ M tests/core/data/game_data_loader_test.gd
+ M tests/core/data/json_file_test.gd
+exit code: 0
+
+--- git diff --stat main..HEAD ---
+ BACKLOG.md                                       |  17 +-
+ DECISIONS.md                                     |   7 +-
+ README.md                                        |  36 +-
+ data/.gitkeep                                    |   0
+ data/game_config.json                            |   7 +
+ data/game_config.tres                            |   9 +
+ data/tuning.json                                 |  55 ++
+ data/tuning.tres                                 |  57 ++
+ docs/datos/esquema_v1.md                         | 178 +++++
+ docs/evidencia/M0-T0.2/01_versions.txt           |  21 +
+ docs/evidencia/M0-T0.2/02_run_tests.txt          | 814 +++++++++++++++++++++++
+ docs/evidencia/M0-T0.2/03_hot_edit.txt           | 274 ++++++++
+ docs/evidencia/M0-T0.2/04_mod_override.txt       | 182 +++++
+ docs/evidencia/M0-T0.2/05_mod_invalid.txt        | 137 ++++
+ docs/evidencia/M0-T0.2/06_mirror.txt             | 578 ++++++++++++++++
+ docs/evidencia/M0-T0.2/07_git.txt                | 549 +++++++++++++++
+ docs/evidencia/M0-T0.2/08_no_verificado.txt      | 133 ++++
+ docs/evidencia/M0-T0.2/09_no_data.txt            | 208 ++++++
+ docs/planes/M0-T0.2_plan.md                      | 210 ++++++
+ docs/planes/M0-T0.2_ronda1_prompt.md             |  42 ++
+ docs/planes/M0-T0.2_ronda2_prompt.md             |  59 ++
+ docs/planes/M0-T0.2_ronda3_prompt.md             |  47 ++
+ docs/planes/M0-T0.2_ronda4_prompt.md             |  38 ++
+ docs/revisiones/M0-T0.2_revision_01.md           |  99 +++
+ docs/revisiones/M0-T0.2_revision_02.md           |  86 +++
+ docs/revisiones/M0-T0.2_revision_03.md           |  69 ++
+ project.godot                                    |   4 +
+ src/autoloads/.gitkeep                           |   0
+ src/autoloads/game_config.gd                     |  46 ++
+ src/autoloads/game_config.gd.uid                 |   1 +
+ src/core/data/data_load_report.gd                |  36 +
+ src/core/data/data_load_report.gd.uid            |   1 +
+ src/core/data/data_mirror.gd                     |  45 ++
+ src/core/data/data_mirror.gd.uid                 |   1 +
+ src/core/data/game_config_data.gd                |  15 +
+ src/core/data/game_config_data.gd.uid            |   1 +
+ src/core/data/game_data_loader.gd                | 191 ++++++
+ src/core/data/game_data_loader.gd.uid            |   1 +
+ src/core/data/json_file.gd                       |  51 ++
+ src/core/data/json_file.gd.uid                   |   1 +
+ src/core/data/json_merge.gd                      |  25 +
+ src/core/data/json_merge.gd.uid                  |   1 +
+ src/core/data/resource_json_codec.gd             | 186 ++++++
+ src/core/data/resource_json_codec.gd.uid         |   1 +
+ src/core/data/tuning_table.gd                    |  63 ++
+ src/core/data/tuning_table.gd.uid                |   1 +
+ src/tooling/import_data_mirror.gd                |  63 ++
+ src/tooling/import_data_mirror.gd.uid            |   1 +
+ src/tooling/print_game_data.gd                   |  30 +
+ src/tooling/print_game_data.gd.uid               |   1 +
+ src/tooling/write_data_mirror.gd                 |  38 ++
+ src/tooling/write_data_mirror.gd.uid             |   1 +
+ tests/autoloads/game_config_autoload_test.gd     |  80 +++
+ tests/autoloads/game_config_autoload_test.gd.uid |   1 +
+ tests/core/data/data_load_report_test.gd         |  56 ++
+ tests/core/data/data_load_report_test.gd.uid     |   1 +
+ tests/core/data/data_mirror_test.gd              |  71 ++
+ tests/core/data/data_mirror_test.gd.uid          |   1 +
+ tests/core/data/fixtures/codec_fixture.gd        |  14 +
+ tests/core/data/fixtures/codec_fixture.gd.uid    |   1 +
+ tests/core/data/game_data_loader_test.gd         | 339 ++++++++++
+ tests/core/data/game_data_loader_test.gd.uid     |   1 +
+ tests/core/data/json_file_test.gd                |  82 +++
+ tests/core/data/json_file_test.gd.uid            |   1 +
+ tests/core/data/json_merge_test.gd               |  61 ++
+ tests/core/data/json_merge_test.gd.uid           |   1 +
+ tests/core/data/resource_json_codec_test.gd      | 231 +++++++
+ tests/core/data/resource_json_codec_test.gd.uid  |   1 +
+ 68 files changed, 5656 insertions(+), 3 deletions(-)
+exit code: 0
+
+--- git diff --stat (árbol de trabajo: lo de la ronda 4 aún sin commitear,
+--- incluida la evidencia del bloque C) ---
+ DECISIONS.md                                 |   4 +-
+ docs/datos/esquema_v1.md                     |   2 +-
+ docs/evidencia/M0-T0.2/02_run_tests.txt      | 768 +++++++++++++++++++++------
+ docs/evidencia/M0-T0.2/03_hot_edit.txt       |   7 +-
+ docs/evidencia/M0-T0.2/04_mod_override.txt   |   7 +-
+ docs/evidencia/M0-T0.2/05_mod_invalid.txt    |   7 +-
+ docs/evidencia/M0-T0.2/07_git.txt            | 118 ++++
+ docs/evidencia/M0-T0.2/08_no_verificado.txt  |  41 +-
+ docs/evidencia/M0-T0.2/09_no_data.txt        |  12 +-
+ tests/autoloads/game_config_autoload_test.gd |  27 +-
+ tests/core/data/game_data_loader_test.gd     |  31 +-
+ tests/core/data/json_file_test.gd            |  10 +-
+ 12 files changed, 830 insertions(+), 204 deletions(-)
+exit code: 0
+
+--- git diff main..HEAD -- project.godot ---
+diff --git a/project.godot b/project.godot
+index 022cc85..14f43e9 100644
+--- a/project.godot
++++ b/project.godot
+@@ -14,6 +14,10 @@ config/name="RutaFragil"
+ config/features=PackedStringArray("4.7", "Forward Plus")
+ config/icon="res://icon.svg"
+ 
++[autoload]
++
++GameConfig="*res://src/autoloads/game_config.gd"
++
+ [debug]
+ 
+ gdscript/warnings/untyped_declaration=2
+exit code: 0
+
+(Lectura: el diff de project.godot contra main muestra SOLO el bloque
+[autoload] de la ronda 1 (GameConfig="*res://src/autoloads/game_config.gd"),
+sin cambios nuevos — la edición temporal unsafe_*=2 de la sonda se revirtió
+con `git checkout -- project.godot` antes de esta captura, y project.godot
+tampoco tiene cambios en el árbol de trabajo (no aparece en el status). Las
+entradas M del status son: el trabajo sin commitear de la ronda 4 de los
+bloques A/B (DECISIONS.md, docs/datos/esquema_v1.md y las tres suites de
+tests) y la evidencia del bloque C recién escrita (02, 03, 04, 05, 07 — esta
+misma sección, ver la nota de autoconsistencia de la cabecera —, 08, 09);
+sin untracked y sin cambios en data/.)
+
+Sección post-commit capturada tras el commit de código de la ronda 4, commiteada en un commit de docs aparte.

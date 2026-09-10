@@ -62,13 +62,17 @@ func test_root_array_is_rejected() -> void:
 
 func test_list_json_files_is_sorted_and_filtered() -> void:
 	var dir: String = create_temp_dir("json_file_list")
-	assert_int(JsonFile.write_text(dir + "/b.json", "{}")).is_equal(OK)
+	# Byte (ASCII) order, never case-insensitive alphabetical: "B.json" (0x42)
+	# sorts before "a.json" (0x61). a.json is written first on purpose so only
+	# the sort, never the write order, can produce the expectation. notes.txt
+	# must be filtered out.
 	assert_int(JsonFile.write_text(dir + "/a.json", "{}")).is_equal(OK)
+	assert_int(JsonFile.write_text(dir + "/B.json", "{}")).is_equal(OK)
 	assert_int(JsonFile.write_text(dir + "/notes.txt", "{}")).is_equal(OK)
 	var files: PackedStringArray = JsonFile.list_json_files(dir)
 	assert_int(files.size()).is_equal(2)
-	assert_str(files[0]).is_equal("a.json")
-	assert_str(files[1]).is_equal("b.json")
+	assert_str(files[0]).is_equal("B.json")
+	assert_str(files[1]).is_equal("a.json")
 
 
 func test_list_json_files_on_missing_dir_is_empty_without_engine_error() -> void:

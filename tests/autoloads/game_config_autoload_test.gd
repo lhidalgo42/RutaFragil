@@ -2,8 +2,15 @@ extends GdUnitTestSuite
 
 ## GameConfig autoload contract (D43/D46): it must exist in the test runner,
 ## expose non-null data/tuning, and reload() must emit `reloaded`.
-## No concrete data values are asserted here: the real user://mods of the
-## developer machine may legitimately override them.
+## No concrete data values are asserted in the runner tests: the real
+## user://mods of the developer machine may legitimately override them.
+## The two MR3 tests drive their own instance instead (auto_free, never added
+## to the tree, so _ready() does not run the real res://data load) and call
+## reload() with injected base/mods directories: a rejected mod must surface
+## as push_warning, an empty data set as push_error with the report summary.
+
+
+const AUTOLOAD_SCRIPT: GDScript = preload("res://src/autoloads/game_config.gd")
 
 
 func _autoload() -> Node:
@@ -59,10 +66,16 @@ func test_reload_push_warning_on_rejected_mod() -> void:
 	_write_json(base_dir + "/game_config.json", "{\"game_config\": {\"max_players\": 6}}")
 	_write_json(base_dir + "/tuning.json", "{\"tuning\": {\"starting_money\": 500}}")
 	_write_json(mods_dir + "/bad.json", "{\"tuning\": {\"starting_money\": \"mucho\"}}")
-	var node: Node = auto_free(load("res://src/autoloads/game_config.gd").new())
+	var node: Node = auto_free(AUTOLOAD_SCRIPT.new())
 	await assert_error(func() -> void: node.call("reload", base_dir, mods_dir)).is_push_warning(
 		"REJECTED mod:bad.json: key 'starting_money': expected an int, got String"
 	)
+	# A rejected mod is a warning, never a load failure: the report stays ok.
+	var report_v: Variant = node.get("last_report")
+	assert_bool(report_v is DataLoadReport).is_true()
+	if report_v is DataLoadReport:
+		var report: DataLoadReport = report_v
+		assert_bool(report.is_ok()).is_true()
 
 
 func test_reload_push_error_on_empty_dirs() -> void:
@@ -70,7 +83,7 @@ func test_reload_push_error_on_empty_dirs() -> void:
 	# it as a push_error carrying the report summary.
 	var base_dir: String = create_temp_dir("autoload_empty_base")
 	var mods_dir: String = create_temp_dir("autoload_empty_mods")
-	var node: Node = auto_free(load("res://src/autoloads/game_config.gd").new())
+	var node: Node = auto_free(AUTOLOAD_SCRIPT.new())
 	await assert_error(func() -> void: node.call("reload", base_dir, mods_dir)).is_push_error(
 		(
 			"data load: 0 applied, 0 warning(s), 2 error(s)"
@@ -78,3 +91,9 @@ func test_reload_push_error_on_empty_dirs() -> void:
 			+ "\n  [error] doc:tuning: no .tres or base .json layer applied"
 		)
 	)
+	# The push_error half of the contract: no warning accompanies the failure.
+	var report_v: Variant = node.get("last_report")
+	assert_bool(report_v is DataLoadReport).is_true()
+	if report_v is DataLoadReport:
+		var report: DataLoadReport = report_v
+		assert_bool(report.warnings.is_empty()).is_true()

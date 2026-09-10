@@ -5,8 +5,11 @@ Criterio 1 a nivel de proceso: editar data/tuning.json y rerunnar la herramienta
 CLI recoge el cambio SIN abrir el editor de Godot.
 GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
 
-Recaptura de la ronda 3 (e6): el volcado muestra el contenido vigente de HEAD
-(6656a8c, ronda 2 commiteada): la clave renombrada bus_integrity_max_loss_per_contract
+Recaptura de la ronda 3 (e6; cabecera corregida en la ronda 4, r3.3): el
+volcado muestra el contenido vigente de HEAD 0645a87; data/ no cambió desde
+6656a8c (la ronda 3 solo tocó docs/código/tests — verificable con
+git diff 6656a8c..0645a87 -- data/, vacío), así que los valores impresos son
+los de ese commit: la clave renombrada bus_integrity_max_loss_per_contract
 y fuel_consumption_l_per_km como float 4.0. Antes de la captura se verificó
 git status --short -- data/ vacío (data/ limpio en HEAD), así que el
 git checkout -- del paso 4 restaura exactamente el estado correcto.

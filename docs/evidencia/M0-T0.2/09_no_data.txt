@@ -1,4 +1,4 @@
-=== Evidencia 09_no_data.txt — M0-T0.2 (ronda 2) ===
+=== Evidencia 09_no_data.txt — M0-T0.2 (ronda 2; anotada en la ronda 4, r3.7) ===
 Fecha de captura (UTC): 2026-09-10 14:47:19
 Máquina: Windows, Git Bash
 Criterio de aceptación (semántica M4/mc de la ronda 2): un documento sin
@@ -111,6 +111,16 @@ Lectura del resultado:
     (src/autoloads/game_config.gd:35, llamado desde _ready línea 24). Es el
     comportamiento documentado del autoload (visibilidad del fallo), no un
     crash: el proceso terminó limpio con código 1.
+
+Nota añadida en la ronda 4 (r3.7) sobre los números de línea de los
+backtraces de ESTE volcado: game_config.gd:35 (el push_error dentro de
+reload) y game_config.gd:24 (la llamada reload() dentro de _ready)
+corresponden al archivo tal como estaba en 6656a8c, el commit vigente cuando
+se capturó esta evidencia (ronda 2). El docstring que la ronda 3 añadió al
+autoload desplazó ambas dos líneas: en HEAD (a30ae7a) esas mismas sentencias
+son game_config.gd:37 y game_config.gd:26 — de hecho los backtraces
+recapturados en la ronda 3 (evidencias 02 y 05) ya muestran :37 y :26. El
+texto del mensaje y la semántica no cambiaron; solo las líneas.
 
 ######################################################################
 # Paso 4-5: data/ restaurada (mv exit 0) y git status --short -- data/
