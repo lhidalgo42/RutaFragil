@@ -89,3 +89,123 @@ index 14f43e9..37384e1 100644
 exit code: 0
 
 Sección post-commit capturada tras el commit de código, en un commit de docs aparte.
+
+=== POST-COMMIT (parte 2) ===
+Fecha de captura (UTC): 2026-09-10 21:32:01
+Máquina: Windows, Git Bash
+Rama: m0/t0.3-playground — HEAD: f21df2f (feat: Playground scene with auto demo
+mode, placeholder bus, circuit, run_demo tool (M0-T0.3))
+Estado capturado: DESPUÉS del commit de código f21df2f, hecho por el
+coordinador sobre la captura PRE-COMMIT de la parte 1. El git log de abajo
+lista f21df2f como primera entrada. Los cinco comandos corrieron ANTES de
+escribir esta sección (captura en archivo temporal y volcado después), así
+que git status sale LIMPIO de verdad: la única modificación posterior es
+esta propia sección (07 no se lista a sí mismo, igual que en M0-T0.2). Esta
+sección se commitea en un commit de docs aparte, como en T0.1/T0.2.
+Comandos: git log --oneline main..HEAD; git status --short;
+  git diff --stat main..HEAD; git diff main..HEAD -- project.godot;
+  git lfs ls-files
+
+f21df2f feat: Playground scene with auto demo mode, placeholder bus, circuit, run_demo tool (M0-T0.3)
+5c6d1d2 docs: plan and round-1 prompt (M0-T0.3)
+exit code: 0
+
+--- git status --short (completo; vacío = árbol limpio tras f21df2f) ---
+exit code: 0
+
+--- git diff --stat main..HEAD ---
+ AGENTS.md                                          |    9 +
+ BACKLOG.md                                         |   13 +
+ DECISIONS.md                                       |    7 +-
+ README.md                                          |   22 +
+ data/tuning.json                                   |    2 +
+ data/tuning.tres                                   |    2 +
+ docs/datos/esquema_v1.md                           |    2 +
+ docs/evidencia/M0-T0.3/01_versions.txt             |   22 +
+ docs/evidencia/M0-T0.3/02_run_tests.txt            | 1589 ++++++++++++++++++++
+ docs/evidencia/M0-T0.3/03_demo_fixed_fps.txt       |   72 +
+ docs/evidencia/M0-T0.3/04_demo_realtime.txt        |   50 +
+ docs/evidencia/M0-T0.3/05_playground.png           |    3 +
+ docs/evidencia/M0-T0.3/05_screenshot.txt           |   57 +
+ docs/evidencia/M0-T0.3/06_editor.txt               |  112 ++
+ docs/evidencia/M0-T0.3/07_git.txt                  |   91 ++
+ docs/evidencia/M0-T0.3/08_no_verificado.txt        |   59 +
+ docs/evidencia/M0-T0.3/09_limits.txt               |   36 +
+ docs/planes/M0-T0.3_plan.md                        |  172 +++
+ docs/planes/M0-T0.3_ronda1_prompt.md               |   28 +
+ project.godot                                      |    1 +
+ scenes/playground.tscn                             |  255 ++++
+ src/biomes/playground/circuit.gd                   |   26 +
+ src/biomes/playground/circuit.gd.uid               |    1 +
+ src/biomes/playground/playground.gd                |   18 +
+ src/biomes/playground/playground.gd.uid            |    1 +
+ src/biomes/playground/water_zone.gd                |   26 +
+ src/biomes/playground/water_zone.gd.uid            |    1 +
+ src/core/data/tuning_table.gd                      |    2 +
+ src/tooling/run_demo.gd                            |  161 ++
+ src/tooling/run_demo.gd.uid                        |    1 +
+ src/vehicle/chase_camera.gd                        |   25 +
+ src/vehicle/chase_camera.gd.uid                    |    1 +
+ src/vehicle/demo_driver.gd                         |   86 ++
+ src/vehicle/demo_driver.gd.uid                     |    1 +
+ src/vehicle/demo_steering.gd                       |   57 +
+ src/vehicle/demo_steering.gd.uid                   |    1 +
+ src/vehicle/placeholder_bus.gd                     |  149 ++
+ src/vehicle/placeholder_bus.gd.uid                 |    1 +
+ src/vehicle/placeholder_bus.tscn                   |   28 +
+ tests/autoloads/game_config_autoload_test.gd       |    4 +-
+ tests/biomes/playground/circuit_test.gd            |   42 +
+ tests/biomes/playground/circuit_test.gd.uid        |    1 +
+ tests/biomes/playground/playground_scene_test.gd   |   64 +
+ .../biomes/playground/playground_scene_test.gd.uid |    1 +
+ tests/biomes/playground/water_zone_test.gd         |   44 +
+ tests/biomes/playground/water_zone_test.gd.uid     |    1 +
+ tests/vehicle/chase_camera_test.gd                 |   22 +
+ tests/vehicle/chase_camera_test.gd.uid             |    1 +
+ tests/vehicle/demo_driver_test.gd                  |   88 ++
+ tests/vehicle/demo_driver_test.gd.uid              |    1 +
+ tests/vehicle/demo_steering_test.gd                |   75 +
+ tests/vehicle/demo_steering_test.gd.uid            |    1 +
+ tests/vehicle/placeholder_bus_test.gd              |  128 ++
+ tests/vehicle/placeholder_bus_test.gd.uid          |    1 +
+ 54 files changed, 3662 insertions(+), 2 deletions(-)
+exit code: 0
+
+--- git diff main..HEAD -- project.godot ---
+diff --git a/project.godot b/project.godot
+index 14f43e9..37384e1 100644
+--- a/project.godot
++++ b/project.godot
+@@ -11,6 +11,7 @@ config_version=5
+ [application]
+ 
+ config/name="RutaFragil"
++run/main_scene="res://scenes/playground.tscn"
+ config/features=PackedStringArray("4.7", "Forward Plus")
+ config/icon="res://icon.svg"
+ 
+exit code: 0
+
+--- git lfs ls-files ---
+e709c40067 * addons/gdUnit4/src/core/assets/touch-button.png
+ed176306a0 * addons/gdUnit4/src/reporters/html/template/css/logo.png
+ed176306a0 * addons/gdUnit4/src/ui/settings/logo.png
+37a4070934 * addons/gdUnit4/src/update/assets/border_bottom.png
+ca6f5d7f59 * addons/gdUnit4/src/update/assets/border_top.png
+f37474a8d5 * addons/gdUnit4/src/update/assets/dot1.png
+c12758bd1b * addons/gdUnit4/src/update/assets/dot2.png
+08cead78bb * addons/gdUnit4/src/update/assets/embedded.png
+fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
+a89cd1718a * docs/evidencia/M0-T0.3/05_playground.png
+exit code: 0
+
+Lectura: el diff de project.godot contra main muestra SOLO la línea
+run/main_scene="res://scenes/playground.tscn" (D52) — la edición temporal
+unsafe_*=2 de la sonda se revirtió con `git checkout -- project.godot` antes
+de añadirla (evidencia 02, sección Sonda). git lfs ls-files muestra el PNG de
+la evidencia 05 (a89cd1718a) ya commiteado como puntero LFS; el resto son los
+PNG vendorizados de gdUnit4.
+
+Cierre: la parte 1 (PRE-COMMIT) quedó commiteada dentro del commit de código
+f21df2f y esta parte 2 (POST-COMMIT) lo lista en su git log, con el árbol
+limpio en el momento de la captura.
