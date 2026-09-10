@@ -22,6 +22,20 @@ func test_real_data_mirror_is_in_sync() -> void:
 		DataMirror.check_mirror(tuning, "tuning", "res://data/tuning.json", report)
 	).is_true()
 	assert_bool(report.is_ok()).is_true()
+	# mt6: check_mirror is a semantic comparison, so a hand-edited JSON with
+	# 500.0 or reordered keys would pass it while write_mirror would rewrite
+	# the file. The mirror must also be byte-identical to the tool's output.
+	var temp_dir: String = create_temp_dir("mirror_real_text")
+	var config_out: String = temp_dir + "/game_config.json"
+	assert_int(DataMirror.write_mirror(config, "game_config", config_out)).is_equal(OK)
+	assert_str(FileAccess.get_file_as_string(config_out)).is_equal(
+		FileAccess.get_file_as_string("res://data/game_config.json")
+	)
+	var tuning_out: String = temp_dir + "/tuning.json"
+	assert_int(DataMirror.write_mirror(tuning, "tuning", tuning_out)).is_equal(OK)
+	assert_str(FileAccess.get_file_as_string(tuning_out)).is_equal(
+		FileAccess.get_file_as_string("res://data/tuning.json")
+	)
 
 
 func test_write_and_check_round_trip_in_temp_dir() -> void:
@@ -45,7 +59,7 @@ func test_write_and_check_round_trip_in_temp_dir() -> void:
 	assert_int(DataMirror.write_mirror(tuning, "tuning", json_path)).is_equal(OK)
 	assert_str(FileAccess.get_file_as_string(json_path)).is_equal(first_text)
 	# And the written mirror parses back to the same values (JSON numbers
-	# come back as floats, so expectations here are float literals).
+	# come back typed float, so expectations here are float literals).
 	var read_report: DataLoadReport = DataLoadReport.new()
 	var raw: Dictionary = JsonFile.read_object(json_path, read_report, "test")
 	assert_bool(read_report.is_ok()).is_true()

@@ -11,7 +11,7 @@ const DATA_DIR: String = "res://data"
 
 func _init() -> void:
 	var exit_code: int = 0
-	for doc_id: String in GameDataLoader.DOC_IDS:
+	for doc_id: String in GameDataLoader.DOCS:
 		if not _write_document(doc_id):
 			exit_code = 1
 	if exit_code == 0:

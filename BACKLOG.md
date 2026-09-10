@@ -70,6 +70,13 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **Vigilante automático de `mtime`** para recargar al cambiar un JSON sin llamar a `reload()`: diferido por D46 (un `Timer` + resolución de 1 s de `FileAccess.get_modified_time()` en Windows no aportan al criterio de T0.2).
 - **Carpetas de mod con manifiesto:** cuando exista un segundo tipo de contenido (D45); en v1 los mods son archivos planos `user://mods/*.json`.
 - **"Derrame ∝ velocidad" sin número en §8.1** (fila Bidón): no se inventó un campo en v1 (D47); definir el parámetro y su nombre en T1.2 (vertido y derrame del bidón).
+- **Codec sin `Array` ni otros `Dictionary[K, V]`** (v1 solo soporta `Dictionary[String, int]`): ampliar `ResourceJsonCodec` antes de T3.1 (D45 promete extensibilidad a colecciones, p. ej. `{"packages": [...]}`).
+- **Validación semántica pendiente:** `max_players ≥ 1`, `≤ max_players_hard_limit`, `min ≤ max` en los pares de rango, fracciones en [0,1]. Hoy un mod `{"game_config": {"max_players": 0}}` pasa la validación de tipos. Destino: lobby T4.1.
+- **`*.json` en el filtro de export (decidir en M4):** por defecto Godot no empaqueta `*.json`; la capa base JSON se omitiría y el juego correría sobre el `.tres` (idéntico por el test de deriva). Decidir si el export incluye los JSON base.
+- **Reglas cualitativas de §8.1 sin parámetro:** "Flotador ×4" (el conteo por bus no es un campo; `shop_prices.float` es precio por unidad) y "surtidor ilimitado / gratis en zonas". Definir si necesitan parámetro cuando entren sus mecánicas (T1.2/T5.2).
+- **`schema_version` sin comprobar en v1:** se carga pero nadie lo valida ni hay migración; informativo hasta que exista una v2 del esquema.
+- **Contradicción §13/§19 (reportada, decidir en T3.1):** §13 exige IDs con namespace para el contenido y §19 sitúa `base_pay` dentro de `PackageDefinition`, mientras v1 lo lleva plano en `TuningTable`. Decidir el dueño único de `base_pay` y su mapeo a IDs.
+- **`reload()` reemplaza los objetos `data`/`tuning`:** los consumidores que guarden referencias a los Resources deben reengancharse en la señal `reloaded(report)` (T0.3+).
 
 ## Cerrados en las rondas 2 y 3 de M0-T0.1
 

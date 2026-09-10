@@ -3,6 +3,8 @@ extends Node
 ## Autoload (D43): single access point for the validated game data.
 ## reload() re-reads the layer stack (res://data -> user://mods) through
 ## GameDataLoader, so a data edit never requires reopening the project.
+## Every load surfaces each report warning with push_warning (modders must see
+## their rejections, M4) and a failing report with push_error.
 
 var data: GameConfigData
 var tuning: TuningTable
@@ -20,8 +22,6 @@ func _ready() -> void:
 		if mkdir_err != OK:
 			push_error("GameConfig: cannot create user://mods (error %d)" % mkdir_err)
 	reload()
-	if not last_report.is_ok():
-		push_error(last_report.summary())
 
 
 func reload() -> DataLoadReport:
@@ -29,9 +29,16 @@ func reload() -> DataLoadReport:
 	last_report = loader.load_all()
 	data = loader.game_config
 	tuning = loader.tuning
+	for warning: String in last_report.warnings:
+		push_warning(warning)
+	if not last_report.is_ok():
+		push_error(last_report.summary())
 	reloaded.emit(last_report)
 	return last_report
 
 
 func _get_max_players() -> int:
-	return data.max_players if data != null else 0
+	if data == null:
+		push_error("GameConfig.max_players read before data loaded")
+		return 0
+	return data.max_players

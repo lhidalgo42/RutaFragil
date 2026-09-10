@@ -1,11 +1,37 @@
-=== Evidencia 08_no_verificado.txt — M0-T0.2 ===
-Fecha de captura (UTC): 2026-09-10 02:22:30
+=== Evidencia 08_no_verificado.txt — M0-T0.2 (ronda 2, actualizada) ===
+Fecha de captura (UTC): 2026-09-10 14:59:50
 Máquina: Windows, Git Bash
 
-Lista explícita de lo NO verificado en esta tarea (regla R7: si un criterio no se
-puede probar desde CLI/editor headless, se dice; nunca se marca). Nada de lo
+Lista explícita de lo NO verificado en esta tarea (regla R7: si un criterio no
+se puede probar desde CLI/editor headless, se dice; nunca se marca). Nada de lo
 siguiente fue comprobado por el agente; corresponde al gate humano (§0.7) o a
 tareas futuras.
+
+Hechos que la revisión 01 dejó sobre la mesa y SÍ quedaron verificados
+(no son pendientes; se registran aquí para que la lista se lea completa):
+
+  V1. Dictionary == es estricta int/float también en los VALORES (no solo en
+      las claves), verificado en 4.7.2. Por eso check_mirror NO compara el
+      Dictionary del recurso contra el JSON parseado en crudo: primero
+      canonicaliza el lado recurso con un round trip JSON
+      (JSON.stringify + parse), de modo que ambos lados sean diccionarios no
+      tipados de floats y la comparación sea semántica (un .json escrito a
+      mano con 500.0 o claves reordenadas pasa). Documentado en
+      src/core/data/data_mirror.gd (comentario sobre la línea 14) y
+      ejercitado por data_mirror_test (2/2 PASSED en evidencia 06).
+      Además, el texto exacto del espejo lo fija el test de deriva reforzado
+      (mt6): test_real_data_mirror_is_in_sync ahora también afirma que el
+      .json en disco es BYTE-IDÉNTICO a la salida de write_mirror
+      (tests/core/data/data_mirror_test.gd, bloque mt6), así que la
+      comparación semántica no puede enmascarar deriva de formato.
+  V2. Los dos .gitkeep borrados en la ronda 2 (data/.gitkeep y
+      src/autoloads/.gitkeep) eran placeholders vacíos (0 bytes, sin
+      contenido): su borrado se declaró bajo R12 y ambos directorios ya
+      contienen archivos reales trackeados. Verificable en 07_git.txt:
+      git ls-files ya no los lista y el diff contra main los muestra con
+      0 líneas cambiadas.
+
+NO verificado (sigue pendiente del gate humano o de tareas futuras):
 
 1. Comportamiento en build exportada (res:// solo lectura).
    La pila de capas (res://data/*.tres -> *.json -> user://mods/*.json) se
@@ -18,11 +44,13 @@ tareas futuras.
    Solo se probaron mods como archivos .json sueltos en user://mods/. La carga
    de mods empaquetados (.pck) está diferida a M4 según el documento maestro.
 
-3. Inspector del editor mostrando data/tuning.tres con los valores de §8.1.
+3. Inspector del editor mostrando data/tuning.tres con los valores de §8.1
+   (con la clave renombrada bus_integrity_max_loss_per_contract y
+   fuel_consumption_l_per_km como float, según la ronda 2).
    Verificación visual con el editor abierto: la hace el dueño en el gate.
    En headless no existe Inspector; lo que sí quedó probado por CLI es que el
    .tres y el .json contienen los mismos valores (test de deriva, evidencia 06)
-   y que print_game_data.gd imprime los valores efectivos (evidencia 03).
+   y que print_game_data.gd imprime los valores efectivos (evidencias 03 y 09).
 
 4. Detección de cambios con el editor ABIERTO.
    El criterio 1 se probó a nivel de proceso (rerun del binario headless tras
@@ -40,14 +68,37 @@ tareas futuras.
 6. Escala de mods.
    A nivel de proceso se probó con 1 mod válido (evidencia 04) y 2 inválidos
    (evidencia 05). El orden alfabético de aplicación (aa.json < zz.json) y los
-   7 casos de fusión de la sección 6 del plan están cubiertos por tests
-   unitarios en verde (json_merge_test: 7 tests; game_data_loader_test: 8
+   casos de fusión de la sección 6 del plan están cubiertos por tests
+   unitarios en verde (json_merge_test: 7 tests; game_data_loader_test: 12
    tests), pero no se probó con un directorio de mods grande real.
 
 7. Red.
    M0 no incluye propagación de configuración a peers; nada de net fue
    verificado (no aplica a esta tarea).
 
-Anomalías observadas durante la generación de la evidencia: ninguna. Ambos
-arneses (run_tests.ps1 y run_tests.sh) terminaron con exit 0 sin líneas
-FINDING/WARNING/ERROR; los dos pases de --import devolvieron 0 en esta máquina.
+8. Ramas defensivas/de fallo de E/S sin disparador determinista (ronda 2).
+   No existe forma determinista de provocarlas desde CLI/datos/mods en este
+   entorno; quedan cubiertas por revisión de código, no por tests:
+   - game_data_loader.gd _resource_for: push_error "unknown doc id" — solo
+     saltaría con un id que no esté en DOCS, es decir, con un bug de código
+     (DOCS es el único punto donde se declaran ids); igual para las dos ramas
+     push_error de _new_document en import_data_mirror.gd.
+   - Fallos de escritura/lectura reales: ResourceSaver.save fallido en
+     import_data_mirror.gd, JsonFile.write_text fallido en write_data_mirror.gd
+     (rama "failed to write"), mkdir de user://mods fallido en
+     game_config.gd/print_game_data.gd, y "failed to load" de un .tres que
+     exists() acaba de afirmar (carrera o archivo corrupto). Todas requieren
+     un fallo de disco/permisos o una carrera, no reproducibles de forma
+     determinista aquí.
+   - data_mirror.gd check_mirror: "cannot canonicalize the resource values" —
+     requeriría que JSON.parse falle sobre la salida de JSON.stringify; no
+     alcanzable en la práctica.
+
+Anomalías observadas durante la generación de la evidencia de la ronda 2:
+ninguna inesperada. Ambos arneses (run_tests.ps1 y run_tests.sh) terminaron
+con exit 0 (53 tests descubiertos, 8/8 suites); los dos pases de --import
+devolvieron 0 en esta máquina. Nota aclaratoria (no anomalía): la corrida SIN
+datos de la evidencia 09 imprime un bloque "ERROR ... at: push_error" con
+backtrace — es el push_error intencional del autoload GameConfig
+(src/autoloads/game_config.gd:35) cuando el reporte no es ok; el proceso
+terminó limpio con el código 1 esperado.

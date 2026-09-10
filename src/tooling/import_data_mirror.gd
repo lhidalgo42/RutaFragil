@@ -10,7 +10,7 @@ const DATA_DIR: String = "res://data"
 
 func _init() -> void:
 	var exit_code: int = 0
-	for doc_id: String in GameDataLoader.DOC_IDS:
+	for doc_id: String in GameDataLoader.DOCS:
 		if not _import_document(doc_id):
 			exit_code = 1
 	if exit_code == 0:
@@ -24,8 +24,10 @@ func _import_document(doc_id: String) -> bool:
 	var source: String = "base:" + json_path
 	var report: DataLoadReport = DataLoadReport.new()
 	var res: Resource = _new_document(doc_id)
+	if res == null:
+		return false
 	var raw: Dictionary = JsonFile.read_object(json_path, report, source)
-	if raw.is_empty():
+	if not report.is_ok():
 		printerr("import_data_mirror: invalid base JSON for '%s'" % doc_id)
 		printerr(report.summary())
 		return false
@@ -49,6 +51,13 @@ func _import_document(doc_id: String) -> bool:
 
 
 func _new_document(doc_id: String) -> Resource:
-	if doc_id == "game_config":
-		return GameConfigData.new()
-	return TuningTable.new()
+	if not GameDataLoader.DOCS.has(doc_id):
+		push_error("import_data_mirror: unknown doc id '%s'" % doc_id)
+		return null
+	var script: GDScript = GameDataLoader.DOCS[doc_id]
+	var instance_v: Variant = script.new()
+	if not (instance_v is Resource):
+		push_error("import_data_mirror: doc '%s' did not produce a Resource" % doc_id)
+		return null
+	var instance: Resource = instance_v
+	return instance

@@ -23,8 +23,9 @@ static func check_mirror(
 	if not FileAccess.file_exists(json_path):
 		report.add_error(source, "mirror file not found")
 		return false
+	var errors_before: int = report.errors.size()
 	var raw: Dictionary = JsonFile.read_object(json_path, report, source)
-	if raw.is_empty():
+	if report.errors.size() != errors_before:
 		return false  # read_object already recorded why
 	var section_v: Variant = raw.get(doc_id, null)
 	if not (section_v is Dictionary):

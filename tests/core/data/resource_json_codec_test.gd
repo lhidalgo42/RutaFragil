@@ -162,3 +162,51 @@ func test_to_dictionary_round_trip_through_apply() -> void:
 	ResourceJsonCodec.apply(copy, snapshot)
 	var snapshot_copy: Dictionary = ResourceJsonCodec.to_dictionary(copy)
 	assert_dict(snapshot_copy).is_equal(snapshot)
+
+
+func test_lenient_mode_with_type_error_voids_the_whole_file() -> void:
+	# M2: unknown keys are the only case whose severity depends on the layer;
+	# a type error invalidates every key of the file even in lenient (mod)
+	# mode, valid sister keys included.
+	var tuning: TuningTable = TuningTable.new()
+	var report: DataLoadReport = DataLoadReport.new()
+	var valid: Dictionary = ResourceJsonCodec.validate(
+		tuning, {"starting_money": "mucho", "rent_quota": 1.0}, report, "mod:test", false
+	)
+	assert_bool(report.is_ok()).is_false()
+	assert_dict(valid).is_empty()
+	assert_str(report.errors[0]).contains("starting_money")
+
+
+func test_string_field_accepts_a_string() -> void:
+	var fixture: Resource = CODEC_FIXTURE.new()
+	var report: DataLoadReport = DataLoadReport.new()
+	var valid: Dictionary = ResourceJsonCodec.validate(
+		fixture, {"label_text": "ruta norte"}, report, "test", true
+	)
+	assert_bool(report.is_ok()).is_true()
+	assert_dict(valid).is_equal({"label_text": "ruta norte"})
+	ResourceJsonCodec.apply(fixture, valid)
+	var label_v: Variant = fixture.get("label_text")
+	assert_bool(label_v is String).is_true()
+	if label_v is String:
+		var label: String = label_v
+		assert_str(label).is_equal("ruta norte")
+
+
+func test_string_field_rejects_non_string_and_keeps_previous_value() -> void:
+	var fixture: Resource = CODEC_FIXTURE.new()
+	fixture.set("label_text", "original")
+	var report: DataLoadReport = DataLoadReport.new()
+	var valid: Dictionary = ResourceJsonCodec.validate(
+		fixture, {"label_text": 4.0}, report, "test", true
+	)
+	assert_bool(report.is_ok()).is_false()
+	assert_dict(valid).is_empty()
+	assert_str(report.errors[0]).contains("expected a string")
+	ResourceJsonCodec.apply(fixture, valid)
+	var label_v: Variant = fixture.get("label_text")
+	assert_bool(label_v is String).is_true()
+	if label_v is String:
+		var label: String = label_v
+		assert_str(label).is_equal("original")

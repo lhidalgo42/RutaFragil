@@ -11,7 +11,7 @@ func test_read_valid_file_returns_object() -> void:
 	var report: DataLoadReport = DataLoadReport.new()
 	var result: Dictionary = JsonFile.read_object(path, report, "test")
 	assert_bool(report.is_ok()).is_true()
-	# Every JSON number arrives as float: expectations use float literals.
+	# Every JSON number arrives typed float: expectations use float literals.
 	assert_dict(result).is_equal({"a": 2.0, "nested": {"b": 3.5}})
 
 
@@ -42,6 +42,11 @@ func test_malformed_json_reports_line_and_message() -> void:
 	assert_str(remainder).contains(":")
 	var colon_at: int = remainder.find(":")
 	assert_bool(remainder.length() > colon_at + 2).is_true()
+	# mt5: the reported line must be an actual integer, not just look like one
+	# in the text.
+	var line_part: String = remainder.substr(0, colon_at)
+	assert_bool(line_part.is_valid_int()).is_true()
+	assert_int(line_part.to_int()).is_greater_equal(0)
 
 
 func test_root_array_is_rejected() -> void:

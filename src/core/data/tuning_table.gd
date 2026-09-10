@@ -16,7 +16,7 @@ extends Resource
 
 @export_group("fuel")
 @export var fuel_tank_liters: int = 0
-@export var fuel_consumption_l_per_km: int = 0
+@export var fuel_consumption_l_per_km: float = 0.0
 @export var fuel_slope_multiplier: float = 0.0
 @export var fuel_mud_multiplier: float = 0.0
 @export var fuel_price_per_liter: int = 0
@@ -55,7 +55,7 @@ extends Resource
 @export_group("bus")
 @export var bus_mass_kg: int = 0
 @export var bus_integrity_max: int = 0
-@export var bus_wear_per_contract_max: int = 0
+@export var bus_integrity_max_loss_per_contract: int = 0
 
 
 # No parameters: duplicate() and ResourceLoader require a default constructor.

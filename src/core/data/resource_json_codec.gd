@@ -67,12 +67,14 @@ static func validate(
 
 ## Applies validate() output. Typed dictionaries go through .assign() (element
 ## conversion, engine error on mismatch); scalars through set(). After each
-## write the value is read back: a discrepancy means validation let something
-## through, which is a bug, so it is push_error'd rather than reported.
+## write the value is read back: an out-of-schema key or a read-back
+## discrepancy means validation let something through, which is a bug, so it
+## is push_error'd rather than reported.
 static func apply(res: Resource, valid: Dictionary) -> void:
 	var schema: Dictionary = schema_of(res)
 	for key: String in valid:
 		if not schema.has(key):
+			push_error("ResourceJsonCodec.apply: '%s' is not in the schema (validation bug)" % key)
 			continue
 		var info: Dictionary = schema[key]
 		var type_code: int = info["type"]
@@ -133,6 +135,9 @@ static func _convert_int(value: Variant) -> Dictionary:
 		return _ok(as_int)
 	if value is float:
 		var as_float: float = value
+		# roundi() is undefined for non-finite or out-of-int64-range floats.
+		if not is_finite(as_float) or absf(as_float) > 9.0e18:
+			return _fail("expected a finite int64-range number, got %s" % str(as_float))
 		if as_float == floorf(as_float):
 			return _ok(roundi(as_float))
 		return _fail("expected an integral number, got %s" % str(as_float))

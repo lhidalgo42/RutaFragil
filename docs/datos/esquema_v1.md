@@ -7,10 +7,10 @@
 
 - **Esquema en código** (R2, D44): los Resources `GameConfigData` (`src/core/data/game_config_data.gd`) y `TuningTable` (`src/core/data/tuning_table.gd`) declaran cada campo como `@export` con **defaults neutros** (`0`, `0.0`, `{}`). Ningún valor de §8.1 vive en un `.gd`: `TuningTable.new().starting_money == 0`.
 - **Valores en datos** (D44), ambos versionados en `res://data/`:
-  - `game_config.tres` / `tuning.tres` — artefacto autoritativo para el motor (R2, R14: texto, con `script_class`).
+  - `game_config.tres` / `tuning.tres` — artefacto **autoritativo para el editor** (R2, R14: texto, con `script_class`). En caliente gana la **última capa** aplicada (el JSON base va encima del `.tres`); el test de deriva impide que lleguen distintos al repo. Los `.tres` se regeneran **solo con la herramienta** (`import_data_mirror.gd`): no guardar desde el Inspector (un guardado manual añadiría `uid` y la herramienta lo quitaría).
   - `game_config.json` / `tuning.json` — espejo JSON: formato de modding y edición en caliente. Un test de deriva exige igualdad `.tres` = JSON; dos herramientas headless sincronizan en ambos sentidos (ver README, "Datos y mods").
 - **Autoload** `GameConfig` (`src/autoloads/game_config.gd`, D43): expone `data: GameConfigData`, `tuning: TuningTable`, la propiedad delegada `max_players` (la expresión literal de R1, `GameConfig.max_players`), `reload() -> DataLoadReport` y la señal `reloaded(report)` (D46).
-- **Mods** (§13): archivos planos `user://mods/*.json`, aplicados en orden alfabético.
+- **Mods** (§13): archivos planos `user://mods/*.json`, aplicados en **orden de bytes (ASCII)** — `B.json` < `a.json`; se recomienda minúsculas en los nombres de archivo de mod.
 
 ## 2. El sobre (envelope) por documento
 
@@ -24,13 +24,13 @@ Cada documento JSON viaja dentro de un sobre con su id de documento como única 
 { "tuning": { "starting_money": 500, "...": "..." } }
 ```
 
-Ids de documento en v1: `game_config` y `tuning`. Un archivo de mod puede traer **varias secciones** en el mismo archivo (p. ej. `tuning` y `game_config` a la vez). Los demás documentos de §19 (`PackageDefinition`, `BiomeDefinition`, `ContractDefinition`, `ToolDefinition`, `VehicleSystemDefinition`) reutilizarán este mecanismo cuando entren; sus ids se añadirán a este esquema en su tarea.
+Ids de documento en v1: `game_config` y `tuning`. Un archivo de mod puede traer **varias secciones** en el mismo archivo (p. ej. `tuning` y `game_config` a la vez). Los archivos base (`res://data/<doc>.json`) son **mono-documento**: claves raíz adicionales se ignoran sin aviso. Los demás documentos de §19 (`PackageDefinition`, `BiomeDefinition`, `ContractDefinition`, `ToolDefinition`, `VehicleSystemDefinition`) reutilizarán este mecanismo cuando entren; sus ids se añadirán a este esquema en su tarea.
 
 ## 3. Documento `game_config` — Resource `GameConfigData`
 
 | Campo | Tipo | Unidad | Valor v0 | Origen |
 |---|---|---|---|---|
-| `schema_version` | `int` | — | 1 | Versionado del esquema (plan M0-T0.2 §6 paso 3) |
+| `schema_version` | `int` | — | 1 | Versionado del esquema (plan M0-T0.2 §6 paso 3); **informativo en v1**, sin comprobación ni migración (BACKLOG) |
 | `max_players` | `int` | jugadores | 4 | R1 / D11 ("default 4"); nunca hardcodeado en código |
 | `max_players_hard_limit` | `int` | jugadores | 8 | D11 ("probado a 8") |
 
@@ -54,7 +54,7 @@ Campos agrupados con `@export_group` (nombres D47: ingleses, snake_case, unidad 
 | Campo | Tipo | Unidad | Valor v0 | Origen (§8.1) |
 |---|---|---|---|---|
 | `fuel_tank_liters` | `int` | L | 40 | "Tanque … 40 L" |
-| `fuel_consumption_l_per_km` | `int` | L/km | 4 | "consumo … 4 L·km" |
+| `fuel_consumption_l_per_km` | `float` | L/km | 4.0 | "consumo … 4 L·km" (tasa, no cantidad entera) |
 | `fuel_slope_multiplier` | `float` | multiplicador | 1.5 | "×1.5 pendiente" |
 | `fuel_mud_multiplier` | `float` | multiplicador | 2.0 | "×2 lodo" |
 | `fuel_price_per_liter` | `int` | dinero/L | 3 | "3 por L en estación" (gratis en zonas) |
@@ -69,7 +69,10 @@ Campos agrupados con `@export_group` (nombres D47: ingleses, snake_case, unidad 
 | `empty_jerrycans_per_route_min` | `int` | bidones | 1 | "1–3 bidones vacíos por ruta en puntos fijos" |
 | `empty_jerrycans_per_route_max` | `int` | bidones | 3 | "1–3 bidones vacíos por ruta en puntos fijos" |
 
-**Sin campo en v1:** el "derrame en marcha ∝ velocidad" (§8.1, fila Bidón) **no tiene número** en el maestro: por D47 no se inventa un campo; queda registrado en `BACKLOG.md` para T1.2.
+**Sin campo en v1** (reglas cualitativas de §8.1, sin parámetro):
+
+- El "derrame en marcha ∝ velocidad" (fila Bidón) **no tiene número** en el maestro: por D47 no se inventa un campo; queda registrado en `BACKLOG.md` para T1.2.
+- "Surtidor ilimitado / gratis en zonas": repostar en una zona de combustible no cuesta dinero ni tiene límite en v1; `fuel_price_per_liter` aplica solo a las estaciones pagadas. Regla cualitativa sin parámetro, registrada en `BACKLOG.md`.
 
 ### 4.3 Servicios
 
@@ -80,6 +83,8 @@ Campos agrupados con `@export_group` (nombres D47: ingleses, snake_case, unidad 
 | `shop_prices` | `Dictionary[String, int]` | dinero | `{medkit: 120, armor: 250, cushion: 30, float: 80, jerrycan: 40, kit: 100}` | "Botiquín / Blindaje / Cojín / Flotador (×4) / Bidón / Kit" |
 
 Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unidad; §8.1 indica ×4 por bus), `jerrycan`, `kit`.
+
+**Regla cualitativa sin parámetro v1:** "Flotador ×4" (§8.1): el conteo de cuatro flotadores por bus no es un campo; `shop_prices.float` es el precio **por unidad**. Registrada en `BACKLOG.md`.
 
 ### 4.4 Contrato (Ciudad, B0)
 
@@ -109,7 +114,9 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 |---|---|---|---|---|
 | `bus_mass_kg` | `int` | kg | 3000 | "masa 3000 kg" |
 | `bus_integrity_max` | `int` | puntos | 100 | "Integridad 100" |
-| `bus_wear_per_contract_max` | `int` | puntos/contrato | 5 | "Desgaste −5 al máximo por contrato" |
+| `bus_integrity_max_loss_per_contract` | `int` | puntos/contrato | 5 | "Desgaste −5 al máximo por contrato" |
+
+`bus_integrity_max_loss_per_contract` es una **magnitud positiva que se resta** de `bus_integrity_max` por cada contrato (§8.1: "−5 al máximo por contrato"): con el valor v0, la integridad máxima pasa de 100 a 95 tras el primer contrato.
 
 ## 5. Orden de capas y reglas de fusión (D45)
 
@@ -117,13 +124,13 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 
 1. `res://data/<doc>.tres` (valores base autoritativos).
 2. `res://data/<doc>.json` (espejo; edición en caliente de desarrollo).
-3. `user://mods/*.json` en **orden alfabético** (`aa.json` antes que `zz.json`; el último en aplicar gana).
+3. `user://mods/*.json` en **orden de bytes (ASCII)** (`aa.json` antes que `zz.json`, pero `B.json` antes que `a.json`: las mayúsculas van primero; el último en aplicar gana). Recomendación: minúsculas en los nombres de archivo de mod.
 
 **Fusión profunda** (propia; `Dictionary.merge()` nativo es superficial y no se usa):
 
 - Diccionarios anidados se fusionan **clave a clave**, recursivamente: un mod que trae `{"base_pay": {"fragile": 150}}` cambia solo `fragile` y conserva `normal`, `floating` y `aquatic`.
-- Los **arrays se reemplazan** enteros, nunca se concatenan ni se fusionan por índice.
-- Un escalar sobre un diccionario (o viceversa) reemplaza.
+- Los **arrays se reemplazan** enteros, nunca se concatenan ni se fusionan por índice. *(Propiedad de `JsonMerge` pensada para documentos futuros: en v1 ningún campo admite arrays.)*
+- Un escalar sobre un diccionario (o viceversa) reemplaza. *(Igualmente pensada para documentos futuros: en v1 un tipo distinto rechaza el archivo — la validación llega antes que la fusión.)*
 - La fusión no muta las entradas (opera sobre copia profunda del base).
 
 **Validación por clave contra el esquema** (antes de `set()`, que coaccionaría en silencio):
@@ -132,11 +139,14 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 - `String` y `bool` son estrictos (`"12"` no entra en un `int`; `1.0`/`"true"` no entran en un `bool`).
 - Diccionarios tipados (`base_pay`, `shop_prices`) se validan valor a valor y se aplican con `.assign()`.
 
-**Rechazo y claves desconocidas:**
+**Rechazo, claves desconocidas y política de errores:**
 
 - Un archivo de mod con **cualquier** error (JSON malformado, tipo inválido, raíz no-objeto) se **rechaza entero** y queda listado en el reporte de carga: un archivo aplica completo o no aplica.
 - Clave desconocida: **aviso** en mods, **error** en la base.
-- Base JSON inválido: la capa se omite, `report.ok = false`, `push_error`, y el juego sigue con los valores del `.tres`.
+- Base JSON inválido: la capa se omite, `is_ok()` pasa a falso y el juego sigue con los valores del `.tres`.
+- Un documento **sin ninguna capa aplicada** (ni `.tres` ni JSON base) es **error**, no aviso: es un fallo de integridad de los datos, no un problema de mod.
+- La API del reporte es `is_ok()`. El `push_error` vive solo en el autoload (`_ready`/`reload()`) y se emite si `!is_ok()`; el autoload además emite un `push_warning` por cada aviso del reporte, así los modders ven sus rechazos.
+- `print_game_data` (`src/tooling/print_game_data.gd`) termina con código de salida 1 si `!is_ok()`.
 
 ## 6. Ejemplo de mod
 
@@ -154,7 +164,7 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 }
 ```
 
-Efecto: `starting_money` pasa a 999; `base_pay.fragile` pasa a 150 conservando el resto de claves; `max_players` pasa a 6. Al borrar el archivo y recargar, todo vuelve a los valores base. Un segundo mod `aa_otro.json` se aplicaría **antes** (orden alfabético), así que `zz_mi_mod.json` ganaría en las claves que ambos toquen.
+Efecto: `starting_money` pasa a 999; `base_pay.fragile` pasa a 150 conservando el resto de claves; `max_players` pasa a 6. Al borrar el archivo y recargar, todo vuelve a los valores base. Un segundo mod `aa_otro.json` se aplicaría **antes** (orden de bytes ASCII), así que `zz_mi_mod.json` ganaría en las claves que ambos toquen.
 
 ## 7. Recarga, edición en caliente y límites
 

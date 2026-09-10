@@ -2,7 +2,7 @@ extends GdUnitTestSuite
 
 ## JsonMerge.deep_merge contract (D45): dictionaries merge key by key,
 ## everything else (arrays included) is replaced, and inputs are never
-## mutated. Literals are floats because JSON parses every number as float
+## mutated. Literals are floats because JSON parses every number into float
 ## (plan §3), which is how the loader always sees them.
 
 

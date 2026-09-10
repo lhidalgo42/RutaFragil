@@ -8,13 +8,19 @@ extends RefCounted
 ## Directories are injected so tests can point at create_temp_dir() instead of
 ## the real res://data and user://mods.
 
-const DOC_IDS: Dictionary[String, String] = {"game_config": "game_config", "tuning": "tuning"}
+## Single doc_id -> document class table (mc4): iteration, file names, .tres
+## class checks and tool instantiation all derive from DOCS.
+const DOCS: Dictionary[String, GDScript] = {
+	"game_config": preload("res://src/core/data/game_config_data.gd"),
+	"tuning": preload("res://src/core/data/tuning_table.gd"),
+}
 
 var game_config: GameConfigData = null
 var tuning: TuningTable = null
 
 var _base_dir: String = ""
 var _mods_dir: String = ""
+var _instances: Dictionary = {}
 
 
 func _init(base_dir: String, mods_dir: String) -> void:
@@ -25,34 +31,58 @@ func _init(base_dir: String, mods_dir: String) -> void:
 func load_all() -> DataLoadReport:
 	var report: DataLoadReport = DataLoadReport.new()
 	# Fresh resources on every call: a reload must not accumulate old values.
-	game_config = GameConfigData.new()
-	tuning = TuningTable.new()
+	_instances.clear()
+	for doc_id: String in DOCS:
+		var script: GDScript = DOCS[doc_id]
+		_instances[doc_id] = script.new()
+	_sync_members()
 	# doc_id -> accumulated, already-validated layer values.
 	var merged: Dictionary = {}
-	for doc_id: String in DOC_IDS:
+	for doc_id: String in DOCS:
 		merged[doc_id] = {}
-	for doc_id: String in DOC_IDS:
+	for doc_id: String in DOCS:
 		var applied_before: int = report.applied_files.size()
 		_load_tres_layer(doc_id, report, merged)
 		_load_base_json_layer(doc_id, report, merged)
 		if report.applied_files.size() == applied_before:
-			# Not fatal, but loud: with no data the game runs on zeroes (D44).
-			report.add_warning("doc:" + doc_id, "no .tres or base .json found; neutral defaults in use")
+			# A document with no applied layer is an integrity failure, not a
+			# mod problem: without data the game runs on zeroes (M4, D44).
+			report.add_error("doc:" + doc_id, "no .tres or base .json layer applied")
 	_load_mod_layers(report, merged)
-	for doc_id: String in DOC_IDS:
+	for doc_id: String in DOCS:
 		var values: Dictionary = merged[doc_id]
-		ResourceJsonCodec.apply(_resource_for(doc_id), values)
+		var res: Resource = _resource_for(doc_id)
+		if res != null:
+			ResourceJsonCodec.apply(res, values)
 	return report
 
 
+## Publishes the fresh instances on the typed members, the static access
+## point for the autoload and the tools.
+func _sync_members() -> void:
+	game_config = null
+	tuning = null
+	var config_v: Variant = _instances.get("game_config")
+	if config_v is GameConfigData:
+		game_config = config_v
+	var tuning_v: Variant = _instances.get("tuning")
+	if tuning_v is TuningTable:
+		tuning = tuning_v
+
+
+## Live instance under construction for doc_id. An unknown id is a bug (DOCS
+## is the only place ids are declared), so it is push_error'd, not reported.
 func _resource_for(doc_id: String) -> Resource:
-	if doc_id == "game_config":
-		return game_config
-	return tuning
+	var instance_v: Variant = _instances.get(doc_id)
+	if not (instance_v is Resource):
+		push_error("GameDataLoader: unknown doc id '%s'" % doc_id)
+		return null
+	var instance: Resource = instance_v
+	return instance
 
 
 func _load_tres_layer(doc_id: String, report: DataLoadReport, merged: Dictionary) -> void:
-	var path: String = "%s/%s.tres" % [_base_dir, DOC_IDS[doc_id]]
+	var path: String = "%s/%s.tres" % [_base_dir, doc_id]
 	if not ResourceLoader.exists(path):
 		return
 	# CACHE_MODE_IGNORE: the loader must re-read the file on every reload.
@@ -60,20 +90,27 @@ func _load_tres_layer(doc_id: String, report: DataLoadReport, merged: Dictionary
 	if loaded == null:
 		report.add_error("tres:" + path, "resource failed to load")
 		return
+	# A .tres of the wrong class would merge foreign keys into the document.
+	var expected: GDScript = DOCS[doc_id]
+	if not is_instance_of(loaded, expected):
+		report.add_error("tres:" + path, "resource is not a %s" % expected.resource_path)
+		return
 	var accumulated: Dictionary = merged[doc_id]
 	merged[doc_id] = JsonMerge.deep_merge(accumulated, ResourceJsonCodec.to_dictionary(loaded))
 	report.applied_files.append(path)
 
 
 func _load_base_json_layer(doc_id: String, report: DataLoadReport, merged: Dictionary) -> void:
-	var path: String = "%s/%s.json" % [_base_dir, DOC_IDS[doc_id]]
+	var path: String = "%s/%s.json" % [_base_dir, doc_id]
 	if not FileAccess.file_exists(path):
 		return
 	var source: String = "base:" + path
 	var res: Resource = _resource_for(doc_id)
+	if res == null:
+		return
 	var errors_before: int = report.errors.size()
 	var raw: Dictionary = JsonFile.read_object(path, report, source)
-	if raw.is_empty():
+	if report.errors.size() != errors_before:
 		return  # read_object already recorded why
 	var section_v: Variant = raw.get(doc_id, null)
 	if not (section_v is Dictionary):
@@ -103,10 +140,14 @@ func _load_mod_file(
 	# (D45), and a rejected mod only ever becomes warnings in the main report,
 	# so invalid mods never break the run.
 	var scratch: DataLoadReport = DataLoadReport.new()
+	var errors_before: int = scratch.errors.size()
 	var raw: Dictionary = JsonFile.read_object(path, scratch, source)
-	if raw.is_empty():
+	if scratch.errors.size() != errors_before:
 		_forward_rejected_mod(scratch, report)
 		return
+	if raw.is_empty():
+		# A well-formed but empty mod is not a rejection: it just does nothing.
+		scratch.add_warning(source, "no sections; nothing to apply")
 	var staged: Dictionary = {}
 	var rejected: bool = false
 	for key_v: Variant in raw:
@@ -115,7 +156,7 @@ func _load_mod_file(
 			rejected = true
 			continue
 		var doc_id: String = key_v
-		if not DOC_IDS.has(doc_id):
+		if not DOCS.has(doc_id):
 			scratch.add_warning(source, "unknown section '%s' ignored" % doc_id)
 			continue
 		var section_v: Variant = raw[key_v]
@@ -124,9 +165,11 @@ func _load_mod_file(
 			rejected = true
 			continue
 		var section: Dictionary = section_v
-		var errors_before: int = scratch.errors.size()
-		var valid: Dictionary = ResourceJsonCodec.validate(_resource_for(doc_id), section, scratch, source, false)
-		if scratch.errors.size() != errors_before:
+		var section_errors_before: int = scratch.errors.size()
+		var valid: Dictionary = ResourceJsonCodec.validate(
+			_resource_for(doc_id), section, scratch, source, false
+		)
+		if scratch.errors.size() != section_errors_before:
 			rejected = true
 			continue
 		staged[doc_id] = valid

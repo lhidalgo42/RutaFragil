@@ -58,11 +58,19 @@ Ambos verifican la versión del motor, importan el proyecto y corren `tests/`; d
 
 ## Datos y mods
 
-Dónde viven los datos del juego (R2, D44/D45; esquema completo en `docs/datos/esquema_v1.md`):
+Dónde viven los datos del juego (R2, D44/D45; esquema completo en `docs/datos/esquema_v1.md`; plan de la tarea en `docs/planes/M0-T0.2_plan.md`):
 
-- `data/*.tres` — artefacto **autoritativo** para el motor (`game_config.tres`, `tuning.tres`).
+- `data/*.tres` — artefacto **autoritativo para el editor** (`game_config.tres`, `tuning.tres`).
 - `data/*.json` — **espejo** editable del `.tres`; formato de modding y edición en caliente. Un test de deriva exige que ambos coincidan.
-- `user://mods/*.json` — mods del juego: archivos planos aplicados en orden alfabético sobre la base. En Windows, `user://` = `%APPDATA%\Godot\app_userdata\RutaFragil`. Ojo: `res://` es de **solo lectura en los exports** — editar el JSON base es función de desarrollo; los mods en `user://` son la vía publicada.
+- `user://mods/*.json` — mods del juego: archivos planos aplicados sobre la base en **orden de bytes ASCII** (`B.json` < `a.json`: las mayúsculas van primero; usa minúsculas en los nombres de archivo de mod). En Windows, `user://` = `%APPDATA%\Godot\app_userdata\RutaFragil`. Ojo: `res://` es de **solo lectura en los exports** — editar el JSON base es función de desarrollo; los mods en `user://` son la vía publicada.
+
+Autoridad entre capas: el `.tres` es autoritativo **para el editor**; en caliente gana la última capa aplicada (el JSON base va encima del `.tres`, y los mods encima de ambos). El test de deriva mantiene `.tres` y espejo iguales. Los `.tres` se regeneran **solo con la herramienta** (`import_data_mirror.gd`); no guardar desde el Inspector.
+
+Un mod mínimo (`user://mods/zz_mi_mod.json`):
+
+```json
+{ "tuning": { "starting_money": 999 } }
+```
 
 Tres herramientas headless (ejecutar siempre con `timeout 120`; forma verificada en M0-T0.2):
 
@@ -92,6 +100,7 @@ src/
   net/
   ui/
   biomes/
+  tooling/  herramientas CLI del juego (import/write/print de datos; se ejecutan con `godot -s`)
 data/       datos del juego
 assets/     arte, audio, fuentes (binarios vía Git LFS)
 scenes/     escenas .tscn
@@ -107,4 +116,4 @@ docs/       documentación del proyecto (con .gdignore)
 - Render: Forward+; driver en Windows `d3d12` (D31).
 - `*.uid` e `*.import` **se versionan**; `.godot/` y `reports/` no. `export_presets.cfg` se versiona (M4).
 - Git LFS trackea los binarios listados en `.gitattributes`. Los `.svg` van en Git normal (D36). El remoto debe tener **LFS habilitado ANTES del primer push**: el índice ya contiene punteros LFS (ver `git lfs ls-files`; hoy todos son PNG del addon gdUnit4).
-- Documentos de referencia: `AGENTS.md` (reglas para agentes), `DECISIONS.md`, `BACKLOG.md`, `CREDITS.md`, `docs/planes/M0-T0.1_plan.md`, `docs/datos/esquema_v1.md` (esquema de datos v1).
+- Documentos de referencia: `AGENTS.md` (reglas para agentes), `DECISIONS.md`, `BACKLOG.md`, `CREDITS.md`, `docs/planes/M0-T0.1_plan.md`, `docs/planes/M0-T0.2_plan.md`, `docs/datos/esquema_v1.md` (esquema de datos v1).

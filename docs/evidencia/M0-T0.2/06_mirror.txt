@@ -1,26 +1,37 @@
-=== Evidencia 06_mirror.txt — M0-T0.2 ===
-Fecha de captura (UTC): 2026-09-10 02:20:49
+=== Evidencia 06_mirror.txt — M0-T0.2 (ronda 2, recaptura) ===
+Fecha de captura (UTC): 2026-09-10 14:55:24
 Máquina: Windows, Git Bash
 Espejo data/*.tres <-> data/*.json (D44): regeneración idempotente en ambos
-sentidos (git status sin cambios) y test de deriva en verde.
+sentidos y test de deriva en verde DESPUÉS de regenerar (revisión 01, mt7).
 GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
 
+Nota sobre el estado previo: en la ronda 2 el árbol ya trae SIN commitear las
+modificaciones de data/tuning.json y data/tuning.tres (renombrado
+bus_integrity_max_loss_per_contract y fuel_consumption_l_per_km float). Por eso
+"sin cambios" aquí significa que git status --short -- data/ es IDÉNTICO antes
+y después de cada herramienta: la regeneración no añade ni quita nada sobre el
+contenido vigente de la ronda 2 (ida y vuelta byte-estable).
+
 Comandos ejecutados, en orden:
-  1) git status --short   (estado previo)
+  1) git status --short -- data/   (estado previo)
   2) timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/write_data_mirror.gd
-  3) git status --short   (tras regenerar los .json desde los .tres)
+  3) git status --short -- data/   (tras regenerar los .json desde los .tres)
   4) timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/import_data_mirror.gd
-  5) git status --short   (tras reimportar los .tres desde los .json)
-  6) extracción de la sección data_mirror_test de reports/report_1/results.xml
+  5) git status --short -- data/   (tras reimportar los .tres desde los .json)
+  6) timeout 120 "$GODOT_BIN" --headless --path . -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests/core/data/data_mirror_test.gd -rd res://reports
+     (suite de deriva, POSTERIOR a la regeneración -> reports/report_2/)
+  7) extracción de la sección data_mirror_test de reports/report_2/results.xml
 
 ######################################################################
-# Estado previo: git status --short
+# Paso 1: estado previo — git status --short -- data/ (exit 0)
 ######################################################################
-?? docs/evidencia/M0-T0.2/
-(la única entrada es el directorio de evidencia nuevo, untracked)
+ M data/tuning.json
+ M data/tuning.tres
+(Las dos M son el trabajo de la ronda 2 sin commitear; ningún otro archivo
+bajo data/ está tocado ni hay untracked.)
 
 ######################################################################
-# write_data_mirror.gd (.tres -> .json) — volcado completo
+# Paso 2: write_data_mirror.gd (.tres -> .json) — volcado completo
 ######################################################################
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
@@ -30,13 +41,14 @@ write_data_mirror: OK
 exit code: 0
 
 ######################################################################
-# git status --short tras regenerar los .json
+# Paso 3: git status --short -- data/ tras regenerar los .json (exit 0)
 ######################################################################
-?? docs/evidencia/M0-T0.2/
-Sin cambios en archivos trackeados: la regeneración es byte-idéntica.
+ M data/tuning.json
+ M data/tuning.tres
+Idéntico al estado previo: la regeneración .tres -> .json es byte-idéntica.
 
 ######################################################################
-# import_data_mirror.gd (.json -> .tres) — volcado completo
+# Paso 4: import_data_mirror.gd (.json -> .tres) — volcado completo
 ######################################################################
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
@@ -60,8 +72,8 @@ import_data_mirror: saved res://data/tuning.tres
 			"normal": 60
 		},
 		"bus_integrity_max": 100,
+		"bus_integrity_max_loss_per_contract": 5,
 		"bus_mass_kg": 3000,
-		"bus_wear_per_contract_max": 5,
 		"contract_destinations_max": 3,
 		"contract_destinations_min": 1,
 		"contract_packages_max": 5,
@@ -69,7 +81,7 @@ import_data_mirror: saved res://data/tuning.tres
 		"defeat_keep_fraction": 0.25,
 		"empty_jerrycans_per_route_max": 3,
 		"empty_jerrycans_per_route_min": 1,
-		"fuel_consumption_l_per_km": 4,
+		"fuel_consumption_l_per_km": 4.0,
 		"fuel_mud_multiplier": 2.0,
 		"fuel_price_per_liter": 3,
 		"fuel_slope_multiplier": 1.5,
@@ -108,23 +120,71 @@ import_data_mirror: OK
 exit code: 0
 
 ######################################################################
-# git status --short tras reimportar los .tres
+# Paso 5: git status --short -- data/ tras reimportar los .tres (exit 0)
 ######################################################################
-?? docs/evidencia/M0-T0.2/
-Sin cambios en archivos trackeados: ida y vuelta idempotente (.tres -> .json -> .tres).
+ M data/tuning.json
+ M data/tuning.tres
+Idéntico al estado previo: ida y vuelta idempotente (.tres -> .json -> .tres).
 
 ######################################################################
-# Test de deriva: sección data_mirror_test del results.xml
-# (reports/report_1/results.xml, corrida del arnés de esta misma sesión;
-# el guardián test_real_data_mirror_is_in_sync falla si alguien edita un
-# solo lado del par .tres/.json)
+# Paso 6: suite de deriva POSTERIOR a la regeneración
+# (data_mirror_test.gd sola; códigos de color ANSI retirados para legibilidad;
+# contenido intacto). Escribe su propio reporte: reports/report_2/.
 ######################################################################
-<testsuite id="1" name="data_mirror_test" package="tests/core/data" timestamp="2026-09-10T02:13:16" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.449">
-		<testcase name="test_real_data_mirror_is_in_sync" classname="data_mirror_test" time="0.095">
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[2J[H
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Installing GdUnit4 session system hooks.
+Session hook 'GdUnitHtmlTestReporter' installed.
+Session hook 'GdUnitXMLTestReporter' installed.
+Run Test Suite: res://tests/core/data/data_mirror_test.gd
+  res://tests/core/data/data_mirror_test.gd > test_real_data_mirror_is_in_sync STARTED
+  res://tests/core/data/data_mirror_test.gd > test_real_data_mirror_is_in_sync PASSED 10ms
+
+  res://tests/core/data/data_mirror_test.gd > test_write_and_check_round_trip_in_temp_dir STARTED
+  res://tests/core/data/data_mirror_test.gd > test_write_and_check_round_trip_in_temp_dir PASSED 8ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 30ms
+
+
+Overall Summary: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (1/1)
+Executed test cases : (2/2)
+Total execution time: 30ms
+ Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_2/results.xml
+Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_2/index.html
+Exit code: 0
+Run dispose test resources
+exit code: 0
+
+######################################################################
+# Paso 7: sección data_mirror_test de reports/report_2/results.xml
+# Comando: sed -n '/<testsuite .*name="data_mirror_test"/,/<\/testsuite>/p'
+# El timestamp 2026-09-10T14:55:57 es POSTERIOR a la regeneración de los pasos
+# 2 y 4 (capturadas a partir de las 14:55:24 UTC): la deriva se midió sobre el
+# espejo recién regenerado, no sobre un XML anterior (revisión 01, mt7).
+######################################################################
+	<testsuite id="0" name="data_mirror_test" package="tests/core/data" timestamp="2026-09-10T14:55:57" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.030">
+		<testcase name="test_real_data_mirror_is_in_sync" classname="data_mirror_test" time="0.010">
 		</testcase>
-		<testcase name="test_write_and_check_round_trip_in_temp_dir" classname="data_mirror_test" time="0.099">
+		<testcase name="test_write_and_check_round_trip_in_temp_dir" classname="data_mirror_test" time="0.008">
 		</testcase>
 	</testsuite>
-	
-Ambos tests PASSED (0 failures, 0 errors; el volcado completo de la corrida
-del arnés está en 02_run_tests.txt).
+Ambos tests PASSED (2/2: 0 failures, 0 errors). test_real_data_mirror_is_in_sync
+es el guardián que falla si alguien edita un solo lado del par .tres/.json.
+Nota: el arnés limpia reports/ en cada corrida, así que la verificación final
+de esta ronda (run_tests.ps1, exit 0) dejó solo report_1 en disco y
+report_2/results.xml ya no existe; la sección de arriba es el volcado verbatim
+capturado de ese archivo inmediatamente después de la corrida de deriva.
