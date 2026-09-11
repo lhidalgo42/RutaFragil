@@ -1,0 +1,22 @@
+03_net_scenario.txt — M0-T0.4
+Demuestra: dos corridas del guion completo (1 host + 3 clientes ENet) terminan en NET result=pass, código 0.
+Comando (ambas): timeout 180 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_net_scenario.gd ++ role=launcher
+Árbol de trabajo de la ronda 1 sobre a4c9a45. Fecha UTC: 2026-09-11 16:19:39
+
+=== Corrida 1 ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[36020, 26968, 34832, 34440]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+=== Corrida 2 ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[8080, 12488, 37640, 36504]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence

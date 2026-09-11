@@ -1,0 +1,15 @@
+01_versions.txt — M0-T0.4
+Demuestra: versiones de herramientas y el main de partida. Árbol de trabajo de la ronda 1 sobre a4c9a45.
+Fecha UTC: 2026-09-11 16:19:09
+
+--- git --version ---
+git version 2.51.0.windows.1
+
+--- git lfs version ---
+git-lfs/3.7.0 (GitHub; windows amd64; go 1.24.4; git 92dddf56)
+
+--- godot --version ---
+4.7.2.stable.official.ed1daf0bf
+
+--- git rev-parse main ---
+5234c172ac437876fe1a5509f9e4e6ea3b763d1d

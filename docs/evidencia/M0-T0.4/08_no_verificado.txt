@@ -1,0 +1,13 @@
+08_no_verificado.txt — M0-T0.4 (R7: lo que esta ronda NO pudo verificar)
+Fecha UTC: 2026-09-11 16:21:24 · árbol de trabajo de la ronda 1 sobre a4c9a45
+
+1. macOS (D42): el arnés de red solo corrió en Windows; la corrida obligatoria en la Mac queda para antes del gate M4.
+2. El guion con latencia/pérdida real de internet: todo se midió en loopback (127.0.0.1); ENet en red real es M4.
+3. Agarrar/amarrar/paquetes/dinero/asientos/cambio de autoridad del bus: no existen (M3/M5/M2); el ✅ literal del maestro no es verificable todavía — contradicción reportada al dueño en BACKLOG (D55, plan §1).
+4. Interpolación propia de cliente (buffer ~100 ms): no implementada ni medida; se evalúa en M2.
+5. El comportamiento bajo N>3 clientes y con waypoints=17 (vuelta completa): el guion lo soporta pero la corrida larga no se hizo (D56: la corta es la verificada).
+6. Firewall/antivirus de Windows pidiendo permiso para sockets: no apareció en esta máquina (riesgo §9.6 del plan); si aparece en otra, el dueño lo acepta una vez.
+7. Determinismo entre máquinas de los números de convergencia (0.000 m aquí): esperado en loopback tras asentamiento, no garantizado con latencia real.
+8. Los códigos de salida de los hijos se leen de sus JSON de resultado, no del SO: OS.create_process no devuelve el código de salida del hijo en Godot 4.7 (limitación documentada en D54/implementación).
+9. project.godot tras abrir el editor con ventana: el dueño lo verifica en su gate (los autoloads nuevos ya pasaron por --import headless sin error).
+10. Ramas no provocadas del arnés de red: puerto ocupado con las 4 alternativas agotadas, y 'peers not ready'/'waypoint timeout' del host (caminos de fallo con código 1 ya cubiertos por break=sync solo para convergencia).

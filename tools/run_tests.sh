@@ -38,6 +38,15 @@
 
 exit_infra_failure=1
 
+# M0-T0.4 (D57): the network multi-instance scenario runs as a final step;
+# --skip-net skips it to iterate over the unit tests only.
+skip_net=0
+for arg in "$@"; do
+    case "$arg" in
+        --skip-net) skip_net=1 ;;
+    esac
+done
+
 log_step() {
     printf '\n=== %s ===\n' "$1"
 }
@@ -230,4 +239,23 @@ if [ "$discovered_tests" -lt 3 ]; then
     exit "$exit_infra_failure"
 fi
 printf 'SUCCESS: all tests passed and %s tests were discovered.\n' "$discovered_tests"
+
+# --- Step 8: network multi-instance scenario (M0-T0.4, D57) ------------------
+if [ "$skip_net" = "1" ]; then
+    log_step "Step 8/8: Network scenario (SKIPPED via --skip-net)"
+    printf 'Skipping the network scenario (--skip-net). Unit tests only.\n'
+    exit 0
+fi
+log_step "Step 8/8: Network multi-instance scenario (1 host + 3 clients)"
+# The scenario self-terminates on every path: each child has its own time cap
+# and the launcher kills survivors at its deadline before aggregating (D58).
+net_output="$(timeout 180 "$godot_bin" --headless --path "$repo_root" -s res://src/tooling/run_net_scenario.gd ++ role=launcher 2>&1)"
+net_exit_code=$?
+printf '%s\n' "$net_output"
+printf 'net scenario exit code: %d\n' "$net_exit_code"
+if [ "$net_exit_code" -ne 0 ]; then
+    printf 'FAILURE: network scenario failed (exit %d).\n' "$net_exit_code"
+    exit "$net_exit_code"
+fi
+printf 'SUCCESS: network scenario passed (1 host + 3 clients).\n'
 exit 0

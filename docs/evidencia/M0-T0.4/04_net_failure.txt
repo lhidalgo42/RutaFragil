@@ -1,0 +1,16 @@
+04_net_failure.txt — M0-T0.4
+Demuestra que el arnés NO MIENTE: con la red rota a propósito (clientes sin MultiplayerSynchronizer, ++ break=sync) el guion termina en código != 0 identificando el assert que falla (convergence).
+Comando: timeout 180 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_net_scenario.gd ++ role=launcher ++ break=sync
+Árbol de trabajo de la ronda 1 sobre a4c9a45. Fecha UTC: 2026-09-11 16:19:39
+Código de salida de esta corrida: 1 (verificado).
+
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[4848, 32644, 34292, 4588]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=55.987 m max_yaw_dev=2.12 deg
+NET result=fail assert=convergence (client_0: 55.987 m, 2.12 deg)
+NET assert failed: convergence (client_0: 55.987 m, 2.12 deg)
+NET assert failed: convergence (client_1: 55.987 m, 2.12 deg)
+NET assert failed: convergence (client_2: 55.987 m, 2.12 deg)

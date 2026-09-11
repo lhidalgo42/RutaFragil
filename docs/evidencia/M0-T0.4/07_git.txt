@@ -1,0 +1,66 @@
+07_git.txt — M0-T0.4
+PRE-COMMIT de la ronda 1. Fecha UTC: 2026-09-11 16:21:23 · HEAD base: a4c9a45 (árbol de trabajo sin commitear encima).
+
+--- git log --oneline main..HEAD ---
+a4c9a45 docs: refresh stale limits evidence (M0-T0.3 r2.1)
+413db0f docs: plan and round-1 prompt (M0-T0.4)
+
+--- git status --short ---
+ M AGENTS.md
+ M BACKLOG.md
+ M DECISIONS.md
+ M README.md
+ M project.godot
+ M src/biomes/playground/playground.gd
+ M tools/run_tests.ps1
+ M tools/run_tests.sh
+?? docs/evidencia/M0-T0.4/
+?? src/net/net_marker.gd
+?? src/net/net_marker.gd.uid
+?? src/net/net_marker.tscn
+?? src/net/net_scenario_util.gd
+?? src/net/net_scenario_util.gd.uid
+?? src/net/network_backend.gd
+?? src/net/network_backend.gd.uid
+?? src/tooling/run_net_scenario.gd
+?? src/tooling/run_net_scenario.gd.uid
+?? tests/net/
+?? tools/run_net_tests.ps1
+?? tools/run_net_tests.sh
+
+--- git diff --stat main..HEAD ---
+ docs/evidencia/M0-T0.3/09_limits.txt |  40 ++++---------
+ docs/planes/M0-T0.4_plan.md          | 110 +++++++++++++++++++++++++++++++++++
+ docs/planes/M0-T0.4_ronda1_prompt.md |  36 ++++++++++++
+ 3 files changed, 157 insertions(+), 29 deletions(-)
+
+--- git diff main..HEAD -- project.godot ---
+(solo debe mostrar el autoload NetworkBackend; el cambio está sin commitear, así que también:)
+
+--- git diff main -- project.godot (árbol vs main) ---
+diff --git a/project.godot b/project.godot
+index 37384e1..df25332 100644
+--- a/project.godot
++++ b/project.godot
+@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
+ [autoload]
+ 
+ GameConfig="*res://src/autoloads/game_config.gd"
++NetworkBackend="*res://src/net/network_backend.gd"
+ 
+ [debug]
+ 
+
+--- git lfs ls-files ---
+e709c40067 * addons/gdUnit4/src/core/assets/touch-button.png
+ed176306a0 * addons/gdUnit4/src/reporters/html/template/css/logo.png
+ed176306a0 * addons/gdUnit4/src/ui/settings/logo.png
+37a4070934 * addons/gdUnit4/src/update/assets/border_bottom.png
+ca6f5d7f59 * addons/gdUnit4/src/update/assets/border_top.png
+f37474a8d5 * addons/gdUnit4/src/update/assets/dot1.png
+c12758bd1b * addons/gdUnit4/src/update/assets/dot2.png
+08cead78bb * addons/gdUnit4/src/update/assets/embedded.png
+fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
+10fc84cc8a * docs/evidencia/M0-T0.3/05_playground.png
+
+Sección post-commit capturada tras el commit de código, en un commit de docs aparte.
