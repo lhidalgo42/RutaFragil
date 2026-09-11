@@ -361,3 +361,138 @@ crecimiento de 07_git.txt; el código de la ronda 2 todavía no forma parte
 de ese diff porque no está commiteado.
 
 Sección post-commit capturada tras el commit de código de la ronda 2, en un commit de docs aparte.
+
+=== RONDA 2 POST-COMMIT ===
+Fecha de captura (UTC): 2026-09-11 02:00:08
+Máquina: Windows, Git Bash
+Rama: m0/t0.3-playground — HEAD: 07557e3 (fix: round 2 — lap without rescue
+impulses, bumps field that shakes, stuck with real obstacle (M0-T0.3))
+Estado capturado: DESPUÉS del commit de código de la ronda 2 (07557e3),
+hecho por el coordinador sobre la captura RONDA 2 PRE-COMMIT de arriba. El
+git log de abajo lista 07557e3 como primera entrada. Los cinco comandos
+corrieron ANTES de escribir esta sección (captura en archivo temporal y
+volcado después), así que git status sale LIMPIO de verdad: la única
+modificación posterior es esta propia sección (07 no se lista a sí mismo,
+igual que en la parte 2 de la ronda 1). Esta sección se commitea en un
+commit de docs aparte que hace el coordinador, como en el resto de la tarea.
+Comandos: git log --oneline main..HEAD; git status --short;
+  git diff --stat main..HEAD; git diff main..HEAD -- project.godot;
+  git lfs ls-files
+
+--- git log --oneline main..HEAD ---
+07557e3 fix: round 2 — lap without rescue impulses, bumps field that shakes, stuck with real obstacle (M0-T0.3)
+4bb067a docs: review 01 and round-2 prompt (M0-T0.3)
+f3b5802 docs: evidence 07 post-commit (M0-T0.3)
+f21df2f feat: Playground scene with auto demo mode, placeholder bus, circuit, run_demo tool (M0-T0.3)
+5c6d1d2 docs: plan and round-1 prompt (M0-T0.3)
+exit code: 0
+
+--- git status --short (completo; vacío = árbol limpio tras 07557e3) ---
+exit code: 0
+
+--- git diff --stat main..HEAD ---
+ AGENTS.md                                          |    9 +
+ BACKLOG.md                                         |   17 +
+ DECISIONS.md                                       |    7 +-
+ README.md                                          |   22 +
+ data/tuning.json                                   |    2 +
+ data/tuning.tres                                   |    2 +
+ docs/datos/esquema_v1.md                           |    2 +
+ docs/evidencia/M0-T0.3/01_versions.txt             |   22 +
+ docs/evidencia/M0-T0.3/02_run_tests.txt            | 1610 ++++++++++++++++++++
+ docs/evidencia/M0-T0.3/03_demo_fixed_fps.txt       |   86 ++
+ docs/evidencia/M0-T0.3/04_demo_realtime.txt        |   57 +
+ docs/evidencia/M0-T0.3/05_playground.png           |    3 +
+ docs/evidencia/M0-T0.3/05_screenshot.txt           |   78 +
+ docs/evidencia/M0-T0.3/06_editor.txt               |  112 ++
+ docs/evidencia/M0-T0.3/07_git.txt                  |  363 +++++
+ docs/evidencia/M0-T0.3/08_no_verificado.txt        |   75 +
+ docs/evidencia/M0-T0.3/09_limits.txt               |   36 +
+ docs/planes/M0-T0.3_plan.md                        |  172 +++
+ docs/planes/M0-T0.3_ronda1_prompt.md               |   28 +
+ docs/planes/M0-T0.3_ronda2_prompt.md               |   41 +
+ docs/revisiones/M0-T0.3_revision_01.md             |   76 +
+ project.godot                                      |    1 +
+ scenes/playground.tscn                             |  248 +++
+ src/biomes/playground/circuit.gd                   |   26 +
+ src/biomes/playground/circuit.gd.uid               |    1 +
+ src/biomes/playground/playground.gd                |   18 +
+ src/biomes/playground/playground.gd.uid            |    1 +
+ src/biomes/playground/water_zone.gd                |   26 +
+ src/biomes/playground/water_zone.gd.uid            |    1 +
+ src/core/data/tuning_table.gd                      |    2 +
+ src/tooling/run_demo.gd                            |  161 ++
+ src/tooling/run_demo.gd.uid                        |    1 +
+ src/vehicle/chase_camera.gd                        |   25 +
+ src/vehicle/chase_camera.gd.uid                    |    1 +
+ src/vehicle/demo_driver.gd                         |   86 ++
+ src/vehicle/demo_driver.gd.uid                     |    1 +
+ src/vehicle/demo_steering.gd                       |   57 +
+ src/vehicle/demo_steering.gd.uid                   |    1 +
+ src/vehicle/placeholder_bus.gd                     |  118 ++
+ src/vehicle/placeholder_bus.gd.uid                 |    1 +
+ src/vehicle/placeholder_bus.tscn                   |   28 +
+ tests/autoloads/game_config_autoload_test.gd       |    4 +-
+ tests/biomes/playground/circuit_test.gd            |   42 +
+ tests/biomes/playground/circuit_test.gd.uid        |    1 +
+ tests/biomes/playground/playground_scene_test.gd   |   64 +
+ .../biomes/playground/playground_scene_test.gd.uid |    1 +
+ tests/biomes/playground/water_zone_test.gd         |   44 +
+ tests/biomes/playground/water_zone_test.gd.uid     |    1 +
+ tests/vehicle/chase_camera_test.gd                 |   22 +
+ tests/vehicle/chase_camera_test.gd.uid             |    1 +
+ tests/vehicle/demo_driver_test.gd                  |  124 ++
+ tests/vehicle/demo_driver_test.gd.uid              |    1 +
+ tests/vehicle/demo_steering_test.gd                |   75 +
+ tests/vehicle/demo_steering_test.gd.uid            |    1 +
+ tests/vehicle/placeholder_bus_test.gd              |  128 ++
+ tests/vehicle/placeholder_bus_test.gd.uid          |    1 +
+ 56 files changed, 4132 insertions(+), 2 deletions(-)
+exit code: 0
+
+--- git diff main..HEAD -- project.godot ---
+diff --git a/project.godot b/project.godot
+index 14f43e9..37384e1 100644
+--- a/project.godot
++++ b/project.godot
+@@ -11,6 +11,7 @@ config_version=5
+ [application]
+ 
+ config/name="RutaFragil"
++run/main_scene="res://scenes/playground.tscn"
+ config/features=PackedStringArray("4.7", "Forward Plus")
+ config/icon="res://icon.svg"
+ 
+exit code: 0
+
+--- git lfs ls-files ---
+e709c40067 * addons/gdUnit4/src/core/assets/touch-button.png
+ed176306a0 * addons/gdUnit4/src/reporters/html/template/css/logo.png
+ed176306a0 * addons/gdUnit4/src/ui/settings/logo.png
+37a4070934 * addons/gdUnit4/src/update/assets/border_bottom.png
+ca6f5d7f59 * addons/gdUnit4/src/update/assets/border_top.png
+f37474a8d5 * addons/gdUnit4/src/update/assets/dot1.png
+c12758bd1b * addons/gdUnit4/src/update/assets/dot2.png
+08cead78bb * addons/gdUnit4/src/update/assets/embedded.png
+fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
+10fc84cc8a * docs/evidencia/M0-T0.3/05_playground.png
+exit code: 0
+
+Lectura: el diff de project.godot contra main sigue mostrando SOLO la línea
+run/main_scene="res://scenes/playground.tscn" (D52) — la sonda unsafe_*=2 de
+la ronda 2 se revirtió antes del commit (evidencia 02, sección Sonda). El
+diff --stat main..HEAD crece respecto a la ronda 1 por el trabajo de la
+ronda 2 ya commiteado en 07557e3: scenes/playground.tscn (248 líneas; campo
+de baches rehecho y circuito de 17 waypoints), src/vehicle/
+placeholder_bus.gd reducido de 149 a 118 líneas (borrado de
+_update_climb_hop y sus tres @export), tests/vehicle/demo_driver_test.gd de
+88 a 124 líneas (test nuevo test_stuck_emitted_against_unclimbable_wall),
+BACKLOG con la sección de cerrados de la ronda 2, DECISIONS D50 actualizada
+y las evidencias 02/03/04/05/07/08 recapturadas. git lfs ls-files muestra el
+PNG NUEVO de la evidencia 05 (10fc84cc8a, reemplaza al a89cd1718a de la
+ronda 1) ya commiteado como puntero LFS; el resto son los PNG vendorizados
+de gdUnit4.
+
+Cierre: la sección RONDA 2 PRE-COMMIT quedó commiteada dentro del commit de
+código 07557e3 y esta sección (RONDA 2 POST-COMMIT) lo lista en su git log,
+con el árbol limpio en el momento de la captura.
