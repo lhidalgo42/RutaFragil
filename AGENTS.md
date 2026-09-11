@@ -103,6 +103,15 @@ Códigos de salida de gdUnit4: `0` ok · `100` fallos · `101` orphans (nodos hu
 "$GODOT_BIN" --editor --path <raíz> --quit
 ```
 
+```bash
+# Herramienta de demo del Playground (M0-T0.3): corre el circuito automático y
+# reporta líneas DEMO; quit() en todas las rutas; SIEMPRE con `timeout`.
+# Código de salida 0 solo con result=lap_completed (ver README.md "Playground y demo").
+timeout 120 "$GODOT_BIN" --headless --fixed-fps 60 --path . -s res://src/tooling/run_demo.gd
+timeout 300 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_demo.gd            # tiempo real
+timeout 120 "$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ seconds=20 screenshot=user://playground.png
+```
+
 ## Rutas clave
 
 - Resolución de `GODOT_BIN` (D39): variable de entorno `GODOT_BIN` → `tools/godot_bin.local` (ignorado por Git) → default por SO:

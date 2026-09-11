@@ -50,7 +50,9 @@ func test_max_players_comes_from_the_data() -> void:
 func test_reload_emits_reloaded() -> void:
 	var node: Node = _autoload()
 	assert_object(node).is_not_null()
-	var emitter: Object = monitor_signals(node)
+	# No auto_free here: the source is the real autoload singleton, and freeing
+	# it would crash every suite that touches GameConfig after this one.
+	var emitter: Object = monitor_signals(node, false)
 	emitter.call("reload")
 	# The signal carries the report, so the match needs one any() argument.
 	await assert_signal(emitter).is_emitted("reloaded", any())

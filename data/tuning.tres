@@ -55,3 +55,5 @@ interaction_reach_m = 2.5
 bus_mass_kg = 3000
 bus_integrity_max = 100
 bus_integrity_max_loss_per_contract = 5
+bus_max_speed_kmh = 90.0
+bus_accel_0_60_kmh_s = 5.0

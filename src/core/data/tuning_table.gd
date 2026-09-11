@@ -56,6 +56,8 @@ extends Resource
 @export var bus_mass_kg: int = 0
 @export var bus_integrity_max: int = 0
 @export var bus_integrity_max_loss_per_contract: int = 0
+@export var bus_max_speed_kmh: float = 0.0
+@export var bus_accel_0_60_kmh_s: float = 0.0
 
 
 # No parameters: duplicate() and ResourceLoader require a default constructor.

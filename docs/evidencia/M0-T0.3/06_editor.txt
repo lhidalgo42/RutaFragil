@@ -1,0 +1,112 @@
+=== Evidencia 06_editor.txt — M0-T0.3 ===
+Fecha de captura (UTC): 2026-09-10 21:17:15
+Máquina: Windows, Git Bash (corridas con ventana)
+Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
+GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
+Qué demuestra (paso 9 del plan): (1) una ejecución del editor con ventana
+--editor --quit no reescribe nada inesperado en project.godot; (2) una segunda
+ejecución no produce cambio alguno (estado estable); (3) el Playground corre
+20 s con ventana sin ninguna línea ERROR en consola.
+
+######################################################################
+# Parte 1 — primera ejecución del editor
+# Comando: timeout 180 "$GODOT_BIN" --editor --path . --quit
+# Inicio UTC 2026-09-10T20:55:35Z — exit code 0
+######################################################################
+--- salida completa del editor (corrida 1) ---
+EDITOR_RUN1_START_UTC=2026-09-10T20:55:35Z
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060 Laptop GPU
+
+GdUnit4 TCP Server:	Successfully started checked port: 31002
+Run dispose test resources
+Unload GdUnit4 Plugin success
+WARNING: 1 RID of type "CanvasItem" was leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2733)
+WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+EDITOR1_EXIT=0
+
+--- git diff -- project.godot capturado tras la corrida 1 ---
+(diff idéntico al actual, verificado por contenido:)
+diff --git a/project.godot b/project.godot
+index 14f43e9..37384e1 100644
+--- a/project.godot
++++ b/project.godot
+@@ -11,6 +11,7 @@ config_version=5
+ [application]
+ 
+ config/name="RutaFragil"
++run/main_scene="res://scenes/playground.tscn"
+ config/features=PackedStringArray("4.7", "Forward Plus")
+ config/icon="res://icon.svg"
+ 
+Lectura: el editor NO reordenó secciones ni tocó el bloque [autoload]; el
+diff muestra SOLO la línea run/main_scene añadida por esta tarea (D52). El
+ERROR final ('1 resources still in use at exit') es ruido conocido de apagado
+de 4.7 con plugins (BACKLOG, observación M0-T0.2 del 2026-09-10: bug de
+apagado, fix en 4.8, sin acción); ocurre DESPUÉS del cierre, con exit code 0.
+
+######################################################################
+# Parte 2 — segunda ejecución del editor (idempotencia)
+# Comando: timeout 180 "$GODOT_BIN" --editor --path . --quit
+# Inicio UTC 2026-09-10T20:55:59Z — exit code 0
+######################################################################
+--- salida completa del editor (corrida 2) ---
+EDITOR_RUN2_START_UTC=2026-09-10T20:55:59Z
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060 Laptop GPU
+
+GdUnit4 TCP Server:	Successfully started checked port: 31002
+Run dispose test resources
+Unload GdUnit4 Plugin success
+WARNING: 1 RID of type "CanvasItem" was leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2733)
+WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+EDITOR2_EXIT=0
+
+--- verificación tras la corrida 2 ---
+git diff -- project.godot | md5sum  => b68e082b57c50f2bfa4743d9048921ef *-
+(idéntico al md5 del diff tras la corrida 1: b68e082b57c50f2bfa4743d9048921ef
+ — la segunda ejecución no reescribió NADA; diff estable con solo run/main_scene)
+git status --short tras la corrida 2: 25 entradas, el MISMO conjunto de
+archivos que antes de las corridas del editor (el trabajo M0-T0.3 sin
+commitear + project.godot); el editor no introdujo ningún cambio nuevo.
+
+######################################################################
+# Parte 3 — Playground 20 s con ventana, consola sin ERROR
+# Comando: timeout 120 "$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ seconds=20 screenshot=user://playground.png screenshot_at=4.0
+# Inicio UTC 2026-09-10T21:00:50Z — exit code 1 (ESPERADO: seconds=20 < vuelta
+# completa de 36,3 s => result=timeout por diseño de run_demo; no es un fallo)
+######################################################################
+--- salida completa de la corrida con ventana ---
+WINDOWED_DEMO2_START_UTC=2026-09-10T21:00:50Z
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060 Laptop GPU
+
+DEMO waypoint 0 t=2.5s
+DEMO screenshot saved=user://playground.png
+DEMO waypoint 1 t=5.0s
+DEMO waypoint 2 t=8.0s
+DEMO waypoint 3 t=8.8s
+DEMO waypoint 4 t=9.8s
+DEMO waypoint 5 t=12.0s
+DEMO water_entered t=12.0s
+DEMO waypoint 6 t=13.8s
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+DEMO waypoint 7 t=16.2s
+DEMO waypoint 8 t=16.9s
+DEMO result=timeout t=20.0s waypoints=9 max_speed_kmh=46.8 min_upright=0.96
+WINDOWED2_EXIT=1
+
+--- comprobación de ERROR en consola ---
+grep -cE '^ERROR|SCRIPT ERROR' sobre el volcado de arriba: 0 ocurrencias (0 = consola limpia)
+La única WARNING es la de interpolación de la ChaseCamera (benigna, ver 04).
+Se corrió una segunda toma idéntica con screenshot_at=10 (default) también con
+0 ERROR; esa captura (bus+agua) se descartó para la evidencia 05 (ver 05_screenshot.txt).

@@ -79,6 +79,23 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **`reload()` reemplaza los objetos `data`/`tuning`:** los consumidores que guarden referencias a los Resources deben reengancharse en la señal `reloaded(report)` (T0.3+).
 - **Observación:** editor con ventana: un segmentation fault al cerrar observado una vez bajo `timeout` (2026-09-10), no reproducido en dos intentos sin `timeout`; bug de apagado de 4.7 con plugins, fix en 4.8; sin acción.
 
+## Pendientes propios de la ejecución de M0-T0.3
+
+- **T1.1 reemplaza el bus placeholder** y hereda la interfaz `set_drive(throttle, steer, brake)`; los `@export` greybox del placeholder se eliminan ahí (D48).
+- **Proponer al dueño:** incorporar los dos números de §4.5 (90 km/h, 0–60 en 5 s) a la tabla §8.1 del maestro (hoy viven en el esquema v1 como origen §4.5).
+- **`WaterZone` se promueve** a `src/core/` o `src/biomes/` común en M7 (flotación/hundimiento, T7.2).
+- **`src/tooling/run_demo.gd` es la base del guion de red de T0.4.**
+- **El `uid` de las escenas `.tscn`** aparecerá al primer guardado desde el editor (diff de una línea por escena, esperado; §3 del plan M0-T0.3).
+- **`physics_ticks_per_second` 120 Hz opcional** (§15) queda para M2.
+- **Un `.tscn` escrito a mano necesita `node_paths=[...]`** en la cabecera `[node]` para que los `@export` tipados-Node se resuelvan: sin ese atributo cargan `null` en silencio (ni error ni warning). Cualquier escena manual con referencias `@export var x: Node` debe declarar `node_paths` (lección de la escritura a mano de `scenes/playground.tscn`).
+- **En scripts `-s` no se pueden referenciar estáticamente clases que tocan un autoload:** compilan antes de que el autoload esté registrado y la cadena de tipos llega hasta él. `src/tooling/run_demo.gd` lo resuelve con duck-typing tipado (inspección por nombre de nodo/señal y lecturas `Variant` seguras); misma regla para futuras herramientas headless.
+- **`apply_central_impulse` se descarta si ese mismo tick se asigna `linear_velocity` después** (orden de operaciones dentro de `_physics_process`): la asignación pisa el impulso. Quien combine impulsos con correcciones directas de velocidad debe fijar el orden con cuidado (lección del ajuste del bus placeholder).
+
+## Cerrados en la ronda 2 de M0-T0.3
+
+- **El impulso de escalón (climb hop) del bus placeholder, eliminado** (revisión 01, r1.1). Lo medido desmiente la descripción de la ronda 1 ("ayuda a subir los baches"): la sonda del revisor midió **cero impulsos dentro del campo de baches** y **uno por vuelta en la esquina de aproximación** (t=24,6 s, (36,1 · 1,13 · −14,2)). La causa real era de trazado: el bus salía del tramo WP9→WP10 hasta 6 m fuera de la línea x = 30, entraba oblicuo a la fila y se clavaba contra la esquina del primer bache; el impulso lo rescataba y reiniciaba el contador de `stuck`, anulando el detector que la propia tarea entregaba. Arreglo: WP8 movido a la línea x = 30, waypoint de aproximación antes del campo, salida norte re-encaminada y campo de baches rehecho (ver entrada siguiente) de modo que no exista cara vertical de ataque. Borrados `_update_climb_hop` y sus tres `@export` (`climb_hop_up_speed`, `climb_hop_fwd_speed`, `climb_wedge_seconds`) junto con `_wedge_time_s` y `_has_moved`; la vuelta se completa sin ningún rescate y un atasco provocado sigue produciendo `stuck` (bus congelado en la demo; pared infranqueable en `test_stuck_emitted_against_unclimbable_wall`). **Nota para el cierre:** D50 en `DECISIONS.md` describe aún el campo viejo (6 baches × 0,15 m cada 3 m) y la ficción del hop; actualizarla al fusionar la ronda 2.
+- **Campo de baches rehecho (revisión 01, r1.2): el chasis ya cae entre baches.** Antes: altura constante y = 1,25 m e inclinación máxima 3,3° durante toda la travesía. Ahora: dos mesetas de 1,5 m de alto × 16 m de ancho con entrada rampada a 8° (la pendiente de la rampa grande, que el bus ya sube) y borde de caída vertical, hueco de 9,6 m entre mesetas (> 8 m del bus). El bus entra al campo por la línea x = 30 (x ≈ 30,7 en la entrada, antes hasta 36,2), sube y cae de cada meseta (y oscila entre 1,10 y 3,16 m) y la vuelta termina con `min_upright` 0,9496 (18,4°, lanzamiento oblicuo al iniciar el giro de salida sobre la meseta 2) en vez del 0,96 de la ronda 1 — el mínimo ahora lo produce el campo de baches, no la rampa — sin acercarse al umbral de volcadura (0,5).
+
 ## Cerrados en las rondas 2 y 3 de M0-T0.1
 
 - **Borrado de `addons/gdUnit4/test/`** (M2/M3 de la revisión 01): ejecutado en la ronda 3 tras R12=SÍ (2026-09-08). 559 archivos eliminados con `git rm -r`; la caché global ya no lista `res://addons/gdUnit4/test/` (conteo 0) y no queda ningún `.scn` en el índice. Registrado en D32, `CREDITS.md` y la evidencia 08.

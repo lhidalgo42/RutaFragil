@@ -89,6 +89,28 @@ timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/print_game_dat
 
 **R1:** nunca hardcodear el número de jugadores. Toda UI de lobby/HUD se genera para N jugadores leyendo `GameConfig.max_players` (el autoload lo expone como propiedad delegada del dato, D43).
 
+## Playground y demo
+
+El **Playground** (`scenes/playground.tscn`, M0-T0.3) es la escena principal del proyecto: un greybox con plano, rampa, campo de baches y una zona de agua, recorrido por un **bus placeholder conducido por script** (`DemoDriver` sobre la interfaz `set_drive(throttle, steer, brake)`). Con **F5** en el editor la corre directamente (`run/main_scene` apunta a ella, D52).
+
+Por CLI corre la herramienta `src/tooling/run_demo.gd` (siempre con `timeout`; hace `quit()` en todas las rutas):
+
+```bash
+timeout 120 "$GODOT_BIN" --headless --fixed-fps 60 --path . -s res://src/tooling/run_demo.gd
+timeout 300 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_demo.gd            # tiempo real
+timeout 120 "$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ seconds=20 screenshot=user://playground.png
+```
+
+La primera forma (`--fixed-fps 60`) es determinista y corre la vuelta en segundos de reloj; la segunda demuestra que también funciona a 60 Hz en tiempo real; la tercera (con ventana) guarda una captura PNG.
+
+Cada línea `DEMO` del reporte significa:
+
+- `DEMO waypoint i t=..s` — el bus alcanzó el waypoint `i` en el segundo de juego `t`.
+- `DEMO water_entered t=..s` — el bus entró en la zona de agua.
+- `DEMO result=<lap_completed|rolled_over|stuck|timeout> t=..s waypoints=N max_speed_kmh=.. min_upright=..` — cierre de la corrida: cómo terminó, tiempo de juego, waypoints alcanzados, velocidad máxima y el mínimo producto punto "arriba" del bus (1.0 = nunca cerca de volcar).
+
+El **código de salida es 0 solo con `result=lap_completed`**; `rolled_over`, `stuck` y `timeout` salen con código 1.
+
 ## Mapa de carpetas (§20)
 
 ```
