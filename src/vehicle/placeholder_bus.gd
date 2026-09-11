@@ -26,11 +26,6 @@ extends RigidBody3D
 # Greybox (T1.1 deletes): floor of the steering speed factor, so the bus can
 # still rotate at crawl speed instead of locking against contact friction.
 @export var steer_min_speed_factor: float = 0.35
-# Greybox (T1.1 deletes): vertical and forward speeds of the step-climb hop.
-@export var climb_hop_up_speed: float = 2.5
-@export var climb_hop_fwd_speed: float = 1.5
-# Greybox (T1.1 deletes): seconds of pushing without moving before the hop.
-@export var climb_wedge_seconds: float = 0.6
 
 signal rolled_over
 
@@ -42,8 +37,6 @@ var _accel_mps2: float = 0.0
 var _max_speed_mps: float = 0.0
 var _rollover_time_s: float = 0.0
 var _rolled_over_emitted: bool = false
-var _wedge_time_s: float = 0.0
-var _has_moved: bool = false
 
 
 func _ready() -> void:
@@ -78,8 +71,6 @@ func _physics_process(delta: float) -> void:
 	if not is_grounded():
 		return
 	var fwd: Vector3 = forward()
-	if speed_mps() >= 2.0:
-		_has_moved = true
 	if drive_throttle != 0.0 and speed_mps() < _max_speed_mps:
 		apply_central_force(fwd * (mass * _accel_mps2 * drive_throttle))
 	if drive_steer != 0.0:
@@ -93,28 +84,6 @@ func _physics_process(delta: float) -> void:
 	var right: Vector3 = global_basis.x
 	var v_lat: Vector3 = right * linear_velocity.dot(right)
 	linear_velocity -= v_lat * clampf(lateral_grip * delta, 0.0, 1.0)
-	# Last: a queued impulse would be discarded by the velocity writes above.
-	_update_climb_hop(delta, fwd)
-
-
-## Step-climb assist (greybox, T1.1 deletes): a flat box cannot ride up the
-## D50 bump steps with a horizontal force at the center of mass (the vertical
-## step face gives no lift, and the bus is too long to pitch up), so when it
-## has been driving and now pushes without moving, it hops the step.
-func _update_climb_hop(delta: float, fwd: Vector3) -> void:
-	if _has_moved and drive_throttle > 0.5 and speed_mps() < 0.8:
-		_wedge_time_s += delta
-	else:
-		_wedge_time_s = 0.0
-		return
-	if _wedge_time_s < climb_wedge_seconds:
-		return
-	_wedge_time_s = 0.0
-	var flat_fwd: Vector3 = Vector3(fwd.x, 0.0, fwd.z)
-	if flat_fwd.length_squared() < 0.25:
-		flat_fwd = fwd
-	flat_fwd = flat_fwd.normalized()
-	apply_central_impulse((Vector3.UP * climb_hop_up_speed + flat_fwd * climb_hop_fwd_speed) * mass)
 
 
 func _update_rollover(delta: float) -> void:

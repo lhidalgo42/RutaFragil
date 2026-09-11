@@ -1,9 +1,9 @@
 extends GdUnitTestSuite
 
 ## DemoDriver integration (D49): a real PlaceholderBus on a code-built track
-## drives itself to the first waypoint; a frozen bus triggers stuck instead.
-## Waits are physics_frame/signal based with explicit timeouts (plan §3),
-## never process-frame counts.
+## drives itself to the first waypoint; a frozen bus or one blocked by an
+## unclimbable wall triggers stuck instead. Waits are physics_frame/signal
+## based with explicit timeouts (plan §3), never process-frame counts.
 
 
 func test_waypoint_reached_when_driving_to_it() -> void:
@@ -39,6 +39,42 @@ func test_stuck_emitted_when_bus_cannot_move() -> void:
 	driver.enabled = true
 	await await_signal_on(driver, "stuck", [], 4000)
 	assert_int(driver.current_index).is_equal(0)
+
+
+func test_stuck_emitted_against_unclimbable_wall() -> void:
+	_make_track()
+	var runner: GdUnitSceneRunner = scene_runner("res://src/vehicle/placeholder_bus.tscn")
+	var bus: PlaceholderBus = _spawn_bus(runner, Vector3(0.0, 1.6, -0.4))
+	if bus == null:
+		return
+	# Round 2 (r1.1): with the climb-hop deleted, a bus pressing a real wall it
+	# cannot climb must stay blocked; this is the case the assist hid.
+	_make_wall(Vector3(0.0, 2.0, -5.0), Vector3(10.0, 4.0, 1.0))
+	var positions: Array[Vector3] = [Vector3(0.0, 0.0, -15.0), Vector3(-15.0, 0.0, -15.0)]
+	var circuit: Circuit = _make_circuit(positions)
+	var driver: DemoDriver = _make_driver(bus, circuit)
+	driver.stuck_seconds = 1.0
+	var settled: bool = await _wait_until_grounded(bus, 60)
+	assert_bool(settled).is_true()
+	if not settled:
+		return
+	var start_frame: int = Engine.get_physics_frames()
+	driver.enabled = true
+	await await_signal_on(driver, "stuck", [], 6000)
+	var elapsed_s: float = (Engine.get_physics_frames() - start_frame) / float(Engine.physics_ticks_per_second)
+	assert_float(elapsed_s).is_less_equal(driver.stuck_seconds + 1.0)
+	assert_int(driver.current_index).is_equal(0)
+
+
+func _make_wall(pos: Vector3, size: Vector3) -> void:
+	var wall: StaticBody3D = auto_free(StaticBody3D.new())
+	var shape_node: CollisionShape3D = CollisionShape3D.new()
+	var box: BoxShape3D = BoxShape3D.new()
+	box.size = size
+	shape_node.shape = box
+	wall.add_child(shape_node)
+	add_child(wall)
+	wall.global_position = pos
 
 
 func _make_track() -> void:

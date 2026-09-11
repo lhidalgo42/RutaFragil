@@ -1,17 +1,24 @@
-=== Evidencia 04_demo_realtime.txt — M0-T0.3 ===
-Fecha de captura (UTC): 2026-09-10 21:15:10
+=== Evidencia 04_demo_realtime.txt — M0-T0.3 (RONDA 2) ===
+Fecha de captura (UTC): 2026-09-11 01:38:50 (inicio) → 01:39:27 (fin)
 Máquina: Windows, Git Bash
-Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
+Rama: m0/t0.3-playground — árbol de trabajo de la ronda 2 sobre 4bb067a
+(docs: review 01 and round-2 prompt (M0-T0.3)). La ronda 2 está SIN commitear
+durante esta captura (circuito nuevo de 17 waypoints, campo de baches rehecho
+de 2 mesetas de 1,5 m × 16 m con hueco de 9,6 m, _update_climb_hop borrado
+de placeholder_bus.gd): todo vive solo en el árbol de trabajo hasta que el
+coordinador cometa tras esta etapa de evidencia.
 Comando: timeout 300 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_demo.gd
 GODOT_BIN=C:/Godot/4.7.2/Godot_v4.7.2-stable_win64_console.exe
-Qué demuestra: la misma demo también completa la vuelta SIN --fixed-fps, es
-decir con la física corriendo en tiempo real a 60 Hz (plan §3: sin flags,
-600 ticks = 10,0 s de reloj). result=lap_completed, código 0.
+Qué demuestra: la misma demo de la ronda 2 también completa la vuelta SIN
+--fixed-fps, es decir con la física corriendo en tiempo real a 60 Hz (plan
+§3: sin flags, 600 ticks = 10,0 s de reloj). result=lap_completed, código 0.
+Igual que en la evidencia 03, la vuelta se completa SIN el mecanismo de
+impulso de rescate (borrado en esta ronda, hallazgo B1).
 
-Tiempo de juego vs tiempo de reloj: el reporte final marca t=36.3s de juego
-(ticks / physics_ticks_per_second) y la corrida completa duró 36 s de reloj
-(epoch start 21:10:27 → end 21:11:03, incluye el arranque del motor). La
-física corre a ritmo real: 36,3 s de juego ≈ 36 s de reloj.
+Tiempo de juego vs tiempo de reloj: el reporte final marca t=36.8s de juego
+(ticks / physics_ticks_per_second) y la corrida completa duró 37 s de reloj
+(epoch start 1789090730 → end 1789090767, incluye el arranque del motor). La
+física corre a ritmo real: 36,8 s de juego ≈ 37 s de reloj.
 
 Nota: las dos líneas WARNING de interpolación de la ChaseCamera son benignas
 (aviso conocido al mover una Camera3D interpolada fuera del physics process;
@@ -19,32 +26,32 @@ no aparecen en --fixed-fps porque ahí proceso y física van alineados). No hay
 ninguna línea ERROR.
 
 ######################################################################
-# CORRIDA — inicio UTC 2026-09-10T21:10:27Z — exit code 0
+# CORRIDA — inicio UTC 2026-09-11T01:38:50Z — exit code 0
 ######################################################################
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 DEMO waypoint 0 t=2.5s
 DEMO waypoint 1 t=5.0s
-DEMO waypoint 2 t=8.0s
-DEMO waypoint 3 t=8.8s
-DEMO waypoint 4 t=9.8s
-DEMO waypoint 5 t=12.0s
-DEMO water_entered t=12.0s
+DEMO waypoint 2 t=7.9s
+DEMO waypoint 3 t=8.7s
+DEMO waypoint 4 t=9.7s
+DEMO waypoint 5 t=12.2s
+DEMO water_entered t=12.3s
 DEMO waypoint 6 t=13.8s
 WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
    at: _notification (scene/3d/camera_3d.cpp:218)
-DEMO waypoint 7 t=16.2s
-DEMO waypoint 8 t=16.9s
-DEMO waypoint 9 t=20.8s
-DEMO waypoint 10 t=28.8s
+DEMO waypoint 7 t=16.1s
+DEMO waypoint 8 t=17.1s
+DEMO waypoint 9 t=21.9s
+DEMO waypoint 10 t=25.1s
+DEMO waypoint 11 t=29.8s
 WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
    at: _notification (scene/3d/camera_3d.cpp:218)
-DEMO waypoint 11 t=30.6s
-DEMO waypoint 12 t=31.9s
-DEMO waypoint 13 t=33.5s
-DEMO waypoint 14 t=34.5s
-DEMO waypoint 15 t=35.5s
-DEMO waypoint 16 t=36.3s
-DEMO result=lap_completed t=36.3s waypoints=17 max_speed_kmh=52.8 min_upright=0.96
+DEMO waypoint 12 t=33.0s
+DEMO waypoint 13 t=34.1s
+DEMO waypoint 14 t=35.2s
+DEMO waypoint 15 t=36.1s
+DEMO waypoint 16 t=36.8s
+DEMO result=lap_completed t=36.8s waypoints=17 max_speed_kmh=51.1 min_upright=0.95
 [exit code de la corrida: 0]
-[tiempo de reloj de la corrida completa: 36 s (epoch 1789074627 → 1789074663)]
+[tiempo de reloj de la corrida completa: 37 s (epoch 1789090730 → 1789090767)]

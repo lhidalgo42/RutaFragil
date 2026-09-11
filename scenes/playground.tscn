@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://src/biomes/playground/playground.gd" id="1_playground"]
 [ext_resource type="Script" path="res://src/biomes/playground/circuit.gd" id="2_circuit"]
@@ -29,8 +29,11 @@ size = Vector3(12, 1, 10.778)
 [sub_resource type="BoxShape3D" id="BoxShape3D_plateau"]
 size = Vector3(12, 1, 6)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_bump"]
-size = Vector3(12, 0.15, 0.4)
+[sub_resource type="BoxShape3D" id="BoxShape3D_bump_ramp_tall"]
+size = Vector3(16, 1, 10.778)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bump_top"]
+size = Vector3(16, 1, 3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_water"]
 size = Vector3(20, 2, 12)
@@ -47,9 +50,13 @@ size = Vector3(12, 1, 10.778)
 material = SubResource("StandardMaterial3D_ramp")
 size = Vector3(12, 1, 6)
 
-[sub_resource type="BoxMesh" id="BoxMesh_bump"]
+[sub_resource type="BoxMesh" id="BoxMesh_bump_ramp_tall"]
 material = SubResource("StandardMaterial3D_bump")
-size = Vector3(12, 0.15, 0.4)
+size = Vector3(16, 1, 10.778)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bump_top"]
+material = SubResource("StandardMaterial3D_bump")
+size = Vector3(16, 1, 3)
 
 [sub_resource type="BoxMesh" id="BoxMesh_water"]
 material = SubResource("StandardMaterial3D_water")
@@ -113,59 +120,45 @@ mesh = SubResource("BoxMesh_slope")
 [node name="BumpField" type="Node3D" parent="."]
 position = Vector3(30, 0, 0)
 
-[node name="Bump1" type="StaticBody3D" parent="BumpField"]
-position = Vector3(0, 0.075, -10)
+[node name="Table1" type="StaticBody3D" parent="BumpField"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BumpField/Bump1"]
-shape = SubResource("BoxShape3D_bump")
+[node name="RampShape" type="CollisionShape3D" parent="BumpField/Table1"]
+position = Vector3(0, 0.2549, 7.41)
+rotation = Vector3(-0.139626, 0, 0)
+shape = SubResource("BoxShape3D_bump_ramp_tall")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BumpField/Bump1"]
-mesh = SubResource("BoxMesh_bump")
+[node name="TopShape" type="CollisionShape3D" parent="BumpField/Table1"]
+position = Vector3(0, 1, 14.17)
+shape = SubResource("BoxShape3D_bump_top")
 
-[node name="Bump2" type="StaticBody3D" parent="BumpField"]
-position = Vector3(0, 0.075, -7)
+[node name="RampMesh" type="MeshInstance3D" parent="BumpField/Table1"]
+position = Vector3(0, 0.2549, 7.41)
+rotation = Vector3(-0.139626, 0, 0)
+mesh = SubResource("BoxMesh_bump_ramp_tall")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BumpField/Bump2"]
-shape = SubResource("BoxShape3D_bump")
+[node name="TopMesh" type="MeshInstance3D" parent="BumpField/Table1"]
+position = Vector3(0, 1, 14.17)
+mesh = SubResource("BoxMesh_bump_top")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BumpField/Bump2"]
-mesh = SubResource("BoxMesh_bump")
+[node name="Table2" type="StaticBody3D" parent="BumpField"]
 
-[node name="Bump3" type="StaticBody3D" parent="BumpField"]
-position = Vector3(0, 0.075, -4)
+[node name="RampShape" type="CollisionShape3D" parent="BumpField/Table2"]
+position = Vector3(0, 0.2549, 30.68)
+rotation = Vector3(-0.139626, 0, 0)
+shape = SubResource("BoxShape3D_bump_ramp_tall")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BumpField/Bump3"]
-shape = SubResource("BoxShape3D_bump")
+[node name="TopShape" type="CollisionShape3D" parent="BumpField/Table2"]
+position = Vector3(0, 1, 37.44)
+shape = SubResource("BoxShape3D_bump_top")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BumpField/Bump3"]
-mesh = SubResource("BoxMesh_bump")
+[node name="RampMesh" type="MeshInstance3D" parent="BumpField/Table2"]
+position = Vector3(0, 0.2549, 30.68)
+rotation = Vector3(-0.139626, 0, 0)
+mesh = SubResource("BoxMesh_bump_ramp_tall")
 
-[node name="Bump4" type="StaticBody3D" parent="BumpField"]
-position = Vector3(0, 0.075, -1)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BumpField/Bump4"]
-shape = SubResource("BoxShape3D_bump")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BumpField/Bump4"]
-mesh = SubResource("BoxMesh_bump")
-
-[node name="Bump5" type="StaticBody3D" parent="BumpField"]
-position = Vector3(0, 0.075, 2)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BumpField/Bump5"]
-shape = SubResource("BoxShape3D_bump")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BumpField/Bump5"]
-mesh = SubResource("BoxMesh_bump")
-
-[node name="Bump6" type="StaticBody3D" parent="BumpField"]
-position = Vector3(0, 0.075, 5)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BumpField/Bump6"]
-shape = SubResource("BoxShape3D_bump")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BumpField/Bump6"]
-mesh = SubResource("BoxMesh_bump")
+[node name="TopMesh" type="MeshInstance3D" parent="BumpField/Table2"]
+position = Vector3(0, 1, 37.44)
+mesh = SubResource("BoxMesh_bump_top")
 
 [node name="WaterZone" type="Area3D" parent="."]
 position = Vector3(0, 0, -40)
@@ -207,22 +200,22 @@ position = Vector3(0, 1.2, -40)
 position = Vector3(20, 1.2, -38)
 
 [node name="WP8" type="Marker3D" parent="Circuit"]
-position = Vector3(27, 1.2, -32)
+position = Vector3(30, 1.2, -32)
 
 [node name="WP9" type="Marker3D" parent="Circuit"]
 position = Vector3(30, 1.2, -24)
 
 [node name="WP10" type="Marker3D" parent="Circuit"]
-position = Vector3(30, 1.2, 8)
+position = Vector3(30, 1.2, -12)
 
 [node name="WP11" type="Marker3D" parent="Circuit"]
-position = Vector3(26, 1.2, 24)
+position = Vector3(30, 1.2, 33)
 
 [node name="WP12" type="Marker3D" parent="Circuit"]
-position = Vector3(16, 1.2, 34)
+position = Vector3(8, 1.2, 50)
 
 [node name="WP13" type="Marker3D" parent="Circuit"]
-position = Vector3(2, 1.2, 40)
+position = Vector3(0, 1.2, 46)
 
 [node name="WP14" type="Marker3D" parent="Circuit"]
 position = Vector3(-12, 1.2, 42)

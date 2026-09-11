@@ -209,3 +209,155 @@ PNG vendorizados de gdUnit4.
 Cierre: la parte 1 (PRE-COMMIT) quedó commiteada dentro del commit de código
 f21df2f y esta parte 2 (POST-COMMIT) lo lista en su git log, con el árbol
 limpio en el momento de la captura.
+
+=== RONDA 2 PRE-COMMIT ===
+Fecha de captura (UTC): 2026-09-11 01:52 (aprox.; los cinco comandos corrieron
+justo antes de escribir esta sección)
+Máquina: Windows, Git Bash
+Rama: m0/t0.3-playground — árbol de trabajo de la ronda 2 sobre 4bb067a
+(docs: review 01 and round-2 prompt (M0-T0.3))
+Estado capturado: la ronda 2 completa SIN commitear sobre el último commit
+(4bb067a). El coordinador comete el código de la ronda 2 después de esta
+captura; la sección post-commit de la ronda 2 se captura tras ese commit y
+se commitea en un commit de docs aparte. Nota de autoconsistencia: los
+comandos corrieron ANTES de escribir esta sección, así que el git status de
+abajo NO lista aún 07_git.txt ni 08_no_verificado.txt como modificados (su
+edición de la ronda 2 es posterior a la captura; mismo fenómeno de
+autorreferencia que las rondas anteriores).
+Qué cambió en la ronda 2 (visible en el status de abajo): trazado del
+circuito (WP8 sobre la línea x=30, waypoint de aproximación nuevo WP10,
+salida norte re-encaminada, 17 waypoints), campo de baches rehecho
+(2 mesetas de 1,5 m × 16 m, hueco de 9,6 m), _update_climb_hop y sus tres
+@export borrados de src/vehicle/placeholder_bus.gd, test nuevo
+test_stuck_emitted_against_unclimbable_wall en tests/vehicle/
+demo_driver_test.gd, BACKLOG con sección de cerrados de la ronda 2 y
+DECISIONS D50 actualizada. Las evidencias 02/03/04/05 están recapturadas
+sobre este árbol y el PNG nuevo de la evidencia 05 ya está staged (único
+archivo autorizado a entrar al índice en esta etapa).
+Comandos: git log --oneline main..HEAD; git status --short;
+  git diff --stat main..HEAD; git diff main..HEAD -- project.godot;
+  git lfs ls-files
+
+--- git log --oneline main..HEAD ---
+4bb067a docs: review 01 and round-2 prompt (M0-T0.3)
+f3b5802 docs: evidence 07 post-commit (M0-T0.3)
+f21df2f feat: Playground scene with auto demo mode, placeholder bus, circuit, run_demo tool (M0-T0.3)
+5c6d1d2 docs: plan and round-1 prompt (M0-T0.3)
+exit code: 0
+
+--- git status --short (completo) ---
+ M BACKLOG.md
+ M DECISIONS.md
+ M docs/evidencia/M0-T0.3/02_run_tests.txt
+ M docs/evidencia/M0-T0.3/03_demo_fixed_fps.txt
+ M docs/evidencia/M0-T0.3/04_demo_realtime.txt
+M  docs/evidencia/M0-T0.3/05_playground.png
+ M docs/evidencia/M0-T0.3/05_screenshot.txt
+ M scenes/playground.tscn
+ M src/vehicle/placeholder_bus.gd
+ M tests/vehicle/demo_driver_test.gd
+exit code: 0
+
+--- git diff --stat main..HEAD ---
+ AGENTS.md                                          |    9 +
+ BACKLOG.md                                         |   13 +
+ DECISIONS.md                                       |    7 +-
+ README.md                                          |   22 +
+ data/tuning.json                                   |    2 +
+ data/tuning.tres                                   |    2 +
+ docs/datos/esquema_v1.md                           |    2 +
+ docs/evidencia/M0-T0.3/01_versions.txt             |   22 +
+ docs/evidencia/M0-T0.3/02_run_tests.txt            | 1589 ++++++++++++++++++++
+ docs/evidencia/M0-T0.3/03_demo_fixed_fps.txt       |   72 +
+ docs/evidencia/M0-T0.3/04_demo_realtime.txt        |   50 +
+ docs/evidencia/M0-T0.3/05_playground.png           |    3 +
+ docs/evidencia/M0-T0.3/05_screenshot.txt           |   57 +
+ docs/evidencia/M0-T0.3/06_editor.txt               |  112 ++
+ docs/evidencia/M0-T0.3/07_git.txt                  |  211 +++
+ docs/evidencia/M0-T0.3/08_no_verificado.txt        |   59 +
+ docs/evidencia/M0-T0.3/09_limits.txt               |   36 +
+ docs/planes/M0-T0.3_plan.md                        |  172 +++
+ docs/planes/M0-T0.3_ronda1_prompt.md               |   28 +
+ docs/planes/M0-T0.3_ronda2_prompt.md               |   41 +
+ docs/revisiones/M0-T0.3_revision_01.md             |   76 +
+ project.godot                                      |    1 +
+ scenes/playground.tscn                             |  255 ++++
+ src/biomes/playground/circuit.gd                   |   26 +
+ src/biomes/playground/circuit.gd.uid               |    1 +
+ src/biomes/playground/playground.gd                |   18 +
+ src/biomes/playground/playground.gd.uid            |    1 +
+ src/biomes/playground/water_zone.gd                |   26 +
+ src/biomes/playground/water_zone.gd.uid            |    1 +
+ src/core/data/tuning_table.gd                      |    2 +
+ src/tooling/run_demo.gd                            |  161 ++
+ src/tooling/run_demo.gd.uid                        |    1 +
+ src/vehicle/chase_camera.gd                        |   25 +
+ src/vehicle/chase_camera.gd.uid                    |    1 +
+ src/vehicle/demo_driver.gd                         |   86 ++
+ src/vehicle/demo_driver.gd.uid                     |    1 +
+ src/vehicle/demo_steering.gd                       |   57 +
+ src/vehicle/demo_steering.gd.uid                   |    1 +
+ src/vehicle/placeholder_bus.gd                     |  149 ++
+ src/vehicle/placeholder_bus.gd.uid                 |    1 +
+ src/vehicle/placeholder_bus.tscn                   |   28 +
+ tests/autoloads/game_config_autoload_test.gd       |    4 +-
+ tests/biomes/playground/circuit_test.gd            |   42 +
+ tests/biomes/playground/circuit_test.gd.uid        |    1 +
+ tests/biomes/playground/playground_scene_test.gd   |   64 +
+ .../biomes/playground/playground_scene_test.gd.uid |    1 +
+ tests/biomes/playground/water_zone_test.gd         |   44 +
+ tests/biomes/playground/water_zone_test.gd.uid     |    1 +
+ tests/vehicle/chase_camera_test.gd                 |   22 +
+ tests/vehicle/chase_camera_test.gd.uid             |    1 +
+ tests/vehicle/demo_driver_test.gd                  |   88 ++
+ tests/vehicle/demo_driver_test.gd.uid              |    1 +
+ tests/vehicle/demo_steering_test.gd                |   75 +
+ tests/vehicle/demo_steering_test.gd.uid            |    1 +
+ tests/vehicle/placeholder_bus_test.gd              |  128 ++
+ tests/vehicle/placeholder_bus_test.gd.uid          |    1 +
+ 56 files changed, 3899 insertions(+), 2 deletions(-)
+exit code: 0
+
+--- git diff main..HEAD -- project.godot ---
+diff --git a/project.godot b/project.godot
+index 14f43e9..37384e1 100644
+--- a/project.godot
++++ b/project.godot
+@@ -11,6 +11,7 @@ config_version=5
+ [application]
+ 
+ config/name="RutaFragil"
++run/main_scene="res://scenes/playground.tscn"
+ config/features=PackedStringArray("4.7", "Forward Plus")
+ config/icon="res://icon.svg"
+ 
+exit code: 0
+
+--- git lfs ls-files (PNG nuevo ya staged) ---
+10fc84cc8a * docs/evidencia/M0-T0.3/05_playground.png
+e709c40067 * addons/gdUnit4/src/core/assets/touch-button.png
+ed176306a0 * addons/gdUnit4/src/reporters/html/template/css/logo.png
+ed176306a0 * addons/gdUnit4/src/ui/settings/logo.png
+37a4070934 * addons/gdUnit4/src/update/assets/border_bottom.png
+ca6f5d7f59 * addons/gdUnit4/src/update/assets/border_top.png
+f37474a8d5 * addons/gdUnit4/src/update/assets/dot1.png
+c12758bd1b * addons/gdUnit4/src/update/assets/dot2.png
+08cead78bb * addons/gdUnit4/src/update/assets/embedded.png
+fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
+exit code: 0
+
+Lectura: el git status muestra modificados SIN staged BACKLOG.md,
+DECISIONS.md, scenes/playground.tscn, src/vehicle/placeholder_bus.gd y
+tests/vehicle/demo_driver_test.gd (el trabajo de la ronda 2), más las
+evidencias .txt recapturadas; el único staged ('M ' en primera columna) es
+el PNG nuevo de la evidencia 05 (puntero LFS 10fc84cc8a, ver
+05_screenshot.txt). project.godot NO aparece: la sonda unsafe_*=2 se
+revirtió (evidencia 02, sección Sonda) y el único cambio vigente sigue
+siendo run/main_scene, ya commiteado en la ronda 1 — el diff
+main..HEAD -- project.godot de arriba lo confirma (solo esa línea). El diff
+--stat main..HEAD crece respecto a la ronda 1 por los dos documentos nuevos
+commiteados en 4bb067a (revisión 01 y prompt de la ronda 2) y por el
+crecimiento de 07_git.txt; el código de la ronda 2 todavía no forma parte
+de ese diff porque no está commiteado.
+
+Sección post-commit capturada tras el commit de código de la ronda 2, en un commit de docs aparte.

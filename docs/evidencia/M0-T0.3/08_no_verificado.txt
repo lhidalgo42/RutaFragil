@@ -1,23 +1,27 @@
-=== Evidencia 08_no_verificado.txt — M0-T0.3 ===
-Fecha de captura (UTC): 2026-09-10 21:20:00
+=== Evidencia 08_no_verificado.txt — M0-T0.3 (RONDA 2) ===
+Fecha de captura (UTC): 2026-09-11 01:55 (revisión de la ronda 2; la lista
+original de la ronda 1 queda reemplazada por esta)
 Máquina: Windows, Git Bash
-Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
+Rama: m0/t0.3-playground — árbol de trabajo de la ronda 2 sobre 4bb067a
+(docs: review 01 and round-2 prompt (M0-T0.3)). La ronda 2 está SIN commitear
+durante esta captura.
 Qué es (R7): la lista honesta de lo que esta tarea NO verificó, con el porqué.
 Nada de lo siguiente se marcó como probado en ninguna otra evidencia.
 
 1. Feel / controlabilidad del bus. El bus de T0.3 es un placeholder greybox
    ("disco con motor", D48) que T1.1 reemplaza; el feel es gate de M1
    ("conducir 3 minutos en el Playground", §0.7), no de T0.3. Aquí solo se
-   verificó que el conductor automático completa la vuelta (evidencias 03/04)
-   y que la física responde (tests de tests/vehicle/). NADIE declaró que "se
-   siente bien": lo prohíbe §0.8.
+   verificó que el conductor automático completa la vuelta del circuito NUEVO
+   (evidencias 03/04) y que la física responde (tests de tests/vehicle/).
+   NADIE declaró que "se siente bien": lo prohíbe §0.8. En la ronda 2 nadie
+   condujo a mano el campo de baches rehecho ni el trazado de 17 waypoints.
 
-2. Aspecto visual más allá de la captura 05. La evidencia 05 es UNA captura
-   1152×648 a los ~4 s de demo (bus sobre la rampa, agua al fondo). No se
-   verificó: legibilidad visual, colores contra el style board (D16), el
-   aspecto de los baches en cuadro (el circuito los atraviesa — waypoints
-   9→10 de las evidencias 03/04 — pero ninguna captura los enseña), ni el
-   comportamiento de la ChaseCamera a ojo (suavidad, oclusiones).
+2. Aspecto visual más allá de la captura 05. La evidencia 05 de la ronda 2
+   es UNA captura 1152×648 a los ~27,5 s de demo (bus sobre la meseta 1 del
+   campo de baches nuevo, con el hueco de 9,6 m y la meseta 2 delante — los
+   baches SÍ quedan en cuadro en esta ronda). No se verificó: legibilidad
+   visual, colores contra el style board (D16), ni el comportamiento de la
+   ChaseCamera a ojo (suavidad, oclusiones).
 
 3. Mac (D42). Todo se corrió solo en Windows. La corrida en macOS queda
    diferida por D42 hasta antes del gate M4 (igual que en T0.1/T0.2).
@@ -28,32 +32,44 @@ Nada de lo siguiente se marcó como probado en ninguna otra evidencia.
    los tests a otra frecuencia de física.
 
 5. El `uid` de las escenas al primer guardado del dueño. Las dos escenas
-   nuevas (scenes/playground.tscn, src/vehicle/placeholder_bus.tscn) se
-   escribieron a mano SIN atributo uid (verificado por el revisor en §3 del
-   plan: cargan sin avisos y --import no las reescribe). Cuando el dueño las
-   guarde por primera vez desde el editor aparecerá un diff de una línea por
-   escena añadiendo el uid: es ESPERADO y está anotado en BACKLOG.
+   (scenes/playground.tscn, src/vehicle/placeholder_bus.tscn) se escribieron
+   a mano SIN atributo uid; la reescritura de la ronda 2 (baches y circuito)
+   las mantuvo así (verificado: --import no las reescribe, tests verdes).
+   Cuando el dueño las guarde por primera vez desde el editor aparecerá un
+   diff de una línea por escena añadiendo el uid: es ESPERADO y está anotado
+   en BACKLOG.
 
-6. El impulso de escalón (climb hop) visto en F5. La asistencia de escalón
-   del placeholder (climb_hop_up_speed / climb_hop_fwd_speed /
-   climb_wedge_seconds, marcada greybox en placeholder_bus.gd) es una ficción
-   documentada que T1.1 borra (D48): está ejercitada indirectamente por la
-   demo (el circuito cruza baches y rampa sin atascarse, evidencias 03/04),
-   pero nadie la VIO comportarse con ventana más allá de la captura 05, ni se
-   midió su efecto aislado (con/sin hop) en esta tarea.
+6. El impulso de escalón (climb hop) YA NO EXISTE. _update_climb_hop y sus
+   tres @export (climb_hop_up_speed / climb_hop_fwd_speed /
+   climb_wedge_seconds) se BORRARON de placeholder_bus.gd en esta ronda
+   (hallazgo B1 de la revisión 01): la vuelta de las evidencias 03/04 se
+   completa por tracción y geometría solas, y el test nuevo
+   test_stuck_emitted_against_unclimbable_wall (demo_driver_test) ejercita
+   que la señal stuck se emite contra una pared no escalable SIN rescate.
+   Lo que queda sin verificar: ningún humano VIO con ventana el cruce
+   completo de las dos mesetas más allá de la captura estática 05, y nadie
+   midió el paso por el hueco a velocidades distintas de la de la demo.
 
-7. Ciclo límite de la dirección pre-fix. Durante el desarrollo del placeholder
-   se observó que la dirección bang-bang sin amortiguación entra en ciclo
-   límite (el bus zigzaguea fuera del rumbo); el fix es yaw_damping = 12.0
-   (comentario en placeholder_bus.gd). Ese comportamiento pre-fix quedó
-   observado de forma cualitativa en las corridas de desarrollo, sin medición
-   guardada (frecuencia/amplitud de la oscilación nunca se registraron); con
-   el fix aplicado, todas las corridas de la evidencia 03 son idénticas y sin
-   zigzag medible en los timestamps de waypoint.
+7. Ciclo límite de la dirección pre-fix (nota histórica de la ronda 1, sin
+   cambios). La dirección bang-bang sin amortiguación entraba en ciclo límite;
+   el fix es yaw_damping = 12.0. Ese comportamiento pre-fix quedó observado
+   cualitativamente sin medición guardada; con el fix, todas las corridas de
+   la evidencia 03 (rondas 1 y 2) son idénticas y sin zigzag medible en los
+   timestamps de waypoint.
 
-8. Red / multi-instancia. Fuera de alcance (T0.4): nada de esta tarea probó
+8. Advertencia esporádica de Jolt ("job system exceeded the maximum number
+   of jobs"). Se observó de forma ESPORÁDICA bajo carga durante sondas de
+   desarrollo (corridas paralelas/solapadas), NUNCA en las corridas
+   oficiales. Verificado en esta ronda sobre los volcados capturados:
+   ninguna de las corridas oficiales (arnés ps1, arnés sh, sonda unsafe_*=2,
+   demo fixed-fps ×2, demo tiempo real, captura con ventana) contiene esa
+   línea; la única aparición de "jolt" en los logs es el nombre del test
+   test_physics_engine_is_jolt del smoke test. No se midió su impacto porque
+   no se reprodujo en ninguna corrida de evidencia.
+
+9. Red / multi-instancia. Fuera de alcance (T0.4): nada de esta tarea probó
    el Playground en red.
 
-9. Latencia real de internet, cuentas Steam reales, game feel y diversión:
-   §0.8 los reserva a los gates humanos; ninguna prueba automática de esta
-   tarea los mide ni los midió.
+10. Latencia real de internet, cuentas Steam reales, game feel y diversión:
+    §0.8 los reserva a los gates humanos; ninguna prueba automática de esta
+    tarea los mide ni los midió.
