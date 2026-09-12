@@ -112,6 +112,18 @@ timeout 300 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_demo.gd   
 timeout 120 "$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ seconds=20 screenshot=user://playground.png
 ```
 
+```bash
+# Arnés de red multi-instancia (M0-T0.4, D57): 1 host + 3 clientes ENet.
+# Paso final de run_tests; con -SkipNet / --skip-net solo unitarias.
+powershell -ExecutionPolicy Bypass -File tools/run_tests.ps1 -SkipNet
+bash tools/run_tests.sh --skip-net
+# Solo la parte de red (envoltorios de una línea):
+powershell -ExecutionPolicy Bypass -File tools/run_net_tests.ps1
+bash tools/run_net_tests.sh
+# Guion directo con opciones (port/clients/seconds/waypoints/break):
+timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_net_scenario.gd ++ role=launcher
+```
+
 ## Rutas clave
 
 - Resolución de `GODOT_BIN` (D39): variable de entorno `GODOT_BIN` → `tools/godot_bin.local` (ignorado por Git) → default por SO:

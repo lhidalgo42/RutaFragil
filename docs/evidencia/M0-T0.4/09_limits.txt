@@ -1,0 +1,18 @@
+09_limits.txt — M0-T0.4
+Demuestra: escenas ≤ 60 nodos y scripts ≤ 400 líneas (R8). Fecha UTC: 2026-09-11 16:21:24 · árbol sobre a4c9a45
+
+--- grep -c '^\[node' scenes/playground.tscn src/vehicle/placeholder_bus.tscn src/net/net_marker.tscn ---
+scenes/playground.tscn:51
+src/vehicle/placeholder_bus.tscn:3
+src/net/net_marker.tscn:1
+
+--- wc -l de los .gd nuevos/modificados de M0-T0.4 ---
+  143 src/net/network_backend.gd
+    8 src/net/net_marker.gd
+  150 src/net/net_scenario_util.gd
+  397 src/tooling/run_net_scenario.gd
+   34 src/biomes/playground/playground.gd
+   74 tests/net/network_backend_test.gd
+   10 tests/net/net_marker_test.gd
+   45 tests/net/playground_client_mode_test.gd
+  861 total

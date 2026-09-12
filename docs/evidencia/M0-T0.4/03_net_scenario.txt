@@ -1,0 +1,33 @@
+03_net_scenario.txt — M0-T0.4 (recaptura de la ronda 2)
+Demuestra: el guion pasa en ruta corta (defecto), en ruta larga (++ waypoints=16 SIN más parámetros, r1.2), y sigue fallando por el assert correcto al romper la sincronización.
+Árbol de trabajo de la ronda 2 sobre 738cd0e. Fecha UTC: 2026-09-12 01:14:04
+
+=== Corrida 1: ruta corta — timeout 180 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_net_scenario.gd ++ role=launcher ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[36020, 26968, 34832, 34440]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+=== Corrida 2: ruta larga — timeout 400 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_net_scenario.gd ++ role=launcher ++ waypoints=16 (sin más parámetros) ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[17036, 14772, 42808, 26860]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+=== Corrida 3: fallo provocado — ... ++ role=launcher ++ break=sync (debe fallar por el assert de convergencia, código 1) ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[22876, 4932, 34876, 14520]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=55.987 m max_yaw_dev=2.12 deg
+NET result=fail assert=convergence (client_0: 55.987 m, 2.12 deg)
+NET assert failed: convergence (client_0: 55.987 m, 2.12 deg)
+NET assert failed: convergence (client_1: 55.987 m, 2.12 deg)
+NET assert failed: convergence (client_2: 55.987 m, 2.12 deg)

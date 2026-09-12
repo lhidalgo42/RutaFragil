@@ -41,7 +41,13 @@
 #>
 
 # PowerShell 5.1: never leave this at the user/profile default (m4).
+# M0-T0.4 (D57): the network multi-instance scenario runs as a final step;
+# -SkipNet skips it to iterate over the unit tests only.
+param([switch]$SkipNet)
+
 $ErrorActionPreference = "Continue"
+
+
 
 # Reprinted Godot output must stay valid UTF-8 in captured evidence (m-2.1):
 # PS 5.1 writes redirected output using the OEM console codepage (e.g. CP850),
@@ -316,4 +322,24 @@ if ($discovered_tests -lt 3) {
     exit $exit_infra_failure
 }
 Write-Host "SUCCESS: all tests passed and $discovered_tests tests were discovered."
+
+# --- Step 8: network multi-instance scenario (M0-T0.4, D57) -----------------
+if ($SkipNet) {
+    write_step "Step 8/8: Network scenario (SKIPPED via -SkipNet)"
+    Write-Host "Skipping the network scenario (-SkipNet). Unit tests only."
+    exit 0
+}
+write_step "Step 8/8: Network multi-instance scenario (1 host + 3 clients)"
+# The scenario self-terminates on every path: each child has its own time cap
+# and the launcher kills survivors at its deadline before aggregating (D58).
+$net_result = invoke_process $godot_bin @("--headless", "--path", $repo_root, "-s", "res://src/tooling/run_net_scenario.gd", "++", "role=launcher")
+$net_output = $net_result.output
+$net_exit_code = $net_result.exit_code
+Write-Host $net_output
+Write-Host "net scenario exit code: $net_exit_code"
+if ($net_exit_code -ne 0) {
+    Write-Host "FAILURE: network scenario failed (exit $net_exit_code)."
+    exit $net_exit_code
+}
+Write-Host "SUCCESS: network scenario passed (1 host + 3 clients)."
 exit 0

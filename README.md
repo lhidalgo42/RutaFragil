@@ -111,6 +111,19 @@ Cada línea `DEMO` del reporte significa:
 
 El **código de salida es 0 solo con `result=lap_completed`**; `rolled_over`, `stuck` y `timeout` salen con código 1.
 
+## Pruebas de red (M0-T0.4)
+
+Arnés multi-instancia sobre ENet: 1 host + 3 clientes headless en la misma máquina que conectan, reciben marcadores replicados y afirman convergencia del bus (≤ 0,5 m / ≤ 5° tras frenar y asentar). Vive en `src/net/` (`NetworkBackend`, `NetMarker`, utilidades) y `src/tooling/run_net_scenario.gd` (roles `launcher | host | client`). Detalles y decisiones: D53–D58 en `DECISIONS.md`.
+
+El arnés completo (`tools/run_tests.ps1` / `run_tests.sh`) corre la red como paso final; para iterar solo las unitarias usa `-SkipNet` / `--skip-net`. Solo la parte de red:
+
+```bash
+powershell -ExecutionPolicy Bypass -File tools/run_net_tests.ps1   # Windows
+bash tools/run_net_tests.sh                                        # macOS / Linux
+```
+
+Opciones del guion (tras `++`): `port=` (defecto 47810, con 4 alternativas), `clients=` (3), `seconds=` (30), `waypoints=` (índice en el que parar, 0-based: 2 por defecto, **16 = vuelta completa**; el presupuesto de tiempo se deriva de la ruta pedida). Los procesos hijos reportan por archivo (`user://netscenario/*.json`) y por su propio `--log-file` (`user://netlogs/`), nunca por stdout. Tras una corrida no debe quedar ningún proceso Godot vivo; el lanzador mata supervivientes y todo corre bajo `timeout` externo.
+
 ## Mapa de carpetas (§20)
 
 ```

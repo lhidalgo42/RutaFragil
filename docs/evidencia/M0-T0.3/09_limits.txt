@@ -1,36 +1,18 @@
-=== Evidencia 09_limits.txt — M0-T0.3 ===
-Fecha de captura (UTC): 2026-09-10 21:16:28
-Máquina: Windows, Git Bash
-Rama: m0/t0.3-playground — HEAD: 5c6d1d2 (docs: plan and round-1 prompt (M0-T0.3))
-Qué demuestra: R8 — escenas ≤ 60 nodos, scripts ≤ 400 líneas.
+09_limits.txt — recaptura (M0-T0.3 r2.1)
+Fecha UTC: 2026-09-11 14:37:12 · HEAD: 413db0f
+Corrige la captura de la ronda 1 (decía 59 nodos y 149 líneas; tras la ronda 2 son 51 y 118).
 
 --- grep -c '^\[node' scenes/playground.tscn src/vehicle/placeholder_bus.tscn ---
-scenes/playground.tscn:59
+scenes/playground.tscn:51
 src/vehicle/placeholder_bus.tscn:3
-exit code: 0
-(playground.tscn: 59 nodos ≤ 60; placeholder_bus.tscn: 3 nodos ≤ 60 — ambas dentro de R8)
 
---- wc -l de cada .gd nuevo (src + tests del alcance §5) ---
-   26 src/biomes/playground/circuit.gd
-   18 src/biomes/playground/playground.gd
-   26 src/biomes/playground/water_zone.gd
-   25 src/vehicle/chase_camera.gd
+--- wc -l de cada .gd nuevo de T0.3 (≤ 400) ---
+  118 src/vehicle/placeholder_bus.gd
    86 src/vehicle/demo_driver.gd
    57 src/vehicle/demo_steering.gd
-  149 src/vehicle/placeholder_bus.gd
+   25 src/vehicle/chase_camera.gd
+   18 src/biomes/playground/playground.gd
+   26 src/biomes/playground/circuit.gd
+   26 src/biomes/playground/water_zone.gd
   161 src/tooling/run_demo.gd
-   22 tests/vehicle/chase_camera_test.gd
-   88 tests/vehicle/demo_driver_test.gd
-   75 tests/vehicle/demo_steering_test.gd
-  128 tests/vehicle/placeholder_bus_test.gd
-   42 tests/biomes/playground/circuit_test.gd
-   64 tests/biomes/playground/playground_scene_test.gd
-   44 tests/biomes/playground/water_zone_test.gd
- 1011 total
-exit code: 0
-(el más largo es src/tooling/run_demo.gd con 161 líneas; todos ≤ 400 — R8)
-
-Nota de alcance: src/core/data/tuning_table.gd es un archivo EXISTENTE de T0.2
-al que esta tarea solo añadió dos campos (no es un .gd nuevo); su tamaño
-actual por completitud:
-65 src/core/data/tuning_table.gd
+  517 total
