@@ -280,7 +280,7 @@ func _run_client() -> void:
 		NetScenarioUtil.route_budget_s(_waypoints) + 15.0)
 	if not snapshot_got[0]:
 		NetScenarioUtil.write_json("client_%d" % _index,
-			{"role": "client", "error": "host lost before snapshot", "exit": 1})
+			{"role": "client", "connected": true, "error": "host lost before snapshot", "exit": 1})
 		quit(1)
 		return
 	var container: Node = scene.get_node("NetMarkers")
