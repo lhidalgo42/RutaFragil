@@ -122,7 +122,7 @@ powershell -ExecutionPolicy Bypass -File tools/run_net_tests.ps1   # Windows
 bash tools/run_net_tests.sh                                        # macOS / Linux
 ```
 
-Opciones del guion (tras `++`): `port=` (defecto 47810, con 4 alternativas), `clients=` (3), `seconds=` (30), `waypoints=` (2; 17 = vuelta completa). Los procesos hijos reportan por archivo (`user://netscenario/*.json`) y por su propio `--log-file` (`user://netlogs/`), nunca por stdout. Tras una corrida no debe quedar ningún proceso Godot vivo; el lanzador mata supervivientes y todo corre bajo `timeout` externo.
+Opciones del guion (tras `++`): `port=` (defecto 47810, con 4 alternativas), `clients=` (3), `seconds=` (30), `waypoints=` (índice en el que parar, 0-based: 2 por defecto, **16 = vuelta completa**; el presupuesto de tiempo se deriva de la ruta pedida). Los procesos hijos reportan por archivo (`user://netscenario/*.json`) y por su propio `--log-file` (`user://netlogs/`), nunca por stdout. Tras una corrida no debe quedar ningún proceso Godot vivo; el lanzador mata supervivientes y todo corre bajo `timeout` externo.
 
 ## Mapa de carpetas (§20)
 

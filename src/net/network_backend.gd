@@ -12,6 +12,7 @@ signal connection_failed(reason: String)
 signal server_lost
 signal peer_ready(id: int)
 signal peer_done(id: int)
+signal snapshot_requested
 
 const MAX_CLIENTS: int = 8
 
@@ -141,3 +142,12 @@ func mark_done() -> void:
 	if sender != 0 and not done_peers.has(sender):
 		done_peers.append(sender)
 		peer_done.emit(sender)
+
+
+## Snapshot coordination (r1.2): the host tells every peer WHEN to take its
+## state snapshot, after braking and settling, instead of clients guessing a
+## fixed wall-clock time (which broke the full-lap route: 16 waypoints need
+## ~37 s and the client's fixed 30 s fired first).
+@rpc("authority", "call_remote", "reliable")
+func snapshot_now() -> void:
+	snapshot_requested.emit()

@@ -10,6 +10,10 @@ const RESULTS_DIR: String = "user://netscenario"
 const LOGS_DIR: String = "user://netlogs"
 const NET_MARKER_SCRIPT: GDScript = preload("res://src/net/net_marker.gd")
 
+const MAX_DEVIATION_M: float = 0.5
+const MAX_DEVIATION_DEG: float = 5.0
+
+
 
 static func vec3_to_array(value: Variant) -> Array:
 	if value is Vector3:
@@ -104,6 +108,12 @@ static func read_json(path: String) -> Dictionary:
 	return {}
 
 
+## Seconds allowed to reach `waypoints` waypoints: ~15 s per waypoint with a
+## 30 s floor (r1.2; the short route of 2 keeps the old 30 s behavior).
+static func route_budget_s(waypoints: int) -> float:
+	return maxf(30.0, waypoints * 15.0)
+
+
 static func clean_dir(path: String) -> void:
 	var dir: DirAccess = DirAccess.open(path)
 	if dir == null:
@@ -148,3 +158,60 @@ static func make_sync(scene: Node) -> void:
 	config.add_property(".:global_transform")
 	sync.replication_config = config
 	sync.replication_interval = 1.0 / 30.0
+
+static func aggregate(pids: Dictionary, clients: int, killed: Array[String]) -> Array[String]:
+	var failures: Array[String] = []
+	var host_data: Dictionary = read_json(
+		NetScenarioUtil.RESULTS_DIR + "/host.json")
+	if not killed.is_empty():
+		failures.append("children_exited (killed: %s)" % ", ".join(killed))
+	var host_ok: bool = not host_data.is_empty() \
+		and dict_int(host_data, "exit", 1) == 0
+	if not host_ok:
+		failures.append("host_exit (host.json missing or exit != 0)")
+	var peers_v: Variant = host_data.get("peers", [])
+	var peers_count: int = 0
+	if peers_v is Array:
+		var peers_array: Array = peers_v
+		peers_count = peers_array.size()
+	if host_ok and peers_count != clients:
+		failures.append("clients_connect (host saw %d of %d)" % [peers_count, clients])
+	var max_pos_dev: float = 0.0
+	var max_yaw_dev: float = 0.0
+	var markers_each: Array[String] = []
+	var clients_connected: int = 0
+	var host_pos: Vector3 = array_to_vec3(host_data.get("bus_pos"))
+	var host_yaw: float = dict_float(host_data, "bus_yaw_deg", 0.0)
+	for index: int in range(clients):
+		var client_data: Dictionary = read_json(
+			NetScenarioUtil.RESULTS_DIR + "/client_%d.json" % index)
+		if client_data.is_empty() or not dict_bool(client_data, "connected"):
+			failures.append("clients_connect (client_%d not connected)" % index)
+			continue
+		clients_connected += 1
+		var markers: int = dict_int(client_data, "markers_received", 0)
+		markers_each.append("%d" % markers)
+		if markers != clients + 1:
+			failures.append("markers (client_%d got %d of %d)" % [index, markers, clients + 1])
+		# Deviation is computed only against a REAL host snapshot (r1.3): with
+		# the host down there is nothing meaningful to compare to (a zero
+		# vector would print tens of meaningless meters).
+		if host_ok:
+			var client_pos: Vector3 = array_to_vec3(client_data.get("bus_pos"))
+			var pos_dev: float = client_pos.distance_to(host_pos)
+			var yaw_dev: float = angle_diff_deg(
+				dict_float(client_data, "bus_yaw_deg", 0.0), host_yaw)
+			max_pos_dev = maxf(max_pos_dev, pos_dev)
+			max_yaw_dev = maxf(max_yaw_dev, yaw_dev)
+			if pos_dev > MAX_DEVIATION_M or yaw_dev > MAX_DEVIATION_DEG:
+				failures.append(
+					"convergence (client_%d: %.3f m, %.2f deg)" % [index, pos_dev, yaw_dev])
+	var port_used: int = dict_int(host_data, "port", -1)
+	print("NET summary port=%d pids=%s" % [port_used, str(pids.values())])
+	print("NET summary clients_connected=%d/%d markers_per_client=[%s]" % [
+		clients_connected, clients, ", ".join(markers_each)])
+	if host_ok:
+		print("NET summary max_pos_dev=%.3f m max_yaw_dev=%.2f deg" % [max_pos_dev, max_yaw_dev])
+	else:
+		print("NET summary deviation omitted: no valid host snapshot (r1.3)")
+	return failures

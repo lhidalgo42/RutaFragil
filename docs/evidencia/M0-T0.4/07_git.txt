@@ -143,3 +143,83 @@ fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
 10fc84cc8a * docs/evidencia/M0-T0.3/05_playground.png
 
 Cierre: el diff de project.godot muestra SOLO el autoload NetworkBackend (D53); la sonda unsafe_*=2 quedó revertida (02); los comandos pre y post commit se capturaron antes de escribir esta sección, que ella misma no se lista.
+
+=== ACTUALIZACIÓN RONDA 2 (pre-commit) ===
+Fecha UTC: 2026-09-12 01:14:31 · HEAD base 738cd0e
+
+--- git log --oneline main..HEAD ---
+738cd0e docs: review 01 and round-2 prompt (M0-T0.4)
+77fb441 docs: evidence 07 post-commit (M0-T0.4)
+9f4b683 feat: multi-instance net harness — NetworkBackend, replicated markers/sync, scenario tool, run_tests net step (M0-T0.4)
+a4c9a45 docs: refresh stale limits evidence (M0-T0.3 r2.1)
+413db0f docs: plan and round-1 prompt (M0-T0.4)
+
+--- git status --short ---
+ M DECISIONS.md
+ M README.md
+ M docs/evidencia/M0-T0.4/02_run_tests.txt
+ M docs/evidencia/M0-T0.4/03_net_scenario.txt
+ M docs/evidencia/M0-T0.4/08_no_verificado.txt
+ M src/net/net_scenario_util.gd
+ M src/net/network_backend.gd
+ M src/tooling/run_net_scenario.gd
+ M tests/net/network_backend_test.gd
+
+--- git diff --stat main..HEAD ---
+ AGENTS.md                                        |   12 +
+ BACKLOG.md                                       |   10 +
+ DECISIONS.md                                     |    8 +-
+ README.md                                        |   13 +
+ docs/evidencia/M0-T0.3/09_limits.txt             |   40 +-
+ docs/evidencia/M0-T0.4/01_versions.txt           |   15 +
+ docs/evidencia/M0-T0.4/02_run_tests.txt          | 1703 ++++++++++++++++++++++
+ docs/evidencia/M0-T0.4/03_net_scenario.txt       |   22 +
+ docs/evidencia/M0-T0.4/04_net_failure.txt        |   16 +
+ docs/evidencia/M0-T0.4/05_run_demo_unchanged.txt |  581 ++++++++
+ docs/evidencia/M0-T0.4/06_skipnet.txt            | 1100 ++++++++++++++
+ docs/evidencia/M0-T0.4/07_git.txt                |  145 ++
+ docs/evidencia/M0-T0.4/08_no_verificado.txt      |   13 +
+ docs/evidencia/M0-T0.4/09_limits.txt             |   18 +
+ docs/planes/M0-T0.4_plan.md                      |  110 ++
+ docs/planes/M0-T0.4_ronda1_prompt.md             |   36 +
+ docs/planes/M0-T0.4_ronda2_prompt.md             |   36 +
+ docs/revisiones/M0-T0.4_revision_01.md           |   84 ++
+ project.godot                                    |    1 +
+ src/biomes/playground/playground.gd              |   16 +
+ src/net/net_marker.gd                            |    8 +
+ src/net/net_marker.gd.uid                        |    1 +
+ src/net/net_marker.tscn                          |    6 +
+ src/net/net_scenario_util.gd                     |  150 ++
+ src/net/net_scenario_util.gd.uid                 |    1 +
+ src/net/network_backend.gd                       |  143 ++
+ src/net/network_backend.gd.uid                   |    1 +
+ src/tooling/run_net_scenario.gd                  |  397 +++++
+ src/tooling/run_net_scenario.gd.uid              |    1 +
+ tests/net/net_marker_test.gd                     |   10 +
+ tests/net/net_marker_test.gd.uid                 |    1 +
+ tests/net/network_backend_test.gd                |   74 +
+ tests/net/network_backend_test.gd.uid            |    1 +
+ tests/net/playground_client_mode_test.gd         |   45 +
+ tests/net/playground_client_mode_test.gd.uid     |    1 +
+ tools/run_net_tests.ps1                          |   12 +
+ tools/run_net_tests.sh                           |   15 +
+ tools/run_tests.ps1                              |   26 +
+ tools/run_tests.sh                               |   28 +
+ 39 files changed, 4870 insertions(+), 30 deletions(-)
+
+--- git diff main..HEAD -- project.godot ---
+diff --git a/project.godot b/project.godot
+index 37384e1..df25332 100644
+--- a/project.godot
++++ b/project.godot
+@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
+ [autoload]
+ 
+ GameConfig="*res://src/autoloads/game_config.gd"
++NetworkBackend="*res://src/net/network_backend.gd"
+ 
+ [debug]
+ 
+(solo el autoload NetworkBackend; la ronda 2 no toca project.godot)
+
+Sección post-commit capturada tras el commit de código de la ronda 2, en un commit de docs aparte.

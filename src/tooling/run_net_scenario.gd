@@ -1,16 +1,17 @@
 extends SceneTree
 
 ## Multi-instance network scenario harness (D54, D55, D56, D58, plan M0-T0.4).
-## One script, three roles chosen with ++ role=launcher|host|client:
-##   launcher: cleans the results/logs dirs, spawns 1 host and N clients over
-##     ENet on 127.0.0.1, waits, kills survivors, and aggregates the
-##     per-process result JSONs into the D55 asserts. Exit 0 only if every
-##     child self-exited 0 and every assert passed.
-##   host: hosts on port (+4 fallbacks), writes port.txt, waits for N peers,
-##     spawns one NetMarker per peer, drives the circuit to `waypoints`,
-##     brakes, settles 1.5 s and writes host.json.
+## Three roles chosen with ++ role=launcher|host|client:
+##   launcher: spawns 1 host + N clients over ENet on 127.0.0.1, waits, kills
+##     survivors, and aggregates the per-process result JSONs into the D55
+##     asserts. Exit 0 only if every child self-exited 0 and every assert passed.
+##   host: hosts on port (+4 fallbacks), waits for N peers (mark_ready),
+##     spawns one NetMarker per peer, drives the circuit to the `waypoints`
+##     INDEX (0-based), brakes, settles 1.5 s, fires snapshot_now, writes
+##     host.json, and stays connected until every client is done (mark_done).
 ##   client: joins, loads the scene with network_role="client" (frozen bus),
-##     runs `seconds`, snapshots markers + bus transform into client_N.json.
+##     and snapshots markers + bus transform into client_N.json when the
+##     host's snapshot_now RPC arrives (r1.2: no fixed clock wait).
 ## Runtime-created MultiplayerSpawner/MultiplayerSynchronizer on BOTH ends with
 ## identical node paths (accepted deviation: nothing network-specific is
 ## written into playground.tscn). quit() on every path; run under `timeout`.
@@ -19,8 +20,6 @@ extends SceneTree
 const SCENE_PATH: String = "res://scenes/playground.tscn"
 const BASE_PORT: int = 47810
 const PORT_TRIES: int = 5
-const MAX_DEVIATION_M: float = 0.5
-const MAX_DEVIATION_DEG: float = 5.0
 
 var _role: String = "launcher"
 var _port: int = BASE_PORT
@@ -177,12 +176,27 @@ func _run_host() -> void:
 	NetScenarioUtil.make_sync(scene)
 	var driver: Node = scene.get_node("DemoDriver")
 	var bus: Node = scene.get_node("PlaceholderBus")
+	# `waypoints` is the INDEX to stop at (0-based; r1.2 off-by-one fix).
+	var circuit: Node = scene.get_node("Circuit")
+	var count_v: Variant = circuit.call("waypoint_count")
+	var waypoint_count: int = 0
+	if count_v is int:
+		waypoint_count = count_v
+	if _waypoints < 0 or _waypoints >= waypoint_count:
+		NetScenarioUtil.write_json("host", {
+			"role": "host",
+			"error": "waypoints index %d out of range (0..%d)" % [_waypoints, waypoint_count - 1],
+			"exit": 1,
+		})
+		quit(1)
+		return
 	var reached: Array = [false]
 	driver.connect("waypoint_reached", func(index: int) -> void:
 		if index == _waypoints:
 			reached[0] = true)
+	# The waypoint budget derives from the route asked, not from `seconds` (r1.2).
 	var got_there: bool = await _wait_until(
-		func() -> bool: return reached[0], maxf(_seconds, 30.0))
+		func() -> bool: return reached[0], NetScenarioUtil.route_budget_s(_waypoints))
 	if not got_there:
 		NetScenarioUtil.write_json("host", {"role": "host", "error": "waypoint timeout", "exit": 1})
 		quit(1)
@@ -191,6 +205,9 @@ func _run_host() -> void:
 	bus.call("set_drive", 0.0, 0.0, 1.0)
 	print("NET host braking at waypoint %d" % _waypoints)
 	await _wait_seconds(1.5)
+	# Clients snapshot on THIS signal, after braking and settling (r1.2), not
+	# after a fixed wall-clock wait of their own.
+	backend.rpc("snapshot_now")
 	NetScenarioUtil.write_json("host", {
 		"role": "host",
 		"port": port,
@@ -252,7 +269,20 @@ func _run_client() -> void:
 	if _break != "sync":
 		NetScenarioUtil.make_sync(scene)
 	backend.rpc("mark_ready")
-	await _wait_seconds(_seconds)
+	var snapshot_got: Array = [false]
+	backend.connect("snapshot_requested", func() -> void: snapshot_got[0] = true)
+	# Bail fast if the host dies before firing snapshot_now (e.g. an invalid
+	# waypoints index): without this, clients would wait out the whole budget.
+	var host_lost: Array = [false]
+	backend.connect("server_lost", func() -> void: host_lost[0] = true)
+	var snapshot_ok: bool = await _wait_until(
+		func() -> bool: return snapshot_got[0] or host_lost[0],
+		NetScenarioUtil.route_budget_s(_waypoints) + 15.0)
+	if not snapshot_got[0]:
+		NetScenarioUtil.write_json("client_%d" % _index,
+			{"role": "client", "error": "host lost before snapshot", "exit": 1})
+		quit(1)
+		return
 	var container: Node = scene.get_node("NetMarkers")
 	var bus: Node = scene.get_node("PlaceholderBus")
 	var peers_v: Variant = backend.call("peer_ids")
@@ -327,7 +357,7 @@ func _run_launcher() -> void:
 	for index: int in range(_clients):
 		pids["client_%d" % index] = _spawn_child(exe, project_dir, "client", index)
 	print("NET launcher spawned host + %d clients (base port %d)" % [_clients, _port])
-	var deadline: int = int((_seconds + 45.0) * Engine.physics_ticks_per_second)
+	var deadline: int = int((NetScenarioUtil.route_budget_s(_waypoints) + 45.0) * Engine.physics_ticks_per_second)
 	var start: int = _ticks
 	while _ticks - start < deadline:
 		if _alive_names(pids).is_empty():
@@ -341,52 +371,8 @@ func _run_launcher() -> void:
 			OS.kill(pid)
 	_aggregate(pids, killed)
 
-
 func _aggregate(pids: Dictionary, killed: Array[String]) -> void:
-	var failures: Array[String] = []
-	var host_data: Dictionary = NetScenarioUtil.read_json(
-		NetScenarioUtil.RESULTS_DIR + "/host.json")
-	if not killed.is_empty():
-		failures.append("children_exited (killed: %s)" % ", ".join(killed))
-	var host_ok: bool = not host_data.is_empty() \
-		and NetScenarioUtil.dict_int(host_data, "exit", 1) == 0
-	if not host_ok:
-		failures.append("host_exit (host.json missing or exit != 0)")
-	var peers_v: Variant = host_data.get("peers", [])
-	var peers_count: int = 0
-	if peers_v is Array:
-		var peers_array: Array = peers_v
-		peers_count = peers_array.size()
-	if host_ok and peers_count != _clients:
-		failures.append("clients_connect (host saw %d of %d)" % [peers_count, _clients])
-	var max_pos_dev: float = 0.0
-	var max_yaw_dev: float = 0.0
-	var markers_each: Array[String] = []
-	var host_pos: Vector3 = NetScenarioUtil.array_to_vec3(host_data.get("bus_pos"))
-	var host_yaw: float = NetScenarioUtil.dict_float(host_data, "bus_yaw_deg", 0.0)
-	for index: int in range(_clients):
-		var client_data: Dictionary = NetScenarioUtil.read_json(
-			NetScenarioUtil.RESULTS_DIR + "/client_%d.json" % index)
-		if client_data.is_empty() or not NetScenarioUtil.dict_bool(client_data, "connected"):
-			failures.append("clients_connect (client_%d not connected)" % index)
-			continue
-		var markers: int = NetScenarioUtil.dict_int(client_data, "markers_received", 0)
-		markers_each.append("%d" % markers)
-		if markers != _clients + 1:
-			failures.append("markers (client_%d got %d of %d)" % [index, markers, _clients + 1])
-		var client_pos: Vector3 = NetScenarioUtil.array_to_vec3(client_data.get("bus_pos"))
-		var pos_dev: float = client_pos.distance_to(host_pos)
-		var yaw_dev: float = NetScenarioUtil.angle_diff_deg(
-			NetScenarioUtil.dict_float(client_data, "bus_yaw_deg", 0.0), host_yaw)
-		max_pos_dev = maxf(max_pos_dev, pos_dev)
-		max_yaw_dev = maxf(max_yaw_dev, yaw_dev)
-		if pos_dev > MAX_DEVIATION_M or yaw_dev > MAX_DEVIATION_DEG:
-			failures.append("convergence (client_%d: %.3f m, %.2f deg)" % [index, pos_dev, yaw_dev])
-	var port_used: int = NetScenarioUtil.dict_int(host_data, "port", -1)
-	print("NET summary port=%d pids=%s" % [port_used, str(pids.values())])
-	print("NET summary clients_connected=%d/%d markers_per_client=[%s]" % [
-		peers_count, _clients, ", ".join(markers_each)])
-	print("NET summary max_pos_dev=%.3f m max_yaw_dev=%.2f deg" % [max_pos_dev, max_yaw_dev])
+	var failures: Array[String] = NetScenarioUtil.aggregate(pids, _clients, killed)
 	if failures.is_empty():
 		print("NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence")
 		quit(0)
