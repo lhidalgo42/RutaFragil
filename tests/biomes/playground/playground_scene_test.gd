@@ -24,11 +24,13 @@ func test_scene_structure() -> void:
 	assert_bool(driver_node is DemoDriver).is_true()
 	if driver_node is DemoDriver:
 		var driver: DemoDriver = driver_node
-		assert_bool(driver.enabled).is_true()
-		assert_object(driver.bus).is_not_null()
+		# The authored default is demo_mode=false (M1-T1.1: F5 is the owner's
+		# driving seat); the demo test below enables it explicitly.
+		assert_bool(driver.enabled).is_false()
 		assert_object(driver.circuit).is_not_null()
-	var bus_node: Node = scene.get_node_or_null("PlaceholderBus")
-	assert_bool(bus_node is PlaceholderBus).is_true()
+	# The bus is found by group, never by node name (D59).
+	var bus_node: Node = scene.get_tree().get_first_node_in_group("bus")
+	assert_bool(bus_node is Bus).is_true()
 	if bus_node != null:
 		assert_bool(bus_node.is_in_group("bus")).is_true()
 	var camera_node: Node = scene.get_node_or_null("ChaseCamera")
@@ -43,13 +45,19 @@ func test_demo_reaches_three_waypoints_without_rolling_over() -> void:
 	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
 	runner.set_time_factor(4.0)
 	var scene: Node = runner.scene()
-	var bus_node: Node = scene.get_node_or_null("PlaceholderBus")
+	# demo_mode is enabled explicitly: the authored default is false (M1-T1.1).
+	# The DemoDriver and BusInput never drive at once (BusInput would write
+	# set_drive(0,0,0) over the driver's commands every tick).
+	scene.set("demo_mode", true)
+	scene.get_node("DemoDriver").set("enabled", true)
+	scene.get_node("BusInput").set("enabled", false)
+	var bus_node: Node = scene.get_tree().get_first_node_in_group("bus")
 	var driver_node: Node = scene.get_node_or_null("DemoDriver")
-	assert_bool(bus_node is PlaceholderBus).is_true()
+	assert_bool(bus_node is Bus).is_true()
 	assert_bool(driver_node is DemoDriver).is_true()
-	if not (bus_node is PlaceholderBus) or not (driver_node is DemoDriver):
+	if not (bus_node is Bus) or not (driver_node is DemoDriver):
 		return
-	var bus: PlaceholderBus = bus_node
+	var bus: Bus = bus_node
 	var driver: DemoDriver = driver_node
 	_rolled_over_count = 0
 	bus.rolled_over.connect(_on_rolled_over)

@@ -12,8 +12,12 @@ extends Node3D
 ## local physics never fights the host's MultiplayerSynchronizer.
 
 ## True hands the bus to the DemoDriver; false leaves it parked.
-@export var demo_mode: bool = true
+## demo_mode=true hands the bus to the DemoDriver (run_demo forces this).
+## demo_mode=false (the authored default since M1-T1.1) hands it to the
+## owner through BusInput: F5 is the driving gate.
+@export var demo_mode: bool = false
 @export var demo_driver: DemoDriver
+@export var bus_input: BusInput
 @export var network_role: String = "single"
 
 
@@ -25,10 +29,15 @@ func _ready() -> void:
 		push_error("Playground: demo_driver is not assigned")
 		return
 	demo_driver.enabled = demo_mode
+	if bus_input == null:
+		push_error("Playground: bus_input is not assigned")
+		return
+	bus_input.enabled = not demo_mode and network_role != "client"
 
 
 func _freeze_bus_for_client() -> void:
-	var bus_node: Node = get_node_or_null("PlaceholderBus")
+	# By group, never by node name (D59).
+	var bus_node: Node = get_tree().get_first_node_in_group("bus")
 	if bus_node is RigidBody3D:
 		var rigid: RigidBody3D = bus_node
 		rigid.freeze = true

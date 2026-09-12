@@ -1,0 +1,24 @@
+09_limits.txt — M1-T1.1
+Demuestra: escenas ≤ 60 nodos y scripts ≤ 400 líneas (R8). Fecha UTC: 2026-09-12 04:52:08 · árbol sobre c84bf14
+
+--- grep -c '^\[node' scenes/playground.tscn src/vehicle/bus.tscn src/net/net_marker.tscn ---
+scenes/playground.tscn:52
+src/vehicle/bus.tscn:8
+src/net/net_marker.tscn:1
+
+--- wc -l de los .gd nuevos/modificados de M1-T1.1 ---
+  271 src/vehicle/bus.gd
+   52 src/vehicle/bus_input.gd
+   11 src/vehicle/cabin_camera.gd
+   31 src/vehicle/chase_camera.gd
+   98 src/vehicle/demo_driver.gd
+   43 src/biomes/playground/playground.gd
+  179 src/tooling/run_demo.gd
+  387 src/tooling/run_net_scenario.gd
+  222 src/net/net_scenario_util.gd
+   77 src/core/data/tuning_table.gd
+  218 tests/vehicle/bus_test.gd
+  124 tests/vehicle/demo_driver_test.gd
+   72 tests/biomes/playground/playground_scene_test.gd
+   59 tests/net/playground_client_mode_test.gd
+ 1844 total

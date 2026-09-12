@@ -1,0 +1,12 @@
+08_no_verificado.txt — M1-T1.1 (R7: lo que esta ronda NO pudo verificar)
+Fecha UTC: 2026-09-12 04:52:08 · árbol de la ronda 1 sobre c84bf14
+
+1. LA SENSACIÓN (el gate): controlable, con peso, sin tumbarse solo — solo la juzga el dueño conduciendo 3 minutos con F5. Ningún test lo sustituye.
+2. El conmutador de cámara por TECLA (C): headless no entrega InputEvent; la conmutación se ejercitó por script (arg camera=cabin) y la tecla queda para el gate del dueño.
+3. Mando (gamepad) vía Steam Input: M4.
+4. macOS (D42): todo corrió en Windows.
+5. El campo de saltos con suspensión bajo OTRAS velocidades/entradas que la demo: la demo lo cruza (min_upright 0,97), pero el dueño puede encontrar bordes conduciendo a mano.
+6. Volcadura recuperable (volver de un vuelco con acción sincronizada): el detector existe (test lo ejercita), la recuperación es M3.
+7. La desviación 0–60 (6,93 s medidos frente a ~5 s de §4.5): medida y registrada; si es un problema de feel lo decide el dueño (BACKLOG).
+8. Comportamiento de la suspensión con mods que cambien mucho masa/rigidez: no se barrió el espacio de parámetros.
+9. La captura con ventana usa el renderer D3D12 de esta máquina; en la Mac (Metal) el aspecto puede variar ligeramente.

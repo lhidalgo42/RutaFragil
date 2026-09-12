@@ -148,8 +148,13 @@ static func spawn_marker(container: Node, marker_scene: PackedScene, owner_peer_
 	container.add_child(marker, true)
 
 
+## The bus is found by group, never by node name (D59).
+static func find_bus(scene: Node) -> Node:
+	return scene.get_tree().get_first_node_in_group("bus")
+
+
 static func make_sync(scene: Node) -> void:
-	var bus: Node = scene.get_node("PlaceholderBus")
+	var bus: Node = find_bus(scene)
 	var sync: MultiplayerSynchronizer = MultiplayerSynchronizer.new()
 	sync.name = "NetSync"
 	bus.add_child(sync)

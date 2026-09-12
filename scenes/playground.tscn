@@ -5,7 +5,8 @@
 [ext_resource type="Script" path="res://src/biomes/playground/water_zone.gd" id="3_water"]
 [ext_resource type="Script" path="res://src/vehicle/demo_driver.gd" id="4_driver"]
 [ext_resource type="Script" path="res://src/vehicle/chase_camera.gd" id="5_camera"]
-[ext_resource type="PackedScene" path="res://src/vehicle/placeholder_bus.tscn" id="6_bus"]
+[ext_resource type="PackedScene" path="res://src/vehicle/bus.tscn" id="6_bus"]
+[ext_resource type="Script" path="res://src/vehicle/bus_input.gd" id="7_input"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
 albedo_color = Color(0.45, 0.5, 0.42, 1)
@@ -71,10 +72,11 @@ sky_material = SubResource("ProceduralSkyMaterial_sky")
 background_mode = 2
 sky = SubResource("Sky_sky")
 
-[node name="Playground" type="Node3D" node_paths=["demo_driver"]]
+[node name="Playground" type="Node3D" node_paths=["demo_driver", "bus_input"]]
 script = ExtResource("1_playground")
-demo_mode = true
+demo_mode = false
 demo_driver = NodePath("DemoDriver")
+bus_input = NodePath("BusInput")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 position = Vector3(0, -0.5, 0)
@@ -226,19 +228,21 @@ position = Vector3(-24, 1.2, 38)
 [node name="WP16" type="Marker3D" parent="Circuit"]
 position = Vector3(-30, 1.2, 31)
 
-[node name="PlaceholderBus" parent="." instance=ExtResource("6_bus")]
+[node name="Bus" parent="." instance=ExtResource("6_bus")]
 position = Vector3(-30, 1.2, 34)
 
-[node name="DemoDriver" type="Node" parent="." node_paths=["bus", "circuit"]]
+[node name="DemoDriver" type="Node" parent="." node_paths=["circuit"]]
 script = ExtResource("4_driver")
-bus = NodePath("../PlaceholderBus")
 circuit = NodePath("../Circuit")
 reach_radius_m = 7.0
 
 [node name="ChaseCamera" type="Camera3D" parent="." node_paths=["target"]]
 script = ExtResource("5_camera")
-target = NodePath("../PlaceholderBus")
+target = NodePath("../Bus")
 current = true
+
+[node name="BusInput" type="Node" parent="."]
+script = ExtResource("7_input")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 rotation = Vector3(-0.9, 0.6, 0)

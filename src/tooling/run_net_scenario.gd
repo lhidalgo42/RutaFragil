@@ -112,6 +112,10 @@ func _instantiate_scene(role: String) -> Node:
 	var packed_scene: PackedScene = packed
 	var scene: Node = packed_scene.instantiate()
 	scene.set("network_role", role)
+	# The authored default is demo_mode=false (M1-T1.1: F5 is the owner's
+	# seat); the host of the net scenario drives the demo (D55).
+	if role == "host":
+		scene.set("demo_mode", true)
 	root.add_child(scene)
 	return scene
 
@@ -175,7 +179,7 @@ func _run_host() -> void:
 	print("NET host markers_spawned=%d" % marker_ids.size())
 	NetScenarioUtil.make_sync(scene)
 	var driver: Node = scene.get_node("DemoDriver")
-	var bus: Node = scene.get_node("PlaceholderBus")
+	var bus: Node = NetScenarioUtil.find_bus(scene)
 	# `waypoints` is the INDEX to stop at (0-based; r1.2 off-by-one fix).
 	var circuit: Node = scene.get_node("Circuit")
 	var count_v: Variant = circuit.call("waypoint_count")
@@ -284,7 +288,7 @@ func _run_client() -> void:
 		quit(1)
 		return
 	var container: Node = scene.get_node("NetMarkers")
-	var bus: Node = scene.get_node("PlaceholderBus")
+	var bus: Node = NetScenarioUtil.find_bus(scene)
 	var peers_v: Variant = backend.call("peer_ids")
 	var peers_left: int = 0
 	if peers_v is PackedInt32Array:

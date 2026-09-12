@@ -124,6 +124,14 @@ bash tools/run_net_tests.sh                                        # macOS / Lin
 
 Opciones del guion (tras `++`): `port=` (defecto 47810, con 4 alternativas), `clients=` (3), `seconds=` (30), `waypoints=` (índice en el que parar, 0-based: 2 por defecto, **16 = vuelta completa**; el presupuesto de tiempo se deriva de la ruta pedida). Los procesos hijos reportan por archivo (`user://netscenario/*.json`) y por su propio `--log-file` (`user://netlogs/`), nunca por stdout. Tras una corrida no debe quedar ningún proceso Godot vivo; el lanzador mata supervivientes y todo corre bajo `timeout` externo.
 
+## Conducir el bus (M1-T1.1)
+
+El bus con suspensión por raycast (ADR-007) es la escena principal: abre el proyecto y pulsa F5 — quedas al volante (desde M1-T1.1 el modo por defecto de la escena es conducir; la demo automática sigue con `run_demo`, que fuerza `demo_mode`).
+
+Teclas (D62, sección `[input]` de `project.godot`): **W** acelerar · **S** frenar/marcha atrás · **A/D** girar · **Espacio** freno de mano (derrapa: §4.5) · **C** alternar cámara cabina/persecución.
+
+**Ajustar la sensación sin recompilar** (D61, para lo que se construyó T0.2): edita `data/tuning.json` (grupo `bus_*`, valores en `docs/datos/esquema_v1.md`) y recarga — con el juego en marcha basta llamar a `GameConfig.reload()` desde el depurador o editar antes de arrancar. El `.tres` se regenera con `import_data_mirror.gd` (ver "Datos y mods"), nunca a mano ni desde el Inspector.
+
 ## Mapa de carpetas (§20)
 
 ```

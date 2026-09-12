@@ -11,6 +11,12 @@ extends Camera3D
 @export var smoothing: float = 4.0
 
 
+func _ready() -> void:
+	# Group lookup rule (D59/D63): BusInput and the tools find the cameras by
+	# group, never by node name.
+	add_to_group("chase_camera")
+
+
 func _process(delta: float) -> void:
 	if target == null:
 		return

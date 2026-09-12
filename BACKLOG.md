@@ -101,6 +101,15 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **macOS:** la corrida del arnés de red en la Mac queda para la sesión obligatoria antes del gate M4 (D42); el guion es GDScript puro y no debería requerir cambios.
 - **Límite ENet de conexión acotado en `join_game` (3000–5000 ms):** si M4 necesita tolerar redes más lentas que una LAN, revisar el `set_timeout` del backend.
 
+## Pendientes propios de la ejecución de M1-T1.1
+
+- **Proponer al dueño:** llevar los doce parámetros de sensación del bus (D61) a §8.1 del maestro (hoy su origen figura como "§4.5 / ADR-007" en el esquema).
+- **Volcadura recuperable con acción sincronizada** (§4.5): necesita el sistema de acciones cooperativas — M3.
+- **Mando (gamepad)** vía Steam Input: M4 (D62 es teclado).
+- **La desviación 0–60 medida:** objetivo §4.5 ~5 s, medido 6,93 s (pérdidas del modelo por fuerzas, ver evidencia 05 de M1-T1.1). Si el dueño lo nota en su gate, el ajuste es el campo `bus_accel_0_60_kmh_s` o una eficiencia de tracción en el modelo.
+- **Herramienta de medición permanente:** la sonda de medidas del paso 6 era temporal y se borró; si el dueño va a tunear seguido, convertirla en `src/tooling/` permanente (nueva tarea o ADR).
+- **`run_demo` con `camera=cabin|chase`:** arg nuevo documentado en README; útil para capturas.
+
 ## Cerrados en la ronda 2 de M0-T0.3
 
 - **El impulso de escalón (climb hop) del bus placeholder, eliminado** (revisión 01, r1.1). Lo medido desmiente la descripción de la ronda 1 ("ayuda a subir los baches"): la sonda del revisor midió **cero impulsos dentro del campo de baches** y **uno por vuelta en la esquina de aproximación** (t=24,6 s, (36,1 · 1,13 · −14,2)). La causa real era de trazado: el bus salía del tramo WP9→WP10 hasta 6 m fuera de la línea x = 30, entraba oblicuo a la fila y se clavaba contra la esquina del primer bache; el impulso lo rescataba y reiniciaba el contador de `stuck`, anulando el detector que la propia tarea entregaba. Arreglo: WP8 movido a la línea x = 30, waypoint de aproximación antes del campo, salida norte re-encaminada y campo de baches rehecho (ver entrada siguiente) de modo que no exista cara vertical de ataque. Borrados `_update_climb_hop` y sus tres `@export` (`climb_hop_up_speed`, `climb_hop_fwd_speed`, `climb_wedge_seconds`) junto con `_wedge_time_s` y `_has_moved`; la vuelta se completa sin ningún rescate y un atasco provocado sigue produciendo `stuck` (bus congelado en la demo; pared infranqueable en `test_stuck_emitted_against_unclimbable_wall`). **Nota para el cierre:** D50 en `DECISIONS.md` describe aún el campo viejo (6 baches × 0,15 m cada 3 m) y la ficción del hop; actualizarla al fusionar la ronda 2.

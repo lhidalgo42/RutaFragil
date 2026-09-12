@@ -117,6 +117,18 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 | `bus_integrity_max_loss_per_contract` | `int` | puntos/contrato | 5 | "Desgaste −5 al máximo por contrato" |
 | `bus_max_speed_kmh` | `float` | km/h | 90.0 | §4.5 del maestro |
 | `bus_accel_0_60_kmh_s` | `float` | s | 5.0 | §4.5 del maestro |
+| `bus_wheelbase_m` | `float` | m | 5.5 | §4.5 / ADR-007 (M1-T1.1, valor de partida a ajustar midiendo) |
+| `bus_track_width_m` | `float` | m | 2.2 | ADR-007 (M1-T1.1) |
+| `bus_wheel_radius_m` | `float` | m | 0.5 | ADR-007 (M1-T1.1) |
+| `bus_suspension_rest_m` | `float` | m | 0.6 | ADR-007 (M1-T1.1) |
+| `bus_suspension_stiffness_n_per_m` | `float` | N/m | 60000.0 | ADR-007 (M1-T1.1) |
+| `bus_suspension_damping_ns_per_m` | `float` | N·s/m | 6000.0 | ADR-007 (M1-T1.1) |
+| `bus_grip_lateral` | `float` | 1/s | 10.0 | §4.5 "arcade con peso" (M1-T1.1) |
+| `bus_grip_lateral_handbrake` | `float` | 1/s | 1.5 | §4.5 "freno de mano derrapante" (M1-T1.1) |
+| `bus_brake_force_n` | `float` | N | 40000.0 | §4.5 (M1-T1.1) |
+| `bus_steer_max_deg` | `float` | grados | 30.0 | §4.5 (M1-T1.1) |
+| `bus_steer_speed_falloff` | `float` | fracción | 0.6 | §4.5 (M1-T1.1) |
+| `bus_center_of_mass_y_m` | `float` | m | -0.6 | ADR-007 (M1-T1.1; negativo = bajo el origen) |
 
 `bus_integrity_max_loss_per_contract` es una **magnitud positiva que se resta** de `bus_integrity_max` por cada contrato (§8.1: "−5 al máximo por contrato"): con el valor v0, la integridad máxima pasa de 100 a 95 tras el primer contrato.
 
