@@ -110,3 +110,118 @@ fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
 10fc84cc8a * docs/evidencia/M0-T0.3/05_playground.png
 
 Sección post-commit capturada tras el commit de código, en un commit de docs aparte.
+
+=== POST-COMMIT (parte 2) ===
+Fecha UTC: 2026-09-12 05:03:04 · rama m1/t1.1-bus · HEAD 301319b
+
+--- git log --oneline main..HEAD ---
+301319b feat: raycast-suspension Bus with cabin/chase cameras, driving input, data-driven feel (M1-T1.1)
+c84bf14 fix: client abandonment JSON carries connected flag (M0-T0.4 r2.1, via M1-T1.1 step 0b)
+ce0c38f docs: plan and round-1 prompt (M1-T1.1)
+
+--- git status --short ---
+?? docs/evidencia/M1-T1.1/02_run_tests.txt
+(vacío = árbol limpio)
+
+--- git diff --stat main..HEAD ---
+ BACKLOG.md                                       |   9 +
+ DECISIONS.md                                     |   9 +-
+ README.md                                        |   8 +
+ data/tuning.json                                 |  12 +
+ data/tuning.tres                                 |  12 +
+ docs/datos/esquema_v1.md                         |  12 +
+ docs/evidencia/M1-T1.1/01_versions.txt           |  14 ++
+ docs/evidencia/M1-T1.1/03_demo_regression.txt    |  32 +++
+ docs/evidencia/M1-T1.1/04_net_regression.txt     |  20 ++
+ docs/evidencia/M1-T1.1/05_handling.txt           |  29 +++
+ docs/evidencia/M1-T1.1/06_windowed.txt           |  14 ++
+ docs/evidencia/M1-T1.1/06_windowed_cabin.png     |   3 +
+ docs/evidencia/M1-T1.1/06_windowed_chase.png     |   3 +
+ docs/evidencia/M1-T1.1/07_git.txt                | 112 ++++++++++
+ docs/evidencia/M1-T1.1/08_no_verificado.txt      |  12 +
+ docs/evidencia/M1-T1.1/09_limits.txt             |  24 ++
+ docs/planes/M1-T1.1_plan.md                      | 109 +++++++++
+ docs/planes/M1-T1.1_ronda1_prompt.md             |  34 +++
+ project.godot                                    |  27 +++
+ scenes/playground.tscn                           |  18 +-
+ src/biomes/playground/playground.gd              |  13 +-
+ src/core/data/tuning_table.gd                    |  12 +
+ src/net/net_scenario_util.gd                     |   7 +-
+ src/tooling/run_demo.gd                          |  22 +-
+ src/tooling/run_net_scenario.gd                  |  10 +-
+ src/vehicle/bus.gd                               | 271 +++++++++++++++++++++++
+ src/vehicle/bus.gd.uid                           |   1 +
+ src/vehicle/bus.tscn                             |  38 ++++
+ src/vehicle/bus_input.gd                         |  52 +++++
+ src/vehicle/bus_input.gd.uid                     |   1 +
+ src/vehicle/cabin_camera.gd                      |  11 +
+ src/vehicle/cabin_camera.gd.uid                  |   1 +
+ src/vehicle/chase_camera.gd                      |   6 +
+ src/vehicle/demo_driver.gd                       |  14 +-
+ src/vehicle/placeholder_bus.gd                   | 118 ----------
+ src/vehicle/placeholder_bus.gd.uid               |   1 -
+ src/vehicle/placeholder_bus.tscn                 |  28 ---
+ tests/biomes/playground/playground_scene_test.gd |  24 +-
+ tests/net/playground_client_mode_test.gd         |  22 +-
+ tests/vehicle/bus_test.gd                        | 218 ++++++++++++++++++
+ tests/vehicle/bus_test.gd.uid                    |   1 +
+ tests/vehicle/demo_driver_test.gd                |  26 +--
+ tests/vehicle/placeholder_bus_test.gd            | 128 -----------
+ tests/vehicle/placeholder_bus_test.gd.uid        |   1 -
+ 44 files changed, 1221 insertions(+), 318 deletions(-)
+
+--- git diff main..HEAD -- project.godot ---
+diff --git a/project.godot b/project.godot
+index df25332..12917c2 100644
+--- a/project.godot
++++ b/project.godot
+@@ -42,6 +42,33 @@ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+ 
+ settings/test/test_lookup_folder="tests"
+ 
++[input]
++
++drive_accelerate={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)]
++}
++drive_brake={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)]
++}
++drive_steer_left={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)]
++}
++drive_steer_right={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":68,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)]
++}
++drive_handbrake={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)]
++}
++toggle_camera={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":67,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)]
++}
++
+ [physics]
+ 
+ 3d/physics_engine="Jolt Physics"
+
+--- git lfs ls-files ---
+e709c40067 * addons/gdUnit4/src/core/assets/touch-button.png
+ed176306a0 * addons/gdUnit4/src/reporters/html/template/css/logo.png
+ed176306a0 * addons/gdUnit4/src/ui/settings/logo.png
+37a4070934 * addons/gdUnit4/src/update/assets/border_bottom.png
+ca6f5d7f59 * addons/gdUnit4/src/update/assets/border_top.png
+f37474a8d5 * addons/gdUnit4/src/update/assets/dot1.png
+c12758bd1b * addons/gdUnit4/src/update/assets/dot2.png
+08cead78bb * addons/gdUnit4/src/update/assets/embedded.png
+fb01fb89e6 * addons/gdUnit4/src/update/assets/horizontal-line2.png
+10fc84cc8a * docs/evidencia/M0-T0.3/05_playground.png
+67324caf55 * docs/evidencia/M1-T1.1/06_windowed_cabin.png
+2f00066264 * docs/evidencia/M1-T1.1/06_windowed_chase.png
+
+Cierre: el diff de project.godot contra main muestra solo la sección [input] (D62); la sonda unsafe_*=2 quedó revertida (02); esta sección se captura antes de escribirse, así que no se lista a sí misma.
