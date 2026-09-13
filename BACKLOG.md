@@ -123,6 +123,10 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **Los escalones de la puerta** no alcanzan el suelo (dos risers de 0,25 desde el piso; el suelo queda más bajo con la suspensión cargada): cuando T2.2 haga el abordaje, decidir si hace falta un tercer escalón o escalón plegable.
 - **Arte/ventanas reales del bus** (el parabrisas es un hueco greybox): M8.
 
+## Pendientes propios de la ejecución de M2-T2.2
+
+- **DECISIÓN DEL DUEÑO (planteada por r1.1 de T1.1, sin resolver):** §4.5 del maestro dice que el bus hace 0–60 km/h en unos 5 s; el juego hace 6,93 s y el campo de tuning ya no miente (es fuerza, `bus_traction_force_n`). Decidir: (a) aceptar 6,93 s y corregir §4.5 del maestro, o (b) dejar pendiente calibrar la tracción para acercarse a 5 s (cambia la sensación que el gate ya aprobó). No bloquea M2.
+
 ## Cerrados en M2-T2.1 (paso 0)
 
 - **r1.1 de T1.1 (el campo de aceleración mentía):** `bus_accel_0_60_kmh_s` renombrado a `bus_traction_force_n` (10 000 N) — el nombre dice ahora lo que el código aplica; el 0–60 real medido (6,93 s) queda anotado en el esquema. Se eligió renombrar y no calibrar porque el gate del dueño aprobó la sensación con la aceleración actual; cumplir el nombre acelerando más habría cambiado lo aprobado.
