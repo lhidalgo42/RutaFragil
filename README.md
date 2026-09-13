@@ -128,7 +128,9 @@ Opciones del guion (tras `++`): `port=` (defecto 47810, con 4 alternativas), `cl
 
 El bus con suspensión por raycast (ADR-007) es la escena principal: abre el proyecto y pulsa F5 — quedas al volante (desde M1-T1.1 el modo por defecto de la escena es conducir; la demo automática sigue con `run_demo`, que fuerza `demo_mode`).
 
-Teclas (D62, sección `[input]` de `project.godot`): **W** acelerar · **S** frenar/marcha atrás · **A/D** girar · **Espacio** freno de mano (derrapa: §4.5) · **C** alternar cámara cabina/persecución.
+Teclas (D62, sección `[input]` de `project.godot`): **W** acelerar · **S** frenar/marcha atrás · **A/D** girar · **Espacio** freno de mano (derrapa: §4.5) · **C** alternar cámara cabina/persecución · **F1** entrega el bus a la demo automática (y lo devuelve) sin consola (D71).
+
+El interior greybox (M2-T2.1, `src/vehicle/bus_interior.tscn`) sigue §4.3 y D67: caja útil 2,30 × 7,60 × 2,05 m libres, pasillo central de 1,20 m, seis posiciones útiles marcadas (`driver`, `copilot`, `bench`, `shelf_left`, `shelf_right`, `stretcher`), doce anclajes de carga en ambos muros, puerta lateral de 0,90 m con dos escalones y puertas traseras dobles. Sin personaje todavía: caminar y el abordaje son T2.2.
 
 **Ajustar la sensación sin recompilar** (D61, para lo que se construyó T0.2): edita `data/tuning.json` (grupo `bus_*`, valores en `docs/datos/esquema_v1.md`) y recarga — con el juego en marcha basta llamar a `GameConfig.reload()` desde el depurador o editar antes de arrancar. El `.tres` se regenera con `import_data_mirror.gd` (ver "Datos y mods"), nunca a mano ni desde el Inspector.
 

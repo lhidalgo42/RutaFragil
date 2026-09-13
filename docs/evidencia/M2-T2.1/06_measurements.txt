@@ -1,0 +1,23 @@
+06_measurements.txt — M2-T2.1
+Demuestra: el ancho libre del pasillo y la altura libre se MIDEN sobre las formas de colisión (raycast), no se declaran. Lo corre el test test_corridor_width_and_free_height_measured_on_the_shapes; este es su resultado en el JUnit del arnés.
+Árbol de la ronda 1 sobre d8c2839. Fecha UTC: 2026-09-13 01:58:13
+
+Nominal (D67): pasillo libre ≥ 1,20 m (2,30 - 2×0,55 de estanterías); altura libre ≥ 2,05 m (piso -0,45 → techo 1,60).
+
+Medido por el test (verde en las tres corridas del arnés de la evidencia 02):
+- Pasillo: rayos laterales desde el centro del pasillo a las caras de las estanterías → ancho ≥ 1,20 m (2,30 − 2×0,55).
+- Altura libre: rayo vertical del piso al techo → 2,05 m (épsilon de float32 documentado en el test).
+
+Extracto del results.xml de la corrida 1 (la suite bus_interior_test completa):
+	<testsuite id="14" name="bus_interior_test" package="tests/vehicle" timestamp="2026-09-13T01:52:12" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="12.604">
+		<testcase name="test_interior_loads_on_the_bus_and_shapes_attach_to_the_body" classname="bus_interior_test" time="2.524">
+		</testcase>
+		<testcase name="test_six_positions_exist_with_exact_names" classname="bus_interior_test" time="2.506">
+		</testcase>
+		<testcase name="test_restraints_exist_six_per_wall" classname="bus_interior_test" time="2.515">
+		</testcase>
+		<testcase name="test_corridor_width_and_free_height_measured_on_the_shapes" classname="bus_interior_test" time="2.513">
+		</testcase>
+		<testcase name="test_bus_with_interior_settles_at_rest_height" classname="bus_interior_test" time="2.499">
+		</testcase>
+	</testsuite>

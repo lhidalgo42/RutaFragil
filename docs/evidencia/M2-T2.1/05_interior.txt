@@ -1,0 +1,13 @@
+05_interior.txt — M2-T2.1
+Demuestra: el interior desde dentro (cámara de cabina) y desde fuera (persecución), con ventana.
+Árbol de la ronda 1 sobre d8c2839. Fecha UTC: 2026-09-13 01:57:33
+
+Comando cabina: timeout 120 "$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ seconds=8 screenshot=user://t21_cabin.png screenshot_at=3 camera=cabin
+  → 05_interior_cabin.png: vista del conductor — la banda del salpicadero abajo, el parabrisas abierto con la rampa por delante, el muro derecho al costado. (La primera captura, sin parabrisas, mostraba un muro: por eso D67 registra el parabrisas abierto sobre el salpicadero.)
+Comando exterior: el mismo sin camera=cabin
+  → 05_interior_chase.png: el bus (más alto, con el techo del interior visible) sobre la rampa, el agua al fondo.
+Códigos de salida: 1 por timeout con seconds=8 < vuelta (esperado por diseño de run_demo).
+
+--- git lfs ls-files (las dos capturas como punteros LFS) ---
+71014a60aa * docs/evidencia/M2-T2.1/05_interior_cabin.png
+2d79b9cff1 * docs/evidencia/M2-T2.1/05_interior_chase.png

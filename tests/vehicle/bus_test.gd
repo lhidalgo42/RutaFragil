@@ -85,7 +85,9 @@ func test_bus_accelerates_straight() -> void:
 	var travel: Vector3 = bus.global_position - start
 	assert_float(travel.z).is_less(-10.0)
 	assert_float(absf(travel.x)).is_less(1.0)
-	assert_float(bus.speed_mps() * 3.6).is_greater(36.0)
+	# 34 km/h at 4 s, not a spec readout: the interior's added inertia changes
+	# the first second slightly (the 0-60 figure is the one T1.1 pinned).
+	assert_float(bus.speed_mps() * 3.6).is_greater(34.0)
 
 
 func test_bus_brakes_and_loses_most_of_its_speed() -> void:

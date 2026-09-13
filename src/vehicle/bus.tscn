@@ -1,23 +1,25 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://src/vehicle/bus.gd" id="1_bus"]
 [ext_resource type="Script" path="res://src/vehicle/cabin_camera.gd" id="2_cabin"]
+[ext_resource type="PackedScene" path="res://src/vehicle/bus_interior.tscn" id="3_interior"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_body"]
-size = Vector3(2.5, 2.2, 8.0)
+size = Vector3(2.5, 3.0, 8.0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_body"]
-size = Vector3(2.5, 2.2, 8.0)
+size = Vector3(2.5, 3.0, 8.0)
 
 [node name="Bus" type="RigidBody3D" groups=["bus"]]
 script = ExtResource("1_bus")
+can_sleep = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-position = Vector3(0, 0.3, 0)
+position = Vector3(0, 0.7, 0)
 shape = SubResource("BoxShape3D_body")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-position = Vector3(0, 0.3, 0)
+position = Vector3(0, 0.7, 0)
 mesh = SubResource("BoxMesh_body")
 
 [node name="WheelFL" type="Marker3D" parent="."]
@@ -32,7 +34,9 @@ position = Vector3(-1.1, 0, 2.75)
 [node name="WheelRR" type="Marker3D" parent="."]
 position = Vector3(1.1, 0, 2.75)
 
+[node name="BusInterior" parent="." instance=ExtResource("3_interior")]
+
 [node name="CabinCamera" type="Camera3D" parent="."]
-position = Vector3(0.6, 2.1, -2.2)
+position = Vector3(0.6, 0.9, -2.9)
 script = ExtResource("2_cabin")
 current = false

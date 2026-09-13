@@ -1,0 +1,123 @@
+07_git.txt — M2-T2.1
+PRE-COMMIT de la ronda 1. Fecha UTC: 2026-09-13 01:58:40 · HEAD base d8c2839.
+
+--- git log --oneline main..HEAD ---
+d8c2839 feat: F1 toggles the auto demo at runtime, F5 stays the driver's seat (T1.1 r1.2, D71)
+8352308 fix: rename bus_accel_0_60_kmh_s to bus_traction_force_n — the field now names the force it applies (T1.1 r1.1)
+9b9d25f chore: accept editor normalization of [input]
+105bb66 docs: plan and round-1 prompt (M2-T2.1)
+0b01f8d docs: evidence 02 (harness x3 + unsafe probe) and 07 post-commit (M1-T1.1)
+301319b feat: raycast-suspension Bus with cabin/chase cameras, driving input, data-driven feel (M1-T1.1)
+c84bf14 fix: client abandonment JSON carries connected flag (M0-T0.4 r2.1, via M1-T1.1 step 0b)
+ce0c38f docs: plan and round-1 prompt (M1-T1.1)
+
+--- git status --short ---
+ M BACKLOG.md
+ M DECISIONS.md
+ M README.md
+A  docs/evidencia/M2-T2.1/05_interior_cabin.png
+A  docs/evidencia/M2-T2.1/05_interior_chase.png
+ M scenes/playground.tscn
+ M src/vehicle/bus.tscn
+ M tests/vehicle/bus_test.gd
+?? docs/evidencia/M2-T2.1/01_versions.txt
+?? docs/evidencia/M2-T2.1/02_run_tests.txt
+?? docs/evidencia/M2-T2.1/03_handling_regression.txt
+?? docs/evidencia/M2-T2.1/04_demo_net_regression.txt
+?? docs/evidencia/M2-T2.1/05_interior.txt
+?? docs/evidencia/M2-T2.1/06_measurements.txt
+?? docs/evidencia/M2-T2.1/07_git.txt
+?? docs/evidencia/M2-T2.1/08_no_verificado.txt
+?? docs/evidencia/M2-T2.1/09_limits.txt
+?? src/tooling/probe_handling.gd
+?? src/tooling/probe_handling.gd.uid
+?? src/vehicle/bus_interior.gd
+?? src/vehicle/bus_interior.gd.uid
+?? src/vehicle/bus_interior.tscn
+?? tests/vehicle/bus_interior_test.gd
+?? tests/vehicle/bus_interior_test.gd.uid
+
+--- git diff --stat main..HEAD ---
+ BACKLOG.md                                       |   12 +
+ DECISIONS.md                                     |   10 +-
+ README.md                                        |    8 +
+ data/tuning.json                                 |   14 +-
+ data/tuning.tres                                 |   14 +-
+ docs/datos/esquema_v1.md                         |   14 +-
+ docs/evidencia/M1-T1.1/01_versions.txt           |   14 +
+ docs/evidencia/M1-T1.1/02_run_tests.txt          | 2945 ++++++++++++++++++++++
+ docs/evidencia/M1-T1.1/03_demo_regression.txt    |   32 +
+ docs/evidencia/M1-T1.1/04_net_regression.txt     |   20 +
+ docs/evidencia/M1-T1.1/05_handling.txt           |   29 +
+ docs/evidencia/M1-T1.1/06_windowed.txt           |   14 +
+ docs/evidencia/M1-T1.1/06_windowed_cabin.png     |    3 +
+ docs/evidencia/M1-T1.1/06_windowed_chase.png     |    3 +
+ docs/evidencia/M1-T1.1/07_git.txt                |  227 ++
+ docs/evidencia/M1-T1.1/08_no_verificado.txt      |   12 +
+ docs/evidencia/M1-T1.1/09_limits.txt             |   24 +
+ docs/planes/M1-T1.1_plan.md                      |  109 +
+ docs/planes/M1-T1.1_ronda1_prompt.md             |   34 +
+ docs/planes/M2-T2.1_plan.md                      |  102 +
+ docs/planes/M2-T2.1_ronda1_prompt.md             |   32 +
+ docs/revisiones/M1-T1.1_revision_01.md           |   73 +
+ project.godot                                    |   39 +
+ scenes/playground.tscn                           |   18 +-
+ src/biomes/playground/playground.gd              |   25 +-
+ src/core/data/tuning_table.gd                    |   14 +-
+ src/net/net_scenario_util.gd                     |    7 +-
+ src/tooling/run_demo.gd                          |   22 +-
+ src/tooling/run_net_scenario.gd                  |   10 +-
+ src/vehicle/bus.gd                               |  271 ++
+ src/vehicle/bus.gd.uid                           |    1 +
+ src/vehicle/bus.tscn                             |   38 +
+ src/vehicle/bus_input.gd                         |   52 +
+ src/vehicle/bus_input.gd.uid                     |    1 +
+ src/vehicle/cabin_camera.gd                      |   11 +
+ src/vehicle/cabin_camera.gd.uid                  |    1 +
+ src/vehicle/chase_camera.gd                      |    6 +
+ src/vehicle/demo_driver.gd                       |   14 +-
+ src/vehicle/placeholder_bus.gd                   |  118 -
+ src/vehicle/placeholder_bus.gd.uid               |    1 -
+ src/vehicle/placeholder_bus.tscn                 |   28 -
+ tests/biomes/playground/playground_scene_test.gd |   24 +-
+ tests/net/playground_client_mode_test.gd         |   22 +-
+ tests/vehicle/bus_test.gd                        |  218 ++
+ tests/vehicle/bus_test.gd.uid                    |    1 +
+ tests/vehicle/demo_driver_test.gd                |   26 +-
+ tests/vehicle/placeholder_bus_test.gd            |  128 -
+ tests/vehicle/placeholder_bus_test.gd.uid        |    1 -
+ 48 files changed, 4520 insertions(+), 322 deletions(-)
+
+--- git diff main -- project.godot (árbol vs main) ---
+diff --git a/project.godot b/project.godot
+index df25332..f8b3e71 100644
+--- a/project.godot
++++ b/project.godot
+@@ -42,6 +42,45 @@ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+ 
+ settings/test/test_lookup_folder="tests"
+ 
++[input]
++
++toggle_demo={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194332,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
++]
++}
++
++drive_accelerate={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
++]
++}
++drive_brake={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
++]
++}
++drive_steer_left={
++"deadzone": 0.2,
++"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
++]
+
+Sección post-commit capturada tras el commit de código, en un commit de docs aparte.

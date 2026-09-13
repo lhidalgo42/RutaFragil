@@ -1,0 +1,22 @@
+04_demo_net_regression.txt — M2-T2.1
+Demuestra: run_demo en vuelta completa con el interior, y el guion de red en ruta corta y larga.
+Árbol de la ronda 1 sobre d8c2839. Fecha UTC: 2026-09-13 01:57:32
+
+=== run_demo (dos corridas, idénticas): timeout 120 "$GODOT_BIN" --headless --fixed-fps 60 --path . -s res://src/tooling/run_demo.gd ===
+DEMO result=lap_completed t=29.4s waypoints=17 max_speed_kmh=56.5 min_upright=0.98
+DEMO result=lap_completed t=29.4s waypoints=17 max_speed_kmh=56.5 min_upright=0.98
+(ambas exit 0; la vuelta es 29,4 s frente a los 23,0 s de T1.1 por el bus más alto/pesado arriba — dentro del gate de regresión: completa, sin volcar)
+
+=== Red, ruta corta: bash tools/run_net_tests.sh (exit 0) ===
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[43740, 25248, 47364, 44620]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+=== Red, ruta larga: timeout 400 ... run_net_scenario.gd ++ role=launcher ++ waypoints=16 (exit 0) ===
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[37884, 38840, 45040, 22576]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
