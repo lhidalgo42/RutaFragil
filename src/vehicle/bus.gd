@@ -35,7 +35,7 @@ var _grip_handbrake: float = 0.0
 var _brake_force: float = 0.0
 var _steer_max_deg: float = 0.0
 var _steer_falloff: float = 0.0
-var _accel_mps2: float = 0.0
+var _traction_force_n: float = 0.0
 var _max_speed_mps: float = 0.0
 
 var _prev_distances: Dictionary = {}
@@ -70,10 +70,10 @@ static func steer_angle_deg_for(speed_mps: float, steer_input: float, steer_max_
 	return steer_max_deg * clampf(steer_input, -1.0, 1.0) * speed_factor
 
 
-static func traction_force_per_wheel(throttle: float, mass_kg: float, accel_mps2: float, wheel_count: int) -> float:
+static func traction_force_per_wheel(throttle: float, traction_force_n: float, wheel_count: int) -> float:
 	if wheel_count <= 0:
 		return 0.0
-	return mass_kg * accel_mps2 * clampf(throttle, -1.0, 1.0) / float(wheel_count)
+	return traction_force_n * clampf(throttle, -1.0, 1.0) / float(wheel_count)
 
 
 func set_drive(throttle: float, steer: float, brake: float) -> void:
@@ -197,7 +197,7 @@ func _apply_drive_forces(wheel: Marker3D, fwd: Vector3, offset: Vector3, point_v
 	# Traction along the chassis forward, only with the wheel touching and
 	# below the speed cap; the handbrake cuts it (D64).
 	if drive_throttle != 0.0 and not handbrake_on and speed_mps() < _max_speed_mps:
-		var traction: float = traction_force_per_wheel(drive_throttle, mass, _accel_mps2, 4)
+		var traction: float = traction_force_per_wheel(drive_throttle, _traction_force_n, 4)
 		apply_force(fwd * traction, offset)
 	# Braking opposes the longitudinal motion at the wheel, clamped so it can
 	# never reverse the travel direction within one tick.
@@ -226,7 +226,7 @@ func _apply_tuning() -> void:
 	if tuning == null:
 		# The authored 1 kg mass stays so the misconfiguration stays visible.
 		push_error("Bus: GameConfig.tuning is null; keeping authored mass and zero drive")
-		_accel_mps2 = 0.0
+		_traction_force_n = 0.0
 		_max_speed_mps = 0.0
 		return
 	mass = float(maxi(tuning.bus_mass_kg, 1))
@@ -241,10 +241,10 @@ func _apply_tuning() -> void:
 	_brake_force = tuning.bus_brake_force_n
 	_steer_max_deg = tuning.bus_steer_max_deg
 	_steer_falloff = tuning.bus_steer_speed_falloff
-	if tuning.bus_accel_0_60_kmh_s > 0.0:
-		_accel_mps2 = (60.0 / 3.6) / tuning.bus_accel_0_60_kmh_s
-	else:
-		_accel_mps2 = 0.0
+	# The traction data is a FORCE in newtons (r1.1 of T1.1: the old field
+	# named an ideal 0-60 time that losses never delivered; the real measured
+	# 0-60 is 6.93 s, the feel approved at the gate).
+	_traction_force_n = tuning.bus_traction_force_n
 	_max_speed_mps = tuning.bus_max_speed_kmh / 3.6
 	center_of_mass_mode = CENTER_OF_MASS_MODE_CUSTOM
 	center_of_mass = Vector3(0.0, tuning.bus_center_of_mass_y_m, 0.0)

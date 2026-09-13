@@ -116,7 +116,7 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 | `bus_integrity_max` | `int` | puntos | 100 | "Integridad 100" |
 | `bus_integrity_max_loss_per_contract` | `int` | puntos/contrato | 5 | "Desgaste −5 al máximo por contrato" |
 | `bus_max_speed_kmh` | `float` | km/h | 90.0 | §4.5 del maestro |
-| `bus_accel_0_60_kmh_s` | `float` | s | 5.0 | §4.5 del maestro |
+| `bus_traction_force_n` | `float` | N | 10000.0 | §4.5 del maestro (renombrado en M2-T2.1, r1.1 de T1.1: es la fuerza de tracción total, no un tiempo; el 0–60 real medido es 6,93 s) |
 | `bus_wheelbase_m` | `float` | m | 5.5 | §4.5 / ADR-007 (M1-T1.1, valor de partida a ajustar midiendo) |
 | `bus_track_width_m` | `float` | m | 2.2 | ADR-007 (M1-T1.1) |
 | `bus_wheel_radius_m` | `float` | m | 0.5 | ADR-007 (M1-T1.1) |

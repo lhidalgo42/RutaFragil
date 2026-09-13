@@ -33,9 +33,9 @@ func test_steer_angle_deg_for_falloff_and_sign() -> void:
 
 
 func test_traction_force_per_wheel() -> void:
-	assert_float(Bus.traction_force_per_wheel(1.0, 3000.0, 10.0 / 3.0, 4)).is_equal_approx(2500.0, 0.01)
-	assert_float(Bus.traction_force_per_wheel(2.0, 3000.0, 10.0 / 3.0, 4)).is_equal_approx(2500.0, 0.01)
-	assert_float(Bus.traction_force_per_wheel(1.0, 3000.0, 10.0 / 3.0, 0)).is_equal_approx(0.0, 0.0001)
+	assert_float(Bus.traction_force_per_wheel(1.0, 10000.0, 4)).is_equal_approx(2500.0, 0.01)
+	assert_float(Bus.traction_force_per_wheel(2.0, 10000.0, 4)).is_equal_approx(2500.0, 0.01)
+	assert_float(Bus.traction_force_per_wheel(1.0, 10000.0, 0)).is_equal_approx(0.0, 0.0001)
 
 
 func test_set_drive_clamps_inputs() -> void:

@@ -8,7 +8,6 @@
 			"fragile": 120,
 			"normal": 60
 		},
-		"bus_accel_0_60_kmh_s": 5.0,
 		"bus_brake_force_n": 40000.0,
 		"bus_center_of_mass_y_m": -0.6,
 		"bus_grip_lateral": 10.0,
@@ -23,6 +22,7 @@
 		"bus_suspension_rest_m": 0.6,
 		"bus_suspension_stiffness_n_per_m": 60000.0,
 		"bus_track_width_m": 2.2,
+		"bus_traction_force_n": 10000.0,
 		"bus_wheel_radius_m": 0.5,
 		"bus_wheelbase_m": 5.5,
 		"contract_destinations_max": 3,
