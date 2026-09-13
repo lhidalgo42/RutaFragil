@@ -37,6 +37,6 @@ position = Vector3(1.1, 0, 2.75)
 [node name="BusInterior" parent="." instance=ExtResource("3_interior")]
 
 [node name="CabinCamera" type="Camera3D" parent="."]
-position = Vector3(0.6, 0.9, -2.9)
+position = Vector3(0.6, 0.75, -2.9)
 script = ExtResource("2_cabin")
 current = false

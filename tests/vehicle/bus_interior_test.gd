@@ -57,7 +57,7 @@ func test_corridor_width_and_free_height_measured_on_the_shapes() -> void:
 	var space: PhysicsDirectSpaceState3D = bus.get_world_3d().direct_space_state
 	# Corridor: from the corridor center out to each rack face, along the
 	# bus's own X axis (the racks bound the corridor, per D67 1.20 m free).
-	var center: Vector3 = xform * Vector3(0.0, 0.35, 0.0)
+	var center: Vector3 = xform * Vector3(0.0, 0.10, 0.0)
 	var width: float = 0.0
 	for dir_sign: float in [-1.0, 1.0]:
 		var dir: Vector3 = xform.basis.x * dir_sign
@@ -74,7 +74,7 @@ func test_corridor_width_and_free_height_measured_on_the_shapes() -> void:
 			width += center.distance_to(hit_pos)
 	assert_float(width).is_greater_equal(1.20)
 	# Free height: from the floor surface up to the ceiling (D67: 2.05 m).
-	var from_floor: Vector3 = xform * Vector3(0.0, -0.40, 0.0)
+	var from_floor: Vector3 = xform * Vector3(0.0, -0.55, 0.0)
 	var up: Vector3 = xform.basis.y.normalized()
 	var query_up: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
 		from_floor, from_floor + up * 3.0)
@@ -86,9 +86,10 @@ func test_corridor_width_and_free_height_measured_on_the_shapes() -> void:
 	if hit_up_pos_v is Vector3:
 		var hit_up_pos: Vector3 = hit_up_pos_v
 		var free_height: float = from_floor.distance_to(hit_up_pos) + 0.05
-		# Epsilon below the nominal 2.05: float32 raycast distances round to
-		# 2.0499998 and a bare >= 2.05 fails on a correct measurement.
-		assert_float(free_height).is_greater_equal(2.049)
+		# D72: free height is 1.90 (the interior was shrunk to fit the
+		# chassis). Epsilon below the nominal: float32 raycast distances round
+		# down and a bare >= fails on a correct measurement.
+		assert_float(free_height).is_greater_equal(1.899)
 
 
 func test_bus_with_interior_settles_at_rest_height() -> void:

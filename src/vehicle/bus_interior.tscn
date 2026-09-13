@@ -21,28 +21,28 @@ albedo_color = Color(0.45, 0.32, 0.20, 1)
 size = Vector3(2.5, 0.1, 7.8)
 
 [sub_resource type="BoxShape3D" id="shape_WallLeft"]
-size = Vector3(0.1, 2.05, 7.6)
+size = Vector3(0.1, 1.9, 7.6)
 
 [sub_resource type="BoxShape3D" id="shape_WallRightRear"]
-size = Vector3(0.1, 2.05, 6.1)
+size = Vector3(0.1, 1.9, 6.1)
 
 [sub_resource type="BoxShape3D" id="shape_WallRightFront"]
-size = Vector3(0.1, 2.05, 0.6)
+size = Vector3(0.1, 1.9, 0.6)
 
 [sub_resource type="BoxShape3D" id="shape_WallFront"]
 size = Vector3(2.5, 0.8, 0.1)
 
 [sub_resource type="BoxShape3D" id="shape_WallRear"]
-size = Vector3(0.55, 2.05, 0.1)
+size = Vector3(0.55, 1.9, 0.1)
 
 [sub_resource type="BoxShape3D" id="shape_Roof"]
 size = Vector3(2.5, 0.1, 7.8)
 
 [sub_resource type="BoxShape3D" id="shape_Step"]
-size = Vector3(0.35, 0.05, 0.9)
+size = Vector3(0.1, 0.05, 0.9)
 
 [sub_resource type="BoxShape3D" id="shape_Rack"]
-size = Vector3(0.55, 1.6, 2.4)
+size = Vector3(0.55, 1.4, 2.4)
 
 [sub_resource type="BoxShape3D" id="shape_Bench"]
 size = Vector3(0.55, 0.9, 1.2)
@@ -56,15 +56,15 @@ size = Vector3(2.5, 0.1, 7.8)
 
 [sub_resource type="BoxMesh" id="mesh_WallLeft"]
 material = SubResource("mat_wall_light")
-size = Vector3(0.1, 2.05, 7.6)
+size = Vector3(0.1, 1.9, 7.6)
 
 [sub_resource type="BoxMesh" id="mesh_WallRightRear"]
 material = SubResource("mat_wall_light")
-size = Vector3(0.1, 2.05, 6.1)
+size = Vector3(0.1, 1.9, 6.1)
 
 [sub_resource type="BoxMesh" id="mesh_WallRightFront"]
 material = SubResource("mat_wall_light")
-size = Vector3(0.1, 2.05, 0.6)
+size = Vector3(0.1, 1.9, 0.6)
 
 [sub_resource type="BoxMesh" id="mesh_WallFront"]
 material = SubResource("mat_wall_light")
@@ -72,7 +72,7 @@ size = Vector3(2.5, 0.8, 0.1)
 
 [sub_resource type="BoxMesh" id="mesh_WallRear"]
 material = SubResource("mat_wall_light")
-size = Vector3(0.55, 2.05, 0.1)
+size = Vector3(0.55, 1.9, 0.1)
 
 [sub_resource type="BoxMesh" id="mesh_Roof"]
 material = SubResource("mat_wall_light")
@@ -80,11 +80,11 @@ size = Vector3(2.5, 0.1, 7.8)
 
 [sub_resource type="BoxMesh" id="mesh_Step"]
 material = SubResource("mat_step_dark")
-size = Vector3(0.35, 0.05, 0.9)
+size = Vector3(0.1, 0.05, 0.9)
 
 [sub_resource type="BoxMesh" id="mesh_Rack"]
 material = SubResource("mat_rack_orange")
-size = Vector3(0.55, 1.6, 2.4)
+size = Vector3(0.55, 1.4, 2.4)
 
 [sub_resource type="BoxMesh" id="mesh_Bench"]
 material = SubResource("mat_bench_brown")
@@ -100,174 +100,174 @@ script = ExtResource("1_interior")
 [node name="Shapes" type="Node3D" parent="."]
 
 [node name="Floor" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(0.0, -0.5, 0.0)
+position = Vector3(0.0, -0.65, 0.0)
 shape = SubResource("shape_Floor")
 
 [node name="WallLeft" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(-1.2, 0.575, 0.0)
+position = Vector3(-1.2, 0.35, 0.0)
 shape = SubResource("shape_WallLeft")
 
 [node name="WallRightRear" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(1.2, 0.575, 0.75)
+position = Vector3(1.2, 0.35, 0.75)
 shape = SubResource("shape_WallRightRear")
 
 [node name="WallRightFront" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(1.2, 0.575, -3.5)
+position = Vector3(1.2, 0.35, -3.5)
 shape = SubResource("shape_WallRightFront")
 
 [node name="WallFront" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(0.0, -0.05, -3.85)
+position = Vector3(0.0, -0.2, -3.85)
 shape = SubResource("shape_WallFront")
 
 [node name="WallRearLeft" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(-0.975, 0.575, 3.85)
+position = Vector3(-0.975, 0.35, 3.85)
 shape = SubResource("shape_WallRear")
 
 [node name="WallRearRight" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(0.975, 0.575, 3.85)
+position = Vector3(0.975, 0.35, 3.85)
 shape = SubResource("shape_WallRear")
 
 [node name="Roof" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(0.0, 1.65, 0.0)
+position = Vector3(0.0, 1.35, 0.0)
 shape = SubResource("shape_Roof")
 
 [node name="Step1" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(1.325, -0.725, -2.75)
+position = Vector3(1.2, -0.725, -2.75)
 shape = SubResource("shape_Step")
 
 [node name="Step2" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(1.575, -0.925, -2.75)
+position = Vector3(1.2, -0.775, -2.75)
 shape = SubResource("shape_Step")
 
 [node name="RackLeft" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(-0.875, 0.35, 0.0)
+position = Vector3(-0.875, 0.1, 0.0)
 shape = SubResource("shape_Rack")
 
 [node name="RackRight" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(0.875, 0.35, 0.0)
+position = Vector3(0.875, 0.1, 0.0)
 shape = SubResource("shape_Rack")
 
 [node name="Bench" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(-0.875, 0.0, 2.9)
+position = Vector3(-0.875, -0.15, 2.9)
 shape = SubResource("shape_Bench")
 
 [node name="Stretcher" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(0.8, -0.325, 2.2)
+position = Vector3(0.8, -0.475, 2.2)
 shape = SubResource("shape_Stretcher")
 
 [node name="Visuals" type="Node3D" parent="."]
 
 [node name="Floor" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0.0, -0.5, 0.0)
+position = Vector3(0.0, -0.65, 0.0)
 mesh = SubResource("mesh_Floor")
 
 [node name="WallLeft" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(-1.2, 0.575, 0.0)
+position = Vector3(-1.2, 0.35, 0.0)
 mesh = SubResource("mesh_WallLeft")
 
 [node name="WallRightRear" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(1.2, 0.575, 0.75)
+position = Vector3(1.2, 0.35, 0.75)
 mesh = SubResource("mesh_WallRightRear")
 
 [node name="WallRightFront" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(1.2, 0.575, -3.5)
+position = Vector3(1.2, 0.35, -3.5)
 mesh = SubResource("mesh_WallRightFront")
 
 [node name="WallFront" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0.0, -0.05, -3.85)
+position = Vector3(0.0, -0.2, -3.85)
 mesh = SubResource("mesh_WallFront")
 
 [node name="WallRearLeft" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(-0.975, 0.575, 3.85)
+position = Vector3(-0.975, 0.35, 3.85)
 mesh = SubResource("mesh_WallRear")
 
 [node name="WallRearRight" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0.975, 0.575, 3.85)
+position = Vector3(0.975, 0.35, 3.85)
 mesh = SubResource("mesh_WallRear")
 
 [node name="Roof" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0.0, 1.65, 0.0)
+position = Vector3(0.0, 1.35, 0.0)
 mesh = SubResource("mesh_Roof")
 
 [node name="Step1" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(1.325, -0.725, -2.75)
+position = Vector3(1.2, -0.725, -2.75)
 mesh = SubResource("mesh_Step")
 
 [node name="Step2" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(1.575, -0.925, -2.75)
+position = Vector3(1.2, -0.775, -2.75)
 mesh = SubResource("mesh_Step")
 
 [node name="RackLeft" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(-0.875, 0.35, 0.0)
+position = Vector3(-0.875, 0.1, 0.0)
 mesh = SubResource("mesh_Rack")
 
 [node name="RackRight" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0.875, 0.35, 0.0)
+position = Vector3(0.875, 0.1, 0.0)
 mesh = SubResource("mesh_Rack")
 
 [node name="Bench" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(-0.875, 0.0, 2.9)
+position = Vector3(-0.875, -0.15, 2.9)
 mesh = SubResource("mesh_Bench")
 
 [node name="Stretcher" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(0.8, -0.325, 2.2)
+position = Vector3(0.8, -0.475, 2.2)
 mesh = SubResource("mesh_Stretcher")
 
 [node name="Positions" type="Node3D" parent="."]
 
 [node name="driver" type="Marker3D" parent="Positions"]
-position = Vector3(0.6, 0.55, -2.9)
+position = Vector3(0.6, 0.4, -2.9)
 
 [node name="copilot" type="Marker3D" parent="Positions"]
-position = Vector3(-0.6, 0.55, -2.9)
+position = Vector3(-0.6, 0.4, -2.9)
 
 [node name="bench" type="Marker3D" parent="Positions"]
-position = Vector3(-0.85, 0.55, 2.9)
+position = Vector3(-0.85, 0.4, 2.9)
 
 [node name="shelf_left" type="Marker3D" parent="Positions"]
-position = Vector3(-0.85, 0.55, 0.0)
+position = Vector3(-0.85, 0.4, 0.0)
 
 [node name="shelf_right" type="Marker3D" parent="Positions"]
-position = Vector3(0.85, 0.55, 0.0)
+position = Vector3(0.85, 0.4, 0.0)
 
 [node name="stretcher" type="Marker3D" parent="Positions"]
-position = Vector3(0.8, 0.1, 2.2)
+position = Vector3(0.8, -0.35, 2.2)
 
 [node name="Restraints" type="Node3D" parent="."]
 
 [node name="restraint_left_0" type="Marker3D" parent="Restraints"]
-position = Vector3(-0.575, 0.6, -1.0)
+position = Vector3(-0.575, 0.45, -1.0)
 
 [node name="restraint_left_1" type="Marker3D" parent="Restraints"]
-position = Vector3(-0.575, 0.6, -0.6)
+position = Vector3(-0.575, 0.45, -0.6)
 
 [node name="restraint_left_2" type="Marker3D" parent="Restraints"]
-position = Vector3(-0.575, 0.6, -0.2)
+position = Vector3(-0.575, 0.45, -0.2)
 
 [node name="restraint_left_3" type="Marker3D" parent="Restraints"]
-position = Vector3(-0.575, 0.6, 0.2)
+position = Vector3(-0.575, 0.45, 0.2)
 
 [node name="restraint_left_4" type="Marker3D" parent="Restraints"]
-position = Vector3(-0.575, 0.6, 0.6)
+position = Vector3(-0.575, 0.45, 0.6)
 
 [node name="restraint_left_5" type="Marker3D" parent="Restraints"]
-position = Vector3(-0.575, 0.6, 1.0)
+position = Vector3(-0.575, 0.45, 1.0)
 
 [node name="restraint_right_0" type="Marker3D" parent="Restraints"]
-position = Vector3(0.575, 0.6, -1.0)
+position = Vector3(0.575, 0.45, -1.0)
 
 [node name="restraint_right_1" type="Marker3D" parent="Restraints"]
-position = Vector3(0.575, 0.6, -0.6)
+position = Vector3(0.575, 0.45, -0.6)
 
 [node name="restraint_right_2" type="Marker3D" parent="Restraints"]
-position = Vector3(0.575, 0.6, -0.2)
+position = Vector3(0.575, 0.45, -0.2)
 
 [node name="restraint_right_3" type="Marker3D" parent="Restraints"]
-position = Vector3(0.575, 0.6, 0.2)
+position = Vector3(0.575, 0.45, 0.2)
 
 [node name="restraint_right_4" type="Marker3D" parent="Restraints"]
-position = Vector3(0.575, 0.6, 0.6)
+position = Vector3(0.575, 0.45, 0.6)
 
 [node name="restraint_right_5" type="Marker3D" parent="Restraints"]
-position = Vector3(0.575, 0.6, 1.0)
+position = Vector3(0.575, 0.45, 1.0)
 
