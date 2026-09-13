@@ -35,6 +35,18 @@ func _ready() -> void:
 	bus_input.enabled = not demo_mode and network_role != "client"
 
 
+func _process(_delta: float) -> void:
+	# F1 hands the bus to the DemoDriver and back at runtime (T1.1 r1.2, D71):
+	# F5 stays the owner's seat and the demo needs no console. Headless
+	# delivers no InputEvent, so this is inert in tests and tools.
+	if Input.is_action_just_pressed("toggle_demo"):
+		demo_mode = not demo_mode
+		if demo_driver != null:
+			demo_driver.enabled = demo_mode
+		if bus_input != null:
+			bus_input.enabled = not demo_mode
+
+
 func _freeze_bus_for_client() -> void:
 	# By group, never by node name (D59).
 	var bus_node: Node = get_tree().get_first_node_in_group("bus")
