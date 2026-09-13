@@ -15,6 +15,8 @@ var _bus: Bus = null
 
 
 func _ready() -> void:
+	# Found by group, never by node name (D59): the Seat toggles us.
+	add_to_group("bus_input")
 	_find_bus.call_deferred()
 
 

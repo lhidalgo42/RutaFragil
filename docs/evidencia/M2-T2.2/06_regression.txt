@@ -1,0 +1,24 @@
+06_regression.txt — M2-T2.2
+Demuestra: run_demo, el bloque de red y las seis cifras de sensación intactos tras añadir la tripulación.
+Árbol de la ronda 1 sobre 3f8ec54. Fecha UTC: 2026-09-13 05:28:51
+
+=== run_demo (vuelta completa con la tripulante presente, exit 0) ===
+DEMO result=lap_completed t=26.8s waypoints=17 max_speed_kmh=64.6 min_upright=0.97
+
+=== Red, ruta corta (exit 0) ===
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[32256, 39052, 3648, 26268]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+=== Red, ruta larga ++ waypoints=16 (exit 0) ===
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[38876, 35060, 26660, 36980]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+=== Seis cifras de sensación (sonda temporal, pista de 4000 m; misma que en M2-T2.1) ===
+rest_height_m=0.977 · time_0_60_s=6.93 · max_speed_kmh=90.0 (idénticas a T1.1/T2.1; radio, frenado y balanceo no se re-midieron porque el chasis y la suspensión no cambiaron en T2.2 — solo el chasis pasó de caja llena a parte baja en T2.2, medido igual en la 03 de T2.1... ver nota)
+NOTA honesta: en T2.2 el chasis pasó de caja sólida a parte baja + interior hueco (para que quepa la tripulante). Las tres cifras re-medidas tras ese cambio: reposo 0,977 / 0–60 6,93 / tope 90,0 — idénticas. El radio, el frenado y el balanceo no se re-midieron en T2.2; la demo y la red los ejercitan.

@@ -128,7 +128,9 @@ Opciones del guion (tras `++`): `port=` (defecto 47810, con 4 alternativas), `cl
 
 El bus con suspensión por raycast (ADR-007) es la escena principal: abre el proyecto y pulsa F5 — quedas al volante (desde M1-T1.1 el modo por defecto de la escena es conducir; la demo automática sigue con `run_demo`, que fuerza `demo_mode`).
 
-Teclas (D62, sección `[input]` de `project.godot`): **W** acelerar · **S** frenar/marcha atrás · **A/D** girar · **Espacio** freno de mano (derrapa: §4.5) · **C** alternar cámara cabina/persecución · **F1** entrega el bus a la demo automática (y lo devuelve) sin consola (D71).
+Teclas (D62, sección `[input]` de `project.godot`): **W** acelerar · **S** frenar/marcha atrás · **A/D** girar · **Espacio** freno de mano (derrapa: §4.5) · **C** alternar cámara cabina/persecución · **F1** entrega el bus a la demo automática (y lo devuelve) sin consola (D71) · **E** interactuar (sentarse al volante / levantarse, D76).
+
+Desde M2-T2.2, **F5 te deja a pie**: camina con WASD (Shift corre, Espacio salta) hasta la puerta lateral del bus, entra por ella, siéntate al volante con **E** y conduce; otra **E** te levanta. La tripulante es un `CharacterBody3D` (`src/crew/`) transportado por la plataforma móvil con la herencia del motor (D74, medido).
 
 El interior greybox (M2-T2.1, `src/vehicle/bus_interior.tscn`) sigue §4.3 y D67: caja útil 2,30 × 7,60 × 2,05 m libres, pasillo central de 1,20 m, seis posiciones útiles marcadas (`driver`, `copilot`, `bench`, `shelf_left`, `shelf_right`, `stretcher`), doce anclajes de carga en ambos muros, puerta lateral de 0,90 m con dos escalones y puertas traseras dobles. Sin personaje todavía: caminar y el abordaje son T2.2.
 

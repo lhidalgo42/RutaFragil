@@ -1,0 +1,10 @@
+08_no_verificado.txt — M2-T2.2 (R7)
+Fecha UTC: 2026-09-13 05:28:52 · árbol de la ronda 1 sobre 3f8ec54
+
+1. EL GATE del dueño: entrar, caminar, sentarse, conducir, levantarse, salir — tres minutos con F5. Ningún test lo sustituye.
+2. La tecla E (interact) y el input a pie en general: headless no entrega InputEvent; el movimiento se probó llamando a drive_move() directamente; las teclas quedan para el dueño.
+3. La red con la tripulante a bordo: la tripulante NO se replica (T2.2 es de un jugador); M4 decide cómo viaja cada jugador en el bus (ADR-006, la autoridad del conductor sentado).
+4. El gate DURO de M2 (dos instancias, red real, con paquetes): es T2.3 (D77).
+5. #102763 (deslizamiento sobre plataforma en rotación): medido en el paso 1 — NO apareció (deriva de milímetros en giros); si aparece en otra condición, va a BACKLOG con números.
+6. macOS (D42): todo corrió en Windows.
+7. La tripulante bajo latencia real o con mods que cambien su masa/velocidades: no medido.

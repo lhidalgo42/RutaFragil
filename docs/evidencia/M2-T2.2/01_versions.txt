@@ -1,0 +1,14 @@
+01_versions.txt — M2-T2.2
+Demuestra: versiones y la base de partida. Árbol de la ronda 1 sobre 3f8ec54. Fecha UTC: 2026-09-13 05:27:33
+
+--- git --version ---
+git version 2.51.0.windows.1
+
+--- git lfs version ---
+git-lfs/3.7.0 (GitHub; windows amd64; go 1.24.4; git 92dddf56)
+
+--- godot --version ---
+4.7.2.stable.official.ed1daf0bf
+
+--- git merge-base HEAD main (main sin mergear) ---
+fc34b16ade69a14b1de9705da505351ebe717b1a

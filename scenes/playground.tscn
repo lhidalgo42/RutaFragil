@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://src/biomes/playground/playground.gd" id="1_playground"]
 [ext_resource type="Script" path="res://src/biomes/playground/circuit.gd" id="2_circuit"]
@@ -7,6 +7,10 @@
 [ext_resource type="Script" path="res://src/vehicle/chase_camera.gd" id="5_camera"]
 [ext_resource type="PackedScene" path="res://src/vehicle/bus.tscn" id="6_bus"]
 [ext_resource type="Script" path="res://src/vehicle/bus_input.gd" id="7_input"]
+[ext_resource type="PackedScene" path="res://src/crew/crew_member.tscn" id="8_crew"]
+[ext_resource type="Script" path="res://src/crew/crew_input.gd" id="9_crew_input"]
+[ext_resource type="Script" path="res://src/crew/seat.gd" id="10_seat"]
+[ext_resource type="Script" path="res://src/crew/door_transit.gd" id="11_transit"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
 albedo_color = Color(0.45, 0.5, 0.42, 1)
@@ -263,6 +267,20 @@ current = true
 
 [node name="BusInput" type="Node" parent="."]
 script = ExtResource("7_input")
+
+[node name="CrewMember" parent="." instance=ExtResource("8_crew")]
+position = Vector3(-26, 1.5, 30)
+
+[node name="CrewInput" type="Node" parent="."]
+script = ExtResource("9_crew_input")
+
+[node name="Seat" type="Node" parent="." node_paths=["seat_marker"]]
+script = ExtResource("10_seat")
+seat_name = "driver"
+seat_marker = NodePath("Bus/BusInterior/Positions/driver")
+
+[node name="DoorTransit" type="Node" parent="."]
+script = ExtResource("11_transit")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 rotation = Vector3(-0.9, 0.6, 0)

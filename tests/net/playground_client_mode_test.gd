@@ -50,8 +50,12 @@ func test_single_role_keeps_demo_running() -> void:
 	assert_bool(scene.get("demo_mode")).is_false()
 	var driver: Node = scene.get_node("DemoDriver")
 	assert_bool(driver.get("enabled")).is_false()
+	# Since M2-T2.2 the owner's F5 is ON FOOT: the crew input is enabled and
+	# the bus input stays off until the Seat (D76) is occupied.
 	var input_node: Node = scene.get_node("BusInput")
-	assert_bool(input_node.get("enabled")).is_true()
+	assert_bool(input_node.get("enabled")).is_false()
+	var crew_input: Node = scene.get_node("CrewInput")
+	assert_bool(crew_input.get("enabled")).is_true()
 	var bus_node: Node = _bus_in(scene)
 	if bus_node is RigidBody3D:
 		var bus: RigidBody3D = bus_node

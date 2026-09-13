@@ -32,7 +32,12 @@ func _ready() -> void:
 	if bus_input == null:
 		push_error("Playground: bus_input is not assigned")
 		return
-	bus_input.enabled = not demo_mode and network_role != "client"
+	# Since M2-T2.2 the owner's F5 is ON FOOT: walk to the door, board, sit at
+	# the wheel (E), drive. The Seat (D76) enables bus_input when seated.
+	bus_input.enabled = false
+	var crew_input: Node = get_node_or_null("CrewInput")
+	if crew_input != null:
+		crew_input.set("enabled", not demo_mode and network_role != "client")
 
 
 func _process(_delta: float) -> void:

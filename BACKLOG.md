@@ -127,6 +127,14 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 
 - **DECISIÓN DEL DUEÑO (planteada por r1.1 de T1.1, sin resolver):** §4.5 del maestro dice que el bus hace 0–60 km/h en unos 5 s; el juego hace 6,93 s y el campo de tuning ya no miente (es fuerza, `bus_traction_force_n`). Decidir: (a) aceptar 6,93 s y corregir §4.5 del maestro, o (b) dejar pendiente calibrar la tracción para acercarse a 5 s (cambia la sensación que el gate ya aprobó). No bloquea M2.
 
+## Pendientes propios de la ejecución de M2-T2.2
+
+- **T2.3 (no tocado en T2.2):** agarrar, soltar, lanzar y amarrar paquetes. El gate duro de M2 (dos instancias, red real) es suyo. Los 12 anclajes (`Restraints`) y las 6 posiciones esperan.
+- **Red y autoridad del conductor (M4):** el asiento deja el gancho (`Seat.occupied`/`vacated`); la autoridad del bus pasa al peer sentado (ADR-006). La tripulante no está replicada (es de un jugador en T2.2); el reparentado para la red queda como mecanismo disponible (D75 registró que en local no se usa por la doble herencia medida).
+- **Interacción personaje↔bus al ENTRAR EN CONTACTO con el chasis exterior:** la medida del revisor (el bus despedido al spawnar un cuerpo encima) quedó explicada por la regla "posicionar antes de entrar al árbol"; si T2.2+ muestra otra interacción, medir antes de mitigar (ADR-003).
+- **La deriva de la tripulante a bordo (~0,30 m por minuto sobre los saltos):** comportamiento físico honesto (te tambaleas); si el dueño lo quiere más pegado, es un ajuste de fricción/snap, no de red. Registrado, no bloquea.
+- **Cámara de cabina vs. cuerpo:** al sentarse la cápsula se oculta (D76); cuando haya arte (M8) la primera persona querrá manos/cuerpo (§9.1).
+
 ## Cerrados en M2-T2.1 (paso 0)
 
 - **r1.1 de T1.1 (el campo de aceleración mentía):** `bus_accel_0_60_kmh_s` renombrado a `bus_traction_force_n` (10 000 N) — el nombre dice ahora lo que el código aplica; el 0–60 real medido (6,93 s) queda anotado en el esquema. Se eligió renombrar y no calibrar porque el gate del dueño aprobó la sensación con la aceleración actual; cumplir el nombre acelerando más habría cambiado lo aprobado.
