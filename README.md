@@ -132,6 +132,8 @@ Teclas (D62, sección `[input]` de `project.godot`): **W** acelerar · **S** fre
 
 Desde M2-T2.2, **F5 te deja a pie**: camina con WASD (Shift corre, Espacio salta) hasta la puerta lateral del bus, entra por ella, siéntate al volante con **E** y conduce; otra **E** te levanta. La tripulante es un `CharacterBody3D` (`src/crew/`) transportado por la plataforma móvil con la herencia del motor (D74, medido).
 
+**Cámara y ratón** (D79): a pie ves en primera persona por la `EyeCamera`; al sentarte pasas a la cabina (primera persona del conductor) y **C** alterna con la persecución (tercera persona); al levantarte recuperas tu vista. El **ratón mueve la mirada** (guiñada + cabeceo ±89° a pie; cono ±120°/±45° en cabina para los retrovisores), con la sensibilidad en `data/tuning.json` (`player_mouse_sensitivity`). El ratón queda **capturado** al jugar: **Escape lo libera** y un **clic** lo recaptura; con la demo automática (F1) queda libre.
+
 El interior greybox (M2-T2.1, `src/vehicle/bus_interior.tscn`) sigue §4.3 y D67: caja útil 2,30 × 7,60 × 2,05 m libres, pasillo central de 1,20 m, seis posiciones útiles marcadas (`driver`, `copilot`, `bench`, `shelf_left`, `shelf_right`, `stretcher`), doce anclajes de carga en ambos muros, puerta lateral de 0,90 m con dos escalones y puertas traseras dobles. Sin personaje todavía: caminar y el abordaje son T2.2.
 
 **Medir la sensación** (r1.3 de M2-T2.2): `godot --headless --path . -s res://src/tooling/probe_handling.gd` (bajo `timeout`) imprime líneas `MEASURE` con altura de reposo, 0–60 km/h, velocidad máxima, radio de giro y frenada desde 50 km/h — la regla de regresión de la sensación aprobada en el gate de T1.1. Referencia actual: 0,977 m · 6,93 s · 90,0 km/h · 12,4 m · 6,7 m en 0,98 s.

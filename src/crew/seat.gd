@@ -47,13 +47,13 @@ func vacate() -> void:
 
 func _set_driving_ui(driving: bool) -> void:
 	var tree: SceneTree = get_tree()
-	var cabin: Node = tree.get_first_node_in_group("cabin_camera")
-	var chase: Node = tree.get_first_node_in_group("chase_camera")
-	if cabin is Camera3D and chase is Camera3D:
-		var cabin_cam: Camera3D = cabin
-		var chase_cam: Camera3D = chase
-		cabin_cam.current = driving
-		chase_cam.current = not driving
+	# The arbiter owns the camera switch (M2-T2.2 r3): seated goes to the
+	# bus view, standing up returns the crew member's own eyes — that return
+	# was the bug this round closes.
+	if driving:
+		CameraArbiter.apply(tree, CameraArbiter.Mode.SEATED)
+	else:
+		CameraArbiter.apply(tree, CameraArbiter.Mode.ON_FOOT)
 	var bus_input: Node = tree.get_first_node_in_group("bus_input")
 	if bus_input != null:
 		bus_input.set("enabled", driving)

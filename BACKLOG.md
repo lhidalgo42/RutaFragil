@@ -47,6 +47,12 @@ Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código
 
 Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: Submarino, luego Volcán, con tipos de paquete nuevos intercalados.
 
+## Pendientes propios de la ejecución de M2-T2.2 (rondas 2–3)
+
+- **`player_mouse_sensitivity` es una preferencia del jugador, no balance de juego** (nota del dueño, r3): en `TuningTable` está bien hoy, pero un mod podría cambiársela al jugador; cuando exista un menú de ajustes, ese campo se muda fuera del alcance de mods.
+- **F1 al salir de demo deja `bus_input.enabled = true` aunque la tripulante esté a pie** (semántica heredada de T1.1/D71, cuando F5 era el asiento): tras F1×2, andar con W también acelera el bus aparcado. Candidato a paso 0 de T2.3: `bus_input.enabled` debe seguir a `crew.seated`.
+- **El DisplayServer headless no retiene `Input.mouse_mode`** (medido 2026-09-14): en tests, la verdad de la captura la posee la app (`CrewInput.is_pointer_captured()`), nunca el flag del motor.
+
 ## Pendientes (copiados del plan M0-T0.1, sección 9)
 
 - **M4:** `export_presets.cfg` con exclusión `addons/gdUnit4/*` (respetar mayúsculas). Según la doc de 4.7, `--export-release` **no** implica `--import`: correr `--import` explícito antes. Export templates 4.7.2 = `Godot_v4.7.2-stable_export_templates.tpz`, ~1,41 GB, verificar con `SHA512-SUMS.txt`.

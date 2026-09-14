@@ -15,8 +15,12 @@ extends RefCounted
 
 
 ## One mouse step -> new Vector2(yaw, pitch) in radians, clamped.
-## yaw_limit_rad <= 0.0 means unbounded yaw (on foot); pitch is always
-## clamped to +-pitch_limit_rad. Sensitivity is radians per pixel
-## (TuningTable.player_mouse_sensitivity). FASE-0 skeleton.
-static func next_yaw_pitch(_current_yaw: float, _current_pitch: float, _delta_px: Vector2, _sens_rad_per_px: float, _yaw_limit_rad: float, _pitch_limit_rad: float) -> Vector2:
-	return Vector2.ZERO
+## yaw_limit_rad <= 0.0 means unbounded yaw (on foot it accumulates past +-PI,
+## never normalized); pitch is always clamped to +-pitch_limit_rad.
+## Sensitivity is radians per pixel (TuningTable.player_mouse_sensitivity).
+static func next_yaw_pitch(current_yaw: float, current_pitch: float, delta_px: Vector2, sens_rad_per_px: float, yaw_limit_rad: float, pitch_limit_rad: float) -> Vector2:
+	var yaw: float = current_yaw - delta_px.x * sens_rad_per_px
+	var pitch: float = clampf(current_pitch - delta_px.y * sens_rad_per_px, -pitch_limit_rad, pitch_limit_rad)
+	if yaw_limit_rad > 0.0:
+		yaw = clampf(yaw, -yaw_limit_rad, yaw_limit_rad)
+	return Vector2(yaw, pitch)

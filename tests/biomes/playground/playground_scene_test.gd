@@ -37,8 +37,15 @@ func test_scene_structure() -> void:
 	assert_bool(camera_node is ChaseCamera).is_true()
 	if camera_node is ChaseCamera:
 		var camera: ChaseCamera = camera_node
-		assert_bool(camera.current).is_true()
 		assert_object(camera.target).is_not_null()
+	# Since round 3 (CameraArbiter): in the authored player mode the ONE
+	# active camera is the crew's first-person eye camera; the chase camera
+	# wakes for the demo and as the driver's alternate view.
+	var eye_node: Node = scene.get_tree().get_first_node_in_group("eye_camera")
+	assert_bool(eye_node is Camera3D).is_true()
+	if eye_node is Camera3D:
+		var eye: Camera3D = eye_node
+		assert_bool(eye.current).is_true()
 
 
 func test_demo_reaches_three_waypoints_without_rolling_over() -> void:

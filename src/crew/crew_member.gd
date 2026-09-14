@@ -60,6 +60,12 @@ static func wish_direction(walk_input: Vector2, basis: Basis) -> Vector3:
 func _ready() -> void:
 	add_to_group("crew")
 	_gravity = project_gravity()
+	# The scene file stays untouched: the eye camera joins its group from
+	# code so the CameraArbiter can find it (D59 style, never by node path).
+	var eye_node: Node = get_node_or_null("EyeCamera")
+	if eye_node is Camera3D:
+		var eye: Camera3D = eye_node
+		eye.add_to_group("eye_camera")
 
 
 func _physics_process(delta: float) -> void:

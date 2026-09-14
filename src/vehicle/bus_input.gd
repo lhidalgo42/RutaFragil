@@ -5,13 +5,19 @@ extends Node
 ## and calls the same set_drive/set_handbrake the DemoDriver uses, so both
 ## paths share the bus code. The bus itself never reads input.
 ## Steer sign follows D49: positive steers left (drive_steer_left is A).
-## Headless delivers no InputEvent (plan §3), so this node is exercised from
-## the windowed runs and its logic is covered indirectly; the bus tests never
-## simulate input.
+## toggle_camera goes through the CameraArbiter — THE single camera site —
+## and the cabin mouse look (ADR-004 cone: ±120° yaw, ±45° pitch, so the
+## driver can check mirrors and sides) rides _unhandled_input:
+## Input.parse_input_event DOES reach it headless (measured by the reviewer),
+## so the wiring is covered by a real test. The capture gate reads the truth
+## from CrewInput, the capture OWNER (group "crew_input"), because headless
+## does not retain Input.mouse_mode (measured 2026-09-14).
 
 @export var enabled: bool = false
 
 var _bus: Bus = null
+var _cabin: Camera3D = null
+var _cabin_missing_reported: bool = false
 
 
 func _ready() -> void:
@@ -42,13 +48,57 @@ func _physics_process(_delta: float) -> void:
 
 
 func _toggle_camera() -> void:
-	var cabin_v: Node = get_tree().get_first_node_in_group("cabin_camera")
-	var chase: Camera3D = null
-	var chase_v: Node = get_tree().get_first_node_in_group("chase_camera")
-	if chase_v is ChaseCamera:
-		chase = chase_v
-	if cabin_v is Camera3D and chase != null:
-		var cabin: Camera3D = cabin_v
-		var to_cabin: bool = not cabin.current
-		cabin.current = to_cabin
-		chase.current = not to_cabin
+	# The arbiter is THE single site that decides cameras (M2-T2.2 r3).
+	CameraArbiter.toggle_bus_view(get_tree())
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventMouseMotion):
+		return
+	if not enabled or not _pointer_captured():
+		return
+	if not CameraArbiter.bus_view_cabin:
+		# Chase view: the cabin look stays parked.
+		return
+	var cabin: Camera3D = _cabin_camera()
+	if cabin == null:
+		return
+	var tuning: TuningTable = GameConfig.tuning
+	if tuning == null:
+		push_error("BusInput: GameConfig.tuning is null; cabin look skipped")
+		return
+	var motion: InputEventMouseMotion = event
+	# screen_relative, NEVER .relative: with window/stretch/mode="canvas_items"
+	# the engine scales .relative by the stretch factor (measured: a (10, -4)
+	# physical move arrives as (180, -72)), so the sensitivity would change
+	# with the window size. screen_relative reaches the node intact.
+	var next: Vector2 = MouseLook.next_yaw_pitch(
+		cabin.rotation.y, cabin.rotation.x, motion.screen_relative,
+		tuning.player_mouse_sensitivity, deg_to_rad(120.0), deg_to_rad(45.0))
+	cabin.rotation.y = next.x
+	cabin.rotation.x = next.y
+
+
+## The pointer-capture truth, read from its OWNER (CrewInput, by group — D59).
+## Headless cannot hold Input.mouse_mode (set CAPTURED, reads back VISIBLE —
+## measured 2026-09-14), so the engine flag is only the fallback for scenes
+## without a CrewInput.
+func _pointer_captured() -> bool:
+	var node: Node = get_tree().get_first_node_in_group("crew_input")
+	if node is CrewInput:
+		var crew_input: CrewInput = node
+		return crew_input.is_pointer_captured()
+	return Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+
+
+## The cabin camera is found by GROUP (D59/D63), never by node path. Missing
+## camera: one error, no crash, no look.
+func _cabin_camera() -> Camera3D:
+	if _cabin == null:
+		var node: Node = get_tree().get_first_node_in_group("cabin_camera")
+		if node is Camera3D:
+			_cabin = node
+		elif not _cabin_missing_reported:
+			_cabin_missing_reported = true
+			push_error("BusInput: no Camera3D in group 'cabin_camera'")
+	return _cabin

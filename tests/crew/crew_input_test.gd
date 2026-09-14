@@ -19,6 +19,8 @@ func after_test() -> void:
 	# Never leak action state into the next test.
 	for action: String in ["walk_forward", "walk_back", "walk_left", "walk_right", "walk_sprint", "walk_jump", "interact"]:
 		Input.action_release(action)
+	# The harness must NEVER keep the cursor captured.
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func test_walk_forward_action_moves_the_crew_forward() -> void:
@@ -92,13 +94,92 @@ func test_toggle_nearest_seat_out_of_reach_does_nothing() -> void:
 	assert_bool(crew.seated).is_false()
 
 
+func test_captured_mouse_motion_turns_the_crew() -> void:
+	_make_ground()
+	var crew: CrewMember = await _spawn_settled_crew(Vector3(0.0, 1.0, 0.0))
+	if crew == null:
+		return
+	var input: CrewInput = await _spawn_input(true)
+	input.set_mouse_captured(true)
+	var yaw_before: float = crew.rotation.y
+	_send_mouse_motion(Vector2(40.0, 0.0))
+	await get_tree().process_frame
+	await _wait_ticks(2)
+	# Motion events coalesce and their values are environment-dependent: the
+	# wiring asserts only that the yaw CHANGED (exactness is MouseLook's).
+	assert_float(crew.rotation.y).is_not_equal(yaw_before)
+
+
+func test_escape_frees_the_pointer_and_parks_the_look() -> void:
+	_make_ground()
+	var crew: CrewMember = await _spawn_settled_crew(Vector3(0.0, 1.0, 0.0))
+	if crew == null:
+		return
+	var input: CrewInput = await _spawn_input(true)
+	input.set_mouse_captured(true)
+	_send_escape_press()
+	# parse_input_event is delivered at the NEXT main-loop flush: one frame
+	# is not enough (measured — the probe needed two).
+	await get_tree().process_frame
+	await _wait_ticks(2)
+	# The node's own flag is the truth: headless does not retain
+	# Input.mouse_mode (measured 2026-09-14), so the engine assert below is
+	# only meaningful in windowed runs.
+	assert_bool(input.is_pointer_captured()).is_false()
+	assert_int(Input.mouse_mode).is_equal(Input.MOUSE_MODE_VISIBLE)
+	var yaw_before: float = crew.rotation.y
+	_send_mouse_motion(Vector2(40.0, 0.0))
+	await get_tree().process_frame
+	await _wait_ticks(2)
+	# With the pointer free the look does NOT move (acceptance criterion).
+	assert_float(crew.rotation.y).is_equal(yaw_before)
+
+
+func test_left_click_recaptures_the_mouse_when_allowed() -> void:
+	_make_ground()
+	var crew: CrewMember = await _spawn_settled_crew(Vector3(0.0, 1.0, 0.0))
+	if crew == null:
+		return
+	var input: CrewInput = await _spawn_input(true)
+	input.set_mouse_captured(true)
+	_send_escape_press()
+	await get_tree().process_frame
+	await _wait_ticks(2)
+	assert_bool(input.is_pointer_captured()).is_false()
+	_send_left_click_press()
+	await get_tree().process_frame
+	await _wait_ticks(2)
+	assert_bool(input.is_pointer_captured()).is_true()
+
+
+func test_walking_follows_the_new_heading() -> void:
+	_make_ground()
+	var crew: CrewMember = await _spawn_settled_crew(Vector3(0.0, 1.0, 0.0))
+	if crew == null:
+		return
+	await _spawn_input(true)
+	# A 90° yaw written directly: the look already proved it turns the body;
+	# this test proves the walk reads the NEW basis.
+	crew.rotation.y = deg_to_rad(90.0)
+	var start: Vector3 = crew.global_position
+	Input.action_press("walk_forward")
+	await _wait_ticks(30)
+	Input.action_release("walk_forward")
+	var displacement: Vector3 = crew.global_position - start
+	displacement.y = 0.0
+	var heading: Vector3 = -crew.global_basis.z
+	heading.y = 0.0
+	assert_float(displacement.length()).is_greater(0.5)
+	assert_float(displacement.normalized().dot(heading.normalized())).is_greater(0.95)
+
+
 ## Taps interact until the toggle lands (bounded retry). CrewInput detects
-## the press edge itself (is_action_pressed + last-tick state) because
-## is_action_just_pressed is flushed at the next PROCESS frame — headless
-## runs process frames far faster than the 60 Hz physics ticks, so a node's
-## _physics_process never saw a programmatic just-press (measured 2026-09-13:
-## 40 presses, zero seen). The tap must therefore be a real one: released for
-## a full tick, then held for a full tick.
+## the press edge itself (is_action_pressed + last-tick state): a programmatic
+## just-press is NOT visible in the same call that pressed the action, though
+## it DOES reach a node's _physics_process when press and release land in
+## different physics ticks (measured 2026-09-14: 20/20) — the manual edge
+## stays defensive, so the tap must be a real one: released for a full tick,
+## then held for a full tick.
 func _interact_until(crew: CrewMember, want_seated: bool) -> bool:
 	var tries: int = 0
 	while crew.seated != want_seated and tries < 40:
@@ -124,6 +205,29 @@ func _make_ground() -> StaticBody3D:
 	add_child(ground)
 	ground.global_position = Vector3(0.0, -0.5, 0.0)
 	return ground
+
+
+## Synthetic input events: parse_input_event DOES reach _unhandled_input
+## headless (measured by the reviewer), so the mouse wiring is exercised for
+## real. Motions coalesce — never assert counts or exact deltas from them.
+func _send_mouse_motion(delta_px: Vector2) -> void:
+	var motion: InputEventMouseMotion = InputEventMouseMotion.new()
+	motion.screen_relative = delta_px
+	Input.parse_input_event(motion)
+
+
+func _send_escape_press() -> void:
+	var key: InputEventKey = InputEventKey.new()
+	key.keycode = KEY_ESCAPE
+	key.pressed = true
+	Input.parse_input_event(key)
+
+
+func _send_left_click_press() -> void:
+	var click: InputEventMouseButton = InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	Input.parse_input_event(click)
 
 
 func _make_seat(marker_pos: Vector3) -> Seat:
