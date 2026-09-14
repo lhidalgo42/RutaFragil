@@ -1,0 +1,308 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>B0 Requínoa · catálogo de piezas</title><style>
+body{font-family:Segoe UI,Arial,sans-serif;max-width:1080px;margin:24px auto;padding:0 16px;line-height:1.5;color:#1d1d1f}
+h1{font-size:1.7em;margin-bottom:.2em}h2{margin-top:2em;border-bottom:2px solid #d8d8d8;padding-bottom:4px}
+h3{margin-top:1.4em;color:#2b4a6b}
+table{border-collapse:collapse;width:100%;font-size:.9em;margin:8px 0 18px}
+td,th{border:1px solid #ccc;padding:5px 8px;vertical-align:top;text-align:left}
+th{background:#eef1f4}tr:nth-child(even) td{background:#fafafa}
+code{background:#f1f1f3;padding:1px 4px;border-radius:3px;font-size:.93em}
+.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sw{display:inline-block;width:12px;height:12px;border:1px solid #888;vertical-align:-1px;margin-right:4px}
+.tag{display:inline-block;background:#2b4a6b;color:#fff;border-radius:3px;padding:0 6px;font-size:.8em}
+.no{color:#888}.si{color:#1a7a2e;font-weight:600}
+.resumen td{font-size:1em}
+</style></head><body>
+<h1>B0 Requínoa · catálogo de piezas, módulo por módulo</h1>
+<p><b>Qué es esto.</b> El inventario completo de todo lo que compone el pueblo, contado de la escena ya construida, no de memoria. Cada módulo es un constructor independiente: lee el archivo de datos, arma sus piezas y no toca a los demás. Si quieres cambiar las veredas, tocas un módulo; si quieres cambiar el tren, tocas otro.</p>
+<p><b>Cómo se lee cada tabla.</b> <b>Cuántas</b> son las copias que existen hoy en el mapa. <b>Medida</b> es el tamaño en metros, ancho × alto × largo. <b>Choca</b> dice si el camión se golpea con eso o si lo atraviesa: casi todo el pueblo es solo dibujo, y solo choca lo que tiene que chocar. <b>Sale de</b> es el archivo que lo construye.</p>
+<p><b>La cadena, de punta a punta.</b> Mapa real de OpenStreetMap → <code>tools/osm_to_town.py</code> (Python, fuera del motor) → <code>data/b0_requinoa.json</code> → nueve constructores en GDScript que arman todo al abrir la escena. Nada está dibujado a mano: si mañana cambia el recorrido, todo se vuelve a generar.</p>
+
+<h2>El pueblo en números</h2>
+<table class="resumen">
+<tr><th>Recorrido</th><td class="n">5.301 m</td><td>lazo cerrado por calles reales de Requínoa, 348 puntos de paso</td></tr>
+<tr><th>Piezas dibujadas</th><td class="n">32.005</td><td>agrupadas en 94 lotes, para que la tarjeta de video las pinte de una pasada por lote</td></tr>
+<tr><th>Piezas que chocan</th><td class="n">1.301</td><td>suelo 8, lomos 20, calamina 464, edificios 795 y la bencinera 14</td></tr>
+<tr><th>Zonas que avisan</th><td class="n">64</td><td>los tres tramos de tierra le avisan al camión que entró, para bajarle el agarre</td></tr>
+<tr><th>Edificios</th><td class="n">795</td><td>550 huellas reales de OSM y 245 fachadas generadas</td></tr>
+<tr><th>Calles del pueblo</th><td class="n">29.112 m</td><td>220 tramos además del recorrido</td></tr>
+<tr><th>Nodos en el archivo de escena</th><td class="n">11</td><td>todo lo demás se crea al abrir (regla del repo: máximo 60)</td></tr>
+</table>
+
+<h2>Módulo 1 · Datos del mapa</h2>
+<p>Un solo archivo, <code>data/b0_requinoa.json</code> (228 KB), es la única fuente. Los constructores no calculan nada: leen. Lo genera <code>tools/osm_to_town.py</code> desde el mapa crudo <code>tools/requinoa_map.osm</code>, que no se versiona por tamaño.</p>
+<table>
+<tr><th>Clave</th><th class="n">Cuántas</th><th>Qué guarda</th></tr>
+<tr><td><code>axis</code></td><td class="n">532</td><td>el eje del recorrido, un punto cada 10 m, con su altura</td></tr>
+<tr><td><code>sections</code></td><td class="n">11</td><td>qué es cada tramo: asfalto, puente o tierra</td></tr>
+<tr><td><code>waypoints</code></td><td class="n">348</td><td>por dónde va el camión, ya con las frenadas de cada curva</td></tr>
+<tr><td><code>buildings</code></td><td class="n">795</td><td>cada casa: posición, ancho, fondo, giro, pisos, estilo, daño, reja</td></tr>
+<tr><td><code>streets</code></td><td class="n">220</td><td>la red de calles del pueblo con su ancho y superficie</td></tr>
+<tr><td><code>curb_gaps</code></td><td class="n">46</td><td>las bocacalles: dónde se corta la solera</td></tr>
+<tr><td><code>humps</code></td><td class="n">10</td><td>los lomos de toro</td></tr>
+<tr><td><code>lots</code></td><td class="n">18</td><td>17 sitios eriazos y la isla de la rotonda</td></tr>
+<tr><td><code>potholes</code> · <code>gravel_zones</code></td><td class="n">18 · 3</td><td>baches y los tres tramos de tierra</td></tr>
+<tr><td><code>orchards</code> · <code>vine_rows</code></td><td class="n">1.100 · 420</td><td>árboles frutales e hileras de viña</td></tr>
+<tr><td><code>poplars</code> · <code>fences</code></td><td class="n">55 · 2</td><td>alamedas y corridas de cerco de alambre</td></tr>
+<tr><td><code>rail</code></td><td class="n">14 + 2 + 1</td><td>vías del tren, andenes y el cruce a nivel</td></tr>
+<tr><td><code>plaza</code> · <code>parks</code> · <code>churches</code> · <code>water</code></td><td class="n">1 · 10 · 3 · 5</td><td>Plaza de Armas, otros parques, iglesias, acequias</td></tr>
+<tr><td><code>trench</code> · <code>bridges</code> · <code>roundabout</code></td><td class="n">1 · 2 · 1</td><td>la trinchera de la Ruta 5, los dos cruces del puente y la rotonda</td></tr>
+<tr><td><code>station</code></td><td class="n">1</td><td>la Copec real, retirada 30 m del eje para que quepa el patio</td></tr>
+<tr><td><code>bus_stops</code> · <code>traffic_signals</code> · <code>trees</code></td><td class="n">8 · 1 · 16</td><td>paraderos, semáforo y árboles que existen en OSM</td></tr>
+</table>
+<p>Los 11 tramos del recorrido, en orden: asfalto 580 m, <b>puente 50 m</b>, asfalto 1.398 m, <b>puente 50 m</b>, asfalto 30 m, <b>tierra 100 m</b>, asfalto 1.312 m, <b>tierra 369 m</b>, asfalto 109 m, <b>tierra 230 m</b>, asfalto 1.074 m. Calles por las que pasa: Pablo Rubio, Leonardo Murialdo, Avenida El Abra, Los Canelos, Roma, Los Guindos, Santa Lucila, Las Dalias, Caupolicán, Rafael Tagle, Comercio, Daniel Vial, Camino a Chumaquito, Marcial Caro, Los Litres, Chumaquito, Guido Moresco y Juan Lobos.</p>
+
+<h2>Módulo 2 · El suelo y la trinchera de la Ruta 5</h2>
+<p>Archivo: <code>src/biomes/osm_trench.gd</code>. El suelo no es una sola plancha: son siete losas que dejan abierta la zanja por donde pasa la carretera, y el cruce del puente es <b>una sola losa continua de borde a borde</b>. Eso último no es capricho: el camión tropieza y vuelca si cruza una junta entre dos losas a 85 km/h.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th><th>Choca</th><th>Sale de</th></tr>
+<tr><td>Losas de suelo</td><td class="n">7</td><td>hasta 5.200 × 1 m de espesor</td><td><span class="sw" style="background:#727f6b"></span>verde grisáceo</td><td class="si">sí</td><td><code>osm_trench.gd</code></td></tr>
+<tr><td>Fondo de la trinchera</td><td class="n">1</td><td>30 × 320 m a 5 m bajo el suelo</td><td><span class="sw" style="background:#7f603f"></span>tierra</td><td class="si">sí</td><td><code>osm_trench.gd</code></td></tr>
+<tr><td>Muros de contención</td><td class="n">6</td><td>0,8 m de grueso, 5 m de alto</td><td><span class="sw" style="background:#8c847a"></span>hormigón</td><td class="no">no</td><td><code>osm_trench.gd</code></td></tr>
+</table>
+
+<h2>Módulo 3 · La calzada del recorrido</h2>
+<p>Archivo: <code>src/biomes/osm_road.gd</code>. Construye la calle por la que va el camión, tramo a tramo, con el ancho que le toca a cada tipo. Un detalle importante: <b>las soleras y las veredas son solo dibujo</b>. Una solera de 15 cm de frente atascaba a la caja de prueba; con el camión real de Leo se pueden volver sólidas cuando se quiera.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th><th>Choca</th><th>Nota</th></tr>
+<tr><td>Asfalto</td><td class="n">452</td><td>14 m de ancho × 2 cm</td><td><span class="sw" style="background:#3d3f44"></span>gris oscuro</td><td class="no">no</td><td>una plancha por tramo de 10 m</td></tr>
+<tr><td>Línea central amarilla</td><td class="n">904</td><td>12 cm × 3 m</td><td><span class="sw" style="background:#f2cc26"></span>amarillo</td><td class="no">no</td><td>discontinua, dos trazos por tramo</td></tr>
+<tr><td>Línea de borde blanca y cebras</td><td class="n">1.453</td><td>10 cm de ancho</td><td><span class="sw" style="background:#edede5"></span>blanco</td><td class="no">no</td><td>incluye los pasos de cebra de las bocacalles</td></tr>
+<tr><td>Solera</td><td class="n">826</td><td>1 m × 15 cm de alto</td><td><span class="sw" style="background:#b7b7b2"></span>gris claro</td><td class="no">no</td><td>se corta en las 46 bocacalles</td></tr>
+<tr><td>Vereda</td><td class="n">892</td><td>1,80 m de ancho × 15 cm</td><td><span class="sw" style="background:#ccc6b7"></span>hueso</td><td class="no">no</td><td>a 1,40 m detrás de la solera</td></tr>
+</table>
+<p>Anchos por tipo de calle, medidos desde el eje: <b>calle</b> pista 3,75 m, solera a 8 m, línea de propiedad a 10 m. <b>Tierra</b> pista 2,8 m, borde a 6,5 m, propiedad a 9 m. <b>Puente</b> pista 3,4 m, parapeto a 6,4 m. <b>Avenida</b> (no se usa en Requínoa, sí en Rancagua) pista 6,75 m, solera a 12 m, vereda a 14 m.</p>
+
+<h2>Módulo 4 · Lomos de toro y sus señales</h2>
+<p>Los diez son <b>redondeados</b>, del tipo del Decreto 200. Ninguno plano: el de 15 cm con meseta volcaba al camión de prueba a 85 km/h. Dos están puestos justo antes de que se acabe el pavimento, para que el camión llegue frenado a la tierra.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th><th>Choca</th></tr>
+<tr><td>Rampas del lomo</td><td class="n">20</td><td>7,5 cm de alto, 1,85 m de subida</td><td><span class="sw" style="background:#d88c26"></span>naranjo</td><td class="si">sí</td></tr>
+<tr><td>Línea pintada en la cresta</td><td class="n">10</td><td>15 cm de ancho</td><td><span class="sw" style="background:#f2d833"></span>amarillo</td><td class="no">no</td></tr>
+<tr><td>Poste de señal</td><td class="n">10</td><td>10 cm × 2,40 m</td><td><span class="sw" style="background:#99999e"></span>gris</td><td class="no">no</td></tr>
+<tr><td>Señal rombo y disco</td><td class="n">10 + 10</td><td>60 × 60 cm</td><td><span class="sw" style="background:#f2bf19"></span>amarillo y blanco</td><td class="no">no</td></tr>
+</table>
+
+<h2>Módulo 5 · La rotonda</h2>
+<p>Es un <b>añadido de diseño</b>: Requínoa no tiene ninguna. Va en el cruce de Las Dalias con Caupolicán, a 183 m de la Plaza de Armas. La calzada la rodea en arco de 13 m de radio y la isla es solo dibujo, para que el camión la pise sin quedarse clavado.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th><th>Choca</th></tr>
+<tr><td>Isla central</td><td class="n">1</td><td>13 m de diámetro, 30 cm de alto</td><td><span class="sw" style="background:#9e998c"></span>gris arena</td><td class="no">no</td></tr>
+<tr><td>Monumento</td><td class="n">2</td><td>columna de 1,10 × 2,60 m y esfera</td><td><span class="sw" style="background:#ccc6b7"></span>hueso</td><td class="no">no</td></tr>
+<tr><td>Arbustos de la isla</td><td class="n">6</td><td>1,5 m</td><td><span class="sw" style="background:#477f42"></span>verde</td><td class="no">no</td></tr>
+<tr><td>Anillo pintado</td><td class="n">1</td><td>15,6 m de diámetro</td><td><span class="sw" style="background:#edede5"></span>blanco</td><td class="no">no</td></tr>
+</table>
+
+<h2>Módulo 6 · El puente sobre la Ruta 5</h2>
+<p>El recorrido lo cruza dos veces, a la ida y a la vuelta. La calzada del camión queda <b>plana</b> y es la carretera la que pasa por debajo, en la trinchera de 5 m del módulo 2. Se probó con cubierta elevada y no cabe: hay una bocacalle a 13 m del estribo y dos calzadas paralelas, y siempre quedaba un escalón que volcaba al camión.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th><th>Choca</th></tr>
+<tr><td>Parapetos</td><td class="n">12</td><td>45 cm de grueso × 95 cm de alto</td><td><span class="sw" style="background:#ada89e"></span>hormigón claro</td><td class="no">no</td></tr>
+<tr><td>Viga y cepas</td><td class="n">3</td><td>viga de 70 cm; cepas de 1,10 m hasta el fondo</td><td><span class="sw" style="background:#7f7a75"></span>hormigón</td><td class="no">no</td></tr>
+<tr><td>Calzada del puente</td><td class="n">—</td><td>11,6 m de ancho</td><td><span class="sw" style="background:#3d3f44"></span>asfalto</td><td class="no">va sobre la losa del suelo</td></tr>
+</table>
+
+<h2>Módulo 7 · Los tramos de tierra</h2>
+<p>Archivo: <code>src/biomes/osm_gravel.gd</code>. Tres tramos, 699 m en total. Es lo único del mapa, además de los lomos, que le mueve las ruedas al camión: la <b>calamina</b> son barras de 3,5 cm cada 2,5 m con colisión de verdad, y la zona de ripio le avisa al camión que entró para bajarle el agarre.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th><th>Choca</th></tr>
+<tr><td>Carpeta de tierra</td><td class="n">64</td><td>11 m de ancho</td><td><span class="sw" style="background:#8e7251"></span>tierra</td><td class="no">no</td></tr>
+<tr><td>Polvo del borde</td><td class="n">128</td><td>franjas laterales</td><td><span class="sw" style="background:#a88e6b"></span>polvo</td><td class="no">no</td></tr>
+<tr><td>Acequias del camino</td><td class="n">128</td><td>cunetas a los dos lados</td><td><span class="sw" style="background:#473d2d"></span>oscuro</td><td class="no">no</td></tr>
+<tr><td>Piedrecillas</td><td class="n">7.438</td><td>sueltas, dos tonos</td><td><span class="sw" style="background:#7f776b"></span><span class="sw" style="background:#9e937f"></span></td><td class="no">no</td></tr>
+<tr><td>Calamina</td><td class="n">464</td><td>3,5 cm de alto cada 2,5 m</td><td><span class="sw" style="background:#997c5b"></span>tierra clara</td><td class="si">sí</td></tr>
+<tr><td>Baches</td><td class="n">18</td><td>de 60 cm a 1,2 m de radio</td><td><span class="sw" style="background:#4c3d2b"></span>oscuro</td><td class="no">no</td></tr>
+<tr><td>Zona de ripio</td><td class="n">64</td><td>cubre los tres tramos</td><td>—</td><td class="si">avisa</td></tr>
+</table>
+
+<h2>Módulo 8 · Los edificios y sus ventanas</h2>
+<p>Archivo: <code>src/biomes/osm_buildings.gd</code>. 795 edificios: <b>550 son huellas reales</b> de OpenStreetMap, con su forma y su giro verdaderos, y 245 son fachadas generadas donde el mapa no tenía nada, para que la calle no quede pelada. Cada uno es una caja con su techo, y las <b>ventanas, marcos, puertas y zócalo los dibuja un shader</b> sobre la pared, sin textura ninguna: por eso no pesan nada y ninguna casa es igual a otra.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Choca</th><th>Nota</th></tr>
+<tr><td>Fachadas</td><td class="n">795</td><td>según la huella real</td><td class="si">sí</td><td>una caja por edificio, con colisión</td></tr>
+<tr><td>Techos a dos aguas</td><td class="n">792</td><td>de 0,9 a 1,6 m de alto</td><td class="no">no</td><td>teja en el adobe, zinc en la población</td></tr>
+<tr><td>Rejas</td><td class="n">234</td><td>1,80 m de alto</td><td class="no">no</td><td>barrotes en la población, alambre en la parcela</td></tr>
+</table>
+<h3>Los cuatro estilos</h3>
+<table>
+<tr><th>Estilo</th><th class="n">Cuántos</th><th>Altura de piso</th><th>Techo</th><th>Dónde va</th></tr>
+<tr><td>Adobe</td><td class="n">64</td><td>3,80 m</td><td><span class="sw" style="background:#99522d"></span>teja, 1,60 m</td><td>fachada continua del centro: Comercio, Pablo Rubio, Rafael Tagle</td></tr>
+<tr><td>Población</td><td class="n">716</td><td>2,90 m</td><td><span class="sw" style="background:#8c9299"></span>zinc, 0,90 m</td><td>el resto del pueblo y las villas</td></tr>
+<tr><td>Parcela</td><td class="n">12</td><td>3,10 m</td><td><span class="sw" style="background:#80858c"></span>zinc, 1,10 m</td><td>el campo, retiradas 16 m del camino</td></tr>
+<tr><td>Iglesia</td><td class="n">3</td><td>—</td><td>torre aparte</td><td>ver el módulo 12</td></tr>
+</table>
+<p>De los 795, <b>609 son de un piso y 186 de dos</b>. Y <b>72 tienen deterioro</b>: el shader les dibuja una grieta diagonal, hollín bajo el alero y, en la mitad, ventanas tapiadas. Es el «menos ruina» que pediste: el pueblo se ve gastado, no en ruinas.</p>
+
+<h2>Módulo 9 · Sitios eriazos, basura y la entrega</h2>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Qué es</th><th>Choca</th></tr>
+<tr><td>Sitios eriazos</td><td class="n">17</td><td>pasto seco, tierra pelada y basura donde faltaría una casa; se ponen en las curvas, que es donde el camión se abre</td><td class="no">no</td></tr>
+<tr><td>Matas de pasto seco</td><td class="n">5.384</td><td>repartidas en los 17 sitios y la isla de la rotonda</td><td class="no">no</td></tr>
+<tr><td>Basura y escombro</td><td class="n">73</td><td>bolsas oscuras, cartones claros y montones de tierra</td><td class="no">no</td></tr>
+<tr><td>Timbre de la entrega</td><td class="n">1</td><td>placa naranja en la reja de la casa</td><td class="no">no</td></tr>
+<tr><td>Vecino que recibe</td><td class="n">1</td><td>cápsula de marcador, sin lógica todavía</td><td class="no">no</td></tr>
+</table>
+<p>La entrega está en la <b>calle de tierra de la villa</b>, pasada una curva, a 4.132 m del comienzo del recorrido. No es un lugar recto: el camión tiene que entrar a buscarla.</p>
+
+<h2>Módulo 10 · Mobiliario de la calle</h2>
+<p>Archivo: <code>src/biomes/osm_furniture.gd</code>. Todo lo que está parado al borde de la calle. Los árboles se ponen cada 12 m donde no hay otra cosa; los postes cada 35 m, y uno de cada diez va inclinado a propósito.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th></tr>
+<tr><td>Paraderos con techo</td><td class="n">8 + 8</td><td>caseta 1,6 × 2,3 × 3,6 m</td><td><span class="sw" style="background:#d83f3f"></span>rojo y blanco</td></tr>
+<tr><td>Semáforo</td><td class="n">1 + 1</td><td>poste de 3,6 m y cabezal</td><td><span class="sw" style="background:#262626"></span>negro</td></tr>
+<tr><td>Troncos de árbol</td><td class="n">1.575</td><td>40 cm de grueso, de 3,6 a 4,8 m</td><td><span class="sw" style="background:#66472d"></span>café</td></tr>
+<tr><td>Copas</td><td class="n">1.425</td><td>tres esferas desparejas por árbol</td><td><span class="sw" style="background:#3f7f3f"></span><span class="sw" style="background:#518e3d"></span>dos verdes</td></tr>
+<tr><td>Postes de luz y de cables</td><td class="n">600</td><td>32 cm × 8,70 m, con cruceta</td><td><span class="sw" style="background:#9e998e"></span>hormigón</td></tr>
+<tr><td>Cables colgando</td><td class="n">1.192</td><td>6 cm, con la comba entre poste y poste</td><td><span class="sw" style="background:#1e1e1e"></span>negro</td></tr>
+</table>
+
+<h2>Módulo 11 · El campo</h2>
+<p>Fuera del suelo urbano que marca OpenStreetMap no se levantan fachadas: queda campo abierto, con cerco, alameda y frutales. Así el pueblo se termina de verdad en vez de seguir para siempre.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th></tr>
+<tr><td>Postes de cerco</td><td class="n">454</td><td>12 cm × 1,50 m, cada 3 m</td><td><span class="sw" style="background:#664c33"></span>madera</td></tr>
+<tr><td>Hebras de alambre</td><td class="n">1.356</td><td>tres alturas: 50, 90 y 130 cm</td><td><span class="sw" style="background:#59595b"></span>gris</td></tr>
+<tr><td>Álamos</td><td class="n">55</td><td>9 m de fuste y copa en punta</td><td><span class="sw" style="background:#5b8c38"></span>verde claro</td></tr>
+<tr><td>Frutales del huerto</td><td class="n">1.100</td><td>tronco de 1,6 m y copa de 2,6 m</td><td><span class="sw" style="background:#4c7f33"></span>verde</td></tr>
+</table>
+
+<h2>Módulo 12 · La red de calles del pueblo</h2>
+<p>Archivo: <code>src/biomes/osm_town.gd</code>. Además del recorrido se dibuja <b>todo el resto de las calles</b>: 220 tramos, 29.112 m. Cada una con su ancho real por tipo y su superficie. Son solo dibujo, pero el suelo debajo es plano, así que el camión puede meterse por cualquiera de ellas.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Ancho</th><th>Color</th></tr>
+<tr><td>Calles pavimentadas</td><td class="n">362</td><td>de 4 a 7,5 m según el tipo</td><td><span class="sw" style="background:#44474c"></span>asfalto</td></tr>
+<tr><td>Calles de tierra</td><td class="n">276</td><td>de 4 a 6 m</td><td><span class="sw" style="background:#897051"></span>tierra</td></tr>
+<tr><td>Eje pintado</td><td class="n">102</td><td>12 cm, solo en las de 6,5 m o más</td><td><span class="sw" style="background:#dbd8cc"></span>blanco</td></tr>
+</table>
+
+<h2>Módulo 13 · El ferrocarril, el cruce y la estación</h2>
+<p>La vía del ferrocarril Santiago–Curicó atraviesa el pueblo en diagonal, y el recorrido la cruza a nivel una vez. La estación es la de 1861, que sigue en pie.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th></tr>
+<tr><td>Balasto</td><td class="n">109</td><td>4,2 m de ancho × 30 cm</td><td><span class="sw" style="background:#6b6056"></span>ripio</td></tr>
+<tr><td>Rieles</td><td class="n">220</td><td>12 × 16 cm, trocha de 1,676 m</td><td><span class="sw" style="background:#726b66"></span>acero</td></tr>
+<tr><td>Durmientes</td><td class="n">1.400</td><td>2,60 × 0,24 m, cada 5 m</td><td><span class="sw" style="background:#4c3d2d"></span>madera</td></tr>
+<tr><td>Cruz de San Andrés</td><td class="n">4</td><td>aspas de 1,5 m sobre poste</td><td><span class="sw" style="background:#f2f2ed"></span>blanco</td></tr>
+<tr><td>Barreras levantadas</td><td class="n">2 + 10</td><td>pluma de 5,6 m y sus postes</td><td><span class="sw" style="background:#cc261e"></span>rojo</td></tr>
+<tr><td>Edificio de la estación</td><td class="n">1</td><td>26 × 11 m, 6 m de alto</td><td><span class="sw" style="background:#c6b799"></span>adobe claro</td></tr>
+<tr><td>Andenes</td><td class="n">2</td><td>4 m de ancho, 87 y 97 m de largo</td><td><span class="sw" style="background:#b7b2a8"></span>hormigón</td></tr>
+<tr><td>Techumbres</td><td class="n">14</td><td>de la estación y de los andenes</td><td><span class="sw" style="background:#7f4233"></span>teja</td></tr>
+</table>
+
+<h2>Módulo 14 · Plaza de Armas, iglesias, acequias y viñas</h2>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th></tr>
+<tr><td>Explanada de la plaza</td><td class="n">1</td><td>la huella real de OSM</td><td><span class="sw" style="background:#bcb7ad"></span>baldosa</td></tr>
+<tr><td>Cuadrantes de pasto</td><td class="n">4</td><td>un tercio del ancho cada uno</td><td><span class="sw" style="background:#567f47"></span>verde</td></tr>
+<tr><td>Kiosco central</td><td class="n">9 + 1</td><td>7 m de diámetro, 8 pilares y techo</td><td><span class="sw" style="background:#d8d1bc"></span>claro</td></tr>
+<tr><td>Escaños</td><td class="n">6</td><td>1,80 m, alrededor del kiosco</td><td><span class="sw" style="background:#725133"></span>madera</td></tr>
+<tr><td>Árboles de la plaza</td><td class="n">4 + 8</td><td>4,4 m de fuste y dos copas</td><td><span class="sw" style="background:#427a3d"></span>verde</td></tr>
+<tr><td>Torres de iglesia</td><td class="n">3</td><td>5 × 5 m, 15 m de alto, más aguja</td><td><span class="sw" style="background:#d8ccb7"></span>estuco</td></tr>
+<tr><td>Cruces</td><td class="n">6</td><td>2,40 m sobre la aguja</td><td><span class="sw" style="background:#e5e0d6"></span>blanco</td></tr>
+<tr><td>Acequias</td><td class="n">61 + 61</td><td>agua de 2,2 m entre riberas de 3,4 m</td><td><span class="sw" style="background:#516b72"></span>agua<span class="sw" style="background:#75664c"></span>ribera</td></tr>
+<tr><td>Hileras de viña</td><td class="n">420</td><td>1,10 m de alto, cada 3,2 m</td><td><span class="sw" style="background:#4c6b38"></span>verde vid</td></tr>
+<tr><td>Postes de la viña</td><td class="n">840</td><td>14 cm × 1,90 m, a las dos puntas</td><td><span class="sw" style="background:#7f6b51"></span>madera</td></tr>
+</table>
+
+<h2>Módulo 15 · La Ruta 5 por debajo del puente</h2>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Color</th></tr>
+<tr><td>Calzada de la carretera</td><td class="n">5</td><td>11 m de ancho, 5 m bajo el pueblo</td><td><span class="sw" style="background:#424449"></span>asfalto</td></tr>
+<tr><td>Líneas</td><td class="n">10</td><td>14 cm a cada borde</td><td><span class="sw" style="background:#eaeae0"></span>blanco</td></tr>
+<tr><td>Camión de paso</td><td class="n">1</td><td>2,5 × 3,6 × 14 m</td><td><span class="sw" style="background:#d8d8d8"></span>blanco</td></tr>
+</table>
+
+<h2>Módulo 16 · El fondo: cordillera y cerros</h2>
+<p>Archivo: <code>src/biomes/city_backdrop.gd</code>. No se puede llegar, es telón: cierra el horizonte para que el pueblo no flote en el vacío. La cámara del camión alcanza a verlo porque su distancia de visión llega a 12 km.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Distancia</th><th>Color</th></tr>
+<tr><td>Picos de los Andes</td><td class="n">14</td><td>9 km al oriente</td><td><span class="sw" style="background:#8c93ad"></span>azul de lejanía</td></tr>
+<tr><td>Precordillera</td><td class="n">12</td><td>intermedia</td><td><span class="sw" style="background:#847f75"></span>pardo</td></tr>
+<tr><td>Cerros isla</td><td class="n">10</td><td>desde 1,6 km</td><td><span class="sw" style="background:#7f7759"></span>seco</td></tr>
+</table>
+
+<h2>Módulo 17 · La bencinera Copec</h2>
+<p>Archivo: <code>scenes/b0/city_station.tscn</code>. Es la única pieza armada a mano, y la única del pueblo con la que el camión choca de verdad pieza por pieza. Está en el lugar real de la Copec de Requínoa, retirada 30 m del eje para que el patio quepa sin invadir la calle.</p>
+<table>
+<tr><th>Pieza</th><th class="n">Cuántas</th><th>Medida</th><th>Choca</th></tr>
+<tr><td>Marquesina</td><td class="n">1</td><td>18 × 21 m a 6,4 m de alto</td><td class="si">sí</td></tr>
+<tr><td>Pilares</td><td class="n">6</td><td>60 cm × 6,4 m</td><td class="si">sí</td></tr>
+<tr><td>Islas de surtidor</td><td class="n">2</td><td>1,2 × 4 m</td><td class="si">sí</td></tr>
+<tr><td>Surtidores</td><td class="n">2</td><td>80 cm × 1,6 m</td><td class="si">sí</td></tr>
+<tr><td>Tótem de precios</td><td class="n">1</td><td>1,5 × 6 m</td><td class="si">sí</td></tr>
+<tr><td>Tienda</td><td class="n">1</td><td>12 × 8 m, 4 m de alto</td><td class="si">sí</td></tr>
+<tr><td>Punto de aire</td><td class="n">1</td><td>60 cm × 1,2 m</td><td class="si">sí</td></tr>
+<tr><td>Patio</td><td class="n">1</td><td>30 × 60 m</td><td class="no">no</td></tr>
+</table>
+
+<h2>Módulo 18 · El camión de Leo</h2>
+<p>Archivos: <code>src/vehicle/bus.tscn</code>, <code>bus.gd</code>, <code>bus_interior.tscn</code>. No es mío, es de Leo (tarea M1-T1.1 y M2-T2.1), y lo traje al pueblo para ver cómo se ve. <b>No es una caja que resbala</b>: tiene cuatro ruedas que consultan el suelo cada instante con un rayo, resorte, amortiguador y agarre lateral rueda por rueda. Todos los números viven en <code>data/tuning.json</code>, no en el código.</p>
+<h3>Chasis y ruedas</h3>
+<table>
+<tr><th>Pieza</th><th>Medida o valor</th><th>Nota</th></tr>
+<tr><td>Cuerpo</td><td>2,5 × 8 m, plancha de 20 cm</td><td>el volumen lo da el interior</td></tr>
+<tr><td>Masa</td><td>3.000 kg</td><td>centro de gravedad 60 cm bajo el eje</td></tr>
+<tr><td>Ruedas</td><td>4 anclajes, radio 50 cm</td><td>distancia entre ejes 5,5 m, trocha 2,2 m</td></tr>
+<tr><td>Suspensión</td><td>reposo 60 cm, rigidez 60.000 N/m, amortiguación 6.000 Ns/m</td><td>un rayo por rueda cada tick</td></tr>
+<tr><td>Agarre lateral</td><td>10, y 1,5 con freno de mano</td><td>es lo que le permite tomar las curvas del pueblo a 90 km/h</td></tr>
+<tr><td>Motor y freno</td><td>10.000 N de tracción, 40.000 N de freno</td><td>tope 90 km/h</td></tr>
+<tr><td>Dirección</td><td>30° máximo, que se cierra a 0,6 con la velocidad</td><td></td></tr>
+</table>
+<h3>El interior, medido</h3>
+<table>
+<tr><th>Pieza</th><th>Medida</th><th>Nota</th></tr>
+<tr><td>Piso</td><td>2,5 × 7,8 m</td><td>20 cm sobre el fondo del chasis</td></tr>
+<tr><td>Altura libre</td><td>1,90 m</td><td>se puede ir de pie</td></tr>
+<tr><td>Muro izquierdo</td><td>7,6 m corrido</td><td></td></tr>
+<tr><td>Muro derecho</td><td>6,1 m atrás + 0,6 m adelante</td><td>el hueco es la <b>puerta</b></td></tr>
+<tr><td>Peldaños de la puerta</td><td>2</td><td>para subir desde la vereda</td></tr>
+<tr><td>Estantes altos</td><td>2 de 0,55 × 2,4 m</td><td>donde van los paquetes que no se pueden mojar</td></tr>
+<tr><td>Banca</td><td>0,55 × 1,2 m</td><td>tripulación</td></tr>
+<tr><td>Camilla</td><td>0,6 × 1,8 m</td><td></td></tr>
+<tr><td>Parabrisas</td><td>2,5 m de ancho</td><td>el asiento del conductor va a la izquierda</td></tr>
+</table>
+<h3>Cámaras y mandos</h3>
+<table>
+<tr><th>Qué</th><th>Cómo</th></tr>
+<tr><td>Cámara de persecución</td><td>detrás y arriba, sigue al camión con suavizado</td></tr>
+<tr><td>Cámara de cabina</td><td>en el asiento del conductor, mirada de mouse en un cono de ±120° a los lados y ±45° arriba y abajo</td></tr>
+<tr><td>Manejar</td><td>W acelerar, S frenar, A y D doblar, freno de mano aparte</td></tr>
+<tr><td>F1</td><td>alterna entre el piloto automático y tomar el volante</td></tr>
+<tr><td>M</td><td>cámara cenital del mapa completo</td></tr>
+</table>
+
+<h2>Módulo 19 · El recorrido y sus puntos de paso</h2>
+<p>Archivo: <code>src/biomes/axis_circuit.gd</code>. Los 348 puntos de paso no se pusieron a mano: los calcula el generador sobre la pista derecha, con <b>dos puntos de frenado en cada una de las 17 curvas</b>, uno 18 m antes y otro 26 m después. Medido: sin el de después, el camión se pasa 12 m, el punto le queda atrás y gira en el sitio hasta atascarse.</p>
+<table>
+<tr><th>Dato</th><th>Valor</th></tr>
+<tr><td>Puntos de paso</td><td>348</td></tr>
+<tr><td>Separación mínima</td><td>9,7 m</td></tr>
+<tr><td>Giro máximo de la cadena</td><td>60°</td></tr>
+<tr><td>Radio de llegada</td><td>9 m</td></tr>
+<tr><td>Vuelta completa</td><td>219 s con el camión de Leo a 90 km/h; 386 s con la caja de prueba a 50</td></tr>
+</table>
+
+<h2>Módulo 20 · Escenas y herramientas</h2>
+<table>
+<tr><th>Archivo</th><th>Para qué</th></tr>
+<tr><td><code>scenes/mapa_requinoa.tscn</code></td><td><b>solo el mapa</b>, sin camión: F6 y vuelas con W A S D, Q bajar, E subir, botón derecho para mirar</td></tr>
+<tr><td><code>scenes/route_requinoa.tscn</code></td><td>el recorrido con el camión, el piloto automático y las cámaras</td></tr>
+<tr><td><code>scenes/b0_requinoa.tscn</code></td><td>el bioma solo, 11 nodos, para encadenarlo con Cerro y Pantano después</td></tr>
+<tr><td><code>src/tooling/run_demo.gd</code></td><td>corre la vuelta sin ventana y saca fotos o video de cualquier tramo</td></tr>
+<tr><td><code>src/tooling/inventory.gd</code></td><td>la herramienta que contó todo lo de este documento</td></tr>
+<tr><td><code>src/tooling/probe_surface.gd</code></td><td>mide el suelo con rayos y busca escalones y obstáculos</td></tr>
+<tr><td><code>src/tooling/trace_run.gd</code></td><td>sigue al camión y dice dónde y contra qué se cayó</td></tr>
+<tr><td><code>src/tooling/overview_shot.gd</code></td><td>foto cenital del mapa completo</td></tr>
+</table>
+
+<h2>Lo que todavía no tiene</h2>
+<p>Para cerrar el tutorial que pide la biblia de arte de Leo faltan piezas, y conviene tenerlas a la vista:</p>
+<ul>
+<li><b>Túnel bajo</b> con un paquete flotante en el techo. La ruta de Santiago lo tiene; Requínoa no.</li>
+<li><b>Zona de combustible</b> en una rama corta, con los bidones vacíos.</li>
+<li><b>El recorrido es un lazo cerrado</b> y la biblia pide una ruta de A a B con ramas. Hoy da la vuelta para que el piloto automático pueda repetirla.</li>
+<li><b>Las barreras del cruce del tren están siempre levantadas</b> y no pasa ningún tren: es geometría, no lógica.</li>
+<li><b>Las naves industriales</b> reales del pueblo salen como losas planas; si el arte las quiere, necesitan altura y techo propios.</li>
+<li><b>Soleras y veredas no chocan.</b> Se dejaron blandas por la caja de prueba; con el camión real ya se pueden endurecer.</li>
+</ul>
+<p style="color:#666;font-size:.9em;margin-top:2em">Contado de la escena construida el 14 de septiembre de 2026 con <code>src/tooling/inventory.gd</code>. Trazado y huellas: © colaboradores de OpenStreetMap, licencia ODbL 1.0. El camión, su interior y sus números son de Leo (M1-T1.1 y M2-T2.1).</p>
+</body></html>
