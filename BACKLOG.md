@@ -143,3 +143,11 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **El puente no es un paso elevado.** Por las limitaciones del placeholder (bocacalle a 13 m del estribo, dos calzadas, junta de losas) la calzada quedó plana y la Ruta 5 pasa en trinchera. Con el bus real conviene reevaluar la cubierta elevada con rampas largas.
 - **Barreras del cruce a nivel siempre levantadas y sin tren.** Geometría; el tren que pasa y la barrera que baja son lógica de juego (no de T5.2a).
 - **Leo debe confirmar la dirección de arte** («ciudad gastada» de D68 y pueblo rural de D69) al revisar la rama.
+
+## Pendientes de M5-T5.2a ronda 7 (pueblo conectado y bus real)
+
+- **La rama necesita `main` fundido para usar el bus real (bloqueante para cerrar T5.2a).** `main` 6df7824 borró `src/vehicle/placeholder_bus.{gd,tscn}` y `DemoDriver` pasó a buscar el bus por grupo tipado como `Bus`. Hasta que se funda, las escenas de esta rama siguen con el placeholder. El cambio completo (4 escenas a `bus.tscn`, `Bus` en `route_greybox.gd` y en las 4 pruebas de escena, bus por grupo en `run_demo`/`trace_run`, borrar `demo_speed_cap.gd`) está hecho y verificado en el banco BIOMAS: suite 40/40 y vuelta a 90 km/h con `min_upright` 0,99.
+- **`DemoSpeedCap` queda obsoleto** cuando entre el bus real: la suspensión por raycast con `bus_grip_lateral` 10 sostiene las curvas del pueblo sin tope de velocidad.
+- **El pueblo se puede conducir a mano** (`BusInput` + acciones de `main`, F1 alterna demo y volante). Falta decidir si la ruta de biomas lleva tripulante (`src/crew`) para entrar y salir del bus como en el Playground.
+- **Las naves industriales reales** (Delipack, David del Curto, Chilefood) salen como losas planas de 1–2 pisos. Si el arte final las quiere, necesitan altura y techo propios.
+- **Las barreras del cruce a nivel siguen levantadas y sin tren.**

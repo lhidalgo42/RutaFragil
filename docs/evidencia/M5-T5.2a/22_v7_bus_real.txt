@@ -1,0 +1,17 @@
+# Ronda 7: el bus real de Leo (main 6df7824) probado en el banco BIOMAS, no en la rama
+# main borro src/vehicle/placeholder_bus.{gd,tscn} y DemoDriver ya busca el bus por grupo
+# tipado como Bus, asi que las escenas de esta rama no pueden usarlo hasta que main se funda.
+#
+# Probado en BIOMAS con los archivos de main copiados (bus.tscn, bus_interior, cabin_camera,
+# chase_camera, demo_driver, demo_steering, tuning_table, data/tuning.*, bus_input, src/crew):
+#
+#   vuelta con tope de 50 km/h  -> lap_completed t=369,9 s  348 waypoints  min_upright 1,00
+#   vuelta SIN tope (90 km/h)   -> lap_completed t=219,4 s  348 waypoints  min_upright 0,99
+#   suite de BIOMAS             -> 40/40 en verde con el bus real
+#
+# Conclusion: la suspension por raycast con bus_grip_lateral 10 sostiene las curvas del pueblo
+# a 90 km/h. El nodo DemoSpeedCap que la ronda 6 necesitaba PARA EL PLACEHOLDER queda obsoleto.
+# Al fundir main hay que: apuntar las 4 escenas de ruta a res://src/vehicle/bus.tscn, quitar
+# `bus = NodePath(...)` del DemoDriver (ya no es @export), cambiar `PlaceholderBus` por `Bus` en
+# route_greybox.gd y en las 4 pruebas de escena, buscar el bus por grupo en run_demo/trace_run,
+# y borrar demo_speed_cap.gd. Todo eso ya esta hecho y verificado en BIOMAS.

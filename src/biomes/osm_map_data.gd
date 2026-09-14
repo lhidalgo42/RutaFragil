@@ -53,6 +53,7 @@ var churches: Array[Dictionary] = []
 var water: Array = []
 var fields: Array[Dictionary] = []
 var vine_rows: Array = []
+var streets: Array = []
 
 var _cum: PackedFloat32Array = PackedFloat32Array()
 
@@ -262,6 +263,7 @@ func _fill(d: Dictionary) -> void:
 	water = _array(d.get("water"))
 	fields = _dicts(d.get("fields"))
 	vine_rows = _array(d.get("vine_rows"))
+	streets = _array(d.get("streets"))
 	_cum = PackedFloat32Array([0.0])
 	for i: int in segment_count():
 		_cum.append(_cum[i] + _flat(axis[i]).distance_to(_flat(axis[i + 1])))

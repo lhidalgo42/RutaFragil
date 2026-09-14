@@ -377,6 +377,31 @@ for i in range(len(axis) - 1):
                               'rail_yaw': round(math.atan2(-(q2[1] - q[1]), q2[0] - q[0]), 4)})
 print('vías de tren', len(rail_lines), '| andenes', len(platforms), '| estación', rail_station.get('name'), '| cruces a nivel', [(round(c['s']), round(c['x']), round(c['z'])) for c in crossings])
 
+# ---- la red de calles del pueblo: para que se vea conectado y no un listón suelto ----
+WIDTH = {'primary': 7.5, 'secondary': 7.0, 'tertiary': 6.5, 'unclassified': 6.0, 'residential': 6.0,
+         'living_street': 5.0, 'service': 4.0, 'secondary_link': 6.0, 'tertiary_link': 6.0, 'track': 4.0}
+streets = []
+for wid, (tg, refs) in ways.items():
+    hw = tg.get('highway')
+    if hw not in WIDTH or len(refs) < 2: continue
+    pts = [g(nodes[k]) for k in refs]
+    keep = []
+    for a, b in zip(pts, pts[1:]):
+        mx, mz = (a[0] + b[0]) * 0.5, (a[1] + b[1]) * 0.5
+        s_m, lat_m = project(mx, mz)
+        if abs(lat_m) > 520: continue                      # solo el pueblo y su borde
+        if abs(lat_m) < CURB[sec_at(s_m)] - 1.0: continue  # el propio recorrido ya está dibujado
+        keep.append((a, b))
+    if not keep: continue
+    run = [keep[0][0]]
+    for a, b in keep:
+        if math.dist(a, run[-1]) > 0.5: 
+            if len(run) > 1: streets.append({'pts': [[round(px, 1), round(pz, 1)] for px, pz in run], 'w': WIDTH[hw], 'surface': way_section(tg)})
+            run = [a]
+        run.append(b)
+    if len(run) > 1: streets.append({'pts': [[round(px, 1), round(pz, 1)] for px, pz in run], 'w': WIDTH[hw], 'surface': way_section(tg)})
+print('calles del pueblo dibujadas:', len(streets), 'tramos,', round(sum(math.dist(a, b) for s_ in streets for a, b in zip(s_['pts'], s_['pts'][1:]))), 'm')
+
 # ---- plaza, parques, iglesias, acequias, viñas y huertos ----
 def poly_of(refs): return [[round(px, 1), round(pz, 1)] for px, pz in (g(nodes[k]) for k in refs)]
 def inside(poly, x, z):
@@ -459,7 +484,7 @@ for wid, (t, refs) in ways.items():
     poly = [nodes[k] for k in refs]; area, centre, (w, dep), ang = obb(poly)
     if area < 12: continue
     x, z = g(centre); s_b, lat = project(x, z)
-    if abs(lat) > 70: continue
+    if abs(lat) > 420: continue
     cy_, sy_ = math.cos(ang), math.sin(ang)
     corners = [(x + sx * w / 2 * cy_ + sz * dep / 2 * sy_, z - sx * w / 2 * sy_ + sz * dep / 2 * cy_) for sx in (-1, 1) for sz in (-1, 1)]
     if any(abs(project(*c_)[1]) < PROP[sec_at(project(*c_)[0])] + 0.8 for c_ in corners): dropped += 1; continue
@@ -669,7 +694,7 @@ out = {
     'orchards': orchard_pts, 'vine_rows': vine_rows, 'fields': fields,
     'bridges': bridges, 'motorway': motorway, 'trench': trench, 'roundabout': roundabout,
     'rail': {'lines': rail_lines, 'platforms': platforms, 'station': rail_station, 'crossings': crossings},
-    'plaza': plaza, 'parks': [p_ for p_ in parks if p_ is not plaza], 'churches': churches, 'water': water,
+    'streets': streets, 'plaza': plaza, 'parks': [p_ for p_ in parks if p_ is not plaza], 'churches': churches, 'water': water,
     'street_names': sorted({n for n in anames if n != '?'}),
 }
 dst = os.path.join(HERE, '..', 'data', 'b0_requinoa.json')

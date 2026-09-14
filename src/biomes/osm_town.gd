@@ -17,6 +17,7 @@ const COLOURS: Dictionary = {
 	"water": Color(0.32, 0.42, 0.45), "bank": Color(0.46, 0.4, 0.3),
 	"vine": Color(0.3, 0.42, 0.22), "vine_post": Color(0.5, 0.42, 0.32),
 	"motorway": Color(0.26, 0.27, 0.29), "motorway_paint": Color(0.92, 0.92, 0.88),
+	"street": Color(0.27, 0.28, 0.3), "street_dirt": Color(0.54, 0.44, 0.32), "street_line": Color(0.86, 0.85, 0.8),
 	"truck_a": Color(0.85, 0.85, 0.85), "truck_b": Color(0.2, 0.35, 0.6),
 }
 const RAIL_GAUGE_M: float = 1.676        # trocha chilena
@@ -40,6 +41,7 @@ func build() -> void:
 	for child: Node in get_children():
 		remove_child(child)
 		child.free()
+	_build_streets()
 	_build_rail()
 	_build_crossings()
 	_build_station()
@@ -57,6 +59,30 @@ func batch_count(kind: String) -> int:
 		var inst: MultiMeshInstance3D = node
 		return inst.multimesh.instance_count
 	return 0
+
+
+## The rest of the town's streets (D69 round 7): every drivable OSM way within 520 m of the
+## route, minus the route itself, so the town reads as connected instead of one loose ribbon.
+## Mesh only: the ground is flat, so the bus can drive on any of them.
+func _build_streets() -> void:
+	for item: Variant in data.streets:
+		if not (item is Dictionary):
+			continue
+		var street: Dictionary = item
+		var pts: PackedVector3Array = _points(street.get("pts", []))
+		var width: float = float(street.get("w", 6.0))
+		var dirt: bool = str(street.get("surface", "street")) == "gravel"
+		for i: int in maxi(0, pts.size() - 1):
+			var a: Vector3 = pts[i]
+			var b: Vector3 = pts[i + 1]
+			var seg: float = a.distance_to(b)
+			if seg < 0.3:
+				continue
+			var rot: Basis = Basis.looking_at((b - a) / seg, Vector3.UP)
+			var mid: Vector3 = (a + b) * 0.5
+			_b.box("street_dirt" if dirt else "street", Transform3D(rot * Basis.from_scale(Vector3(width, 0.04, seg + 0.5)), mid + Vector3.UP * 0.02))
+			if width >= 6.5 and not dirt and seg > 6.0:
+				_b.box("street_line", Transform3D(rot * Basis.from_scale(Vector3(0.12, 0.02, seg * 0.55)), mid + Vector3.UP * 0.05))
 
 
 func _build_rail() -> void:

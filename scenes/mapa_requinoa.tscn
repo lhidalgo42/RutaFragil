@@ -1,0 +1,66 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/b0_requinoa.tscn" id="1_b0"]
+[ext_resource type="Script" path="res://src/tooling/free_camera.gd" id="2_cam"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.32, 0.5, 0.78, 1)
+sky_horizon_color = Color(0.82, 0.8, 0.74, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.3, 0.29, 0.26, 1)
+ground_horizon_color = Color(0.8, 0.78, 0.72, 1)
+sun_angle_max = 24.0
+sun_curve = 0.1
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+ambient_light_color = Color(0.72, 0.74, 0.8, 1)
+ambient_light_sky_contribution = 0.7
+ambient_light_energy = 1.0
+tonemap_mode = 3
+tonemap_exposure = 1.05
+tonemap_white = 6.0
+fog_enabled = true
+fog_light_color = Color(0.78, 0.76, 0.7, 1)
+fog_light_energy = 1.0
+fog_sun_scatter = 0.15
+fog_density = 0.00022
+fog_aerial_perspective = 0.6
+fog_sky_affect = 0.35
+
+[node name="MapaRequinoa" type="Node3D"]
+
+[node name="B0Requinoa" parent="." instance=ExtResource("1_b0")]
+
+[node name="FreeCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.34, 0, -0.34, 0.94, 40.0, 120.0, 260.0)
+script = ExtResource("2_cam")
+current = true
+far = 12000.0
+rotation = Vector3(-0.35, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.62, 0.95, 0)
+light_color = Color(1, 0.93, 0.82, 1)
+light_energy = 1.35
+shadow_enabled = true
+shadow_blur = 1.6
+directional_shadow_max_distance = 420.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+
+[node name="Ayuda" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="Ayuda"]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 620.0
+offset_bottom = 96.0
+text = "Mapa de Requínoa · W A S D moverse · Q bajar · E subir · SHIFT rápido · CTRL lento · botón DERECHO del mouse para mirar"
+autowrap_mode = 2

@@ -33,6 +33,7 @@ var data: OsmMapData
 var _b: MeshBatcher = MeshBatcher.new()
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _built_at: PackedVector3Array = PackedVector3Array()
+var _built_dir: PackedVector3Array = PackedVector3Array()
 var _built_index: PackedInt32Array = PackedInt32Array()
 
 
@@ -100,11 +101,16 @@ func _build_ground() -> void:
 ## A closed town loop drives some streets twice (out and back). Building the same
 ## stretch twice leaves two surfaces a few centimetres apart, and the placeholder bus
 ## trips on the lip, so each physical stretch is built only once (D69).
-func _is_repeat(mid: Vector3, index: int) -> bool:
+func _is_repeat(mid: Vector3, dir: Vector3, index: int) -> bool:
 	for k: int in _built_at.size():
-		if absi(_built_index[k] - index) > 3 and _built_at[k].distance_to(mid) < 6.0:
+		if absi(_built_index[k] - index) <= 3 or _built_at[k].distance_to(mid) >= 6.0:
+			continue
+		# Solo se salta el tramo si va casi en la misma línea: en un cruce perpendicular
+		# los dos tramos son calles distintas y hay que pavimentar los dos.
+		if absf(_built_dir[k].dot(dir)) > 0.75:
 			return true
 	_built_at.append(mid)
+	_built_dir.append(dir)
 	_built_index.append(index)
 	return false
 
@@ -112,13 +118,14 @@ func _is_repeat(mid: Vector3, index: int) -> bool:
 func _build_segments() -> void:
 	var curbs: StaticBody3D = _body("Curbs")
 	_built_at.clear()
+	_built_dir.clear()
 	_built_index.clear()
 	for i: int in data.segment_count():
 		var a: Vector3 = data.axis[i]
 		var b: Vector3 = data.axis[i + 1]
 		var seg_len: float = a.distance_to(b)
 		var mid: Vector3 = (a + b) * 0.5
-		if _is_repeat(mid, i):
+		if _is_repeat(mid, (b - a).normalized(), i):
 			continue
 		var s_mid: float = data.project(mid).x
 		var frame: Transform3D = data.sample(s_mid)

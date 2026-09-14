@@ -72,6 +72,8 @@ func test_town_features_are_in_the_data() -> void:
 	assert_int(data.vine_rows.size()).is_greater(50)
 	assert_int(data.orchards.size()).is_greater(100)
 	assert_int(data.humps.size()).is_greater_equal(5)
+	# La red de calles del pueblo: el recorrido no puede ser un listón suelto (ronda 7)
+	assert_int(data.streets.size()).is_greater(100)
 	for h: Dictionary in data.humps:
 		# every hump is rounded: the 15 cm flat one flips the placeholder at town speed
 		assert_str(str(h.get("kind", ""))).is_equal("round")

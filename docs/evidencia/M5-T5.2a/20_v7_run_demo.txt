@@ -1,0 +1,5 @@
+# run_demo en el clon - ruta Requinoa con la red de calles (ronda 7) - bus placeholder de la rama
+DEMO waypoint 0 t=0.0s
+DEMO waypoint 1 t=3.4s
+DEMO waypoint 2 t=4.9s
+DEMO result=lap_completed t=386.4s waypoints=348 max_speed_kmh=50.5 min_upright=0.93
