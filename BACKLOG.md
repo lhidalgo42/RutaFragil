@@ -52,6 +52,8 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **`player_mouse_sensitivity` es una preferencia del jugador, no balance de juego** (nota del dueño, r3): en `TuningTable` está bien hoy, pero un mod podría cambiársela al jugador; cuando exista un menú de ajustes, ese campo se muda fuera del alcance de mods.
 - **F1 al salir de demo deja `bus_input.enabled = true` aunque la tripulante esté a pie** (semántica heredada de T1.1/D71, cuando F5 era el asiento): tras F1×2, andar con W también acelera el bus aparcado. Candidato a paso 0 de T2.3: `bus_input.enabled` debe seguir a `crew.seated`.
 - **El DisplayServer headless no retiene `Input.mouse_mode`** (medido 2026-09-14): en tests, la verdad de la captura la posee la app (`CrewInput.is_pointer_captured()`), nunca el flag del motor.
+- **Re-guardados de escena fuera de banda (editor) pueden corromper silenciosamente** (2026-09-14): una reescritura de `playground.tscn` dejó el bus spawneando a y=14,08 y borró `seat_marker` del Seat; pasó desapercibida porque la demo aterriza y corre igual. Pines añadidos en `playground_scene_test` (spawn del bus < 3 m, `seat_marker` no nulo). Candidato: fijar también los transforms de los waypoints del circuito.
+- **`seat_marker` hand-escrito sin `../` no resolvía en runtime** (mismo incidente): `NodePath("Bus/...")` se resuelve relativo al propio `Seat`, no a la raíz; corregido a `../Bus/BusInterior/Positions/driver` y pineado por el test anterior. En T2.2 r1 ocupar el asiento nunca teletransportó al volante y nadie lo notó (el dueño se sentó estando ya junto a él).
 
 ## Pendientes (copiados del plan M0-T0.1, sección 9)
 

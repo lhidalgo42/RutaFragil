@@ -33,6 +33,20 @@ func test_scene_structure() -> void:
 	assert_bool(bus_node is Bus).is_true()
 	if bus_node != null:
 		assert_bool(bus_node.is_in_group("bus")).is_true()
+	if bus_node is Bus:
+		var bus: Bus = bus_node
+		# Anti-corruption pin (2026-09-14): an out-of-band editor re-save once
+		# moved the authored bus spawn to y=14 (it fell 13 m every start and no
+		# test noticed — the demo lands and drives anyway). Assert the spawn is
+		# on the ground, so a re-save like that fails HERE, not in gameplay.
+		assert_float(bus.global_position.y).is_less(3.0)
+	# The driver's seat must keep its marker: the same re-save dropped
+	# seat_marker, and occupy() silently stopped teleporting to the wheel.
+	var seat_node: Node = scene.get_tree().get_first_node_in_group("seat")
+	assert_bool(seat_node is Seat).is_true()
+	if seat_node is Seat:
+		var seat: Seat = seat_node
+		assert_object(seat.seat_marker).is_not_null()
 	var camera_node: Node = scene.get_node_or_null("ChaseCamera")
 	assert_bool(camera_node is ChaseCamera).is_true()
 	if camera_node is ChaseCamera:
