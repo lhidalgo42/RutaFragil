@@ -8,7 +8,8 @@ extends SceneTree
 ## Copied from RutaFragil (M0-T0.3) for the BIOMAS greybox project with two
 ## additions: scene=<res path> picks the scene (default Playground) and the
 ## WaterZone is optional (B0 city has none).
-## User args after ++: scene=<res:// path>, seconds=<max game seconds, default 120>,
+## User args after ++: scene=<res:// path>, start_waypoint=<index: spawn the bus there, heading to the next>,
+## seconds=<max game seconds, default 120>,
 ## screenshot=<path, windowed runs only>, screenshot_at=<game second, def. 10>.
 ## Two hard-won constraints (plan §3):
 ## - The scene is loaded on the first process_frame, never in _init: autoloads
@@ -24,6 +25,7 @@ const DEFAULT_SECONDS: float = 120.0
 const DEFAULT_SCREENSHOT_AT: float = 10.0
 
 var _scene_path: String = PLAYGROUND_SCENE
+var _start_waypoint: int = -1
 var _seconds_max: float = DEFAULT_SECONDS
 var _screenshot_path: String = ""
 var _screenshot_at: float = DEFAULT_SCREENSHOT_AT
@@ -50,6 +52,8 @@ func _parse_user_args() -> void:
 		match parts[0]:
 			"scene":
 				_scene_path = parts[1]
+			"start_waypoint":
+				_start_waypoint = parts[1].to_int()
 			"seconds":
 				_seconds_max = maxf(1.0, parts[1].to_float())
 			"screenshot":
@@ -73,6 +77,8 @@ func _load_playground() -> void:
 		_finish("bad_scene")
 		return
 	_bus = bus
+	if _start_waypoint >= 0:
+		_teleport_to_waypoint(driver, bus)
 	driver.connect("waypoint_reached", _on_waypoint_reached)
 	driver.connect("lap_completed", _on_lap_completed)
 	driver.connect("stuck", _on_stuck)
@@ -80,6 +86,22 @@ func _load_playground() -> void:
 	if water != null and water.has_signal("bus_entered"):
 		water.connect("bus_entered", _on_water_entered)
 	physics_frame.connect(_on_physics_frame)
+
+
+## Movie clips of a later stretch: place the bus on waypoint N facing N+1 and let the driver continue from N+1.
+func _teleport_to_waypoint(driver: Node, bus: Node) -> void:
+	var circuit: Variant = driver.get("circuit")
+	if circuit == null or not circuit.has_method("waypoint_position"):
+		return
+	var count: int = int(circuit.call("waypoint_count"))
+	if count < 2:
+		return
+	var i: int = clampi(_start_waypoint, 0, count - 1)
+	var here: Vector3 = circuit.call("waypoint_position", i)
+	var next: Vector3 = circuit.call("waypoint_position", (i + 1) % count)
+	var body: Node3D = bus as Node3D
+	body.global_transform = Transform3D(Basis(Vector3.UP, atan2(-(next.x - here.x), -(next.z - here.z))), here)
+	driver.set("current_index", (i + 1) % count)
 
 
 func _nodes_look_valid(driver: Node, bus: Node) -> bool:
