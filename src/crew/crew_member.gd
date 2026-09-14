@@ -21,14 +21,27 @@ signal exited
 var aboard: bool = false
 var seated: bool = false
 
-const GRAVITY: float = 9.8
 const EYE_HEIGHT_M: float = 1.65
+
+var _gravity: float = 0.0
+
+
+## Gravity comes from the project setting (r1.2 of M2-T2.2): the bus falls
+## with physics/3d/default_gravity and the crew must fall with the same
+## number, or one day someone touches the setting and cargo and crew disagree.
+static func project_gravity() -> float:
+	var raw: Variant = ProjectSettings.get_setting("physics/3d/default_gravity", 9.8)
+	if raw is float:
+		return raw
+	if raw is int:
+		return float(raw)
+	return 9.8
 
 
 static func jump_velocity_for(jump_height_m: float) -> float:
 	if jump_height_m <= 0.0:
 		return 0.0
-	return sqrt(2.0 * GRAVITY * jump_height_m)
+	return sqrt(2.0 * project_gravity() * jump_height_m)
 
 
 static func horizontal_speed(walk_mps: float, sprint_mps: float, sprint: bool) -> float:
@@ -45,6 +58,7 @@ static func wish_direction(walk_input: Vector2, basis: Basis) -> Vector3:
 
 func _ready() -> void:
 	add_to_group("crew")
+	_gravity = project_gravity()
 
 
 func _physics_process(delta: float) -> void:
@@ -52,7 +66,7 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector3.ZERO
 		return
 	if not is_on_floor():
-		velocity.y -= GRAVITY * delta
+		velocity.y -= _gravity * delta
 	elif velocity.y > -0.5:
 		# Keep a small downward press on the floor instead of zeroing it:
 		# zeroed, the body separated over the bumps and drifted ~0.3 m per lap
