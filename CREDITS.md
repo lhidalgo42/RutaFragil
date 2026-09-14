@@ -24,3 +24,7 @@
 ## Modelos generativos
 
 *(Sección vacía — se llenará según §10.2 del maestro.)*
+
+## Datos geográficos
+
+- **OpenStreetMap** — © OpenStreetMap contributors, licencia ODbL 1.0 (https://www.openstreetmap.org/copyright). Extracto del 2026-09-14 vía Overpass API de Avenida Departamental y Gran Avenida José Miguel Carrera (San Miguel, Santiago de Chile): ejes viales, huellas de edificios, paraderos, semáforos, árboles, paso bajo nivel (`maxheight`). Archivos derivados: `tools/osm_departamental_compacto.json` (extracto en metros) y `data/b0_departamental.json` (generado por `tools/osm_to_b0.py`). Uso: trazado del greybox de B0 Ciudad (D65). Al publicar, la atribución va en los créditos del juego.

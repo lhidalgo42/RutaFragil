@@ -95,4 +95,13 @@
 </ul>
 <h3>3.2 Cómo se verifica</h3>
 <p>Igual que la v1: importación limpia, la suite completa en verde, <code>run_demo</code> cerrando la vuelta sin <code>stuck</code> ni volcadura, y capturas con ventana de cada tramo. Cada pieza es una sub-escena de menos de 60 nodos (R8).</p>
+<h2>4. Cómo se bajaron los datos reales (ronda 3, 14 de septiembre)</h2>
+<p>Fuente: <b>OpenStreetMap</b> (© colaboradores de OpenStreetMap, licencia ODbL 1.0, atribución en <code>CREDITS.md</code>), leída con la API Overpass. Corredor elegido: <b>Avenida Departamental</b>, 1000 × 600 m centrados en la estación de Metro Departamental, donde la avenida pasa <b>bajo la Gran Avenida</b> por el paso bajo nivel real que OSM marca con <code>maxheight=3.9</code>.</p>
+<pre><code>[out:json][timeout:150];
+(way["highway"](BBOX); way["building"](BBOX); relation["building"](BBOX);
+ node["amenity"="fuel"](BBOX); node["traffic_calming"](BBOX);
+ node["highway"="traffic_signals"](BBOX); node["highway"="bus_stop"](BBOX); node["natural"="tree"](BBOX);
+ way["landuse"](BBOX); way["leisure"](BBOX); way["railway"](BBOX); node["shop"](BBOX););
+out geom;</code></pre>
+<p>Con <code>BBOX = lat−0,0027, lon−0,0054, lat+0,0027, lon+0,0054</code> alrededor de la estación (−33,50244, −70,65463). El resultado se convierte a metros (x este, y norte) y se guarda en <code>tools/osm_departamental_compacto.json</code>; después <code>python3 tools/osm_to_b0.py</code> genera <code>data/b0_departamental.json</code> con el eje suavizado, los edificios como cajas orientadas, los huecos de bordillo en las bocacalles reales y el circuito completo ya comprobado (giros ≤ 54°). Lo que no es real y está anotado: la estación y el sitio de combustible (la bencinera más cercana queda a 700 m), el ancho del pasaje (14 m en vez de 8) y los lazos de retorno en los extremos.</p>
 </body></html>

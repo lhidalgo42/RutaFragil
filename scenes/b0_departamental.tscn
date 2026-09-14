@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/biomes/biome_segment.gd" id="1_segment"]
+[ext_resource type="Script" path="res://src/biomes/axis_circuit.gd" id="2_circuit"]
+[ext_resource type="Script" path="res://src/biomes/osm_road.gd" id="3_road"]
+[ext_resource type="Script" path="res://src/biomes/osm_buildings.gd" id="4_buildings"]
+[ext_resource type="PackedScene" path="res://scenes/b0/city_station.tscn" id="5_station"]
+[ext_resource type="PackedScene" path="res://scenes/b0/city_fuel_branch.tscn" id="6_fuel"]
+
+[node name="B0Departamental" type="Node3D"]
+script = ExtResource("1_segment")
+biome_id = "b0_city_departamental"
+length_m = 1087.3
+
+[node name="Entry" type="Marker3D" parent="."]
+position = Vector3(-502.9, 1.2, -34.5)
+rotation = Vector3(0, -1.6952, 0)
+
+[node name="Exit" type="Marker3D" parent="."]
+position = Vector3(522.9, 1.2, 260.8)
+
+[node name="Road" type="Node3D" parent="."]
+script = ExtResource("3_road")
+data_path = "res://data/b0_departamental.json"
+
+[node name="Buildings" type="Node3D" parent="."]
+script = ExtResource("4_buildings")
+data_path = "res://data/b0_departamental.json"
+
+[node name="Circuit" type="Node3D" parent="."]
+script = ExtResource("2_circuit")
+data_path = "res://data/b0_departamental.json"
+
+[node name="CityStation" parent="." instance=ExtResource("5_station")]
+position = Vector3(-365.2, 0, 30.8)
+rotation = Vector3(0, -1.8623, 0)
+
+[node name="CityFuelBranch" parent="." instance=ExtResource("6_fuel")]
+position = Vector3(288.3, 0, 293.9)
+rotation = Vector3(0, -1.7939, 0)

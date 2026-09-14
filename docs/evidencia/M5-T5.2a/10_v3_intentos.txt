@@ -1,0 +1,7 @@
+# Ronda 3 (trazado real): intentos y causas
+1) circuito: lazos de retorno apilados en el extremo del eje (sample() recortaba s a [0,L]) -> giro de 180°. Arreglo: extrapolar el eje.
+2) circuito: vuelta en el sitio de combustible demasiado apretada (108°). Arreglo: empalmes en arco R=16 m + lágrima a escala 0,62 + poda de waypoints a < 7,5 m.
+3) bus nace mirando al oeste (stuck a 8 s, 4,7 km/h): la matriz Transform3D del .tscn es por filas, no por columnas. Arreglo: `rotation = Vector3(0, yaw, 0)` en Entry, CityStation y CityFuelBranch.
+4) stuck tras el punto 5 (islas de surtidores): el desvío en S llegaba a las islas con 12 m de recta. Arreglo: recta de 36 m antes de las islas, hueco de bordillo y exclusión de edificios ampliados.
+5) rolled_over a 90 km/h sobre el segundo resalto plano del sentido oeste (recta de 460 m). Arreglo: resaltos redondeados 7,5 cm x 3,7 m (Decreto 200) en el oeste; planos de 15 cm en el este.
+6) lap_completed: 87 waypoints, t=181,7 s, min_upright 1,00.

@@ -15,6 +15,16 @@ func entry_position() -> Vector3:
 	return _marker_position("Entry")
 
 
+## Where the bus spawns: the Entry marker's transform (its -Z is the driving direction).
+func entry_transform() -> Transform3D:
+	var node: Node = get_node_or_null("Entry")
+	if node is Marker3D:
+		var marker: Marker3D = node
+		return marker.global_transform
+	push_error("BiomeSegment %s: missing Entry marker" % name)
+	return global_transform
+
+
 func exit_position() -> Vector3:
 	return _marker_position("Exit")
 
