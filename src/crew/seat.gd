@@ -16,6 +16,11 @@ signal vacated(seat_name: String)
 var occupied_by: CrewMember = null
 
 
+func _ready() -> void:
+	# CrewInput finds the seats by GROUP, never by node path (D59 style).
+	add_to_group("seat")
+
+
 func occupy(member: CrewMember) -> bool:
 	if occupied_by != null or member == null:
 		return false

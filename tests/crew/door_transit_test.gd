@@ -48,8 +48,8 @@ func _spawn_crew(pos: Vector3) -> CrewMember:
 	var packed: Resource = load("res://src/crew/crew_member.tscn")
 	if packed is PackedScene:
 		var scene: PackedScene = packed
-		var crew: CrewMember = scene.instantiate()
-		crew.global_position = pos
+		var crew: CrewMember = auto_free(scene.instantiate())
+		crew.position = pos
 		add_child(crew)
 		return crew
 	return null
