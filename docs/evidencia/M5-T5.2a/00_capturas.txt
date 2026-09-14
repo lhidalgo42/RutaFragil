@@ -1,0 +1,6 @@
+Las tres capturas PNG de la corrida con ventana (estación, entrega, rama de combustible) NO se versionan:
+*.png va por Git LFS y ocupa cuota permanente en el remoto (biblia de arte, sección "Dónde va cada cosa").
+Viven en C:\Users\joseg\Documents\GODOT\capturas\biomas\ y en la copia de trabajo
+C:\Users\joseg\Documents\JUEGO LEO CAMION REPARTIDOR\BIOMAS\docs\evidencia\B0_ciudad\, y se enviaron al dueño en el chat el 2026-09-13.
+Comando para regenerarlas (con ventana, en la máquina de desarrollo):
+"$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ scene=res://scenes/route_mvp.tscn seconds=9 screenshot_at=7.5 screenshot=<ruta>.png

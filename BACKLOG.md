@@ -29,6 +29,7 @@ Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código
   - **T4.4** Voz Steam por proximidad + radio + indicador de quién habla.
   - ✅ **GATE M4 (duro):** Mac + Windows en máquinas separadas, 20 min: paquetes coinciden en ambas pantallas; cambio de conductor sin tirones; voz posicional; reconexión entre contratos; medir ancho de banda con 30 paquetes.
 - **M5 — Loop económico + B0 Ciudad**
+  - **T5.2a** *(pre-tarea por instrucción del dueño, 2026-09-13; rama `m5/t5.2a-biome-greybox-b0`)* Greybox de B0 Ciudad recorrible por el bus placeholder + `BiomeSegment`/`RouteCircuit` para encadenar biomas (D59–D62). ✅ *Acepta:* `run_demo ++ scene=res://scenes/route_mvp.tscn` termina en `lap_completed`; suite en verde.
   - **T5.1** Contratos data-driven + tablón + cuota + guardado ADR-008 (empresa del host, progreso personal).
   - **T5.2** B0 Ciudad grey-box con el guion de tutorial de §6.2, NPCs con reacciones, y 1–2 zonas de combustible en ramas (surtidor + barriles) con bidones vacíos en puntos fijos; la ruta mide 6–10 km para que el tanque no alcance.
   - **T5.3** Carga tipo Tetris. ✅ *Acepta:* run completa de 15 min, 4 jugadores en LAN, dinero entra y sale, nadie ocioso >2 min.
@@ -90,6 +91,16 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **Un `.tscn` escrito a mano necesita `node_paths=[...]`** en la cabecera `[node]` para que los `@export` tipados-Node se resuelvan: sin ese atributo cargan `null` en silencio (ni error ni warning). Cualquier escena manual con referencias `@export var x: Node` debe declarar `node_paths` (lección de la escritura a mano de `scenes/playground.tscn`).
 - **En scripts `-s` no se pueden referenciar estáticamente clases que tocan un autoload:** compilan antes de que el autoload esté registrado y la cadena de tipos llega hasta él. `src/tooling/run_demo.gd` lo resuelve con duck-typing tipado (inspección por nombre de nodo/señal y lecturas `Variant` seguras); misma regla para futuras herramientas headless.
 - **`apply_central_impulse` se descarta si ese mismo tick se asigna `linear_velocity` después** (orden de operaciones dentro de `_physics_process`): la asignación pisa el impulso. Quien combine impulsos con correcciones directas de velocidad debe fijar el orden con cuidado (lección del ajuste del bus placeholder).
+
+## Pendientes propios de la ejecución de M5-T5.2a
+
+- **B1 Cerro y B2 Pantano en greybox** como `BiomeSegment` (el dueño aprobó solo B0 en esta sesión): Cerro con subida de ~12° que el bus sube y atajo de ~22° que no (a 3,33 m/s² de empuje, g·sin θ lo iguala cerca de 20°), baches rotos y borde de ladera; Pantano con lodo marcado, canal como `WaterZone` que el circuito atraviesa, lianas como postes y pasarela angosta. Encadenarlos en `route_mvp.tscn` bajo `Segments` (el `RouteCircuit` ya los suma solo).
+- **`BiomeDefinition` (R2, §19):** los biomas siguen sin datos en `data/`; definir el Resource y su espejo JSON en T5.2 (ids, longitud real, amenazas, herramienta).
+- **Escala real de la ruta (6–10 km, T5.2):** los segmentos de T5.2a miden ~300 m (D59). Al escalar, revisar `reach_radius_m` y `stuck_seconds`.
+- **Re-correr la evidencia M5-T5.2a/01 al cerrar T1.1:** la geometría de B0 (calle de 24 m, paredes del túnel a ±13 m) está calibrada contra el derrape del bus placeholder; con ruedas y suspensión puede sobrar holgura y los bordillos de 0,15 m deberían dejar de ser trampa.
+- **Geometría sin lógica:** surtidor, bidones, barriles, timbre y receptor de B0 son mallas y colisiones; repostar/verter (T1.2), comprar (T1.3), entregar y timbrar (T3.3/T5.2) llegan en sus tareas. El túnel bajo no afecta a nada hasta que existan flotantes (M3).
+- **Petición "mapa de bosque" del dueño (2026-09-13):** reportada como contradicción con D18 y resuelta hacia B0 Ciudad; Bosque sigue eliminado.
+- **Capturas de evidencia:** los PNG no se versionan (LFS, cuota permanente); ver `docs/evidencia/M5-T5.2a/00_capturas.txt`.
 
 ## Pendientes propios de la ejecución de M0-T0.4
 

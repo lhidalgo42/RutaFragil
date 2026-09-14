@@ -1,0 +1,127 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/biomes/biome_segment.gd" id="1_segment"]
+[ext_resource type="Script" path="res://src/biomes/playground/circuit.gd" id="2_circuit"]
+[ext_resource type="PackedScene" path="res://scenes/b0/city_street.tscn" id="3_street"]
+[ext_resource type="PackedScene" path="res://scenes/b0/city_station.tscn" id="4_station"]
+[ext_resource type="PackedScene" path="res://scenes/b0/city_tunnel.tscn" id="5_tunnel"]
+[ext_resource type="PackedScene" path="res://scenes/b0/city_fuel_branch.tscn" id="6_fuel"]
+[ext_resource type="PackedScene" path="res://scenes/b0/city_delivery.tscn" id="7_delivery"]
+
+[node name="B0City" type="Node3D"]
+script = ExtResource("1_segment")
+biome_id = "b0_city"
+length_m = 290.0
+
+[node name="Entry" type="Marker3D" parent="."]
+position = Vector3(24, 1.2, 150)
+
+[node name="Exit" type="Marker3D" parent="."]
+position = Vector3(0, 1.2, -140)
+
+[node name="CityStreet" parent="." instance=ExtResource("3_street")]
+
+[node name="CityStation" parent="." instance=ExtResource("4_station")]
+position = Vector3(22, 0, 80)
+
+[node name="CityTunnel" parent="." instance=ExtResource("5_tunnel")]
+position = Vector3(0, 0, -40)
+
+[node name="CityFuelBranch" parent="." instance=ExtResource("6_fuel")]
+position = Vector3(-24, 0, 62)
+
+[node name="CityDelivery" parent="." instance=ExtResource("7_delivery")]
+position = Vector3(16, 0, -118)
+
+[node name="Circuit" type="Node3D" parent="."]
+script = ExtResource("2_circuit")
+
+[node name="WP0" type="Marker3D" parent="Circuit"]
+position = Vector3(26, 1.2, 112)
+
+[node name="WP1" type="Marker3D" parent="Circuit"]
+position = Vector3(22, 1.2, 90)
+
+[node name="WP2" type="Marker3D" parent="Circuit"]
+position = Vector3(22, 1.2, 80)
+
+[node name="WP3" type="Marker3D" parent="Circuit"]
+position = Vector3(14, 1.2, 60)
+
+[node name="WP4" type="Marker3D" parent="Circuit"]
+position = Vector3(2, 1.2, 44)
+
+[node name="WP5" type="Marker3D" parent="Circuit"]
+position = Vector3(0, 1.2, 30)
+
+[node name="WP6" type="Marker3D" parent="Circuit"]
+position = Vector3(0, 1.2, 0)
+
+[node name="WP7" type="Marker3D" parent="Circuit"]
+position = Vector3(0, 1.2, -70)
+
+[node name="WP8" type="Marker3D" parent="Circuit"]
+position = Vector3(0, 1.2, -100)
+
+[node name="WP9" type="Marker3D" parent="Circuit"]
+position = Vector3(-4, 1.2, -118)
+
+[node name="WP10" type="Marker3D" parent="Circuit"]
+position = Vector3(-13, 1.2, -130)
+
+[node name="WP11" type="Marker3D" parent="Circuit"]
+position = Vector3(-26, 1.2, -134)
+
+[node name="WP12" type="Marker3D" parent="Circuit"]
+position = Vector3(-38, 1.2, -128)
+
+[node name="WP13" type="Marker3D" parent="Circuit"]
+position = Vector3(-40, 1.2, -116)
+
+[node name="WP14" type="Marker3D" parent="Circuit"]
+position = Vector3(-32, 1.2, -100)
+
+[node name="WP15" type="Marker3D" parent="Circuit"]
+position = Vector3(-16, 1.2, -92)
+
+[node name="WP16" type="Marker3D" parent="Circuit"]
+position = Vector3(-5, 1.2, -78)
+
+[node name="WP17" type="Marker3D" parent="Circuit"]
+position = Vector3(-3, 1.2, -58)
+
+[node name="WP18" type="Marker3D" parent="Circuit"]
+position = Vector3(-3, 1.2, -20)
+
+[node name="WP19" type="Marker3D" parent="Circuit"]
+position = Vector3(-3, 1.2, 30)
+
+[node name="WP20" type="Marker3D" parent="Circuit"]
+position = Vector3(-14, 1.2, 48)
+
+[node name="WP21" type="Marker3D" parent="Circuit"]
+position = Vector3(-24, 1.2, 62)
+
+[node name="WP22" type="Marker3D" parent="Circuit"]
+position = Vector3(-18, 1.2, 82)
+
+[node name="WP23" type="Marker3D" parent="Circuit"]
+position = Vector3(-6, 1.2, 105)
+
+[node name="WP24" type="Marker3D" parent="Circuit"]
+position = Vector3(-6, 1.2, 128)
+
+[node name="WP25" type="Marker3D" parent="Circuit"]
+position = Vector3(0, 1.2, 148)
+
+[node name="WP26" type="Marker3D" parent="Circuit"]
+position = Vector3(12, 1.2, 162)
+
+[node name="WP27" type="Marker3D" parent="Circuit"]
+position = Vector3(28, 1.2, 164)
+
+[node name="WP28" type="Marker3D" parent="Circuit"]
+position = Vector3(40, 1.2, 154)
+
+[node name="WP29" type="Marker3D" parent="Circuit"]
+position = Vector3(40, 1.2, 136)

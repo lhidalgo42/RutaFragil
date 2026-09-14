@@ -1,0 +1,20 @@
+# godot --headless --fixed-fps 60 --path . -s res://src/tooling/run_demo.gd   (sin argumentos: Playground, D61 no rompe D51) · código 0
+DEMO waypoint 0 t=2.5s
+DEMO waypoint 1 t=5.0s
+DEMO waypoint 2 t=7.9s
+DEMO waypoint 3 t=8.7s
+DEMO waypoint 4 t=9.7s
+DEMO waypoint 5 t=12.2s
+DEMO water_entered t=12.3s
+DEMO waypoint 6 t=13.8s
+DEMO waypoint 7 t=16.1s
+DEMO waypoint 8 t=17.1s
+DEMO waypoint 9 t=21.9s
+DEMO waypoint 10 t=25.1s
+DEMO waypoint 11 t=29.8s
+DEMO waypoint 12 t=33.0s
+DEMO waypoint 13 t=34.1s
+DEMO waypoint 14 t=35.2s
+DEMO waypoint 15 t=36.1s
+DEMO waypoint 16 t=36.8s
+DEMO result=lap_completed t=36.8s waypoints=17 max_speed_kmh=51.1 min_upright=0.95

@@ -1,0 +1,101 @@
+[gd_scene load_steps=12 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_dirt"]
+albedo_color = Color(0.5, 0.38, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_pump"]
+albedo_color = Color(0.75, 0.25, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_barrel"]
+albedo_color = Color(0.2, 0.4, 0.7, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_can"]
+albedo_color = Color(0.85, 0.15, 0.1, 1)
+
+[sub_resource type="BoxShape3D" id="shape_pump"]
+size = Vector3(1, 1.6, 1)
+
+[sub_resource type="BoxMesh" id="mesh_pump"]
+material = SubResource("mat_pump")
+size = Vector3(1, 1.6, 1)
+
+[sub_resource type="BoxShape3D" id="shape_can"]
+size = Vector3(0.4, 0.5, 0.3)
+
+[sub_resource type="BoxMesh" id="mesh_can"]
+material = SubResource("mat_can")
+size = Vector3(0.4, 0.5, 0.3)
+
+[sub_resource type="CylinderShape3D" id="shape_barrel"]
+radius = 0.45
+height = 1.1
+
+[sub_resource type="CylinderMesh" id="mesh_barrel"]
+material = SubResource("mat_barrel")
+top_radius = 0.45
+bottom_radius = 0.45
+height = 1.1
+
+[sub_resource type="BoxMesh" id="mesh_dirt"]
+material = SubResource("mat_dirt")
+size = Vector3(20, 0.02, 40)
+
+[node name="CityFuelBranch" type="Node3D"]
+
+[node name="DirtPad" type="MeshInstance3D" parent="."]
+position = Vector3(-2, 0.015, 0)
+mesh = SubResource("mesh_dirt")
+
+[node name="FuelPump" type="StaticBody3D" parent="."]
+position = Vector3(-8, 0.8, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FuelPump"]
+shape = SubResource("shape_pump")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FuelPump"]
+mesh = SubResource("mesh_pump")
+
+[node name="Barrel1" type="StaticBody3D" parent="."]
+position = Vector3(-6, 0.55, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Barrel1"]
+shape = SubResource("shape_barrel")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Barrel1"]
+mesh = SubResource("mesh_barrel")
+
+[node name="Barrel2" type="StaticBody3D" parent="."]
+position = Vector3(-6, 0.55, 9.2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Barrel2"]
+shape = SubResource("shape_barrel")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Barrel2"]
+mesh = SubResource("mesh_barrel")
+
+[node name="Barrel3" type="StaticBody3D" parent="."]
+position = Vector3(-7.1, 0.55, 8.6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Barrel3"]
+shape = SubResource("shape_barrel")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Barrel3"]
+mesh = SubResource("mesh_barrel")
+
+[node name="Jerrycan1" type="StaticBody3D" parent="."]
+position = Vector3(-6, 0.25, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jerrycan1"]
+shape = SubResource("shape_can")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Jerrycan1"]
+mesh = SubResource("mesh_can")
+
+[node name="Jerrycan2" type="StaticBody3D" parent="."]
+position = Vector3(-5.5, 0.25, -8.6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jerrycan2"]
+shape = SubResource("shape_can")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Jerrycan2"]
+mesh = SubResource("mesh_can")

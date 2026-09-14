@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/biomes/route_greybox.gd" id="1_route"]
+[ext_resource type="Script" path="res://src/biomes/route_circuit.gd" id="2_circuit"]
+[ext_resource type="Script" path="res://src/vehicle/demo_driver.gd" id="3_driver"]
+[ext_resource type="Script" path="res://src/vehicle/chase_camera.gd" id="4_camera"]
+[ext_resource type="PackedScene" path="res://src/vehicle/placeholder_bus.tscn" id="5_bus"]
+[ext_resource type="PackedScene" path="res://scenes/b0_city.tscn" id="6_b0"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+
+[node name="RouteMvp" type="Node3D" node_paths=["demo_driver"]]
+script = ExtResource("1_route")
+demo_mode = true
+demo_driver = NodePath("DemoDriver")
+
+[node name="Segments" type="Node3D" parent="."]
+
+[node name="B0City" parent="Segments" instance=ExtResource("6_b0")]
+
+[node name="RouteCircuit" type="Node3D" parent="." node_paths=["segments_root"]]
+script = ExtResource("2_circuit")
+segments_root = NodePath("../Segments")
+
+[node name="PlaceholderBus" parent="." instance=ExtResource("5_bus")]
+position = Vector3(24, 1.2, 150)
+
+[node name="DemoDriver" type="Node" parent="." node_paths=["bus", "circuit"]]
+script = ExtResource("3_driver")
+bus = NodePath("../PlaceholderBus")
+circuit = NodePath("../RouteCircuit")
+reach_radius_m = 7.0
+
+[node name="ChaseCamera" type="Camera3D" parent="." node_paths=["target"]]
+script = ExtResource("4_camera")
+target = NodePath("../PlaceholderBus")
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.9, 0.6, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")

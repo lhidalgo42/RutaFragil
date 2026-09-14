@@ -5,7 +5,10 @@ extends SceneTree
 ## closing report. Exit code 0 only on lap_completed; 1 on rolled_over, stuck,
 ## timeout or any setup failure. quit() is guaranteed on every path; always
 ## run under an outer `timeout`.
-## User args after ++: seconds=<max game seconds, default 120>,
+## Copied from RutaFragil (M0-T0.3) for the BIOMAS greybox project with two
+## additions: scene=<res path> picks the scene (default Playground) and the
+## WaterZone is optional (B0 city has none).
+## User args after ++: scene=<res:// path>, seconds=<max game seconds, default 120>,
 ## screenshot=<path, windowed runs only>, screenshot_at=<game second, def. 10>.
 ## Two hard-won constraints (plan §3):
 ## - The scene is loaded on the first process_frame, never in _init: autoloads
@@ -20,6 +23,7 @@ const PLAYGROUND_SCENE: String = "res://scenes/playground.tscn"
 const DEFAULT_SECONDS: float = 120.0
 const DEFAULT_SCREENSHOT_AT: float = 10.0
 
+var _scene_path: String = PLAYGROUND_SCENE
 var _seconds_max: float = DEFAULT_SECONDS
 var _screenshot_path: String = ""
 var _screenshot_at: float = DEFAULT_SCREENSHOT_AT
@@ -44,6 +48,8 @@ func _parse_user_args() -> void:
 		if parts.size() != 2:
 			continue
 		match parts[0]:
+			"scene":
+				_scene_path = parts[1]
 			"seconds":
 				_seconds_max = maxf(1.0, parts[1].to_float())
 			"screenshot":
@@ -53,7 +59,7 @@ func _parse_user_args() -> void:
 
 
 func _load_playground() -> void:
-	var packed: Resource = load(PLAYGROUND_SCENE)
+	var packed: Resource = load(_scene_path)
 	if not (packed is PackedScene):
 		_finish("load_failed")
 		return
@@ -63,7 +69,7 @@ func _load_playground() -> void:
 	var driver: Node = scene.get_node_or_null("DemoDriver")
 	var bus: Node = scene.get_node_or_null("PlaceholderBus")
 	var water: Node = scene.get_node_or_null("WaterZone")
-	if not _nodes_look_valid(driver, bus, water):
+	if not _nodes_look_valid(driver, bus):
 		_finish("bad_scene")
 		return
 	_bus = bus
@@ -71,16 +77,16 @@ func _load_playground() -> void:
 	driver.connect("lap_completed", _on_lap_completed)
 	driver.connect("stuck", _on_stuck)
 	bus.connect("rolled_over", _on_rolled_over)
-	water.connect("bus_entered", _on_water_entered)
+	if water != null and water.has_signal("bus_entered"):
+		water.connect("bus_entered", _on_water_entered)
 	physics_frame.connect(_on_physics_frame)
 
 
-func _nodes_look_valid(driver: Node, bus: Node, water: Node) -> bool:
-	if driver == null or bus == null or water == null:
+func _nodes_look_valid(driver: Node, bus: Node) -> bool:
+	if driver == null or bus == null:
 		return false
 	return driver.has_signal("waypoint_reached") and driver.has_signal("lap_completed") \
-		and driver.has_signal("stuck") and bus.has_signal("rolled_over") \
-		and water.has_signal("bus_entered")
+		and driver.has_signal("stuck") and bus.has_signal("rolled_over")
 
 
 func _game_time_s() -> float:

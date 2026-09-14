@@ -1,0 +1,47 @@
+# godot --headless --path RutaFragil(rama m5/t5.2a-biome-greybox-b0) -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+# Godot 4.7.2.stable.official.ed1daf0bf · Windows · 2026-09-13 · código de salida 0 · tras --import x2 (códigos 0 y 0)
+Run Test Suite: res://tests/autoloads/game_config_autoload_test.gd
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 35ms
+Run Test Suite: res://tests/biomes/b0_city_scene_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 4s 756ms
+Run Test Suite: res://tests/biomes/biome_segment_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 15ms
+Run Test Suite: res://tests/biomes/playground/circuit_test.gd
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 28ms
+Run Test Suite: res://tests/biomes/playground/playground_scene_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 2s 44ms
+Run Test Suite: res://tests/biomes/playground/water_zone_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 679ms
+Run Test Suite: res://tests/biomes/route_circuit_test.gd
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 31ms
+Run Test Suite: res://tests/core/data/data_load_report_test.gd
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 39ms
+Run Test Suite: res://tests/core/data/data_mirror_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 27ms
+Run Test Suite: res://tests/core/data/game_data_loader_test.gd
+Statistics: 17 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 175ms
+Run Test Suite: res://tests/core/data/json_file_test.gd
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 47ms
+Run Test Suite: res://tests/core/data/json_merge_test.gd
+Statistics: 7 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 40ms
+Run Test Suite: res://tests/core/data/resource_json_codec_test.gd
+Statistics: 14 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 85ms
+Run Test Suite: res://tests/net/network_backend_test.gd
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 7s 581ms
+Run Test Suite: res://tests/net/net_marker_test.gd
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 10ms
+Run Test Suite: res://tests/net/playground_client_mode_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 36ms
+Run Test Suite: res://tests/smoke_test.gd
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 19ms
+Run Test Suite: res://tests/vehicle/chase_camera_test.gd
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 85ms
+Run Test Suite: res://tests/vehicle/demo_driver_test.gd
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 4s 217ms
+Run Test Suite: res://tests/vehicle/demo_steering_test.gd
+Statistics: 10 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 48ms
+Run Test Suite: res://tests/vehicle/placeholder_bus_test.gd
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 3s 415ms
+Overall Summary: 103 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (21/21)
+Executed test cases : (103/103)

@@ -1,0 +1,117 @@
+[gd_scene load_steps=15 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_roof"]
+albedo_color = Color(0.85, 0.2, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_post"]
+albedo_color = Color(0.9, 0.9, 0.88, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_pump"]
+albedo_color = Color(0.2, 0.55, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_shop"]
+albedo_color = Color(0.92, 0.88, 0.7, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_pad"]
+albedo_color = Color(0.3, 0.31, 0.33, 1)
+
+[sub_resource type="BoxShape3D" id="shape_roof"]
+size = Vector3(16, 0.4, 18)
+
+[sub_resource type="BoxMesh" id="mesh_roof"]
+material = SubResource("mat_roof")
+size = Vector3(16, 0.4, 18)
+
+[sub_resource type="BoxShape3D" id="shape_post"]
+size = Vector3(0.6, 5, 0.6)
+
+[sub_resource type="BoxMesh" id="mesh_post"]
+material = SubResource("mat_post")
+size = Vector3(0.6, 5, 0.6)
+
+[sub_resource type="BoxShape3D" id="shape_pump"]
+size = Vector3(1.2, 1.4, 3)
+
+[sub_resource type="BoxMesh" id="mesh_pump"]
+material = SubResource("mat_pump")
+size = Vector3(1.2, 1.4, 3)
+
+[sub_resource type="BoxShape3D" id="shape_shop"]
+size = Vector3(8, 4, 6)
+
+[sub_resource type="BoxMesh" id="mesh_shop"]
+material = SubResource("mat_shop")
+size = Vector3(8, 4, 6)
+
+[sub_resource type="BoxMesh" id="mesh_pad"]
+material = SubResource("mat_pad")
+size = Vector3(24, 0.02, 60)
+
+[node name="CityStation" type="Node3D"]
+
+[node name="Forecourt" type="MeshInstance3D" parent="."]
+position = Vector3(2, 0.015, 15)
+mesh = SubResource("mesh_pad")
+
+[node name="Roof" type="StaticBody3D" parent="."]
+position = Vector3(0, 5.2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roof"]
+shape = SubResource("shape_roof")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Roof"]
+mesh = SubResource("mesh_roof")
+
+[node name="Post1" type="StaticBody3D" parent="."]
+position = Vector3(-7, 2.5, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Post1"]
+shape = SubResource("shape_post")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Post1"]
+mesh = SubResource("mesh_post")
+
+[node name="Post2" type="StaticBody3D" parent="."]
+position = Vector3(7, 2.5, -8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Post2"]
+shape = SubResource("shape_post")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Post2"]
+mesh = SubResource("mesh_post")
+
+[node name="Post3" type="StaticBody3D" parent="."]
+position = Vector3(-7, 2.5, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Post3"]
+shape = SubResource("shape_post")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Post3"]
+mesh = SubResource("mesh_post")
+
+[node name="Post4" type="StaticBody3D" parent="."]
+position = Vector3(7, 2.5, 8)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Post4"]
+shape = SubResource("shape_post")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Post4"]
+mesh = SubResource("mesh_post")
+
+[node name="PumpIsland" type="StaticBody3D" parent="."]
+position = Vector3(6, 0.7, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PumpIsland"]
+shape = SubResource("shape_pump")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PumpIsland"]
+mesh = SubResource("mesh_pump")
+
+[node name="Shop" type="StaticBody3D" parent="."]
+position = Vector3(12, 2, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shop"]
+shape = SubResource("shape_shop")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shop"]
+mesh = SubResource("mesh_shop")

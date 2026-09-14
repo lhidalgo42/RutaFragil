@@ -1,0 +1,7 @@
+# Intentos fallidos y su causa (misma orden de run_demo):
+1) circuito de 26 puntos, calle 18 m: stuck tras WP14 -> el bus sale del giro sur en diagonal y choca el bordillo derecho al entrar a la calle.
+2) lazos rehechos, calle 18 m: stuck tras WP4 -> derrapa a la izquierda saliendo de la estación y pisa el bordillo antes del lomo de toro.
+3) calle 24 m + punto de alineación: lap_completed t=80.8s.
+4) + estación y túnel con paredes a ±8 m: stuck tras WP16 -> choque frontal con el extremo de la pared derecha del túnel en el regreso.
+5) paredes del túnel a ±13 m (fuera de los bordillos) + punto de alineación antes del túnel: lap_completed t=86.6s.
+6) + rama de combustible y entrega: lap_completed t=86.6s (idéntico: nada nuevo estorba).
