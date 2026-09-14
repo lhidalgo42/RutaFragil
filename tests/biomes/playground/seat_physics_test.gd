@@ -183,6 +183,47 @@ func test_standing_restores_to_the_corridor_when_the_saved_point_is_invalid() ->
 	assert_bool(crew.is_on_floor()).override_failure_message("the crew is not on the floor at the corridor fallback").is_true()
 
 
+func test_seated_body_is_dragged_to_the_marker_while_driving() -> void:
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	runner.scene()
+	await _wait_ticks(120)
+	var bus: Bus = _group_bus()
+	var crew: CrewMember = _group_crew()
+	var seat: Seat = _group_seat()
+	if bus == null or crew == null or seat == null or seat.seat_marker == null:
+		return
+	_board_on_corridor(bus, crew)
+	await _wait_ticks(45)
+	assert_bool(seat.occupy(crew)).is_true()
+	_park_bus_input()
+	# r4.1: five seconds of driving seated — the seat must DRAG the body to
+	# the marker every physics tick; without the drag she stays at the world
+	# point where she sat and the bus leaves her ~30 m behind (measured).
+	bus.set_drive(1.0, 0.0, 0.0)
+	await _wait_ticks(300)
+	bus.set_drive(0.0, 0.0, 0.0)
+	# While driving, the drag runs before the physics step, so the body lags
+	# the marker by exactly one tick (~0.19 m at 40 km/h) — the contract is
+	# "never the 33.7 m of the un-dragged body", then exact at rest.
+	var crew_local: Vector3 = bus.global_transform.affine_inverse() * crew.global_position
+	var marker_local: Vector3 = bus.global_transform.affine_inverse() * seat.seat_marker.global_position
+	var drift: float = crew_local.distance_to(marker_local)
+	print("R41 driving drift=%.3f m (one tick at speed)" % drift)
+	assert_float(drift).override_failure_message("seated body was left behind by the bus: drift from the marker").is_less(0.25)
+	# Coasting does not stop the bus on the Playground's slope: brake it.
+	bus.set_drive(0.0, 0.0, 1.0)
+	var stop_ticks: int = 0
+	while bus.speed_mps() > 0.1 and stop_ticks < 600:
+		await get_tree().physics_frame
+		stop_ticks += 1
+	assert_float(bus.speed_mps()).override_failure_message("the bus never stopped under braking").is_less_equal(0.1)
+	crew_local = bus.global_transform.affine_inverse() * crew.global_position
+	marker_local = bus.global_transform.affine_inverse() * seat.seat_marker.global_position
+	var rest_drift: float = crew_local.distance_to(marker_local)
+	print("R41 at-rest drift=%.4f m after %d stop ticks" % [rest_drift, stop_ticks])
+	assert_float(rest_drift).override_failure_message("seated body not ON the marker at rest").is_less(0.01)
+
+
 ## Teleports the crew into the corridor center (a free point, position set
 ## before any collision happens) and marks her aboard as the door's plane
 ## test would (the plane only fires within the door gap's z range, so a
