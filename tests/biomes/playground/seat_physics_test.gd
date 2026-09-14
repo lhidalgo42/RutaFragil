@@ -224,6 +224,58 @@ func test_seated_body_is_dragged_to_the_marker_while_driving() -> void:
 	assert_float(rest_drift).override_failure_message("seated body not ON the marker at rest").is_less(0.01)
 
 
+func test_occupying_the_seat_while_driving_keeps_the_bus_calm() -> void:
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	runner.scene()
+	await _wait_ticks(120)
+	var bus: Bus = _group_bus()
+	var crew: CrewMember = _group_crew()
+	var seat: Seat = _group_seat()
+	if bus == null or crew == null or seat == null:
+		return
+	# r4.5: occupy AT SPEED. The crew starts on foot (BusInput stays disabled,
+	# so direct set_drive works). She teleports aboard with the bus's velocity
+	# (the same inheritance vacate() uses), then takes the seat mid-drive.
+	bus.set_drive(1.0, 0.0, 0.0)
+	var reached: bool = false
+	for tick: int in range(900):
+		await get_tree().physics_frame
+		if bus.speed_mps() * 3.6 >= 40.0:
+			reached = true
+			break
+	assert_bool(reached).override_failure_message("the bus never reached 40 km/h").is_true()
+	crew.global_position = bus.global_transform * Vector3(0.0, -0.55, 0.0)
+	crew.velocity = bus.linear_velocity
+	crew.aboard = true
+	await _wait_ticks(30)
+	assert_bool(crew.is_on_floor()).override_failure_message("the crew is not on the floor after boarding at speed").is_true()
+	# The spawn faces the ramp: at 40 km/h the bus is already CLIMBING it
+	# (measured 2026-09-14: y=2.4 at 40, omega ~0.37, upright ~0.987 — the
+	# reviewer's round-4 control numbers with and without anyone aboard are
+	# identical). The seat's absolute thresholds are flat-ground values, so
+	# the assertion is the round-4 instrument: the 60 ticks AFTER the occupy
+	# must be no worse than the 60 BEFORE it on the same slope.
+	var speed_at_occupy: float = bus.speed_mps()
+	var before_omega: float = 0.0
+	var before_upright: float = 1.0
+	for tick: int in range(60):
+		await get_tree().physics_frame
+		before_omega = maxf(before_omega, bus.angular_velocity.length())
+		before_upright = minf(before_upright, Bus.upright_dot(bus.global_transform.basis))
+	assert_bool(seat.occupy(crew)).is_true()
+	assert_bool(crew.seated).is_true()
+	var max_omega: float = 0.0
+	var min_upright: float = 1.0
+	for tick: int in range(60):
+		await get_tree().physics_frame
+		max_omega = maxf(max_omega, bus.angular_velocity.length())
+		min_upright = minf(min_upright, Bus.upright_dot(bus.global_transform.basis))
+	print("R45 occupy_at=%.1f km/h before(omega=%.4f upright=%.5f) after(omega=%.4f upright=%.5f)" % [speed_at_occupy * 3.6, before_omega, before_upright, max_omega, min_upright])
+	assert_float(max_omega).override_failure_message("occupying at speed added angular velocity").is_less_equal(before_omega + 0.01)
+	assert_float(min_upright).override_failure_message("occupying at speed added tilt").is_greater_equal(before_upright - 0.001)
+	assert_float(min_upright).override_failure_message("the bus is outside the round-4 driving bound").is_greater(0.98)
+
+
 ## Teleports the crew into the corridor center (a free point, position set
 ## before any collision happens) and marks her aboard as the door's plane
 ## test would (the plane only fires within the door gap's z range, so a
