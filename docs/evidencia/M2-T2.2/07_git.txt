@@ -37,3 +37,19 @@ index df25332..4ed04a7 100644
 (vacío = sin cambios)
 
 Sección post-commit capturada tras el commit de evidencia, en un commit de docs aparte.
+
+=== POST-COMMIT (parte 2) ===
+Fecha UTC: 2026-09-14 19:15:48 · rama m2/t2.2-crew · HEAD 9bc917e
+
+--- git log --oneline main..HEAD (ronda 5) ---
+9bc917e docs: evidence 02/08/09/16/17 and 07 pre-commit (M2-T2.2 r5)
+f7d10b4 fix: neutral when the driver leaves the seat; driver sits left (M2-T2.2 r5, D80)
+dcf8b5f docs: review 04 and round-5 prompt, updated (M2-T2.2)
+39c2743 docs: review 04 and round-5 prompt (M2-T2.2)
+9f19089 docs: evidence 07 post-commit (M2-T2.2 r4)
+
+--- git status --short ---
+ M docs/evidencia/M2-T2.2/07_git.txt
+(sin líneas = árbol limpio)
+
+Commits de la ronda 5: 39c2743 + dcf8b5f (docs del revisor y prompt actualizado) · f7d10b4 (fix: neutro al dejar el asiento, forma por tipo, fallback validado, conductor a la izquierda con pines y D80) · 9bc917e (evidencia).
