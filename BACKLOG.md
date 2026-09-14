@@ -47,13 +47,21 @@ Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código
 
 Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: Submarino, luego Volcán, con tipos de paquete nuevos intercalados.
 
+## Pendientes propios de la ejecución de M2-T2.2 (rondas 2–3)
+
+- **`player_mouse_sensitivity` es una preferencia del jugador, no balance de juego** (nota del dueño, r3): en `TuningTable` está bien hoy, pero un mod podría cambiársela al jugador; cuando exista un menú de ajustes, ese campo se muda fuera del alcance de mods.
+- **F1 al salir de demo deja `bus_input.enabled = true` aunque la tripulante esté a pie** (semántica heredada de T1.1/D71, cuando F5 era el asiento): tras F1×2, andar con W también acelera el bus aparcado. Candidato a paso 0 de T2.3: `bus_input.enabled` debe seguir a `crew.seated`.
+- **El DisplayServer headless no retiene `Input.mouse_mode`** (medido 2026-09-14): en tests, la verdad de la captura la posee la app (`CrewInput.is_pointer_captured()`), nunca el flag del motor.
+- **Re-guardados de escena fuera de banda (editor) pueden corromper silenciosamente** (2026-09-14): una reescritura de `playground.tscn` dejó el bus spawneando a y=14,08 y borró `seat_marker` del Seat; pasó desapercibida porque la demo aterriza y corre igual. Pines añadidos en `playground_scene_test` (spawn del bus < 3 m, `seat_marker` no nulo). Candidato: fijar también los transforms de los waypoints del circuito.
+- **`seat_marker` hand-escrito sin `../` no resolvía en runtime** (mismo incidente): `NodePath("Bus/...")` se resuelve relativo al propio `Seat`, no a la raíz; corregido a `../Bus/BusInterior/Positions/driver` y pineado por el test anterior. En T2.2 r1 ocupar el asiento nunca teletransportó al volante y nadie lo notó (el dueño se sentó estando ya junto a él).
+
 ## Pendientes (copiados del plan M0-T0.1, sección 9)
 
 - **M4:** `export_presets.cfg` con exclusión `addons/gdUnit4/*` (respetar mayúsculas). Según la doc de 4.7, `--export-release` **no** implica `--import`: correr `--import` explícito antes. Export templates 4.7.2 = `Godot_v4.7.2-stable_export_templates.tpz`, ~1,41 GB, verificar con `SHA512-SUMS.txt`.
 - **M4:** GodotSteam movió su repo a Codeberg (GitHub archivado el 2026-09-04). GDExtension actual v4.22.1-gde, Godot 4.4+, Steamworks 1.65. Confirma la regla "solo el oficial de godotsteam.com".
 - **M2 / ADR-003:** bug abierto de Godot #102763: `CharacterBody3D` se desliza sobre `AnimatableBody3D` en rotación, en ambos motores de física, fix pendiente sin milestone 4.7. Afecta la plataforma móvil del bus.
 - **T0.4:** no existe `--user-data-dir` en 4.7. Instancias paralelas necesitan `--path` propio, `--log-file` propio y, para operaciones de editor, una copia del ejecutable con archivo `_sc_` al lado (modo autocontenido). Considerar `application/run/flush_stdout_on_print=true` y `debug/file_logging/enable_file_logging=true` cuando el agente necesite leer logs de instancias que crashean.
-- **Headless no entrega InputEvents:** cualquier test que simule input necesita sesión con ventana. Diseñar los tests de gameplay (T0.3+) como simulación de lógica, no de input.
+- **Headless no entrega InputEvents de teclado, pero el ESTADO de las acciones sí se conduce por código (corregido en M2-T2.2 r2; antes esta nota decía que todo input simulado exigía ventana, y era falso):** `Input.action_press`/`action_release` funcionan en headless y `is_action_pressed`/`get_action_strength` responden por tick — así se escriben los tests e2e de input (`tests/crew/crew_input_test.gd`). OJO: `is_action_just_pressed` se limpia en el flush del siguiente frame de PROCESO, y headless corre los frames de proceso mucho más rápido que los ticks de física a 60 Hz, así que un nodo no lo ve nunca desde `_physics_process` (medido 2026-09-13: 40 pulsaciones, cero vistas). Donde un test deba observar un flanco, el código lo detecta a mano con `is_action_pressed` + estado del tick anterior (así lo hace `crew_input.gd` con `interact`).
 - Re-verificar gdUnit4 cuando salga **v6.2.2** (si añade 4.7.2 a la tabla de compatibilidad).
 - 4.8-dev4 prohíbe strings como comentarios en GDScript: lint preventivo si algún día se salta a 4.8.
 - **Correcciones al maestro para proponer al dueño:** §21 comando de gdUnit4; §15/D13 "Vulkan/MoltenVK" → backend por plataforma (D31); §0.2/T0.1 "`run_tests` pasa" → exigir conteo mínimo; §20 añadir `docs/`; §0.2, §20 y T0.1 dan por hecho un puente MCP y el proyecto decidió ninguno en M0 (D30/ADR-009); T0.1 'en ambas máquinas' → 'en Windows; Mac antes de M4' (D42); §19 nombra `GameConfig` al Resource y §20 al autoload; Godot no permite ambos → Resource `GameConfigData` + autoload `GameConfig` (D43).
@@ -101,10 +109,43 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **macOS:** la corrida del arnés de red en la Mac queda para la sesión obligatoria antes del gate M4 (D42); el guion es GDScript puro y no debería requerir cambios.
 - **Límite ENet de conexión acotado en `join_game` (3000–5000 ms):** si M4 necesita tolerar redes más lentas que una LAN, revisar el `set_timeout` del backend.
 
+## Pendientes propios de la ejecución de M1-T1.1
+
+- **Proponer al dueño:** llevar los doce parámetros de sensación del bus (D61) a §8.1 del maestro (hoy su origen figura como "§4.5 / ADR-007" en el esquema).
+- **Volcadura recuperable con acción sincronizada** (§4.5): necesita el sistema de acciones cooperativas — M3.
+- **Mando (gamepad)** vía Steam Input: M4 (D62 es teclado).
+- **Herramienta de medición permanente:** la sonda de medidas del paso 6 era temporal y se borró; si el dueño va a tunear seguido, convertirla en `src/tooling/` permanente (nueva tarea o ADR).
+- **`run_demo` con `camera=cabin|chase`:** arg nuevo documentado en README; útil para capturas.
+
 ## Cerrados en la ronda 2 de M0-T0.3
 
 - **El impulso de escalón (climb hop) del bus placeholder, eliminado** (revisión 01, r1.1). Lo medido desmiente la descripción de la ronda 1 ("ayuda a subir los baches"): la sonda del revisor midió **cero impulsos dentro del campo de baches** y **uno por vuelta en la esquina de aproximación** (t=24,6 s, (36,1 · 1,13 · −14,2)). La causa real era de trazado: el bus salía del tramo WP9→WP10 hasta 6 m fuera de la línea x = 30, entraba oblicuo a la fila y se clavaba contra la esquina del primer bache; el impulso lo rescataba y reiniciaba el contador de `stuck`, anulando el detector que la propia tarea entregaba. Arreglo: WP8 movido a la línea x = 30, waypoint de aproximación antes del campo, salida norte re-encaminada y campo de baches rehecho (ver entrada siguiente) de modo que no exista cara vertical de ataque. Borrados `_update_climb_hop` y sus tres `@export` (`climb_hop_up_speed`, `climb_hop_fwd_speed`, `climb_wedge_seconds`) junto con `_wedge_time_s` y `_has_moved`; la vuelta se completa sin ningún rescate y un atasco provocado sigue produciendo `stuck` (bus congelado en la demo; pared infranqueable en `test_stuck_emitted_against_unclimbable_wall`). **Nota para el cierre:** D50 en `DECISIONS.md` describe aún el campo viejo (6 baches × 0,15 m cada 3 m) y la ficción del hop; actualizarla al fusionar la ronda 2.
 - **Campo de baches rehecho (revisión 01, r1.2): el chasis ya cae entre baches.** Antes: altura constante y = 1,25 m e inclinación máxima 3,3° durante toda la travesía. Ahora: dos mesetas de 1,5 m de alto × 16 m de ancho con entrada rampada a 8° (la pendiente de la rampa grande, que el bus ya sube) y borde de caída vertical, hueco de 9,6 m entre mesetas (> 8 m del bus). El bus entra al campo por la línea x = 30 (x ≈ 30,7 en la entrada, antes hasta 36,2), sube y cae de cada meseta (y oscila entre 1,10 y 3,16 m) y la vuelta termina con `min_upright` 0,9496 (18,4°, lanzamiento oblicuo al iniciar el giro de salida sobre la meseta 2) en vez del 0,96 de la ronda 1 — el mínimo ahora lo produce el campo de baches, no la rampa — sin acercarse al umbral de volcadura (0,5).
+
+## Pendientes propios de la ejecución de M2-T2.1
+
+- **PRIMER PASO OBLIGATORIO de T2.2 (aviso del revisor, sin diagnosticar):** al poner un `CharacterBody3D` de pie sobre el bus, el bus salió despedido (el montaje de la sonda se verificó correcto sobre suelo plano). Es el riesgo #1 de ADR-003: medir y entender la interacción ANTES de escribir el personaje. No asumir que se arregla solo.
+- **T2.2 (no empezar en T2.1):** personaje, caminar, entrar/salir, sentarse, conducir desde el asiento. El interior ya tiene posiciones (`Positions`) y la puerta lateral con escalones.
+- **T2.3:** agarrar/soltar/amarrar paquetes; los anclajes (`Restraints`, 12) esperan el `restraint`.
+- **Paneles operables y sistemas del bus (§4.2):** M3+.
+- **Los escalones de la puerta** no alcanzan el suelo (dos risers de 0,25 desde el piso; el suelo queda más bajo con la suspensión cargada): cuando T2.2 haga el abordaje, decidir si hace falta un tercer escalón o escalón plegable.
+- **Arte/ventanas reales del bus** (el parabrisas es un hueco greybox): M8.
+
+## Pendientes propios de la ejecución de M2-T2.2
+
+- **DECISIÓN DEL DUEÑO (planteada por r1.1 de T1.1, sin resolver):** §4.5 del maestro dice que el bus hace 0–60 km/h en unos 5 s; el juego hace 6,93 s y el campo de tuning ya no miente (es fuerza, `bus_traction_force_n`). Decidir: (a) aceptar 6,93 s y corregir §4.5 del maestro, o (b) dejar pendiente calibrar la tracción para acercarse a 5 s (cambia la sensación que el gate ya aprobó). No bloquea M2.
+
+## Pendientes propios de la ejecución de M2-T2.2
+
+- **T2.3 (no tocado en T2.2):** agarrar, soltar, lanzar y amarrar paquetes. El gate duro de M2 (dos instancias, red real) es suyo. Los 12 anclajes (`Restraints`) y las 6 posiciones esperan.
+- **Red y autoridad del conductor (M4):** el asiento deja el gancho (`Seat.occupied`/`vacated`); la autoridad del bus pasa al peer sentado (ADR-006). La tripulante no está replicada (es de un jugador en T2.2); el reparentado para la red queda como mecanismo disponible (D75 registró que en local no se usa por la doble herencia medida).
+- **Interacción personaje↔bus al ENTRAR EN CONTACTO con el chasis exterior:** la medida del revisor (el bus despedido al spawnar un cuerpo encima) quedó explicada por la regla "posicionar antes de entrar al árbol"; si T2.2+ muestra otra interacción, medir antes de mitigar (ADR-003).
+- **La deriva de la tripulante a bordo (~0,30 m por minuto sobre los saltos):** comportamiento físico honesto (te tambaleas); si el dueño lo quiere más pegado, es un ajuste de fricción/snap, no de red. Registrado, no bloquea.
+- **Cámara de cabina vs. cuerpo:** al sentarse la cápsula se oculta (D76); cuando haya arte (M8) la primera persona querrá manos/cuerpo (§9.1).
+
+## Cerrados en M2-T2.1 (paso 0)
+
+- **r1.1 de T1.1 (el campo de aceleración mentía):** `bus_accel_0_60_kmh_s` renombrado a `bus_traction_force_n` (10 000 N) — el nombre dice ahora lo que el código aplica; el 0–60 real medido (6,93 s) queda anotado en el esquema. Se eligió renombrar y no calibrar porque el gate del dueño aprobó la sensación con la aceleración actual; cumplir el nombre acelerando más habría cambiado lo aprobado.
 
 ## Cerrados en las rondas 2 y 3 de M0-T0.1
 

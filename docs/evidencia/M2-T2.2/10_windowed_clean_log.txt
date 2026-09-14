@@ -1,0 +1,23 @@
+10_windowed_clean_log.txt — M2-T2.2 (ronda 3)
+Demuestra: una corrida CON VENTANA de ~30 s (--quit-after 1800) con el nuevo código de cámaras/ratón, cuyo registro (user://logs/godot.log, el que manda — la consola no se engancha) no contiene ni una línea de error. El ratón quedó capturado durante la corrida (modo jugador) y se liberó al salir.
+HEAD b4aad77 (escena restaurada). Fecha UTC: 2026-09-14 05:32:17
+
+Comando: timeout 120 $GODOT_BIN --path . --quit-after 1800   (sin --headless: abre ventana; exit 0)
+Log leído: %APPDATA%/Godot/app_userdata/RutaFragil/logs/godot.log, mtime fresco (2026-09-14 02:29:42 -0300), 158 bytes, 3 líneas.
+
+grep -c ERROR        -> 0
+grep -c WARNING      -> 0
+
+--- user://logs/godot.log, contenido íntegro ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060 Laptop GPU
+
+CAPTURE user://captures/12_fp_foot.png err=0
+CAPTURE user://captures/12_cabin.png err=0
+CAPTURE user://captures/12_chase.png err=0
+CAPTURE done
+
+--- stdout de la misma corrida (también limpio) ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060 Laptop GPU
+

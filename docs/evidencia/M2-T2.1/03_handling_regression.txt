@@ -1,0 +1,28 @@
+03_handling_regression.txt — M2-T2.1, paso 4 (D70)
+Demuestra: las seis cifras de T1.1 re-medidas CON el interior, dentro del 10 %, y ningún dato de tuning tocado (git diff de data/ solo contiene el renombrado r1.1 del paso 0, que cambia el NOMBRE, no el valor).
+Árbol de trabajo sobre d8c2839. Fecha UTC: 2026-09-13 01:55:39
+
+Banco: sonda temporal probe_handling.gd (borrada tras la captura), pista plana de 4000 m, física headless a 60 Hz con --fixed-fps 60.
+
+| Cifra | Antes (T1.1, aprobada en el gate) | Después (con interior) | Δ |
+|---|---|---|---|
+| Altura de reposo | 0,977 m | 0,978 m | +0,1 % |
+| 0–60 km/h | 6,93 s | 6,93 s | 0 % |
+| Tope sostenido | 90,0 km/h | 90,0 km/h | 0 % |
+| Radio de giro | 12,4 m | 12,4 m | 0 % |
+| Frenado desde 50 km/h | 6,7 m en 0,98 s | 6,7 m en 0,98 s | 0 % |
+| Balanceo máximo en el circuito | ≈14° (min_upright 0,97) | ≈11° (min_upright 0,98) | dentro |
+
+Volcado del banco (con interior):
+```
+MEASURE rest_height_m=0.978
+MEASURE time_0_60_s=6.93
+MEASURE max_speed_kmh=90.0
+MEASURE turn_radius_m=12.4 (mean_speed_kmh=23.4)
+MEASURE brake_50kmh_distance_m=6.7 stop_time_s=0.98
+```
+
+Y lo que el interior exigió arreglar, todo con medición (registro completo en el reporte de la ronda):
+- Los escalones bajaban más que el plano de contacto de las ruedas: el bus descansaba SOBRE ellos y no traccionaba. Re-montados como placas que no tocan el suelo en reposo.
+- La salida del campo de mesetas dejaba el bus encallado girando sobre el borde: rampas de bajada añadidas a las dos mesetas y WP11 movido a terreno plano (D65 permite ajustar la geometría; el conductor automático y las tolerancias intactos).
+- `can_sleep = false` restaurado en bus.tscn (se perdió al reescribir el placeholder en T1.1).

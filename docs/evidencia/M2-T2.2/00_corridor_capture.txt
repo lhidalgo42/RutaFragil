@@ -1,0 +1,10 @@
+00_corridor_capture.txt — M2-T2.2, paso 0c (cierra r1.2 de T2.1)
+Demuestra: captura del interior DESDE DENTRO, mirando el pasillo hacia atrás — lo que faltaba en la evidencia 05 de T2.1 para que el dueño juzgue si el espacio parece un bus habitable o una caja.
+Árbol sobre 38ff96c. Fecha UTC: 2026-09-13 04:26:24
+
+Método: sonda temporal (borrada tras la captura) que carga el Playground con demo_mode=false, coloca una Camera3D dentro del interior en (0, 0.75, -2.6) local mirando hacia atrás (+z) y guarda el frame. Ventana, renderer d3d12.
+
+En cuadro: muros laterales, piso del pasillo, las dos estanterías flanqueando, el hueco de las puertas traseras dejando pasar la luz de fuera, techo. Con la geometría D72 (encogida para caber en el chasis).
+
+--- git lfs ls-files ---
+422f170d51 * docs/evidencia/M2-T2.2/00_corridor_capture.png

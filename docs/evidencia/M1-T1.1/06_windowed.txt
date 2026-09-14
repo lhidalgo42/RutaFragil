@@ -1,0 +1,14 @@
+06_windowed.txt — M1-T1.1
+Demuestra: las dos cámaras funcionan en una corrida con ventana (D63); capturas adjuntas.
+Árbol de la ronda 1 sobre c84bf14. Fecha UTC: 2026-09-12 04:51:31
+
+Comando persecución: timeout 120 "$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ seconds=8 screenshot=user://t11_chase.png screenshot_at=4
+  → 06_windowed_chase.png: el bus sobre la rampa, zona de agua al fondo (vista exterior).
+Comando cabina: timeout 120 "$GODOT_BIN" --path . -s res://src/tooling/run_demo.gd ++ seconds=8 screenshot=user://t11_cabin.png screenshot_at=4 camera=cabin
+  → 06_windowed_cabin.png: vista del conductor — borde del capó, la rampa por delante, el agua a la derecha.
+El arg camera=cabin de run_demo conmuta las cámaras por script (headless/—s no recibe InputEvent; el conmutador por tecla C lo ejercita el dueño en su gate).
+Códigos de salida: 1 por timeout con seconds=8 < vuelta (esperado, por diseño de run_demo).
+
+--- git lfs ls-files (las dos capturas como punteros LFS tras añadirse al índice) ---
+67324caf55 * docs/evidencia/M1-T1.1/06_windowed_cabin.png
+2f00066264 * docs/evidencia/M1-T1.1/06_windowed_chase.png

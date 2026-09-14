@@ -1,0 +1,17 @@
+05_windowed.txt — M2-T2.2
+Demuestra: capturas con ventana — entrando por la puerta lateral, caminando por el pasillo, sentado al volante. (Más la 00_corridor_capture.png del paso 0c: el interior desde dentro.)
+Árbol de la ronda 1 sobre 3f8ec54. Fecha UTC: 2026-09-13 05:28:14
+
+Método: sonda temporal (borrada) que carga el Playground (demo_mode=false), posiciona a la tripulante con drive_move/teleports y captura frames con una cámara itinerante; la de 'sentado' usa la cámara de cabina tras seat.occupy().
+- 05_entering.png: la tripulante en el hueco de la puerta lateral, vista desde fuera.
+- 05_walking.png: la tripulante en medio del pasillo entre las estanterías, vista desde dentro.
+- 05_seated.png: la vista del conductor desde el asiento (salpicadero abajo, el mundo por el parabrisas).
+
+--- git lfs ls-files ---
+3dda6aff08 * docs/evidencia/M2-T2.2/05_entering.png
+3ad0f19dae * docs/evidencia/M2-T2.2/05_seated.png
+e77c97134d * docs/evidencia/M2-T2.2/05_walking.png
+10fc84cc8a * docs/evidencia/M0-T0.3/05_playground.png
+71014a60aa * docs/evidencia/M2-T2.1/05_interior_cabin.png
+2d79b9cff1 * docs/evidencia/M2-T2.1/05_interior_chase.png
+422f170d51 * docs/evidencia/M2-T2.2/00_corridor_capture.png

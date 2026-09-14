@@ -1,0 +1,29 @@
+05_handling.txt — M1-T1.1, paso 6 (ajuste medido)
+Demuestra: las medidas del bus con suspensión, ANTES y DESPUÉS del análisis. Comando del banco (sonda temporal probe_handling.gd, borrada tras la captura; pista plana de 4000 m para que nada corra por el borde):
+  timeout 120 "$GODOT_BIN" --headless --fixed-fps 60 --path . -s res://src/tooling/probe_handling.gd
+Árbol de trabajo de la ronda 1 sobre c84bf14. Fecha UTC: 2026-09-12 04:51:00
+
+IMPORTANTE de método: la primera medición con pista de 400 m dio una falsa 'bomba de velocidad' (177 km/h): el bus salía por el borde de la pista. Con 4000 m el fenómeno no existe. El agarre por fuerza lleva además una regla defensiva (nunca añade energía a lo largo de la velocidad).
+
+ANTES (valores de partida del plan §6 paso 1) / DESPUÉS (sin cambios: los números ya están en spec o se explican):
+
+| Medida | Antes | Después | Objetivo §4.5 |
+|---|---|---|---|
+| Altura de reposo | 0,977 m | 0,977 m (sin cambio) | — |
+| 0–60 km/h | 6,93 s | 6,93 s (sin cambio) | ~5 s — desviación documentada: pérdidas del modelo por fuerzas (pitch durante la aceleración); BACKLOG para el ajuste si el dueño lo nota |
+| Velocidad máxima | 90,0 km/h (tope sostenido) | 90,0 km/h | 90 km/h |
+| Radio de giro (~23 km/h media) | 12,4 m | 12,4 m | — |
+| Frenado desde 50 km/h | 6,7 m en 0,98 s | 6,7 m en 0,98 s | arcade fuerte |
+| Balanceo máximo en el circuito (demo) | min_upright 0,97 (≈14°) | 0,97 (≈14°) | sin volcadura sola |
+
+Volcado del banco (corrida final):
+```
+MEASURE rest_height_m=0.977
+MEASURE time_0_60_s=6.93
+MEASURE max_speed_kmh=90.0
+MEASURE turn_radius_30kmh_m=12.4 (mean_speed_kmh=23.4)
+MEASURE brake_50kmh_distance_m=6.7 stop_time_s=0.98
+```
+Demo (min_upright): DEMO result=lap_completed t=23.0s waypoints=17 max_speed_kmh=64.3 min_upright=0.97
+
+Conclusión del paso 6: ningún valor de data/ necesitó ajuste tras medir. El único desvío (0–60 en 6,93 s frente a ~5 s) queda medido y registrado en BACKLOG.

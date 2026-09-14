@@ -1,0 +1,30 @@
+06_regression.txt — M2-T2.2 (ronda 2)
+Demuestra: run_demo, la red (ruta corta y larga) y las cifras de sensación intactos tras la ronda 2 (acciones de entrada registradas, tecla interact cableada, gravedad desde el ajuste del proyecto, probe_handling restaurado).
+HEAD 5766739. Fecha UTC: 2026-09-14 01:54:27
+
+=== run_demo (--headless, vuelta completa con la tripulante presente, exit 0) ===
+Comando: timeout 180 $GODOT_BIN --headless --path . -s res://src/tooling/run_demo.gd
+DEMO result=lap_completed t=26.8s waypoints=17 max_speed_kmh=64.6 min_upright=0.97
+
+=== Red, ruta corta (exit 0) ===
+Comando: timeout 150 $GODOT_BIN --headless --path . -s res://src/tooling/run_net_scenario.gd ++ role=launcher
+NET summary port=47810 pids=[39240, 28548, 45884, 29648]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+
+=== Red, ruta larga (++ waypoints=16, exit 0) ===
+Comando: timeout 200 $GODOT_BIN --headless --path . -s res://src/tooling/run_net_scenario.gd ++ role=launcher ++ waypoints=16
+NET summary port=47810 pids=[13764, 20620, 22788, 20736]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+
+=== Cifras de sensación (probe_handling.gd, herramienta permanente de r1.3, exit 0) ===
+Comando: timeout 180 $GODOT_BIN --headless --path . -s res://src/tooling/probe_handling.gd
+MEASURE rest_height_m=0.977
+MEASURE time_0_60_s=6.93
+MEASURE max_speed_kmh=90.0
+MEASURE turn_radius_m=12.4 (mean_speed_kmh=23.4)
+MEASURE brake_50kmh_distance_m=6.7 stop_time_s=0.98
+
+Referencia aprobada en el gate de T1.1: reposo 0,979 m · 0–60 en 6,93 s · tope 90,0 km/h · radio 12,4 m · frenada desde 50 en 6,7 m. La demo de la ronda 1 midió t=26,8s max=64,6 min_upright=0,97: idénticos.
+Sin procesos Godot huérfanos tras las corridas de red (comprobado con ps -W).

@@ -1,0 +1,15 @@
+16_neutral_fail_first.txt — M2-T2.2 (ronda 5, orden B→A y test de D antes que D)
+Demuestra: los dos tests nuevos de la suite de física del asiento (tests/biomes/playground/seat_physics_test.gd) se escribieron ANTES del arreglo y fallaron sobre el código de 9f19089 con números; tras el arreglo pasan con números.
+Fecha UTC: 2026-09-14 19:13:52
+
+=== ANTES (código pre-ronda-5): exit 100, 2 tests nuevos fallando ===
+NEUTRAL  throttle_after=1.00 steer_after=0.00 · 21,6 km/h al soltar+levantarse → 33,9 km/h 120 ticks después
+         (el pedal queda pegado: el bus ACELERA sin conductor; el revisor midió lo mismo: 21,6 → 30,5)
+FALLBACK landed_local=(0.0, 1.4, -1.4) -> restauró al punto envenenado del techo en vez del pasillo
+
+=== DESPUÉS (HEAD f7d10b4): exit 0, 4/4 verdes ===
+NEUTRAL  throttle_after=0.00 steer_after=0.00 (el literal exacto) · 21,6 km/h → 17,7 km/h 120 ticks después (no sube)
+FALLBACK landed_local=(0.0, -0.55, -2.0) exacto · max_omega=0.0000 · on_floor=true
+         (la sonda de solape verificó el punto (0, -0.55, -2.0) libre contra las formas reales del interior: 0 hits)
+
+Referencia de control del revisor (soltar sin levantarse): 21,6 → 13,2 km/h en 3 s; con el arreglo, soltar+levantarse reproduce la costa libre.

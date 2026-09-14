@@ -1,0 +1,10 @@
+08_no_verificado.txt — M2-T2.2 (R7), ronda 5
+Fecha UTC: 2026-09-14 19:14:49 · HEAD f7d10b4
+
+1. EL GATE del dueño (completo, tres minutos): F5, mira con el ratón, camina hasta la puerta, entra, E al volante (ahora a la IZQUIERDA, D80), conduce recto y con giros, C alterna cabina/persecución, E para levantarte CON EL BUS EN MARCHA (el bus queda en neutro y va perdiendo velocidad, no acelerando solo), camina por el pasillo mientras rueda, Escape y clic para el puntero.
+2. Varianza del modo ventana: la velocidad exacta al soltar varía entre corridas (los frames de proceso y los ticks de física no van ligados con ventana); lo determinista y exigido es el test headless (neutro exacto, velocidad que no sube). Lo que el dueño debe ver: el bus pierde velocidad con la tripulante de pie.
+3. El pico espurio de 307 km/h en una corrida con captura síncrona intermedia: artefacto de medición (get_image parando el pipeline), no física; sin captura no aparece. Anotado por si vuelve.
+4. 'WASAPI: GetBufferSize error' apareció UNA vez de seis corridas con ventana: artefacto del dispositivo de audio de esta sesión, ajeno al código; si aparece en el log del dueño, es eso.
+5. Ocupar el asiento con el bus en marcha: sin test (bajo riesgo: sentado no hay colisión; r4.5 del revisor, al paso 0 de T2.3).
+6. r4.1 (el cuerpo sentado no sigue al bus en coordenadas de mundo; invisible hoy, importa en M4), la arruga de F1 (bus_input.enabled al salir de demo), pines de waypoints, sensibilidad como preferencia de jugador: BACKLOG / paso 0 de T2.3.
+7. La red con la tripulante: no se replica (M4). macOS (D42): todo corrió en Windows. Gate duro de M2: es T2.3.

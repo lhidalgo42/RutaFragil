@@ -1,0 +1,24 @@
+03_platform_measurement.txt — M2-T2.2, paso 1 (D74: la decisión se tomó con esta tabla delante)
+Árbol sobre 3f8ec54. Fecha UTC: 2026-09-13 04:29:34
+Sonda temporal (borrada): cápsula CharacterBody3D (radio 0,30, altura 1,75) de pie sobre el piso del interior, posicionada ANTES de entrar al árbol (regla del revisor), con gravedad manual + move_and_slide; el bus corre la demo real del Playground (giros + saltos, ~70 km/h) durante 64 s.
+
+Tabla de medidas (extracto; t en s, km/h del bus, yaw_rate en rad/s, posición de la cápsula en el marco del bus, |get_platform_velocity()| en m/s):
+```
+t_s,bus_kmh,bus_yaw_rate,cap_local_x,cap_local_y,cap_local_z,platform_v
+2.0,58.1,0.00,0.768,0.276,0.004,16.13
+8.0,70.3,-0.00,0.768,0.433,0.007,19.53
+20.0,76.9,0.00,0.768,0.428,0.006,21.54
+32.0,68.9,-0.00,0.768,0.438,0.005,19.13
+46.0,68.6,-0.00,0.769,0.425,0.004,19.07
+60.0,73.4,0.00,0.769,0.429,0.002,20.39
+64.0,68.4,-0.00,0.769,0.426,0.002,19.02
+```
+
+RESULTADOS:
+- Deriva en el marco del bus tras 64 s con giros y saltos: x ±0,002 m, z ±0,003 m (milímetros), y ±0,163 m (rebote vertical sobre los saltos; la cápsula salta y vuelve a su sitio).
+- get_platform_velocity() devuelve la velocidad de la plataforma correctamente (19,0–21,5 m/s contra 68–73 km/h del bus: coincide).
+- Sin atravesamiento del piso, sin expulsión, sin deslizamiento lateral en los giros (el bug #102763 no aparece en estas condiciones).
+
+DECISIÓN D74 (tomada con esta tabla): se USA la herencia de movimiento del motor (la cápsula es transportada por el contacto y get_platform_velocity funciona). NO se implementa el acarreo manual de ADR-003 (queda como plan B si la herencia falla en otra condición).
+
+Nota de método: la primera sonda (sobre plano plano de 4000 m con el bus girando) midió además que la cápsula no deriva en aceleración pura (deriva de milímetros a 54 km/h sostenidos).

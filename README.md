@@ -124,6 +124,22 @@ bash tools/run_net_tests.sh                                        # macOS / Lin
 
 Opciones del guion (tras `++`): `port=` (defecto 47810, con 4 alternativas), `clients=` (3), `seconds=` (30), `waypoints=` (índice en el que parar, 0-based: 2 por defecto, **16 = vuelta completa**; el presupuesto de tiempo se deriva de la ruta pedida). Los procesos hijos reportan por archivo (`user://netscenario/*.json`) y por su propio `--log-file` (`user://netlogs/`), nunca por stdout. Tras una corrida no debe quedar ningún proceso Godot vivo; el lanzador mata supervivientes y todo corre bajo `timeout` externo.
 
+## Conducir el bus (M1-T1.1)
+
+El bus con suspensión por raycast (ADR-007) es la escena principal: abre el proyecto y pulsa F5 — quedas al volante (desde M1-T1.1 el modo por defecto de la escena es conducir; la demo automática sigue con `run_demo`, que fuerza `demo_mode`).
+
+Teclas (D62, sección `[input]` de `project.godot`): **W** acelerar · **S** frenar/marcha atrás · **A/D** girar · **Espacio** freno de mano (derrapa: §4.5) · **C** alternar cámara cabina/persecución · **F1** entrega el bus a la demo automática (y lo devuelve) sin consola (D71) · **E** interactuar (sentarse al volante / levantarse, D76).
+
+Desde M2-T2.2, **F5 te deja a pie**: camina con WASD (Shift corre, Espacio salta) hasta la puerta lateral del bus, entra por ella, siéntate al volante con **E** y conduce; otra **E** te levanta. La tripulante es un `CharacterBody3D` (`src/crew/`) transportado por la plataforma móvil con la herencia del motor (D74, medido).
+
+**Cámara y ratón** (D79): a pie ves en primera persona por la `EyeCamera`; al sentarte pasas a la cabina (primera persona del conductor) y **C** alterna con la persecución (tercera persona); al levantarte recuperas tu vista. El **ratón mueve la mirada** (guiñada + cabeceo ±89° a pie; cono ±120°/±45° en cabina para los retrovisores), con la sensibilidad en `data/tuning.json` (`player_mouse_sensitivity`). El ratón queda **capturado** al jugar: **Escape lo libera** y un **clic** lo recaptura; con la demo automática (F1) queda libre.
+
+El interior greybox (M2-T2.1, `src/vehicle/bus_interior.tscn`) sigue §4.3 y D67: caja útil 2,30 × 7,60 × 2,05 m libres, pasillo central de 1,20 m, seis posiciones útiles marcadas (`driver`, `copilot`, `bench`, `shelf_left`, `shelf_right`, `stretcher`), doce anclajes de carga en ambos muros, puerta lateral de 0,90 m con dos escalones y puertas traseras dobles. Sin personaje todavía: caminar y el abordaje son T2.2.
+
+**Medir la sensación** (r1.3 de M2-T2.2): `godot --headless --path . -s res://src/tooling/probe_handling.gd` (bajo `timeout`) imprime líneas `MEASURE` con altura de reposo, 0–60 km/h, velocidad máxima, radio de giro y frenada desde 50 km/h — la regla de regresión de la sensación aprobada en el gate de T1.1. Referencia actual: 0,977 m · 6,93 s · 90,0 km/h · 12,4 m · 6,7 m en 0,98 s.
+
+**Ajustar la sensación sin recompilar** (D61, para lo que se construyó T0.2): edita `data/tuning.json` (grupo `bus_*`, valores en `docs/datos/esquema_v1.md`) y recarga — con el juego en marcha basta llamar a `GameConfig.reload()` desde el depurador o editar antes de arrancar. El `.tres` se regenera con `import_data_mirror.gd` (ver "Datos y mods"), nunca a mano ni desde el Inspector.
+
 ## Mapa de carpetas (§20)
 
 ```

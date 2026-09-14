@@ -1,0 +1,16 @@
+12_capturas.txt — M2-T2.2 (ronda 3)
+Demuestra lo que el dueño pidió textual: 'cuando uno es el personaje verlo en primera persona, y cuando estés en el auto, verlo en primera persona o tercera persona'.
+HEAD b4aad77 (escena restaurada — una primera tanda de capturas salió con el bus cayendo del cielo por la escena corrompida; se recapturó todo). Fecha UTC: 2026-09-14 05:32:17
+
+Método: sonda temporal (borrada tras el uso) que carga el Playground en modo jugador, orienta a la tripulante hacia el bus con la guiñada calculada en runtime, captura, sienta con seat.occupy(), captura, y cambia a la vista de persecución con CameraArbiter.toggle_bus_view() para la tercera. La sonda verifica además que el bus NO está en el aire (guardia y>3) antes de capturar.
+
+- 12_fp_foot.png: a pie en primera persona — el bus a nivel de ojo, con la puerta lateral abierta de frente.
+- 12_cabin.png: conduciendo en primera persona desde la cabina — techo, pilar y salpicadero enmarcan el mundo (rampa y agua fuera).
+- 12_chase.png: conduciendo en tercera persona — el bus en el suelo (sombra pegada), rampa y zona de agua al fondo.
+
+Nota técnica de la sonda (la lección de esta ronda): nada de referencias estáticas a CrewMember en scripts -s — compilan antes de que se registren los autoloads y arrastran crew_member.gd (que usa GameConfig) a compilación temprana; el crew instanciaba sin script. Duck typing + CameraArbiter (sin dependencias de autoload).
+
+--- git lfs ls-files (las tres capturas como punteros LFS) ---
+8b0dfc3c63 * docs/evidencia/M2-T2.2/12_cabin.png
+8275775361 * docs/evidencia/M2-T2.2/12_chase.png
+841b416804 * docs/evidencia/M2-T2.2/12_fp_foot.png

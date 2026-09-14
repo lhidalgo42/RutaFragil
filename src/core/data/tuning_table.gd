@@ -51,13 +51,29 @@ extends Resource
 @export var player_sprint_speed_mps: float = 0.0
 @export var player_jump_height_m: float = 0.0
 @export var interaction_reach_m: float = 0.0
+## Mouse look sensitivity, radians per pixel of InputEventMouseMotion
+## .screen_relative (round 3). PLAYER PREFERENCE, not game balance: fine here
+## today, but a settings menu must move it out of mod reach (BACKLOG note).
+@export var player_mouse_sensitivity: float = 0.0
 
 @export_group("bus")
 @export var bus_mass_kg: int = 0
 @export var bus_integrity_max: int = 0
 @export var bus_integrity_max_loss_per_contract: int = 0
 @export var bus_max_speed_kmh: float = 0.0
-@export var bus_accel_0_60_kmh_s: float = 0.0
+@export var bus_traction_force_n: float = 0.0
+@export var bus_wheelbase_m: float = 0.0
+@export var bus_track_width_m: float = 0.0
+@export var bus_wheel_radius_m: float = 0.0
+@export var bus_suspension_rest_m: float = 0.0
+@export var bus_suspension_stiffness_n_per_m: float = 0.0
+@export var bus_suspension_damping_ns_per_m: float = 0.0
+@export var bus_grip_lateral: float = 0.0
+@export var bus_grip_lateral_handbrake: float = 0.0
+@export var bus_brake_force_n: float = 0.0
+@export var bus_steer_max_deg: float = 0.0
+@export var bus_steer_speed_falloff: float = 0.0
+@export var bus_center_of_mass_y_m: float = 0.0
 
 
 # No parameters: duplicate() and ResourceLoader require a default constructor.

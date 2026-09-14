@@ -1,0 +1,10 @@
+08_no_verificado.txt — M2-T2.1 (R7)
+Fecha UTC: 2026-09-13 01:58:13 · árbol de la ronda 1 sobre d8c2839
+
+1. Si el interior PARECE un bus habitable o una caja: visual, lo juzga el dueño con ventana (la captura 05 es greybox, no prueba del gate).
+2. Un personaje de pie dentro: NO se probó — es T2.2, y el revisor deja medido que un CharacterBody3D sobre el bus lo despide (causa sin diagnosticar; es el primer paso obligatorio de T2.2, en BACKLOG).
+3. Entrar/salir del bus, sentarse, conducir desde el asiento: T2.2. Agarrar/amarrar: T2.3. Fuera de alcance por diseño.
+4. macOS (D42): todo corrió en Windows.
+5. Los escalones bajo carga máxima de suspensión (hondonada profunda): quedan a 5 cm del plano de contacto en reposo; un bache profundo puede rozarlos (greybox; T2.2 decide el abordaje).
+6. La medida del pasillo/altura usa raycast en el frame del bus asentado; con el bus rodando o alabeado los huecos son los mismos (formas rígidas), no se midió en movimiento.
+7. Comportamiento del interior en red (los clientes congelan el bus entero): sin cambios desde M0-T0.4, que pasaba; no se re-midió por separado.

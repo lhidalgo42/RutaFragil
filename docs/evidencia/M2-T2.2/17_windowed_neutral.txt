@@ -1,0 +1,24 @@
+17_windowed_neutral.txt — M2-T2.2 (ronda 5)
+Demuestra con ventana la secuencia del gate: sentada, acelerar con la tecla real (drive_accelerate), soltar y levantarse en marcha; el mando cae a neutro y la velocidad BAJA con la tripulante de pie. Log (user://logs/godot.log) limpio. Incluye la captura de cabina desde el asiento IZQUIERDO (D80).
+HEAD f7d10b4. Fecha UTC: 2026-09-14 19:13:52
+
+Método: sonda temporal con ventana (borrada): sube al pasillo, occupy() por código, Input.action_press('drive_accelerate') 120 frames, suelta y vacate() en el mismo frame, 4 s de costa con lecturas cada 0,5 s. La captura 15_cabin_left.png se tomó en la corrida anterior de la misma sonda, en plena marcha.
+
+--- salida de la sonda (corrida final, sin captura intermedia) ---
+NEUTRAL driving speed_kmh=21.4 throttle=1.00
+NEUTRAL just_stood throttle=0.00 steer=0.00 speed_kmh=21.6
+NEUTRAL t+0.5s speed_kmh=20.6 upright=1.0000 crew_on_floor=true crew_aboard=true
+NEUTRAL t+1.0s speed_kmh=19.5 upright=1.0000 crew_on_floor=true crew_aboard=true
+NEUTRAL t+1.5s speed_kmh=18.6 upright=1.0000 crew_on_floor=true crew_aboard=true
+NEUTRAL t+2.0s speed_kmh=17.7 upright=1.0000 crew_on_floor=true crew_aboard=true
+NEUTRAL t+2.5s speed_kmh=10.9 upright=0.9987 crew_on_floor=true crew_aboard=true
+NEUTRAL t+3.0s speed_kmh=11.0 upright=0.9970 crew_on_floor=true crew_aboard=true
+NEUTRAL t+3.5s speed_kmh=10.4 upright=0.9922 crew_on_floor=true crew_aboard=true
+NEUTRAL t+4.0s speed_kmh=8.3 upright=0.9903 crew_on_floor=true crew_aboard=true
+
+Nota honesta: una corrida anterior CON captura síncrona a mitad imprimió un pico espurio de 307 km/h en el tick de levantarse; sin la captura no aparece (esta corrida), y el test headless determinista muestra la bajada limpia 21,6 → 17,7. La lectura era del pipeline parado por get_image(), no física del arreglo. Una corrida intermedia lanzó un 'WASAPI: GetBufferSize error' de audio (artefacto del dispositivo de esta sesión, ajeno al código); la corrida de esta evidencia tiene el log limpio.
+
+--- user://logs/godot.log tras la corrida: 0 ERROR, 0 WARNING ---
+
+--- git lfs (captura de cabina izquierda) ---
+1a71237123 * docs/evidencia/M2-T2.2/15_cabin_left.png

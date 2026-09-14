@@ -1,0 +1,22 @@
+09_limits.txt — M2-T2.1
+Demuestra: escenas ≤ 60 nodos y scripts ≤ 400 líneas (R8). Fecha UTC: 2026-09-13 01:58:13 · árbol sobre d8c2839
+
+--- grep -c '^\[node' de las escenas ---
+scenes/playground.tscn:56
+src/vehicle/bus.tscn:9
+src/vehicle/bus_interior.tscn:51
+src/net/net_marker.tscn:1
+
+--- wc -l de los .gd nuevos/modificados de M2-T2.1 ---
+  271 src/vehicle/bus.gd
+   35 src/vehicle/bus_interior.gd
+   55 src/biomes/playground/playground.gd
+  179 src/tooling/run_demo.gd
+  387 src/tooling/run_net_scenario.gd
+  222 src/net/net_scenario_util.gd
+   77 src/core/data/tuning_table.gd
+  129 tests/vehicle/bus_interior_test.gd
+  220 tests/vehicle/bus_test.gd
+   59 tests/net/playground_client_mode_test.gd
+   72 tests/biomes/playground/playground_scene_test.gd
+ 1706 total

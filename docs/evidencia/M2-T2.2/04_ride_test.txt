@@ -1,0 +1,18 @@
+04_ride_test.txt — M2-T2.2 (criterio de un jugador, D77)
+Demuestra: un minuto dentro del bus a velocidad sobre los saltos, sin atravesar nada ni salir despedido. Lo corre tests/crew/crew_ride_test.gd en el arnés; la métrica y el resultado se imprimen en la salida.
+Árbol de la ronda 1 sobre 3f8ec54. Fecha UTC: 2026-09-13 05:28:14
+
+Resultado medido (corrida del arnés, suite crew_ride_test):
+  ride: max_drift=(0.300, 0.147, 0.196) m  penetrations=0  ejected=false  → PASSED
+
+Lectura: cero atravesamientos del piso y cero expulsiones (los bounds duros del criterio). La deriva lateral máxima es 0,30 m en un minuto a ~70 km/h sobre los saltos — un tambaleo honesto, documentado en BACKLOG por si el dueño lo quiere más pegado.
+
+Cómo se midió: la tripulante a bordo (flag aboard), en el marco del bus, durante la demo con factor de tiempo 4×; penetración = por debajo del piso del interior estando en el suelo; expulsión = fuera de la envolvente del interior.
+
+Extracto del results.xml (suite crew_ride_test):
+	</testsuite>
+	<testsuite id="11" name="crew_ride_test" package="tests/crew" timestamp="2026-09-13T05:25:18" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="16.309">
+		<testcase name="test_one_minute_ride_at_speed_over_the_bumps" classname="crew_ride_test" time="16.295">
+		</testcase>
+	</testsuite>
+	<testsuite id="12" name="door_transit_test" package="tests/crew" timestamp="2026-09-13T05:25:34" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="1.381">

@@ -1,0 +1,18 @@
+13_test_falla_primero.txt — M2-T2.2 (ronda 4, orden C→A)
+Demuestra: el test de física del asiento se escribió ANTES del arreglo y falló sobre el código de entonces con números; tras el arreglo pasa con números. Suite: tests/biomes/playground/seat_physics_test.gd (2 tests, escena real).
+Fecha UTC: 2026-09-14 17:56:19
+
+=== ANTES (código de 98b5994, el test recién escrito): exit 100, 2 tests fallidos, 9 asertos ===
+SEATSIT   max_omega=0.1596 rad/s (límite 0.05) · min_upright=0.98901 (límite 0.999) · y_range=0.3825 m (límite 0.05)
+          -> sentarse sacude y levanta el bus (el revisor midió 0.16 rad/s y 0.4 m: coincide)
+SEATDRIVE forward=-0.00 m en 120 ticks a plena tracción -> el bus NO avanza con la tripulante encajada en el techo
+SEATSTAND back_local=(0.75, -0.42, -2.99) vs guardado (0.0, -0.60, 0.0) -> no restaura; empuje tras rehabilitar: 1.1228 m; bus_omega=0.1190
+Test 2    speed_kmh=0.3 -> nunca alcanzó 40 km/h; tripulante sin piso
+
+=== DESPUÉS (código de 9466fa4): exit 0, 2 tests verdes ===
+SEATSIT   max_omega=0.0000 rad/s · min_upright=1.00000 · y_range=0.0000 m
+SEATDRIVE min_upright=0.99999 · forward=6.30 m en recta (lateral=0.000 m)
+SEATSTAND back_local=(0.0, -0.598959, 0.0) == guardado · empuje tras rehabilitar: 0.0075 m · bus_omega=0.0000 · on_floor=true
+Test 2    43.7 km/h alcanzados, levantarse EN MARCHA: sin expulsión, a bordo y en el suelo 60 ticks
+
+Nota de método: la fase de conducción del test usa set_drive directo con BusInput aparcado (ocupar lo habilita y pisaría el comando con ceros cada tick — la misma arruga que el test de demo ya documenta); lo que se mide es la física del bus, no las teclas.

@@ -1,0 +1,36 @@
+09_limits.txt — M2-T2.2
+Demuestra: escenas ≤ 60 nodos y scripts ≤ 400 líneas (R8). Fecha UTC: 2026-09-13 05:28:52 · árbol sobre 3f8ec54
+
+--- grep -c '^\[node' de las escenas ---
+scenes/playground.tscn:60
+src/vehicle/bus.tscn:9
+src/vehicle/bus_interior.tscn:51
+src/crew/crew_member.tscn:4
+src/net/net_marker.tscn:1
+
+--- wc -l de los .gd nuevos/modificados de M2-T2.2 ---
+   87 src/crew/crew_member.gd
+   35 src/crew/crew_input.gd
+   57 src/crew/seat.gd
+   61 src/crew/door_transit.gd
+  271 src/vehicle/bus.gd
+   35 src/vehicle/bus_interior.gd
+   60 src/biomes/playground/playground.gd
+   54 src/vehicle/bus_input.gd
+  100 tests/crew/crew_member_test.gd
+   69 tests/crew/crew_ride_test.gd
+   70 tests/crew/door_transit_test.gd
+   26 tests/crew/seat_test.gd
+  925 total
+
+Apéndice ronda 2 (HEAD 2dfc5cc, 2026-09-14 02:24:39 UTC): ninguna escena cambió (playground.tscn sigue en 60 nodos). Scripts tocados/añadidos, todos ≤ 400 líneas:
+  97 src/crew/crew_input.gd · 102 src/crew/crew_member.gd · 62 src/crew/seat.gd · 110 src/tooling/probe_handling.gd (restaurado) · 164 tests/crew/crew_input_test.gd (nuevo) · 49 tests/static/input_actions_test.gd (nuevo)
+
+Apéndice ronda 3 (HEAD b4aad77, 2026-09-14 05:33:08 UTC): ninguna escena cambió de tamaño (playground.tscn restaurada a 60 nodos). Scripts nuevos/tocados, todos ≤ 400 líneas:
+  60 src/core/camera_arbiter.gd (nuevo) · 26 src/core/mouse_look.gd (nuevo) · 187 src/crew/crew_input.gd · 104 src/vehicle/bus_input.gd · 95 src/biomes/playground/playground.gd · 62 src/crew/seat.gd · 108 src/crew/crew_member.gd · 119 tests/camera/camera_arbiter_test.gd (nuevo) · 59 tests/core/mouse_look_test.gd (nuevo) · 95 tests/vehicle/cabin_look_test.gd (nuevo)
+
+Apéndice ronda 4 (HEAD 9466fa4, 2026-09-14 17:57:48 UTC): ninguna escena cambió. Scripts tocados/nuevos, todos ≤ 400 líneas:
+  106 src/crew/seat.gd · 119 src/crew/crew_member.gd · 166 tests/biomes/playground/seat_physics_test.gd (nuevo)
+
+Apéndice ronda 5 (HEAD f7d10b4, 2026-09-14 19:14:49 UTC): escenas sin cambio de tamaño (bus_interior.tscn 51 nodos, bus.tscn 9; F solo movió posiciones, editado a mano como texto). Scripts, todos ≤ 400 líneas:
+  117 src/vehicle/bus_input.gd · 121 src/crew/crew_member.gd · 120 src/crew/seat.gd · 227 tests/biomes/playground/seat_physics_test.gd · 106 tests/biomes/playground/playground_scene_test.gd

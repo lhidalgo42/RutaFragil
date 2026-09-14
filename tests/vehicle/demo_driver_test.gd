@@ -1,6 +1,6 @@
 extends GdUnitTestSuite
 
-## DemoDriver integration (D49): a real PlaceholderBus on a code-built track
+## DemoDriver integration (D49): a real Bus on a code-built track
 ## drives itself to the first waypoint; a frozen bus or one blocked by an
 ## unclimbable wall triggers stuck instead. Waits are physics_frame/signal
 ## based with explicit timeouts (plan §3), never process-frame counts.
@@ -8,9 +8,9 @@ extends GdUnitTestSuite
 
 func test_waypoint_reached_when_driving_to_it() -> void:
 	_make_track()
-	var runner: GdUnitSceneRunner = scene_runner("res://src/vehicle/placeholder_bus.tscn")
+	var runner: GdUnitSceneRunner = scene_runner("res://src/vehicle/bus.tscn")
 	runner.set_time_factor(2.0)
-	var bus: PlaceholderBus = _spawn_bus(runner, Vector3(0.0, 1.6, 0.0))
+	var bus: Bus = _spawn_bus(runner, Vector3(0.0, 1.6, 0.0))
 	if bus == null:
 		return
 	var positions: Array[Vector3] = [Vector3(0.0, 0.0, -15.0), Vector3(-15.0, 0.0, -15.0)]
@@ -27,8 +27,8 @@ func test_waypoint_reached_when_driving_to_it() -> void:
 
 
 func test_stuck_emitted_when_bus_cannot_move() -> void:
-	var runner: GdUnitSceneRunner = scene_runner("res://src/vehicle/placeholder_bus.tscn")
-	var bus: PlaceholderBus = _spawn_bus(runner, Vector3(0.0, 3.0, 0.0))
+	var runner: GdUnitSceneRunner = scene_runner("res://src/vehicle/bus.tscn")
+	var bus: Bus = _spawn_bus(runner, Vector3(0.0, 3.0, 0.0))
 	if bus == null:
 		return
 	bus.freeze = true
@@ -43,8 +43,8 @@ func test_stuck_emitted_when_bus_cannot_move() -> void:
 
 func test_stuck_emitted_against_unclimbable_wall() -> void:
 	_make_track()
-	var runner: GdUnitSceneRunner = scene_runner("res://src/vehicle/placeholder_bus.tscn")
-	var bus: PlaceholderBus = _spawn_bus(runner, Vector3(0.0, 1.6, -0.4))
+	var runner: GdUnitSceneRunner = scene_runner("res://src/vehicle/bus.tscn")
+	var bus: Bus = _spawn_bus(runner, Vector3(0.0, 1.6, -0.4))
 	if bus == null:
 		return
 	# Round 2 (r1.1): with the climb-hop deleted, a bus pressing a real wall it
@@ -88,11 +88,11 @@ func _make_track() -> void:
 	track.global_position = Vector3(0.0, -0.5, 0.0)
 
 
-func _spawn_bus(runner: GdUnitSceneRunner, pos: Vector3) -> PlaceholderBus:
+func _spawn_bus(runner: GdUnitSceneRunner, pos: Vector3) -> Bus:
 	var node: Node = runner.scene()
-	assert_bool(node is PlaceholderBus).is_true()
-	if node is PlaceholderBus:
-		var bus: PlaceholderBus = node
+	assert_bool(node is Bus).is_true()
+	if node is Bus:
+		var bus: Bus = node
 		bus.global_position = pos
 		return bus
 	return null
@@ -108,7 +108,7 @@ func _make_circuit(positions: Array[Vector3]) -> Circuit:
 	return circuit
 
 
-func _make_driver(bus: PlaceholderBus, circuit: Circuit) -> DemoDriver:
+func _make_driver(bus: Bus, circuit: Circuit) -> DemoDriver:
 	var driver: DemoDriver = auto_free(DemoDriver.new())
 	driver.bus = bus
 	driver.circuit = circuit
@@ -116,7 +116,7 @@ func _make_driver(bus: PlaceholderBus, circuit: Circuit) -> DemoDriver:
 	return driver
 
 
-func _wait_until_grounded(bus: PlaceholderBus, max_ticks: int) -> bool:
+func _wait_until_grounded(bus: Bus, max_ticks: int) -> bool:
 	for i: int in max_ticks:
 		await get_tree().physics_frame
 		if bus.is_grounded() and bus.speed_mps() < 0.5:

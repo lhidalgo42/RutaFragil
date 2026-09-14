@@ -1,0 +1,14 @@
+01_versions.txt — M1-T1.1
+Demuestra: versiones y main de partida. Árbol de trabajo de la ronda 1 sobre c84bf14. Fecha UTC: 2026-09-12 04:50:59
+
+--- git --version ---
+git version 2.51.0.windows.1
+
+--- git lfs version ---
+git-lfs/3.7.0 (GitHub; windows amd64; go 1.24.4; git 92dddf56)
+
+--- godot --version ---
+4.7.2.stable.official.ed1daf0bf
+
+--- git rev-parse main ---
+fc34b16ade69a14b1de9705da505351ebe717b1a

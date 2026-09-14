@@ -1,0 +1,32 @@
+03_demo_regression.txt — M1-T1.1
+Demuestra: run_demo termina en vuelta completa con el bus nuevo (D65). Árbol de la ronda 1 sobre c84bf14. Fecha UTC: 2026-09-12 04:51:31
+
+ANTES de la migración (baseline de M0-T0.4, placeholder): lap_completed t=36.8s waypoints=17 max_speed_kmh=51.1 min_upright=0.95
+
+DESPUÉS (Bus con suspensión, demo forzada por la herramienta):
+  timeout 120 "$GODOT_BIN" --headless --fixed-fps 60 --path . -s res://src/tooling/run_demo.gd
+DEMO result=lap_completed t=23.0s waypoints=17 max_speed_kmh=64.3 min_upright=0.97
+(exit 0). La vuelta es más rápida con el modelo nuevo (tracción por rueda con contacto); los números cambian porque el vehículo cambió — el criterio es la vuelta completa sin volcar.
+
+Volcado completo de la corrida:
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+DEMO waypoint 0 t=2.3s
+DEMO waypoint 1 t=4.5s
+DEMO waypoint 2 t=6.7s
+DEMO waypoint 3 t=7.3s
+DEMO waypoint 4 t=7.8s
+DEMO waypoint 5 t=8.5s
+DEMO water_entered t=8.8s
+DEMO waypoint 6 t=9.4s
+DEMO waypoint 7 t=10.6s
+DEMO waypoint 8 t=11.3s
+DEMO waypoint 9 t=11.8s
+DEMO waypoint 10 t=12.7s
+DEMO waypoint 11 t=15.4s
+DEMO waypoint 12 t=18.8s
+DEMO waypoint 13 t=19.9s
+DEMO waypoint 14 t=21.3s
+DEMO waypoint 15 t=22.3s
+DEMO waypoint 16 t=23.0s
+DEMO result=lap_completed t=23.0s waypoints=17 max_speed_kmh=64.3 min_upright=0.97

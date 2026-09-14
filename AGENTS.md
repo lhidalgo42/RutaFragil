@@ -126,6 +126,7 @@ timeout 120 "$GODOT_BIN" --headless --path . -s res://src/tooling/run_net_scenar
 
 ## Rutas clave
 
+- Input en tests headless (M2-T2.2 r2/r3): headless no entrega `InputEvent` de teclado, pero `Input.action_press`/`action_release` sí conducen el estado de acciones y `Input.parse_input_event()` (MouseMotion/Key/Button) SÍ llega a `_unhandled_input` de un nodo del árbol. `is_action_just_pressed`: NO disponible en la misma llamada que `action_press`, pero SÍ llega al `_physics_process` de un nodo cuando pulsación y suelta caen en ticks de física distintos (medido 20/20, revisión 02); la detección manual de flanco con `is_action_pressed` queda como defensiva. El DisplayServer headless NO retiene `Input.mouse_mode` (medido 2026-09-14): la verdad de la captura la posee la app (`CrewInput.is_pointer_captured()`). En eventos de ratón usar `screen_relative`, nunca `.relative` (stretch `canvas_items` lo escala; medido (10,−4)→(180,−72)).
 - Resolución de `GODOT_BIN` (D39): variable de entorno `GODOT_BIN` → `tools/godot_bin.local` (ignorado por Git) → default por SO:
   - Windows: `C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe`
   - macOS: `/Applications/Godot.app/Contents/MacOS/Godot`

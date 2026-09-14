@@ -10,7 +10,9 @@ signal waypoint_reached(index: int)
 signal lap_completed(lap: int)
 signal stuck
 
-@export var bus: PlaceholderBus
+## The bus is found by group, never by node name (D59): T1.1 replaced the
+## placeholder and M2 will re-parent it, and neither should touch this file.
+var bus: Bus
 @export var circuit: Circuit
 @export var enabled: bool = false
 @export var reach_radius_m: float = 4.0
@@ -27,9 +29,19 @@ var _stuck_emitted: bool = false
 var _config_warned: bool = false
 
 
+func _ready() -> void:
+	var node: Node = get_tree().get_first_node_in_group("bus")
+	if node is Bus:
+		bus = node
+
+
 func _physics_process(delta: float) -> void:
 	if not enabled:
 		return
+	if bus == null:
+		var node: Node = get_tree().get_first_node_in_group("bus")
+		if node is Bus:
+			bus = node
 	if bus == null or circuit == null:
 		if not _config_warned:
 			_config_warned = true

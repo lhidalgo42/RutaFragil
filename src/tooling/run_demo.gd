@@ -10,7 +10,7 @@ extends SceneTree
 ## Two hard-won constraints (plan §3):
 ## - The scene is loaded on the first process_frame, never in _init: autoloads
 ##   (GameConfig) are only registered after SceneTree._init.
-## - No static reference to game classes (PlaceholderBus/DemoDriver/...): the
+## - No static reference to game classes that reach the autoload (Bus/DemoDriver/...): the
 ##   -s script compiles before autoloads exist, and that chain reaches
 ##   GameConfig. The scene is inspected by node name, signal name and
 ##   Variant-safe property reads instead; its scripts compile lazily at
@@ -23,6 +23,7 @@ const DEFAULT_SCREENSHOT_AT: float = 10.0
 var _seconds_max: float = DEFAULT_SECONDS
 var _screenshot_path: String = ""
 var _screenshot_at: float = DEFAULT_SCREENSHOT_AT
+var _camera: String = "chase"
 
 var _bus: Node = null
 var _ticks: int = 0
@@ -50,6 +51,8 @@ func _parse_user_args() -> void:
 				_screenshot_path = parts[1]
 			"screenshot_at":
 				_screenshot_at = maxf(0.0, parts[1].to_float())
+			"camera":
+				_camera = parts[1]
 
 
 func _load_playground() -> void:
@@ -59,14 +62,29 @@ func _load_playground() -> void:
 		return
 	var packed_scene: PackedScene = packed
 	var scene: Node = packed_scene.instantiate()
+	scene.set("demo_mode", true)
 	root.add_child(scene)
 	var driver: Node = scene.get_node_or_null("DemoDriver")
-	var bus: Node = scene.get_node_or_null("PlaceholderBus")
+	# By group, never by node name (D59).
+	var bus: Node = null
+	var bus_group_node: Node = get_first_node_in_group("bus")
+	if bus_group_node != null:
+		bus = bus_group_node
 	var water: Node = scene.get_node_or_null("WaterZone")
 	if not _nodes_look_valid(driver, bus, water):
 		_finish("bad_scene")
 		return
 	_bus = bus
+	if _camera == "cabin":
+		# M1-T1.1 evidence: the cabin camera view (D63). Camera input is not
+		# delivered to scripted runs, so the toggle is scripted here.
+		var cabin: Node = get_first_node_in_group("cabin_camera")
+		var chase: Node = get_first_node_in_group("chase_camera")
+		if cabin is Camera3D and chase is Camera3D:
+			var chase_cam: Camera3D = chase
+			var cabin_cam: Camera3D = cabin
+			chase_cam.current = false
+			cabin_cam.current = true
 	driver.connect("waypoint_reached", _on_waypoint_reached)
 	driver.connect("lap_completed", _on_lap_completed)
 	driver.connect("stuck", _on_stuck)

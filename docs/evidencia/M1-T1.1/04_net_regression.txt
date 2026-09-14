@@ -1,0 +1,20 @@
+04_net_regression.txt — M1-T1.1
+Demuestra: el guion de red pasa en ruta corta y larga con el bus nuevo (D65). Árbol de la ronda 1 sobre c84bf14. Fecha UTC: 2026-09-12 04:51:31
+
+=== Ruta corta: bash tools/run_net_tests.sh (exit 0) ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[32304, 39648, 16732, 3080]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+=== Ruta larga: timeout 400 ... run_net_scenario.gd ++ role=launcher ++ waypoints=16 (exit 0) ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[16944, 41348, 10396, 26916]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
