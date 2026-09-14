@@ -37,6 +37,22 @@ var potholes: Array[Dictionary] = []
 var fences: Array[Dictionary] = []
 var poplars: Array[Dictionary] = []
 var orchards: PackedVector3Array = PackedVector3Array()
+## Small town (D69): raised bridge decks, the motorway underneath, the roundabout,
+## the railway with its level crossings, the plaza, the churches, the canals and the fields.
+var bridges: Array[Dictionary] = []
+var motorway: Array = []
+var trench: Dictionary = {}
+var roundabout: Dictionary = {}
+var rail_lines: Array = []
+var rail_platforms: Array[Dictionary] = []
+var rail_station: Dictionary = {}
+var crossings: Array[Dictionary] = []
+var plaza: Dictionary = {}
+var parks: Array[Dictionary] = []
+var churches: Array[Dictionary] = []
+var water: Array = []
+var fields: Array[Dictionary] = []
+var vine_rows: Array = []
 
 var _cum: PackedFloat32Array = PackedFloat32Array()
 
@@ -78,10 +94,45 @@ func sample(s: float) -> Transform3D:
 			i += 1
 	var a: Vector3 = axis[i]
 	var b: Vector3 = axis[i + 1]
-	var seg_len: float = maxf(0.001, a.distance_to(b))
+	var seg_len: float = maxf(0.001, _flat(a).distance_to(_flat(b)))
 	var t: Vector3 = (b - a) / seg_len
 	var origin: Vector3 = a + t * (s - _cum[i])
-	return Transform3D(Basis(Vector3.UP, yaw_facing(t)), origin)
+	# Pitched frame so decks, ramps and their collision follow the climb (D69).
+	var dir: Vector3 = t.normalized()
+	var basis: Basis = Basis(Vector3.UP, yaw_facing(dir)) * Basis(Vector3.RIGHT, asin(clampf(dir.y, -1.0, 1.0)))
+	return Transform3D(basis, origin)
+
+
+static func _flat(v: Vector3) -> Vector3:
+	return Vector3(v.x, 0.0, v.z)
+
+
+## Trench frame: x across the motorway (half_width), y along it (half_length). `yaw` is the
+## motorway heading, so its direction is (cos yaw, 0, -sin yaw) and the cutting runs along it.
+func trench_along() -> Vector3:
+	var yaw: float = float(trench.get("yaw", 0.0))
+	return Vector3(cos(yaw), 0.0, -sin(yaw))
+
+
+func trench_across() -> Vector3:
+	var yaw: float = float(trench.get("yaw", 0.0))
+	return Vector3(sin(yaw), 0.0, cos(yaw))
+
+
+func trench_centre() -> Vector3:
+	return Vector3(float(trench.get("x", 0.0)), 0.0, float(trench.get("z", 0.0)))
+
+
+func trench_local(p: Vector3) -> Vector2:
+	if trench.is_empty():
+		return Vector2(1e9, 1e9)
+	var d: Vector3 = _flat(p) - trench_centre()
+	return Vector2(d.dot(trench_across()), d.dot(trench_along()))
+
+
+func over_trench(p: Vector3) -> bool:
+	var l: Vector2 = trench_local(p)
+	return absf(l.x) < float(trench.get("half_width", 0.0)) and absf(l.y) < float(trench.get("half_length", 0.0))
 
 
 func left_of(frame: Transform3D) -> Vector3:
@@ -100,18 +151,18 @@ func project(p: Vector3) -> Vector2:
 	var best_d: float = INF
 	var best: Vector2 = Vector2.ZERO
 	for i: int in segment_count():
-		var a: Vector3 = axis[i]
-		var b: Vector3 = axis[i + 1]
+		var a: Vector3 = _flat(axis[i])
+		var b: Vector3 = _flat(axis[i + 1])
 		var ab: Vector3 = b - a
 		var ll: float = maxf(0.001, ab.length_squared())
 		var t: float = clampf((p - a).dot(ab) / ll, 0.0, 1.0)
 		var q: Vector3 = a + ab * t
-		var d: float = p.distance_to(q)
+		var d: float = _flat(p).distance_to(q)
 		if d < best_d:
 			best_d = d
 			var tangent: Vector3 = ab / sqrt(ll)
 			var left: Vector3 = Vector3.UP.cross(tangent)
-			best = Vector2(_cum[i] + sqrt(ll) * t, (p - q).dot(left))
+			best = Vector2(_cum[i] + sqrt(ll) * t, (_flat(p) - q).dot(left))
 	return best
 
 
@@ -159,7 +210,8 @@ func _fill(d: Dictionary) -> void:
 	sidewalk_lateral = float(d.get("sidewalk_lateral", sidewalk_lateral))
 	for item: Variant in _array(d.get("axis")):
 		var pair: Array = item
-		axis.append(Vector3(float(pair[0]), 0.0, float(pair[1])))
+		# [x, z] on the flat routes, [x, z, y] where the route climbs over a bridge (D69).
+		axis.append(Vector3(float(pair[0]), float(pair[2]) if pair.size() > 2 else 0.0, float(pair[1])))
 	for item: Variant in _array(d.get("waypoints")):
 		var pair: Array = item
 		waypoints.append(Vector3(float(pair[0]), 1.2, float(pair[1])))
@@ -191,9 +243,28 @@ func _fill(d: Dictionary) -> void:
 	for item: Variant in _array(d.get("orchards")):
 		var pair: Array = item
 		orchards.append(Vector3(float(pair[0]), 0.0, float(pair[1])))
+	bridges = _dicts(d.get("bridges"))
+	motorway = _array(d.get("motorway"))
+	if d.get("trench") is Dictionary:
+		trench = d.get("trench")
+	if d.get("roundabout") is Dictionary:
+		roundabout = d.get("roundabout")
+	var rail: Dictionary = d.get("rail", {}) if d.get("rail") is Dictionary else {}
+	rail_lines = _array(rail.get("lines"))
+	rail_platforms = _dicts(rail.get("platforms"))
+	if rail.get("station") is Dictionary:
+		rail_station = rail.get("station")
+	crossings = _dicts(rail.get("crossings"))
+	if d.get("plaza") is Dictionary:
+		plaza = d.get("plaza")
+	parks = _dicts(d.get("parks"))
+	churches = _dicts(d.get("churches"))
+	water = _array(d.get("water"))
+	fields = _dicts(d.get("fields"))
+	vine_rows = _array(d.get("vine_rows"))
 	_cum = PackedFloat32Array([0.0])
 	for i: int in segment_count():
-		_cum.append(_cum[i] + axis[i].distance_to(axis[i + 1]))
+		_cum.append(_cum[i] + _flat(axis[i]).distance_to(_flat(axis[i + 1])))
 
 
 static func _array(v: Variant) -> Array:

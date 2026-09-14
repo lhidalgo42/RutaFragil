@@ -1,0 +1,97 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://src/biomes/route_greybox.gd" id="1_route"]
+[ext_resource type="Script" path="res://src/biomes/route_circuit.gd" id="2_circuit"]
+[ext_resource type="Script" path="res://src/vehicle/demo_driver.gd" id="3_driver"]
+[ext_resource type="Script" path="res://src/vehicle/chase_camera.gd" id="4_camera"]
+[ext_resource type="PackedScene" path="res://src/vehicle/placeholder_bus.tscn" id="5_bus"]
+[ext_resource type="PackedScene" path="res://scenes/b0_requinoa.tscn" id="6_b0"]
+[ext_resource type="Script" path="res://src/biomes/overview_camera.gd" id="7_overview"]
+[ext_resource type="Script" path="res://src/tooling/demo_speed_cap.gd" id="8_cap"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.32, 0.5, 0.78, 1)
+sky_horizon_color = Color(0.82, 0.8, 0.74, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.3, 0.29, 0.26, 1)
+ground_horizon_color = Color(0.8, 0.78, 0.72, 1)
+sun_angle_max = 24.0
+sun_curve = 0.1
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+ambient_light_color = Color(0.72, 0.74, 0.8, 1)
+ambient_light_sky_contribution = 0.7
+ambient_light_energy = 1.0
+tonemap_mode = 3
+tonemap_exposure = 1.05
+tonemap_white = 6.0
+fog_enabled = true
+fog_light_color = Color(0.78, 0.76, 0.7, 1)
+fog_light_energy = 1.0
+fog_sun_scatter = 0.15
+fog_density = 0.00022
+fog_aerial_perspective = 0.6
+fog_sky_affect = 0.35
+
+[node name="RouteRequinoa" type="Node3D" node_paths=["demo_driver"]]
+script = ExtResource("1_route")
+demo_mode = true
+demo_driver = NodePath("DemoDriver")
+spawn_bus_at_entry = true
+
+[node name="Segments" type="Node3D" parent="."]
+
+[node name="B0Requinoa" parent="Segments" instance=ExtResource("6_b0")]
+
+[node name="RouteCircuit" type="Node3D" parent="." node_paths=["segments_root"]]
+script = ExtResource("2_circuit")
+segments_root = NodePath("../Segments")
+
+[node name="PlaceholderBus" parent="." instance=ExtResource("5_bus")]
+position = Vector3(71.0, 1.2, -3.2)
+rotation = Vector3(0, 2.7229, 0)
+
+[node name="DemoDriver" type="Node" parent="." node_paths=["bus", "circuit"]]
+script = ExtResource("3_driver")
+bus = NodePath("../PlaceholderBus")
+circuit = NodePath("../RouteCircuit")
+reach_radius_m = 9.0
+stuck_seconds = 26.0
+
+[node name="SpeedCap" type="Node" parent="." node_paths=["bus"]]
+script = ExtResource("8_cap")
+bus = NodePath("../PlaceholderBus")
+limit_kmh = 50.0
+
+[node name="ChaseCamera" type="Camera3D" parent="." node_paths=["target"]]
+script = ExtResource("4_camera")
+target = NodePath("../PlaceholderBus")
+current = true
+far = 12000.0
+
+[node name="OverviewCamera" type="Camera3D" parent="." node_paths=["chase"]]
+script = ExtResource("7_overview")
+chase = NodePath("../ChaseCamera")
+far = 6000.0
+size_m = 1560.0
+center = Vector3(169.3, 1200, -164.3)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.62, 0.95, 0)
+light_color = Color(1, 0.93, 0.82, 1)
+light_energy = 1.35
+shadow_enabled = true
+shadow_blur = 1.6
+directional_shadow_max_distance = 320.0
+directional_shadow_split_1 = 0.08
+directional_shadow_split_2 = 0.2
+directional_shadow_split_3 = 0.5
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")

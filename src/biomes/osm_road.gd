@@ -17,6 +17,7 @@ const COLOURS: Dictionary = {
 	"paint_yellow": Color(0.95, 0.8, 0.15), "concrete": Color(0.55, 0.52, 0.48), "warn": Color(0.95, 0.8, 0.1),
 	"post": Color(0.6, 0.6, 0.62), "diamond": Color(0.95, 0.75, 0.1), "disc": Color(0.95, 0.95, 0.95), "dirt": Color(0.5, 0.38, 0.25),
 	"car_a": Color(0.85, 0.85, 0.88), "car_b": Color(0.25, 0.3, 0.55), "car_c": Color(0.6, 0.15, 0.15),
+	"parapet": Color(0.68, 0.66, 0.62), "pier": Color(0.5, 0.48, 0.46), "island": Color(0.62, 0.6, 0.55), "crown": Color(0.28, 0.5, 0.26), "monument": Color(0.8, 0.78, 0.72),
 }
 const HUMP_H: float = 0.15
 const HUMP_RAMP: float = 1.8
@@ -31,6 +32,8 @@ const CROSSWALK_OFFSET_M: float = 12.0
 var data: OsmMapData
 var _b: MeshBatcher = MeshBatcher.new()
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var _built_at: PackedVector3Array = PackedVector3Array()
+var _built_index: PackedInt32Array = PackedInt32Array()
 
 
 func _ready() -> void:
@@ -46,6 +49,7 @@ func build() -> void:
 	_rng.seed = seed
 	_build_ground()
 	_build_segments()
+	_build_roundabout()
 	_build_crosswalks()
 	_build_humps()
 	_build_underpass()
@@ -78,28 +82,52 @@ func _shape_count(body_name: String) -> int:
 # ---------- pieces ----------
 
 func _build_ground() -> void:
-	var lo: Vector3 = data.axis[0]
-	var hi: Vector3 = data.axis[0]
-	for p: Vector3 in data.axis:
-		lo = lo.min(p)
-		hi = hi.max(p)
-	var size: Vector3 = Vector3(hi.x - lo.x + 1200.0, 1.0, hi.z - lo.z + 1200.0)
-	var center: Vector3 = Vector3((lo.x + hi.x) * 0.5, -0.5, (lo.z + hi.z) * 0.5)
 	var body: StaticBody3D = _body("Ground")
-	_shape(body, size, Transform3D(Basis.IDENTITY, center))
-	_b.box("ground", Transform3D(Basis.from_scale(size), center))
+	if data.trench.is_empty():
+		var lo: Vector3 = data.axis[0]
+		var hi: Vector3 = data.axis[0]
+		for p: Vector3 in data.axis:
+			lo = lo.min(p)
+			hi = hi.max(p)
+		var size: Vector3 = Vector3(hi.x - lo.x + 1200.0, 1.0, hi.z - lo.z + 1200.0)
+		var center: Vector3 = Vector3((lo.x + hi.x) * 0.5, -0.5, (lo.z + hi.z) * 0.5)
+		_shape(body, size, Transform3D(Basis.IDENTITY, center))
+		_b.box("ground", Transform3D(Basis.from_scale(size), center))
+		return
+	OsmTrench.build(body, _b, data)   # la trinchera de la Ruta 5 y el suelo a su alrededor (D69)
+
+
+## A closed town loop drives some streets twice (out and back). Building the same
+## stretch twice leaves two surfaces a few centimetres apart, and the placeholder bus
+## trips on the lip, so each physical stretch is built only once (D69).
+func _is_repeat(mid: Vector3, index: int) -> bool:
+	for k: int in _built_at.size():
+		if absi(_built_index[k] - index) > 3 and _built_at[k].distance_to(mid) < 6.0:
+			return true
+	_built_at.append(mid)
+	_built_index.append(index)
+	return false
 
 
 func _build_segments() -> void:
 	var curbs: StaticBody3D = _body("Curbs")
+	_built_at.clear()
+	_built_index.clear()
 	for i: int in data.segment_count():
 		var a: Vector3 = data.axis[i]
 		var b: Vector3 = data.axis[i + 1]
 		var seg_len: float = a.distance_to(b)
 		var mid: Vector3 = (a + b) * 0.5
+		if _is_repeat(mid, i):
+			continue
 		var s_mid: float = data.project(mid).x
 		var frame: Transform3D = data.sample(s_mid)
 		var kind: String = data.section_at(s_mid)
+		if kind == "bridge":
+			_bridge_segment(frame, mid, seg_len, s_mid)
+			continue
+		if maxf(a.y, b.y) > 0.05:
+			_deck_collision(frame, mid, seg_len, data.curb_at(s_mid) * 2.0)
 		if kind == "gravel":
 			continue  # OsmGravel draws the unpaved stretches
 		if kind == "street":
@@ -149,6 +177,51 @@ func _street_segment(frame: Transform3D, mid: Vector3, seg_len: float, s_mid: fl
 		_b.box("sidewalk", MeshBatcher.along(rot, mid + left * (side * (curb + 1.4)), Vector3(1.8, 0.15, seg_len + 0.2), 0.075))
 
 
+## Bridge deck (D69): flat asphalt spanning the trench with its own collision, plus parapets,
+## the deck beam underneath and piers down to the trench floor. The bus road stays level: a
+## raised deck needed ramps that overlapped between the two passes and tripped the bus.
+func _bridge_segment(frame: Transform3D, mid: Vector3, seg_len: float, s_mid: float) -> void:
+	var curb: float = data.curb_at(s_mid)
+	var rot: Basis = frame.basis
+	var left: Vector3 = data.left_of(frame)
+	_b.box("asphalt", MeshBatcher.along(rot, mid, Vector3(curb * 2.0 - 1.2, 0.04, seg_len + 0.4), 0.02))
+	for k: float in [-0.25, 0.25]:
+		_b.box("paint_yellow", MeshBatcher.along(rot, mid + -frame.basis.z * (seg_len * k), Vector3(0.12, 0.02, 3.0), 0.05))
+	var depth: float = float(data.trench.get("depth", 5.0))
+	var span: bool = data.over_trench(mid)
+	if span:
+		_b.box("pier", MeshBatcher.along(rot, mid, Vector3(curb * 2.0 + 1.0, 0.7, seg_len + 0.4), -0.36))
+	for side: float in [-1.0, 1.0]:
+		_b.box("parapet", MeshBatcher.along(rot, mid + left * (side * curb), Vector3(0.45, 0.95, seg_len + 0.2), 0.48))
+		if span and absf(data.trench_local(mid).y) > float(data.trench.get("half_length", 160.0)) - 26.0:
+			_b.box("pier", Transform3D(Basis.from_scale(Vector3(1.1, depth, 1.1)), mid + left * (side * (curb - 0.6)) + Vector3.DOWN * (depth * 0.5)))
+
+
+## Collision box under a raised deck or ramp, pitched with the frame so the wheels climb smoothly.
+func _deck_collision(frame: Transform3D, mid: Vector3, seg_len: float, width: float) -> void:
+	var body: StaticBody3D = get_node_or_null("Deck") as StaticBody3D
+	if body == null:
+		body = _body("Deck")
+	_shape(body, Vector3(width, 1.0, seg_len + 0.6), Transform3D(frame.basis, mid - frame.basis.y * 0.5))
+
+
+## Roundabout (D69, design addition): raised island, painted ring and a small monument; mesh only
+## so the placeholder bus can clip the island instead of jamming on a 15 cm kerb.
+func _build_roundabout() -> void:
+	var r: Dictionary = data.roundabout
+	if r.is_empty():
+		return
+	var centre: Vector3 = Vector3(float(r.get("x", 0.0)), 0.0, float(r.get("z", 0.0)))
+	var island: float = float(r.get("island_radius", 6.5))
+	_b.add("island", "cyl", Transform3D(Basis.from_scale(Vector3(island * 2.0, 0.3, island * 2.0)), centre + Vector3.UP * 0.15))
+	_b.add("paint_white", "cyl", Transform3D(Basis.from_scale(Vector3(island * 2.4, 0.02, island * 2.4)), centre + Vector3.UP * 0.035))
+	_b.add("monument", "cyl", Transform3D(Basis.from_scale(Vector3(1.1, 2.6, 1.1)), centre + Vector3.UP * 1.6))
+	_b.add("monument", "sph", Transform3D(Basis.from_scale(Vector3.ONE * 1.1), centre + Vector3.UP * 3.2))
+	for k: int in 6:
+		var ang: float = TAU * float(k) / 6.0
+		_b.add("crown", "sph", Transform3D(Basis.from_scale(Vector3.ONE * 1.5), centre + Vector3(cos(ang), 0.0, sin(ang)) * (island - 1.4) + Vector3.UP * 0.9))
+
+
 ## Zebra crossing and stop line at every real side-street junction (gaps that are not the station or the pasaje).
 func _build_crosswalks() -> void:
 	for gap: Dictionary in data.curb_gaps:
@@ -189,32 +262,34 @@ func _build_humps() -> void:
 		var s: float = float(h.get("s", 0.0))
 		var side: int = int(h.get("side", -1))
 		var frame: Transform3D = data.sample(s)
-		var center: Vector3 = frame.origin + data.left_of(frame) * (float(side) * data.lane_offset)
+		var avenue: bool = data.section_at(s) == "avenue"
+		var width: float = data.carriageway_width if avenue else data.curb_at(s) * 2.0 - 2.0
+		var center: Vector3 = frame.origin
+		if avenue:
+			center += data.left_of(frame) * (float(side) * data.lane_offset)
 		if str(h.get("kind", "flat")) == "round":
-			_ramps(body, frame, center, 0.075, 1.85, 0.0)
-			_b.box("paint", MeshBatcher.along(frame.basis, center, Vector3(data.carriageway_width, 0.02, 0.15), 0.085))
+			_ramps(body, frame, center, 0.075, 1.85, 0.0, width)
+			_b.box("paint", MeshBatcher.along(frame.basis, center, Vector3(width, 0.02, 0.15), 0.085))
 		else:
-			_flat_hump(body, frame, center)
+			_flat_hump(body, frame, center, width)
 		var sign_s: float = s - SIGN_BEFORE_M if side < 0 else s + SIGN_BEFORE_M
 		_sign(sign_s, float(side) * (data.curb_lateral + 1.4), "diamond", "disc")
 
 
 ## Resalto plano (Decreto 200): 15 cm at curb level, 5 m plateau, 1.8 m ramps.
-func _flat_hump(body: StaticBody3D, frame: Transform3D, center: Vector3) -> void:
-	var cw: float = data.carriageway_width
+func _flat_hump(body: StaticBody3D, frame: Transform3D, center: Vector3, cw: float) -> void:
 	var fwd: Vector3 = -frame.basis.z
 	var crest_t: Transform3D = Transform3D(frame.basis, center + Vector3.UP * (HUMP_H - 0.5))
 	_shape(body, Vector3(cw, 1.0, HUMP_CREST), crest_t)
 	_b.box("hump", Transform3D(frame.basis * Basis.from_scale(Vector3(cw, 1.0, HUMP_CREST)), crest_t.origin))
-	_ramps(body, frame, center, HUMP_H, HUMP_RAMP, HUMP_CREST * 0.5)
+	_ramps(body, frame, center, HUMP_H, HUMP_RAMP, HUMP_CREST * 0.5, cw)
 	for dir: float in [1.0, -1.0]:
 		_b.box("paint", MeshBatcher.along(frame.basis, center - fwd * ((HUMP_CREST * 0.5 - 0.1) * dir), Vector3(cw, 0.02, 0.15), HUMP_H + 0.01))
 
 
 ## Two ramps of horizontal run `run` rising `height`, starting `plateau_half` from the centre;
 ## the ramp behind (local +Z) pitches +ang, the one ahead pitches -ang (same as city_bumps.tscn).
-func _ramps(body: StaticBody3D, frame: Transform3D, center: Vector3, height: float, run: float, plateau_half: float) -> void:
-	var cw: float = data.carriageway_width
+func _ramps(body: StaticBody3D, frame: Transform3D, center: Vector3, height: float, run: float, plateau_half: float, cw: float) -> void:
 	var fwd: Vector3 = -frame.basis.z
 	var ang: float = atan2(height, run)
 	var ramp_len: float = sqrt(run * run + height * height)
