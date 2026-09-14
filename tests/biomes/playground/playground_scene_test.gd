@@ -144,5 +144,28 @@ func test_leaving_the_demo_follows_the_crew_state() -> void:
 	assert_bool(bus_input.enabled).is_false()
 
 
+func test_circuit_waypoints_match_the_authored_positions() -> void:
+	# The 17 waypoints pinned to their authored values, tolerance 0.01 (paso
+	# 0e of M2-T2.3): WP16 was dragged to y=14 in the editor re-save incident
+	# and only got noticed by chance. Note: the plan says "16 waypoints"; the
+	# circuit has 17 markers (WP0..WP16) and all are pinned.
+	var expected: Array[Vector3] = [
+		Vector3(-30, 1.2, 20), Vector3(-30, 2.7, 0.5), Vector3(-30, 1.2, -26),
+		Vector3(-26, 1.2, -34), Vector3(-20, 1.2, -39), Vector3(-12, 1.2, -40),
+		Vector3(0, 1.2, -40), Vector3(20, 1.2, -38), Vector3(30, 1.2, -32),
+		Vector3(30, 1.2, -24), Vector3(30, 1.2, -12), Vector3(30, 1.2, 52),
+		Vector3(8, 1.2, 50), Vector3(0, 1.2, 46), Vector3(-12, 1.2, 42),
+		Vector3(-24, 1.2, 38), Vector3(-30, 1.2, 31),
+	]
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	var scene: Node = runner.scene()
+	for i: int in range(expected.size()):
+		var node: Node = scene.get_node_or_null("Circuit/WP%d" % i)
+		assert_bool(node is Marker3D).override_failure_message("missing waypoint WP%d" % i).is_true()
+		if node is Marker3D:
+			var marker: Marker3D = node
+			assert_vector(marker.position).override_failure_message("WP%d moved: %s" % [i, str(marker.position)]).is_equal_approx(expected[i], Vector3(0.01, 0.01, 0.01))
+
+
 func _on_rolled_over() -> void:
 	_rolled_over_count += 1
