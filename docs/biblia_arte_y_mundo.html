@@ -1,0 +1,399 @@
+<title>Biblia de arte de Ruta Frágil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Mono:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
+
+<style>
+:root{
+  --paper:#E9EAE4;
+  --surface:#F4F5F1;
+  --ink:#1B1A16;
+  --ink-soft:#55534A;
+  --ink-faint:#84827A;
+  --rule:#CFD1C7;
+  --livery:#E0A616;
+  --livery-deep:#A87A05;
+  --stop:#A8392B;
+  --sage:#6F7E62;
+  --shadow:rgba(27,26,22,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#16171A;
+    --surface:#1E2024;
+    --ink:#E9E9E3;
+    --ink-soft:#A7A79E;
+    --ink-faint:#77776F;
+    --rule:#33363B;
+    --livery:#E8B534;
+    --livery-deep:#F0C75E;
+    --stop:#D9604F;
+    --sage:#93A383;
+    --shadow:rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#16171A;
+  --surface:#1E2024;
+  --ink:#E9E9E3;
+  --ink-soft:#A7A79E;
+  --ink-faint:#77776F;
+  --rule:#33363B;
+  --livery:#E8B534;
+  --livery-deep:#F0C75E;
+  --stop:#D9604F;
+  --sage:#93A383;
+  --shadow:rgba(0,0,0,.4);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Newsreader",Georgia,serif;
+  font-size:17px;
+  line-height:1.6;
+  margin:0;
+  padding-block:0 72px;
+  padding-left:24px;
+  padding-right:24px;
+}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+
+/* ---------- masthead ---------- */
+.mast{padding-top:56px;display:flex;flex-direction:column;gap:20px}
+.stripe{height:10px;display:flex;border-radius:2px;overflow:hidden}
+.stripe i{display:block;height:100%}
+.stripe i:nth-child(1){background:var(--livery);flex:5}
+.stripe i:nth-child(2){background:var(--stop);flex:2}
+.stripe i:nth-child(3){background:var(--surface);flex:3}
+h1{
+  font-family:"Archivo",system-ui,sans-serif;
+  font-weight:800;
+  font-size:clamp(2.4rem,6vw,4rem);
+  line-height:.98;
+  letter-spacing:-.02em;
+  margin:0;
+  text-wrap:balance;
+}
+.kicker{
+  font-family:"Archivo",system-ui,sans-serif;
+  font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);
+}
+.lede{font-size:1.18rem;max-width:62ch;margin:0;color:var(--ink-soft)}
+.lede strong{color:var(--ink);font-weight:600}
+
+/* ---------- sections ---------- */
+section{display:flex;flex-direction:column;gap:20px}
+h2{
+  font-family:"Archivo",system-ui,sans-serif;
+  font-weight:700;font-size:1.6rem;letter-spacing:-.01em;margin:0;
+  padding-bottom:10px;border-bottom:2px solid var(--ink);
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+}
+h2 span{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);font-weight:500}
+h3{
+  font-family:"Archivo",system-ui,sans-serif;
+  font-weight:700;font-size:1.02rem;margin:0;letter-spacing:-.005em;
+}
+p{margin:0;max-width:68ch}
+.note{font-size:.92rem;color:var(--ink-soft);max-width:68ch}
+
+/* ---------- pillars ---------- */
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule)}
+.pillar{background:var(--surface);padding:20px;display:flex;flex-direction:column;gap:8px}
+.pillar .n{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--livery-deep);font-weight:600}
+.pillar p{font-size:.95rem;color:var(--ink-soft)}
+
+/* ---------- spec ---------- */
+.spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px}
+table{width:100%;border-collapse:collapse;font-size:.93rem}
+.scroll{overflow-x:auto}
+th{
+  font-family:"Archivo",system-ui,sans-serif;
+  font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  text-align:left;color:var(--ink-faint);padding:0 10px 8px 0;border-bottom:1px solid var(--rule);
+}
+td{padding:7px 10px 7px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td.num,th.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+code{font-family:"IBM Plex Mono",monospace;font-size:.88em;background:var(--surface);padding:1px 5px;border-radius:3px}
+
+/* ---------- gated pipeline ---------- */
+.steps{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--rule);padding-left:0}
+.step{display:grid;grid-template-columns:52px 1fr;gap:16px;padding:14px 0 14px 18px;border-bottom:1px solid var(--rule)}
+.step:last-child{border-bottom:none}
+.step .n{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:.9rem;color:var(--livery-deep)}
+.step p{font-size:.95rem;color:var(--ink-soft)}
+.step strong{color:var(--ink);font-weight:600}
+.gate{background:var(--surface);border-left:4px solid var(--livery);padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.gate .kicker{color:var(--livery-deep)}
+
+/* ---------- pills ---------- */
+.pill{
+  font-family:"Archivo",system-ui,sans-serif;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;display:inline-block;
+}
+.pill.ok{background:var(--sage);color:var(--paper)}
+.pill.no{background:var(--stop);color:#fff}
+.pill.chk{background:transparent;color:var(--ink-soft);border:1px solid var(--rule)}
+
+/* ---------- biomes ---------- */
+.biomes{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:24px}
+.biome{display:flex;flex-direction:column;gap:12px;padding-top:14px;border-top:3px solid var(--livery)}
+.biome:nth-child(2){border-top-color:var(--sage)}
+.biome:nth-child(3){border-top-color:var(--ink-soft)}
+.biome ul{margin:0;padding-left:18px;font-size:.93rem;color:var(--ink-soft);display:flex;flex-direction:column;gap:5px}
+.biome .tag{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--ink-faint)}
+
+/* ---------- script list ---------- */
+ol.script{margin:0;padding-left:22px;font-size:.95rem;color:var(--ink-soft);display:flex;flex-direction:column;gap:5px}
+ol.script strong{color:var(--ink);font-weight:600}
+
+/* ---------- forbidden ---------- */
+.forbidden{background:var(--surface);border:1px solid var(--rule);border-top:3px solid var(--stop);padding:22px;display:flex;flex-direction:column;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:.85rem;padding:4px 11px;border:1px solid var(--rule);border-radius:3px;color:var(--ink-soft);background:var(--paper)}
+
+/* ---------- paths ---------- */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule)}
+.path{background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:5px}
+.path code{background:transparent;padding:0;color:var(--livery-deep);font-weight:600;font-size:.9rem}
+.path span{font-size:.88rem;color:var(--ink-soft)}
+
+footer{border-top:1px solid var(--rule);padding-top:20px;font-size:.85rem;color:var(--ink-faint);max-width:68ch}
+@media (max-width:520px){
+  body{font-size:16px;padding-left:16px;padding-right:16px}
+  .step{grid-template-columns:36px 1fr;gap:10px;padding-left:12px}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="stripe"><i></i><i></i><i></i></div>
+    <div class="kicker">Ruta Frágil · Biblia de producción · Arte y mundo</div>
+    <h1>Lo que hay que dibujar, y contra qué medidas</h1>
+    <p class="lede">Extracto del documento maestro v0.2 reordenado para producción de mapas y assets, con las <strong>medidas reales del greybox ya construido</strong> leídas de las escenas el 14 de septiembre de 2026. El arte tiene que caber en esta geometría: la colisión se autora aparte y no sale del modelo.</p>
+  </header>
+
+  <section>
+    <h2>Los tres pilares <span>todo asset y todo mapa pasa por aquí</span></h2>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="n">Pilar 1</div>
+        <h3>La carga es el jefe final</h3>
+        <p>¿Esto hace que algún paquete exija atención activa durante el viaje?</p>
+      </div>
+      <div class="pillar">
+        <div class="n">Pilar 2</div>
+        <h3>Nadie mira por la ventana</h3>
+        <p>¿El cuarto jugador tuvo tareas al menos el 60 % del tiempo?</p>
+      </div>
+      <div class="pillar">
+        <div class="n">Pilar 3</div>
+        <h3>El desastre es gracioso</h3>
+        <p>¿El fallo produce un momento grabable y compartible?</p>
+      </div>
+    </div>
+    <p class="note">Co-op de 1 a 4 jugadores donde la tripulación vive dentro de un bus de reparto caminable. Cada bioma ataca la carga de una forma distinta. Estilo low-poly estilizado: <strong>legibilidad de estado por encima del detalle</strong>.</p>
+  </section>
+
+  <section>
+    <h2>El bus, medido <span>greybox construido · no inventar cotas</span></h2>
+    <p class="note">El cuerpo del bus dejó de ser una caja maciza: hoy es un <strong>casco hueco</strong> formado por una placa de piso y los muros del interior, porque es la única forma de que se pueda caminar dentro. El modelo de arte envuelve esta geometría, no la sustituye.</p>
+    <div class="spec">
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Exterior y chasis</th><th class="num">Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Huella total</td><td class="num">2,50 × 8,00 m</td></tr>
+            <tr><td>Placa de piso (colisión del cuerpo)</td><td class="num">2,50 × 0,20 × 8,00 m</td></tr>
+            <tr><td>Batalla entre ejes</td><td class="num">5,50 m</td></tr>
+            <tr><td>Vía (ancho entre ruedas)</td><td class="num">2,20 m</td></tr>
+            <tr><td>Radio de rueda</td><td class="num">0,50 m</td></tr>
+            <tr><td>Ruedas, posición local</td><td class="num">±1,10 X · ±2,75 Z</td></tr>
+            <tr><td>Masa</td><td class="num">3 000 kg</td></tr>
+            <tr><td>Altura de reposo del origen</td><td class="num">0,978 m</td></tr>
+            <tr><td>Recorrido de suspensión en reposo</td><td class="num">0,60 m</td></tr>
+            <tr><td>Centro de masa</td><td class="num">−0,60 m</td></tr>
+            <tr><td>Velocidad máxima</td><td class="num">90 km/h</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Interior</th><th class="num">Valor</th></tr></thead>
+          <tbody>
+            <tr><td>Altura libre</td><td class="num">1,90 m</td></tr>
+            <tr><td>Pasillo central libre</td><td class="num">≥ 1,20 m</td></tr>
+            <tr><td>Piso</td><td class="num">2,50 × 7,80 m</td></tr>
+            <tr><td>Estantería con anclajes</td><td class="num">0,55 × 1,40 × 2,40 m</td></tr>
+            <tr><td>Banco de herramientas</td><td class="num">0,55 × 0,90 × 1,20 m</td></tr>
+            <tr><td>Camilla</td><td class="num">0,60 × 0,25 × 1,80 m</td></tr>
+            <tr><td>Puerta lateral, hueco</td><td class="num">0,90 m</td></tr>
+            <tr><td>Escalón de abordaje</td><td class="num">0,05 m × 2</td></tr>
+            <tr><td>Puertas traseras dobles</td><td class="num">0,55 m cada hoja</td></tr>
+            <tr><td>Posiciones útiles</td><td class="num">6</td></tr>
+            <tr><td>Anclajes de carga</td><td class="num">13 nodos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="note">Las seis posiciones ya existen con nombre en la escena y el juego las busca así: <code>driver</code>, <code>copilot</code>, <code>bench</code>, <code>shelf_left</code>, <code>shelf_right</code>, <code>stretcher</code>. Si el modelo mueve un asiento, hay que mover su marcador.</p>
+    <p class="note"><strong>Librea canónica (D16):</strong> bus largo, amarillo y rojo, techo crema, ventanas corridas. El style board vive en <code>docs/referencias/</code> y manda sobre cualquier interpretación.</p>
+  </section>
+
+  <section>
+    <h2>Pipeline de assets <span>ComfyUI → Blender → glTF → Godot</span></h2>
+    <p class="note">Ningún asset generado entra al juego sin pasar por Blender y por este checklist. Es una secuencia: cada paso supone el anterior.</p>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><p><strong>Escala y ejes.</strong> Una unidad es un metro. Pivote en la base o en el punto de agarre. En glTF, el frente es −Z.</p></div>
+      <div class="step"><div class="n">02</div><p><strong>Topología limpia.</strong> Retopología o decimado hasta presupuesto. Sin caras sueltas ni normales invertidas. Los mallados generados salen densos y derretidos: Blender no es opcional.</p></div>
+      <div class="step"><div class="n">03</div><p><strong>Colisión autorada aparte.</strong> Primitivas o casco convexo simple. La física <strong>nunca</strong> usa el mallado generado como colisión. Esto es lo que hace compatibles validar físicas y usar assets generados.</p></div>
+      <div class="step"><div class="n">04</div><p><strong>Una textura por asset.</strong> Atlas o paleta. En low-poly, la mayoría de los props van con paleta plana y no necesitan textura generada.</p></div>
+      <div class="step"><div class="n">05</div><p><strong>Texturas sin costuras.</strong> Tileables, sin texto fantasma, sin logotipos, hasta 1024². Van a <code>assets/textures/</code> con su prompt y su modelo registrados.</p></div>
+      <div class="step"><div class="n">06</div><p><strong>Coherencia con el style board.</strong> Comparación lado a lado con D16 antes de aprobar.</p></div>
+      <div class="step"><div class="n">07</div><p><strong>Registro en créditos.</strong> Modelo generativo, licencia, fecha y prompt en <code>CREDITS.md</code>.</p></div>
+    </div>
+    <div class="gate">
+      <div class="kicker">Puerta humana</div>
+      <p class="note">El agente puede operar ComfyUI por su API y Blender por script, pero <strong>el checklist lo valida una persona</strong>. Es el mismo protocolo de validación que gobierna el resto del proyecto.</p>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Presupuesto de triángulos</th><th class="num">Máximo</th></tr></thead>
+        <tbody>
+          <tr><td>Paquetes</td><td class="num">800</td></tr>
+          <tr><td>Props</td><td class="num">2 000</td></tr>
+          <tr><td>Bus completo</td><td class="num">25 000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Licencias de modelos generativos <span>bloqueante para publicar</span></h2>
+    <p class="note">Steam vende en todo el mundo. Un modelo cuya licencia excluye territorios no puede producir assets que se envíen. Antes de que un modelo produzca algo que llegue al build, su licencia queda copiada en <code>CREDITS.md</code>, y todo contenido generado por IA se declara en Steam al publicar.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Modelo</th><th>Uso</th><th>Estado</th><th>Motivo</th></tr></thead>
+        <tbody>
+          <tr><td>Trellis (Microsoft)</td><td>3D</td><td><span class="pill ok">Permitido</span></td><td>MIT. Opción por defecto para 3D.</td></tr>
+          <tr><td>Hunyuan3D 2.0 / 2.1</td><td>3D</td><td><span class="pill no">Prohibido</span></td><td>Su territorio excluye la Unión Europea, Reino Unido y Corea del Sur. Solo exploración interna.</td></tr>
+          <tr><td>Hunyuan 3D 3.0 por Partner Nodes</td><td>3D</td><td><span class="pill chk">Verificar</span></td><td>Servicio con términos propios; revisarlos antes de usar sus salidas.</td></tr>
+          <tr><td>FLUX.1 [dev]</td><td>Imagen</td><td><span class="pill no">Prohibido</span></td><td>No comercial.</td></tr>
+          <tr><td>FLUX.1 [schnell]</td><td>Imagen</td><td><span class="pill ok">Permitido</span></td><td>Apache 2.0.</td></tr>
+          <tr><td>SDXL</td><td>Imagen</td><td><span class="pill ok">Permitido</span></td><td>Verificar la versión exacta y registrarla.</td></tr>
+          <tr><td>Stable Audio Open · ACE-Step</td><td>Audio</td><td><span class="pill chk">Verificar</span></td><td>Permisivas por debajo de umbrales de ingresos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Los tres biomas del MVP <span>Ciudad · Cerro · Pantano</span></h2>
+    <p class="note">Juego lineal, no mundo abierto. Cada contrato es una ruta de A a B con ramas cortas y atajos con riesgo. Las zonas de combustible y los bidones vacíos viven en esas ramas: desviarse cuesta tiempo, seguir recto arriesga quedarse seco. Cada bioma es un set de rutas, unas amenazas y una herramienta nueva.</p>
+    <div class="biomes">
+      <div class="biome">
+        <div class="tag">B0</div>
+        <h3>Ciudad</h3>
+        <p class="note">Tutorial jugable de 10 a 15 minutos. No se puede perder; se paga poco si se hace mal.</p>
+        <ol class="script">
+          <li>Caminar, agarrar, lanzar</li>
+          <li>Subir al bus, <strong>asiento de conductor</strong>, conducir a la estación</li>
+          <li>Repostar y comprar un bidón vacío</li>
+          <li>Desvío a la primera zona de combustible: llenar y verter</li>
+          <li>Cargar dos paquetes y amarrarlos</li>
+          <li>Primera entrega con timbre</li>
+          <li>Lomo de toro con un frágil: lección de acolchar</li>
+          <li>Túnel bajo con un flotante en el techo: lección de amarrar</li>
+          <li>Reparar, cobrar y explicar la cuota</li>
+        </ol>
+      </div>
+      <div class="biome">
+        <div class="tag">B1</div>
+        <h3>Cerro</h3>
+        <p class="note">Herramienta nueva: winche y cuerda.</p>
+        <ul>
+          <li>Pendientes que el motor no sube: aligerar, empujar, winche a poste o roca</li>
+          <li>Caminos rotos y baches: acolchar frágiles, retensar correas</li>
+          <li>Sobrecalentamiento: operar el radiador con bidón de agua</li>
+          <li>Derrumbes menores: bajarse a despejar mientras alguien vigila la carga</li>
+          <li>Caída por ladera: enderezar el bus o rescatarlo con winche</li>
+          <li>Ruta larga sin estación y subidas que duplican el consumo</li>
+        </ul>
+      </div>
+      <div class="biome">
+        <div class="tag">B2</div>
+        <h3>Pantano</h3>
+        <p class="note">Valida achique, flotación, aire y rescate: todo lo que Submarino necesitará después.</p>
+        <ul>
+          <li>Lodo: velocidad a la mitad y atascamiento si se frena</li>
+          <li>Canales profundos: instalar cuatro flotadores antes de entrar</li>
+          <li>Agua entrando por puertas abiertas: cerrar, subir paquetes a estantes altos, achicar</li>
+          <li>Lianas que bloquean: bajarse a cortar por turnos</li>
+          <li>Jugador al agua: treinta segundos de aire, los demás lo sacan con cuerda</li>
+          <li>Falla catastrófica: hundimiento y protocolo de rescate</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note"><strong>Estaciones de servicio:</strong> raras, como mucho una por contrato. Repostar pagado, bidones vacíos, reparar, mantención, tienda y tablón de contratos secundarios. <strong>NPCs receptores:</strong> timbre y reacción según el estado del paquete, voz en galimatías, cero diálogo ramificado.</p>
+  </section>
+
+  <section>
+    <h2>Paquetes <span>cuatro tipos en el MVP</span></h2>
+    <p class="note">Cada paquete declara rangos de humedad y temperatura. Fuera de rango pierde integridad por segundo. Así el acuático que debe ir mojado y el electrónico que no se puede mojar son el mismo sistema con datos distintos. El arte tiene que comunicar el estado de un vistazo.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Tipo</th><th>Regla</th><th>Tarea de la tripulación</th><th>Valores v0</th></tr></thead>
+        <tbody>
+          <tr><td>Normal</td><td>Solo golpes fuertes; se moja mal</td><td>Ubicar y olvidar</td><td class="num">humedad máx 60 · impacto &gt;3 m/s = −10</td></tr>
+          <tr><td>Frágil</td><td>Golpes, caídas y vibración acumulada</td><td>Acolchar, sostener, avisar</td><td class="num">impacto &gt;2 m/s = −10 · −0,5/s sin cojín</td></tr>
+          <tr><td>Flotante</td><td>Sube sin correa y se escapa por puertas abiertas</td><td>Amarrar siempre</td><td class="num">15 N de ascensión</td></tr>
+          <tr><td>Acuático</td><td>Debe mantenerse húmedo</td><td>Rociar periódicamente</td><td class="num">humedad mín 40 · decae 0,8/s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Estados en ejecución: integridad, humedad, temperatura y sujeción (suelto, en mano, amarrado). El pago es la base por la integridad final, con multiplicador de tiempo. Roadmap de tipos: seco o electrónico, congelado, vivo, explosivo y VIP.</p>
+  </section>
+
+  <section>
+    <h2>Dónde va cada cosa <span>rutas del repositorio</span></h2>
+    <div class="paths">
+      <div class="path"><code>assets/models/</code><span>Mallados glTF ya limpiados en Blender</span></div>
+      <div class="path"><code>assets/textures/</code><span>Texturas con su prompt y modelo registrados</span></div>
+      <div class="path"><code>scenes/</code><span>Playground, hub y los tres biomas</span></div>
+      <div class="path"><code>docs/referencias/</code><span>Style board D16, interior y exterior canónicos</span></div>
+    </div>
+    <p class="note">Todo binario va por Git LFS salvo los <code>.svg</code>, que son texto. Lo que entra en LFS ocupa cuota permanente en el remoto: borrar un archivo después no la libera.</p>
+  </section>
+
+  <section>
+    <h2>Prohibido construir <span>fuera de alcance de la versión 1.0</span></h2>
+    <div class="forbidden">
+      <p class="note">No es una lista de deseos aplazados: es lo que no se modela, no se mapea y no se programa en esta versión. Toda mecánica nueva entra por el registro de decisiones con su test de los tres pilares y su milestone de destino, y nunca a un milestone ya en curso.</p>
+      <div class="chips">
+        <span class="chip">PvP</span>
+        <span class="chip">Mundo abierto persistente</span>
+        <span class="chip">Consolas</span>
+        <span class="chip">Crossplay</span>
+        <span class="chip">Servidores dedicados</span>
+        <span class="chip">Migración de host</span>
+        <span class="chip">Clima dinámico global</span>
+        <span class="chip">Deformación del vehículo</span>
+        <span class="chip">Stats de personaje</span>
+        <span class="chip">Submarino jugable</span>
+        <span class="chip">Volcán jugable</span>
+        <span class="chip">Workshop</span>
+      </div>
+      <p class="note">Submarino y Volcán se diseñan ahora para que el modelo de datos los soporte, y se construyen en Early Access. Los biomas de la versión 0.1 que ya no están (Islas, Bosque, Desierto, Ártico, Viento) quedan eliminados: sus mejores mecánicas se absorbieron en lianas para Pantano y calor para Volcán.</p>
+    </div>
+  </section>
+
+  <footer>
+    Extracto del documento maestro v0.2, partes 1 y 2, reordenado para producción. Las cotas del bus y del interior están medidas sobre las escenas construidas el 14 de septiembre de 2026 y son greybox: cambiarán si una tarea posterior las ajusta, y el registro de decisiones manda sobre este resumen. El maestro completo vive en <code>docs/RUTA_FRAGIL_documento_maestro_v0.2_godot.md</code>.
+  </footer>
+
+</div>
