@@ -16,3 +16,14 @@ Idéntico en lo esencial: box0 y box3 escapan igual (los incidentes extra son la
 - CERO atravesamientos de geometría: ningún BELOW_FLOOR ocurre dentro del casco; todas las salidas fueron BALÍSTICAS por las aberturas reales (puerta lateral, parabrisas, traseras) tras despegar en los baches.
 - CCD no cambia nada medible: las salidas no son túneles.
 - Las cajas que no despegan se quedan en el piso y la deriva queda contenida (fricción por defecto basta en esta vuelta, máx 64,6 km/h).
+
+=== Medición del punto 1 (precisión del dueño): despegue en los baches, tres condiciones ===
+Sonda extendida: por caja y por EVENTO de despegue, velocidad vertical relativa al bus en el despegue y altura máxima sobre el reposo. --fixed-fps 60. Fecha UTC: 2026-09-14 20:51:16
+
+(a) 60 Hz como hoy: 10 eventos; despegue máx 1,74 m/s; altura máx 1,53 m; escapes 2 de 4 (box0, box3).
+(b) physics_ticks_per_second=120 solo en la sonda: 11 eventos; despegue máx 22,36 m/s; altura máx 1,52 m; escapes 3 de 4 (box0, box1, box3). PEOR.
+(c) 60 Hz + amortiguador prototipo (fuerza -k·(v_caja - v_punto_del_piso) por tick dentro del casco, k=80): 11 eventos; despegue máx 2,59 m/s pero altura máx 0,27 m; escapes 0 de 4.
+
+Control del bus (sonda aparte, misma vuelta): 60 Hz -> max_y 2,62, max_vy 3,61, max_omega 1,21; 120 Hz -> max_y 2,62, max_vy 3,57, max_omega 1,16. El bus es idéntico: la diferencia es el solver de las cajas, no el autobús.
+
+Regla del dueño aplicada: (b) no reduce el despegue (lo empeora) -> 120 Hz en ruta DESCARTADO por medición. (c) contiene (altura 0,27 m vs 1,53 m; cero escapes) -> amortiguador, con k en TuningTable. CCD encendido por defecto (aprobado).
