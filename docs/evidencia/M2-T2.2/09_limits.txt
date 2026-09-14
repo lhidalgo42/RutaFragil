@@ -25,3 +25,6 @@ src/net/net_marker.tscn:1
 
 Apéndice ronda 2 (HEAD 2dfc5cc, 2026-09-14 02:24:39 UTC): ninguna escena cambió (playground.tscn sigue en 60 nodos). Scripts tocados/añadidos, todos ≤ 400 líneas:
   97 src/crew/crew_input.gd · 102 src/crew/crew_member.gd · 62 src/crew/seat.gd · 110 src/tooling/probe_handling.gd (restaurado) · 164 tests/crew/crew_input_test.gd (nuevo) · 49 tests/static/input_actions_test.gd (nuevo)
+
+Apéndice ronda 3 (HEAD b4aad77, 2026-09-14 05:33:08 UTC): ninguna escena cambió de tamaño (playground.tscn restaurada a 60 nodos). Scripts nuevos/tocados, todos ≤ 400 líneas:
+  60 src/core/camera_arbiter.gd (nuevo) · 26 src/core/mouse_look.gd (nuevo) · 187 src/crew/crew_input.gd · 104 src/vehicle/bus_input.gd · 95 src/biomes/playground/playground.gd · 62 src/crew/seat.gd · 108 src/crew/crew_member.gd · 119 tests/camera/camera_arbiter_test.gd (nuevo) · 59 tests/core/mouse_look_test.gd (nuevo) · 95 tests/vehicle/cabin_look_test.gd (nuevo)
