@@ -102,6 +102,17 @@ func eye_position() -> Vector3:
 	return global_position + Vector3(0.0, EYE_HEIGHT_M, 0.0)
 
 
+## The seat turns the capsule's collision off while seated (M2-T2.2 round 4):
+## seated at the wheel marker the capsule pokes through the roof, and an
+## active kinematic shape inside the hull depenetrates the bus every tick
+## (the owner's gate: the bus rocked and swerved when driving seated).
+func set_collision_disabled(on: bool) -> void:
+	var node: Node = get_node_or_null("CollisionShape3D")
+	if node is CollisionShape3D:
+		var shape: CollisionShape3D = node
+		shape.disabled = on
+
+
 func set_seated(on: bool) -> void:
 	seated = on
 	if seated:
