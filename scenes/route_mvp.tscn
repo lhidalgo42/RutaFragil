@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/biomes/route_greybox.gd" id="1_route"]
 [ext_resource type="Script" path="res://src/biomes/route_circuit.gd" id="2_circuit"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://src/vehicle/chase_camera.gd" id="4_camera"]
 [ext_resource type="PackedScene" path="res://src/vehicle/placeholder_bus.tscn" id="5_bus"]
 [ext_resource type="PackedScene" path="res://scenes/b0_city.tscn" id="6_b0"]
+[ext_resource type="Script" path="res://src/biomes/overview_camera.gd" id="7_overview"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -42,6 +43,10 @@ reach_radius_m = 7.0
 script = ExtResource("4_camera")
 target = NodePath("../PlaceholderBus")
 current = true
+
+[node name="OverviewCamera" type="Camera3D" parent="." node_paths=["chase"]]
+script = ExtResource("7_overview")
+chase = NodePath("../ChaseCamera")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 rotation = Vector3(-0.9, 0.6, 0)
