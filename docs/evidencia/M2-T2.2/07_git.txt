@@ -68,3 +68,22 @@ index df25332..4ed04a7 100644
 @@ -42,6 +42,79 @@ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
 
 Sección post-commit capturada tras el commit de evidencia, en un commit de docs aparte.
+
+=== POST-COMMIT (parte 2) ===
+Fecha UTC: 2026-09-14 17:58:28 · rama m2/t2.2-crew · HEAD b00aaf5
+
+--- git log --oneline main..HEAD ---
+b00aaf5 docs: evidence 02/08/09/13/14 and 07 pre-commit (M2-T2.2 r4)
+9466fa4 fix: sitting at the wheel no longer depenetrates the bus (M2-T2.2 r4)
+b39a02a docs: review 03 and round-4 prompt (M2-T2.2)
+98b5994 docs: evidence 07 post-commit (M2-T2.2 r3)
+8c1980c docs: evidence 02/08/09/10/12 and 07 pre-commit (M2-T2.2 r3)
+b4aad77 fix: restore playground.tscn from an out-of-band corrupting re-save (M2-T2.2 r3)
+d00a0ba feat: first-person cameras with mouse look and pointer capture (M2-T2.2 r3, D79)
+c1c25ab feat: FASE-0 signatures for round 3 (CameraArbiter, MouseLook, capture entry) + player_mouse_sensitivity in data (M2-T2.2 r3)
+
+--- git status --short ---
+ M docs/evidencia/M2-T2.2/07_git.txt
+(sin líneas entre esta sección = árbol limpio)
+
+Commits de la ronda 4: b39a02a (docs del revisor) · 9466fa4 (fix: sentarse ya no despenetra el bus + test de física) · b00aaf5 (evidencia).
