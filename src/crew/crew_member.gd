@@ -34,7 +34,8 @@ static func project_gravity() -> float:
 	if raw is float:
 		return raw
 	if raw is int:
-		return float(raw)
+		var narrowed: int = raw
+		return float(narrowed)
 	return 9.8
 
 
