@@ -1,0 +1,11 @@
+11_static_test_failure_demo.txt — M2-T2.2 (ronda 2)
+Demuestra: el test estático tests/static/input_actions_test.gd FALLA DE VERDAD cuando una acción usada en src/ no está registrada. Método: borrada la entrada walk_jump={...} de project.godot (python), corrida solo la suite estática, restaurado con git checkout (estaba commiteado; git status limpio tras la demo).
+HEAD 2dfc5cc. Fecha UTC: 2026-09-14 02:23:22
+
+Comando: $GODOT_BIN --headless --path . -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests/static -rd res://reports
+Exit code: 100 (fallos), como debe ser.
+
+--- líneas clave de la salida ---
+  res://tests/static/input_actions_test.gd > test_every_action_read_in_src_is_registered FAILED 16ms
+  actions read in src/ but missing from the input map: ["walk_jump"]	at 'test_every_action_read_in_src_is_registered' in res://tests/static/input_actions_test.gd:34
+Exit code: 100

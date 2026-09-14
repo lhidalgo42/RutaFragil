@@ -1,10 +1,12 @@
-08_no_verificado.txt — M2-T2.2 (R7)
-Fecha UTC: 2026-09-13 05:28:52 · árbol de la ronda 1 sobre 3f8ec54
+08_no_verificado.txt — M2-T2.2 (R7), ronda 2
+Fecha UTC: 2026-09-14 01:55 · HEAD 5766739
 
-1. EL GATE del dueño: entrar, caminar, sentarse, conducir, levantarse, salir — tres minutos con F5. Ningún test lo sustituye.
-2. La tecla E (interact) y el input a pie en general: headless no entrega InputEvent; el movimiento se probó llamando a drive_move() directamente; las teclas quedan para el dueño.
+1. EL GATE del dueño: entrar, caminar, sentarse, conducir, levantarse, salir — tres minutos con F5. Ningún test lo sustituye. (En la ronda 1 esto falló por acciones no registradas; en la ronda 2 el mapa existe y hay test e2e, pero el TACTO y la comodidad solo los juzga el dueño.)
+2. La tecla de SALTO (walk_jump, Espacio): registrada y cubierta por el test estático, pero no hay test e2e de su efecto — CrewInput la lee con is_action_just_pressed, que headless no puede entregar a un nodo (flush por frame de proceso, medido). El patrón es el mismo que ya funcionaba en T1.1 para toggle_camera/toggle_demo con ventana; aun así, saltar lo prueba el dueño en su gate.
 3. La red con la tripulante a bordo: la tripulante NO se replica (T2.2 es de un jugador); M4 decide cómo viaja cada jugador en el bus (ADR-006, la autoridad del conductor sentado).
 4. El gate DURO de M2 (dos instancias, red real, con paquetes): es T2.3 (D77).
-5. #102763 (deslizamiento sobre plataforma en rotación): medido en el paso 1 — NO apareció (deriva de milímetros en giros); si aparece en otra condición, va a BACKLOG con números.
+5. #102763 (deslizamiento sobre plataforma en rotación): medido en el paso 1 de la ronda 1 — NO apareció (deriva de milímetros en giros); si aparece en otra condición, va a BACKLOG con números.
 6. macOS (D42): todo corrió en Windows.
 7. La tripulante bajo latencia real o con mods que cambien su masa/velocidades: no medido.
+
+Nota de la ronda 2: el punto 2 de la ronda 1 ("la tecla E y el input a pie quedan para el dueño porque headless no entrega InputEvent") estaba mal planteado: headless no entrega InputEvents de teclado, pero el ESTADO de las acciones sí se conduce con Input.action_press (tests/crew/crew_input_test.gd lo ejerce de verdad: andar desplaza, interact sienta y levanta). Lo que no se probó entonces — y ahora sí — era que la funcionalidad existiera.

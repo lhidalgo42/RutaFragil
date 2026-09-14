@@ -22,3 +22,6 @@ src/net/net_marker.tscn:1
    70 tests/crew/door_transit_test.gd
    26 tests/crew/seat_test.gd
   925 total
+
+Apéndice ronda 2 (HEAD 2dfc5cc, 2026-09-14 02:24:39 UTC): ninguna escena cambió (playground.tscn sigue en 60 nodos). Scripts tocados/añadidos, todos ≤ 400 líneas:
+  97 src/crew/crew_input.gd · 102 src/crew/crew_member.gd · 62 src/crew/seat.gd · 110 src/tooling/probe_handling.gd (restaurado) · 164 tests/crew/crew_input_test.gd (nuevo) · 49 tests/static/input_actions_test.gd (nuevo)

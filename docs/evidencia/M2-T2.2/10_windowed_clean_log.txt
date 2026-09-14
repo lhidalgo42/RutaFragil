@@ -1,0 +1,55 @@
+10_windowed_clean_log.txt — M2-T2.2 (ronda 2, criterio nuevo)
+Demuestra: una corrida CON VENTANA de ~30 s (--quit-after 1800) cuyo registro no contiene ni una línea de error. El registro que manda es user://logs/godot.log, NO la salida por consola: el ejecutable con ventana no se engancha a la consola (mismo hallazgo que T0.4 con OS.get_executable_path); el registro del dueño tenía 11.232 líneas de error y su consola no las mostraba.
+HEAD 2dfc5cc. Fecha UTC: 2026-09-14 02:23:22
+
+Comando: timeout 120 $GODOT_BIN --path . --quit-after 1800   (sin --headless: abre ventana; exit 0)
+Log leído: %APPDATA%/Godot/app_userdata/RutaFragil/logs/godot.log (user://logs/godot.log), mtime fresco de la corrida (2026-09-13 23:20:28 -0300), 158 bytes, 3 líneas.
+
+grep -c ERROR        -> 0
+grep -c SCRIPT ERROR -> 0
+grep -c WARNING      -> 0
+
+--- user://logs/godot.log, contenido íntegro ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Scanning for test suites in: res://tests/static
+Installing GdUnit4 session system hooks.
+Session hook 'GdUnitHtmlTestReporter' installed.
+Session hook 'GdUnitXMLTestReporter' installed.
+Run Test Suite: res://tests/static/input_actions_test.gd
+  res://tests/static/input_actions_test.gd > test_every_action_read_in_src_is_registered STARTED
+  res://tests/static/input_actions_test.gd > test_every_action_read_in_src_is_registered FAILED 16ms
+  Report:
+  actions read in src/ but missing from the input map: ["walk_jump"]	at 'test_every_action_read_in_src_is_registered' in res://tests/static/input_actions_test.gd:34
+
+Statistics: 1 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 29ms
+
+
+Overall Summary: 1 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (1/1)
+Executed test cases : (1/1)
+Total execution time: 29ms
+ Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_2/results.xml
+Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_2/index.html
+Exit code: 100
+Run dispose test resources
+
+--- stdout de la misma corrida (también limpio, 3 líneas, 0 errores) ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060 Laptop GPU
+
+
+Contexto: en la ronda 1 esta misma escena escribía 6 líneas de error por fotograma (acciones walk_* leídas sin estar registradas); la evidencia de entonces no miraba el log. En la ronda 2 las siete acciones existen en [input] y el registro sale vacío.
