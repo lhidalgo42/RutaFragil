@@ -1,0 +1,17 @@
+14_cabin_driving.txt — M2-T2.2 (ronda 4)
+Demuestra: con ventana, la tripulante se sienta en el asiento real y el bus conduce 10 s en marcha, con el registro (user://logs/godot.log) limpio, y una captura desde la cabina con el bus en marcha y recto.
+HEAD 9466fa4. Fecha UTC: 2026-09-14 17:56:19
+
+Método: sonda temporal (borrada) con ventana: sube a la tripulante al pasillo, occupy() por código, set_drive(1,0,0) ~10 s, captura a mitad, sale. El registro que manda es el archivo, no la consola (T0.4/r2).
+
+--- salida de la sonda ---
+DRIVE occupy -> true
+DRIVE mid-drive speed_kmh=19.8 upright=1.0000
+DRIVE capture err=0
+DRIVE end speed_kmh=34.4 upright=0.9982
+
+--- user://logs/godot.log tras la corrida: mtime 2026-09-14 14:55:08 -0300, 285 bytes, 7 líneas ---
+grep -c ERROR -> 0 · grep -c WARNING -> 0
+
+--- 14_cabin_driving.png: la vista del conductor con el bus en marcha (19,8 km/h al capturar, 34,4 km/h al final), upright 1.0000 -> 0.9982, en recta hacia la rampa. Puntero LFS:
+32a6b762f4 * docs/evidencia/M2-T2.2/14_cabin_driving.png

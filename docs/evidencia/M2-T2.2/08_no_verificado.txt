@@ -1,11 +1,11 @@
-08_no_verificado.txt — M2-T2.2 (R7), ronda 3
-Fecha UTC: 2026-09-14 05:33:08 · HEAD b4aad77
+08_no_verificado.txt — M2-T2.2 (R7), ronda 4
+Fecha UTC: 2026-09-14 17:57:48 · HEAD 9466fa4
 
-1. EL GATE del dueño: con el gate de la ronda 2 ya jugable (andar, entrar, sentarse, conducir, levantarse, salir), la ronda 3 añade VER por donde toca: primera persona a pie, mirada con el ratón, cabina/persecución con C, Escape que libera el puntero. Tres minutos con F5. Ningún test lo sustituye; la sensibilidad del ratón (0,0025 rad/px) es candidata a gusto personal.
-2. El tacto de la mirada en cabina a velocidad (¿se puede mirar el retrovisor sin mareo?): los límites ±120°/±45° están probados por math pura, pero la comodidad es del dueño.
-3. El salto (walk_jump): registrado y cubierto por el test estático; sin test e2e de efecto (usa is_action_just_pressed; patrón ya probado en T1.1 con ventana). Lo prueba el dueño.
-4. La red con la tripulante a bordo: NO se replica (T2.2 es de un jugador); M4 decide (ADR-006). La mirada y la captura son de un jugador también: en M4 hay que decidir quién posee la cámara en cada peer.
+1. EL GATE del dueño: la ronda 4 arregla lo que su gate de la ronda 3 encontró (el bus volcaba al sentarse y conducir). F5, camina, entra, E al volante, conduce (recto y sin que el bus se sacuda), E para levantarte — también en marcha. Ningún test lo sustituye; el test de física del asiento mide la consecuencia sobre la escena real, pero el tacto lo juzga el dueño.
+2. Sentarse con el bus en marcha (ocupar a 40 km/h): el arreglo teletransporta con la forma deshabilitada al marcador; no hay test de "ocupar en marcha" (el de levantarse en marcha sí existe). Bajo riesgo: sentado no hay colisión.
+3. El salto (walk_jump): registrado y cubierto por el test estático; sin test e2e de efecto. Lo prueba el dueño.
+4. La red con la tripulante a bordo: NO se replica (T2.2 es de un jugador); M4 decide (ADR-006). Cámaras, mirada y captura son de un jugador: en M4 hay que decidir quién posee la cámara en cada peer.
 5. El gate DURO de M2 (dos instancias, red real, con paquetes): es T2.3 (D77).
-6. #102763 (deslizamiento sobre plataforma en rotación): no apareció en la medición del paso 1 de la ronda 1; si aparece, va aquí con números.
+6. #102763 (deslizamiento sobre plataforma en rotación): no apareció en las mediciones; si aparece, va aquí con números.
 7. macOS (D42): todo corrió en Windows.
-8. El incidente de la escena corrompida (restaurada en b4aad77): quedaron pines para el spawn del bus y seat_marker, pero NO para los transforms de los waypoints (WP16 fue arrastrado y solo se vio de casualidad). Candidato en BACKLOG.
+8. Pines anticorrupción de escena: cubren spawn del bus y seat_marker; los transforms de los waypoints siguen sin pin (WP16 fue arrastrado en el incidente y solo se vio de casualidad). En BACKLOG.

@@ -1,7 +1,11 @@
-07_git.txt — M2-T2.2 (ronda 3)
-PRE-COMMIT de la ronda 3. Fecha UTC: 2026-09-14 05:33:28 · HEAD b4aad77 (todo el código de la ronda ya commiteado; pendiente solo la evidencia).
+07_git.txt — M2-T2.2 (ronda 4)
+PRE-COMMIT de la ronda 4. Fecha UTC: 2026-09-14 17:58:11 · HEAD 9466fa4 (el arreglo ya commiteado; pendiente solo la evidencia).
 
 --- git log --oneline main..HEAD ---
+9466fa4 fix: sitting at the wheel no longer depenetrates the bus (M2-T2.2 r4)
+b39a02a docs: review 03 and round-4 prompt (M2-T2.2)
+98b5994 docs: evidence 07 post-commit (M2-T2.2 r3)
+8c1980c docs: evidence 02/08/09/10/12 and 07 pre-commit (M2-T2.2 r3)
 b4aad77 fix: restore playground.tscn from an out-of-band corrupting re-save (M2-T2.2 r3)
 d00a0ba feat: first-person cameras with mouse look and pointer capture (M2-T2.2 r3, D79)
 c1c25ab feat: FASE-0 signatures for round 3 (CameraArbiter, MouseLook, capture entry) + player_mouse_sensitivity in data (M2-T2.2 r3)
@@ -38,36 +42,11 @@ ce0c38f docs: plan and round-1 prompt (M1-T1.1)
  M docs/evidencia/M2-T2.2/07_git.txt
  M docs/evidencia/M2-T2.2/08_no_verificado.txt
  M docs/evidencia/M2-T2.2/09_limits.txt
- M docs/evidencia/M2-T2.2/10_windowed_clean_log.txt
-A  docs/evidencia/M2-T2.2/12_cabin.png
-A  docs/evidencia/M2-T2.2/12_chase.png
-A  docs/evidencia/M2-T2.2/12_fp_foot.png
-?? docs/evidencia/M2-T2.2/12_capturas.txt
+A  docs/evidencia/M2-T2.2/14_cabin_driving.png
+?? docs/evidencia/M2-T2.2/13_test_falla_primero.txt
+?? docs/evidencia/M2-T2.2/14_cabin_driving.txt
 
 --- git diff --stat main..HEAD ---
- src/vehicle/cabin_camera.gd                        |   11 +
- src/vehicle/cabin_camera.gd.uid                    |    1 +
- src/vehicle/chase_camera.gd                        |    6 +
- src/vehicle/demo_driver.gd                         |   14 +-
- src/vehicle/placeholder_bus.gd                     |  118 -
- src/vehicle/placeholder_bus.gd.uid                 |    1 -
- src/vehicle/placeholder_bus.tscn                   |   28 -
- tests/biomes/playground/playground_scene_test.gd   |   47 +-
- tests/camera/camera_arbiter_test.gd                |  119 +
- tests/camera/camera_arbiter_test.gd.uid            |    1 +
- tests/core/mouse_look_test.gd                      |   59 +
- tests/core/mouse_look_test.gd.uid                  |    1 +
- tests/crew/crew_input_test.gd                      |  268 ++
- tests/crew/crew_input_test.gd.uid                  |    1 +
- tests/crew/crew_member_test.gd                     |  103 +
- tests/crew/crew_member_test.gd.uid                 |    1 +
- tests/crew/crew_ride_test.gd                       |   69 +
- tests/crew/crew_ride_test.gd.uid                   |    1 +
- tests/crew/door_transit_test.gd                    |   70 +
- tests/crew/door_transit_test.gd.uid                |    1 +
- tests/crew/seat_test.gd                            |   26 +
- tests/crew/seat_test.gd.uid                        |    1 +
- tests/net/playground_client_mode_test.gd           |   26 +-
  tests/static/input_actions_test.gd                 |   49 +
  tests/static/input_actions_test.gd.uid             |    1 +
  tests/vehicle/bus_interior_test.gd                 |  130 +
@@ -79,79 +58,13 @@ A  docs/evidencia/M2-T2.2/12_fp_foot.png
  tests/vehicle/demo_driver_test.gd                  |   26 +-
  tests/vehicle/placeholder_bus_test.gd              |  128 -
  tests/vehicle/placeholder_bus_test.gd.uid          |    1 -
- 121 files changed, 13128 insertions(+), 326 deletions(-)
+ 129 files changed, 13934 insertions(+), 326 deletions(-)
 
---- git diff main -- project.godot (árbol vs main) ---
+--- git diff main -- project.godot (árbol vs main: sin cambios en esta ronda) ---
 diff --git a/project.godot b/project.godot
 index df25332..4ed04a7 100644
 --- a/project.godot
 +++ b/project.godot
 @@ -42,6 +42,79 @@ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
- 
- settings/test/test_lookup_folder="tests"
- 
-+[input]
-+
-+toggle_demo={
-+"deadzone": 0.2,
-+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194332,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
-+]
-+}
-+drive_accelerate={
-+"deadzone": 0.2,
-+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
-+]
-+}
-+drive_brake={
-+"deadzone": 0.2,
-+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
-+]
-+}
-+drive_steer_left={
-+"deadzone": 0.2,
-+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
-+]
-+}
 
 Sección post-commit capturada tras el commit de evidencia, en un commit de docs aparte.
-
-=== POST-COMMIT (parte 2) ===
-Fecha UTC: 2026-09-14 05:33:43 · rama m2/t2.2-crew · HEAD 8c1980c
-
---- git log --oneline main..HEAD ---
-8c1980c docs: evidence 02/08/09/10/12 and 07 pre-commit (M2-T2.2 r3)
-b4aad77 fix: restore playground.tscn from an out-of-band corrupting re-save (M2-T2.2 r3)
-d00a0ba feat: first-person cameras with mouse look and pointer capture (M2-T2.2 r3, D79)
-c1c25ab feat: FASE-0 signatures for round 3 (CameraArbiter, MouseLook, capture entry) + player_mouse_sensitivity in data (M2-T2.2 r3)
-7c48ea5 docs: review 02 and round-3 prompt (M2-T2.2)
-1a48213 docs: evidence 07 post-commit (M2-T2.2 r2)
-95c9e19 docs: evidence 02/06/08/09/10/11 and 07 pre-commit (M2-T2.2 r2)
-2dfc5cc fix: keep project_gravity() clean under unsafe_call_argument=2 (M2-T2.2 r1.2 follow-up)
-5766739 chore: restore probe_handling.gd as the permanent handling ruler (M2-T2.2 r1.3)
-d647069 fix: read gravity from the project setting instead of a 9.8 constant (M2-T2.2 r1.2)
-fa5e676 docs: D78, the bus body is a hollow shell with a 0.2 m floor plate (M2-T2.2 r1.1)
-3003bc0 fix: register walk/interact actions and wire the seat key (M2-T2.2 r2)
-eb72fb6 docs: art and world bible for map and asset production
-46b7485 docs: review 01 and round-2 prompt (M2-T2.2)
-5637655 docs: evidence 07 post-commit (M2-T2.2)
-a88ed63 feat: crew member with first-person ride, door transit and driver seat (M2-T2.2)
-3f8ec54 docs: raise the §4.5 acceleration discrepancy to the owner as a decision (M2-T2.2 step 0d)
-ee389ed docs: interior capture from inside down the corridor (T2.1 r1.2, M2-T2.2 step 0c)
-38ff96c fix: shrink the interior into the chassis silhouette (D72) — floor 0.20 up, free height 1.90, measured zero protrusions
-723a9ee chore: accept remaining editor normalization of [input]
-a0d0476 docs: plan, round-1 prompt and T2.1 review 01 (M2-T2.2)
-5528246 docs: evidence 07 post-commit (M2-T2.1)
-a3bf0a0 feat: greybox bus interior per §4.3 with positions and restraints, handling unchanged (M2-T2.1)
-d8c2839 feat: F1 toggles the auto demo at runtime, F5 stays the driver's seat (T1.1 r1.2, D71)
-8352308 fix: rename bus_accel_0_60_kmh_s to bus_traction_force_n — the field now names the force it applies (T1.1 r1.1)
-9b9d25f chore: accept editor normalization of [input]
-105bb66 docs: plan and round-1 prompt (M2-T2.1)
-0b01f8d docs: evidence 02 (harness x3 + unsafe probe) and 07 post-commit (M1-T1.1)
-301319b feat: raycast-suspension Bus with cabin/chase cameras, driving input, data-driven feel (M1-T1.1)
-c84bf14 fix: client abandonment JSON carries connected flag (M0-T0.4 r2.1, via M1-T1.1 step 0b)
-ce0c38f docs: plan and round-1 prompt (M1-T1.1)
-
---- git status --short ---
-(sin líneas entre esta sección = árbol limpio)
-
-Commits de la ronda 3: 7c48ea5 (docs del revisor) · c1c25ab (FASE 0: firmas + player_mouse_sensitivity en datos) · d00a0ba (FASE 1+2: cámaras/mirada/captura, trabajo del enjambre A/B/C) · b4aad77 (restauración de la escena corrompida + pines anticorrupción) · 8c1980c (evidencia).

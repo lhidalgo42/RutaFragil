@@ -28,3 +28,6 @@ Apéndice ronda 2 (HEAD 2dfc5cc, 2026-09-14 02:24:39 UTC): ninguna escena cambi�
 
 Apéndice ronda 3 (HEAD b4aad77, 2026-09-14 05:33:08 UTC): ninguna escena cambió de tamaño (playground.tscn restaurada a 60 nodos). Scripts nuevos/tocados, todos ≤ 400 líneas:
   60 src/core/camera_arbiter.gd (nuevo) · 26 src/core/mouse_look.gd (nuevo) · 187 src/crew/crew_input.gd · 104 src/vehicle/bus_input.gd · 95 src/biomes/playground/playground.gd · 62 src/crew/seat.gd · 108 src/crew/crew_member.gd · 119 tests/camera/camera_arbiter_test.gd (nuevo) · 59 tests/core/mouse_look_test.gd (nuevo) · 95 tests/vehicle/cabin_look_test.gd (nuevo)
+
+Apéndice ronda 4 (HEAD 9466fa4, 2026-09-14 17:57:48 UTC): ninguna escena cambió. Scripts tocados/nuevos, todos ≤ 400 líneas:
+  106 src/crew/seat.gd · 119 src/crew/crew_member.gd · 166 tests/biomes/playground/seat_physics_test.gd (nuevo)
