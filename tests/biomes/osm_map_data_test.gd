@@ -15,6 +15,11 @@ func test_loads_real_avenue_data() -> void:
 	assert_int(data.waypoints.size()).is_greater_equal(60)
 	assert_int(data.buildings.size()).is_greater_equal(40)
 	assert_int(data.humps.size()).is_equal(4)
+	var fills: int = 0
+	for b: Dictionary in data.buildings:
+		if str(b.get("type", "")) == "fill":
+			fills += 1
+	assert_int(fills).is_greater_equal(20)
 	assert_str(data.source).contains("OpenStreetMap")
 
 

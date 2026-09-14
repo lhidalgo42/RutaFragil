@@ -152,6 +152,36 @@ for b in src['buildings']:
     if -5 < along < LOT_ALONG + 46 and abs(across) < 9 + PASAJE_W / 2: continue
     if LOT_ALONG - 8 < along < LOT_ALONG + 46 and abs(across) < 26: continue   # the fuel lot (teardrop +-12 m, 35 m deep)
     blds.append({'x': round(x, 1), 'z': round(z, 1), 'w': b['w'], 'd': b['d'], 'yaw': b['yaw'], 'levels': b['levels'], 'type': b['type'], 's': round(s_b, 1), 'lat': round(lat, 1), 'delivery': False})
+# ---- fill the frontage where OSM has no building (ronda 4, D67): generated terraced houses with a fence ----
+import random
+SETBACK, DEPTH, FRONT, LOT_LAT = 2.5, 10.0, 8.0, 15.0
+covered = {1: [], -1: []}
+for b in blds:
+    if abs(b['lat']) < 48:
+        half = max(b['w'], b['d']) / 2.0 + 1.5
+        covered[1 if b['lat'] > 0 else -1].append((b['s'] - half, b['s'] + half))
+for gp in gaps:
+    covered[gp['side']].append((gp['s0'] - 4.0, gp['s1'] + 4.0))
+for side_ in (1, -1):
+    covered[side_].append((S_UNDER - 22.0, S_UNDER + 22.0))
+def overlaps(ivs, a, b):
+    return any(a < i1 and b > i0 for i0, i1 in ivs)
+rnd = random.Random(41); n_fill = 0
+for side_ in (1, -1):
+    s_ = 16.0
+    while s_ + FRONT <= L - 16.0:
+        if not overlaps(covered[side_], s_, s_ + FRONT):
+            s_c = s_ + FRONT / 2.0
+            (_, (tx_, tz_), _) = sample(s_c)
+            yaw_ = math.atan2(-tz_, tx_)                       # Basis(UP, yaw) maps +X onto the tangent
+            cx_, cz_ = off(s_c, side_ * (LOT_LAT + SETBACK + DEPTH / 2.0))
+            fx_, fz_ = off(s_c, side_ * (LOT_LAT + 0.05))
+            blds.append({'x': round(cx_, 1), 'z': round(cz_, 1), 'w': round(FRONT * 0.96, 2), 'd': DEPTH, 'yaw': round(yaw_, 4),
+                         'levels': 1 if rnd.random() < 0.55 else 2, 'type': 'fill', 's': round(s_c, 1), 'lat': round(side_ * (LOT_LAT + SETBACK + DEPTH / 2.0), 1),
+                         'delivery': False, 'fence': {'x': round(fx_, 1), 'z': round(fz_, 1), 'yaw': round(yaw_, 4), 'len': FRONT}})
+            n_fill += 1
+        s_ += FRONT
+print('frentes generados:', n_fill)
 cands = [i for i, b in enumerate(blds) if b['type'] in ('house', 'terrace', 'semidetached_house') and b['lat'] > 15.5 and b['lat'] < 40 and 80 < b['s'] < 260]
 if not cands: cands = [i for i, b in enumerate(blds) if b['lat'] > 15.5 and b['lat'] < 40 and 60 < b['s'] < 300]
 di = min(cands, key=lambda i: abs(blds[i]['s'] - 120)); blds[di]['delivery'] = True

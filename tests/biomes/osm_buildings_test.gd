@@ -14,6 +14,14 @@ func test_one_facade_and_one_collider_per_building() -> void:
 	var roofs: MultiMeshInstance3D = buildings.get_node("Roofs") as MultiMeshInstance3D
 	assert_int(roofs.multimesh.instance_count).is_greater(0)
 	assert_int(roofs.multimesh.instance_count).is_less(n)
+	var fills: int = 0
+	for b: Dictionary in buildings.data.buildings:
+		if str(b.get("type", "")) == "fill":
+			fills += 1
+	assert_int(fills).is_greater_equal(20)
+	assert_int(buildings.fence_count()).is_equal(fills)
+	var facades: MultiMeshInstance3D = buildings.get_node("Facades") as MultiMeshInstance3D
+	assert_bool(facades.multimesh.mesh.surface_get_material(0) is ShaderMaterial).is_true()
 
 
 func test_delivery_pad_sits_between_house_and_avenue() -> void:

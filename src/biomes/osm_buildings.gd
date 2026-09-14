@@ -1,14 +1,18 @@
 class_name OsmBuildings
 extends Node3D
 
-## Real building footprints (D65) as oriented boxes: facades in one coloured
-## MultiMesh, gabled roofs for low houses in a second (PrismMesh), and one
-## StaticBody3D with a rotated BoxShape3D per building. The delivery house
-## gets a doorbell pad and a receiver on its avenue-facing side.
+## Real building footprints (D65) plus generated infill houses (D67) as
+## oriented boxes: facades in one MultiMesh drawn by facade.gdshader (instance
+## colour + procedural windows), gabled roofs for low houses in a second
+## (PrismMesh), fences for the infill lots, and one StaticBody3D with a rotated
+## BoxShape3D per building. The delivery house gets a doorbell pad and a
+## receiver on its avenue-facing side.
 
 const FLOOR_M: float = 3.2
 const ROOF_H: float = 2.2
-const HOUSE_TYPES: Array[String] = ["house", "terrace", "semidetached_house"]
+const HOUSE_TYPES: Array[String] = ["house", "terrace", "semidetached_house", "fill"]
+const FACADE_SHADER: Shader = preload("res://assets/shaders/facade.gdshader")
+const FENCE_H_M: float = 1.8
 const PALETTE: Array[Color] = [
 	Color(0.85, 0.72, 0.45), Color(0.93, 0.9, 0.82), Color(0.9, 0.7, 0.68),
 	Color(0.78, 0.8, 0.72), Color(0.86, 0.82, 0.62),
@@ -30,7 +34,9 @@ func build() -> void:
 	for child: Node in get_children():
 		remove_child(child)
 		child.free()
-	var facades: MultiMesh = _multimesh(_unit_box())
+	var facades: MultiMesh = _multimesh(_unit_box(true))
+	var fences: MultiMesh = _multimesh(_unit_box(false))
+	var fence_xforms: Array[Transform3D] = []
 	var roofs: MultiMesh = _multimesh(_unit_prism())
 	facades.instance_count = data.buildings.size()
 	var roof_xforms: Array[Transform3D] = []
@@ -60,12 +66,29 @@ func build() -> void:
 			roof_xforms.append(Transform3D(roof_rot, Vector3(center.x, h + ROOF_H * 0.5, center.z)))
 		if bool(b.get("delivery", false)):
 			_add_delivery(center, w, d)
+		var fence: Dictionary = b.get("fence", {})
+		if not fence.is_empty():
+			var fence_rot: Basis = Basis(Vector3.UP, float(fence.get("yaw", 0.0))) * Basis.from_scale(Vector3(float(fence.get("len", 8.0)), FENCE_H_M, 0.08))
+			fence_xforms.append(Transform3D(fence_rot, Vector3(float(fence.get("x", 0.0)), FENCE_H_M * 0.5, float(fence.get("z", 0.0)))))
 	roofs.instance_count = roof_xforms.size()
 	for i: int in roof_xforms.size():
 		roofs.set_instance_transform(i, roof_xforms[i])
 		roofs.set_instance_color(i, Color(0.55, 0.3, 0.25))
+	fences.instance_count = fence_xforms.size()
+	for i: int in fence_xforms.size():
+		fences.set_instance_transform(i, fence_xforms[i])
+		fences.set_instance_color(i, Color(0.28, 0.28, 0.3))
 	_add_instance("Facades", facades)
 	_add_instance("Roofs", roofs)
+	_add_instance("Fences", fences)
+
+
+func fence_count() -> int:
+	var node: Node = get_node_or_null("Fences")
+	if node is MultiMeshInstance3D:
+		var inst: MultiMeshInstance3D = node
+		return inst.multimesh.instance_count
+	return 0
 
 
 func facade_count() -> int:
@@ -97,6 +120,8 @@ func _colour(b: Dictionary, index: int) -> Color:
 		return Color(0.62, 0.64, 0.68)
 	if kind == "retail":
 		return Color(0.9, 0.6, 0.3)
+	if kind == "fill":
+		return PALETTE[(index * 7 + 3) % PALETTE.size()]
 	return PALETTE[index % PALETTE.size()]
 
 
@@ -139,10 +164,15 @@ func _multimesh(mesh: Mesh) -> MultiMesh:
 	return mm
 
 
-func _unit_box() -> BoxMesh:
+func _unit_box(windows: bool) -> BoxMesh:
 	var mesh: BoxMesh = BoxMesh.new()
 	mesh.size = Vector3.ONE
-	mesh.material = _vertex_colour_material()
+	if windows:
+		var shader_mat: ShaderMaterial = ShaderMaterial.new()
+		shader_mat.shader = FACADE_SHADER
+		mesh.material = shader_mat
+	else:
+		mesh.material = _vertex_colour_material()
 	return mesh
 
 

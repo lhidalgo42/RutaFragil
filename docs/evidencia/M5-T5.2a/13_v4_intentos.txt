@@ -1,0 +1,4 @@
+# Ronda 4: intentos y causas
+1) city_backdrop_test: todas las posiciones en 0 -> MultiMesh.get_instance_transform() devuelve identidad en headless. Arreglo: MeshBatcher.positions / GrassStrip.positions; dos pruebas del pasto pasaban trivialmente y ahora comprueban de verdad.
+2) cordillera como muralla plana en la captura: prismas con la arista paralela al observador. Arreglo: girar 90 grados (silueta de picos).
+3) lap_completed 182,7 s con las 127 casas generadas y toda la demarcacion; sin regresiones.

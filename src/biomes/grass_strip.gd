@@ -13,6 +13,8 @@ const TUFT_H: float = 0.45
 @export var follow: Node3D
 
 var _material: ShaderMaterial
+## Tuft origins from the last build (readable in headless tests, unlike the MultiMesh buffer).
+var positions: PackedVector3Array = PackedVector3Array()
 
 
 func _ready() -> void:
@@ -50,6 +52,9 @@ func build_along(points: PackedVector3Array, half_width: float, per_m2: float, s
 			var pos: Vector3 = a + tangent * along + normal * across
 			var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(0.7, 1.3))
 			transforms.append(Transform3D(basis, pos))
+	positions = PackedVector3Array()
+	for xf: Transform3D in transforms:
+		positions.append(xf.origin)
 	_apply(transforms)
 	return transforms.size()
 

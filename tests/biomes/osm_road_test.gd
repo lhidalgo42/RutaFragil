@@ -21,7 +21,8 @@ func test_builds_collision_bodies_and_batches() -> void:
 		var strip: GrassStrip = grass
 		assert_int(strip.multimesh.instance_count).is_greater(5000)
 	assert_object(road.get_node_or_null("Batch_asphalt")).is_not_null()
-	assert_object(road.get_node_or_null("Batch_crown")).is_not_null()
+	assert_int(road.batch_count("paint_white")).is_greater(300)
+	assert_int(road.batch_count("paint_yellow")).is_greater(50)
 
 
 func test_curbs_leave_the_station_gap_open() -> void:

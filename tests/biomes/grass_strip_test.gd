@@ -14,7 +14,8 @@ func test_count_follows_area_and_is_deterministic() -> void:
 	var n_b: int = b.build_along(pts, 1.5, 4.0, 3)
 	assert_int(n_a).is_equal(1200)
 	assert_int(n_b).is_equal(n_a)
-	assert_vector(a.multimesh.get_instance_transform(7).origin).is_equal(b.multimesh.get_instance_transform(7).origin)
+	assert_vector(a.positions[7]).is_equal(b.positions[7])
+	assert_bool(a.positions[7] != Vector3.ZERO).is_true()
 
 
 func test_tufts_stay_inside_strip() -> void:
@@ -24,8 +25,8 @@ func test_tufts_stay_inside_strip() -> void:
 	var n: int = g.build_along(pts, 2.0, 1.0, 9)
 	assert_int(n).is_greater(300)
 	var inside: bool = true
-	for i: int in n:
-		var p: Vector3 = g.multimesh.get_instance_transform(i).origin
+	assert_int(g.positions.size()).is_equal(n)
+	for p: Vector3 in g.positions:
 		var on_first: bool = p.x >= -0.01 and p.x <= 50.01 and absf(p.z) <= 2.01
 		var on_second: bool = absf(p.x - 50.0) <= 2.01 and p.z >= -0.01 and p.z <= 50.01
 		if not (on_first or on_second):

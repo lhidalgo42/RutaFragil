@@ -1,0 +1,6 @@
+# run_demo route_departamental (ronda 4) · código 0
+DEMO result=lap_completed t=182.7s waypoints=87 max_speed_kmh=90.0 min_upright=0.93
+# run_demo route_mvp (B0 v2) · código 0
+DEMO result=lap_completed t=77.0s waypoints=30 max_speed_kmh=69.5 min_upright=0.93
+# run_demo Playground · código 0
+DEMO result=lap_completed t=36.8s waypoints=17 max_speed_kmh=51.1 min_upright=0.95

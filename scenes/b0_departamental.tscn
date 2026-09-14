@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://src/biomes/biome_segment.gd" id="1_segment"]
 [ext_resource type="Script" path="res://src/biomes/axis_circuit.gd" id="2_circuit"]
 [ext_resource type="Script" path="res://src/biomes/osm_road.gd" id="3_road"]
 [ext_resource type="Script" path="res://src/biomes/osm_buildings.gd" id="4_buildings"]
+[ext_resource type="Script" path="res://src/biomes/osm_furniture.gd" id="7_furniture"]
+[ext_resource type="Script" path="res://src/biomes/city_backdrop.gd" id="8_backdrop"]
 [ext_resource type="PackedScene" path="res://scenes/b0/city_station.tscn" id="5_station"]
 [ext_resource type="PackedScene" path="res://scenes/b0/city_fuel_branch.tscn" id="6_fuel"]
 
@@ -26,6 +28,13 @@ data_path = "res://data/b0_departamental.json"
 [node name="Buildings" type="Node3D" parent="."]
 script = ExtResource("4_buildings")
 data_path = "res://data/b0_departamental.json"
+
+[node name="Furniture" type="Node3D" parent="."]
+script = ExtResource("7_furniture")
+data_path = "res://data/b0_departamental.json"
+
+[node name="Backdrop" type="Node3D" parent="."]
+script = ExtResource("8_backdrop")
 
 [node name="Circuit" type="Node3D" parent="."]
 script = ExtResource("2_circuit")

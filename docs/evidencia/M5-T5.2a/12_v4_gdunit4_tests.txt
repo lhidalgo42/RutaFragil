@@ -1,0 +1,66 @@
+# gdUnit4 suite completa (ronda 4) · código 0 · tras --import x2 (0, 0)
+Run Test Suite: res://tests/autoloads/game_config_autoload_test.gd
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 32ms
+Run Test Suite: res://tests/biomes/axis_circuit_test.gd
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 8ms
+Run Test Suite: res://tests/biomes/b0_city_scene_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 4s 614ms
+Run Test Suite: res://tests/biomes/biome_segment_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 20ms
+Run Test Suite: res://tests/biomes/city_backdrop_test.gd
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 0ms
+Run Test Suite: res://tests/biomes/grass_strip_test.gd
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 34ms
+Run Test Suite: res://tests/biomes/house_row_test.gd
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 17ms
+Run Test Suite: res://tests/biomes/osm_buildings_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 41ms
+Run Test Suite: res://tests/biomes/osm_furniture_test.gd
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 9ms
+Run Test Suite: res://tests/biomes/osm_map_data_test.gd
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 25ms
+Run Test Suite: res://tests/biomes/osm_road_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 34ms
+Run Test Suite: res://tests/biomes/overview_camera_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 13ms
+Run Test Suite: res://tests/biomes/playground/circuit_test.gd
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 15ms
+Run Test Suite: res://tests/biomes/playground/playground_scene_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 2s 44ms
+Run Test Suite: res://tests/biomes/playground/water_zone_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 662ms
+Run Test Suite: res://tests/biomes/route_circuit_test.gd
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 16ms
+Run Test Suite: res://tests/biomes/route_departamental_scene_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 4s 112ms
+Run Test Suite: res://tests/core/data/data_load_report_test.gd
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 14ms
+Run Test Suite: res://tests/core/data/data_mirror_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 32ms
+Run Test Suite: res://tests/core/data/game_data_loader_test.gd
+Statistics: 17 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 156ms
+Run Test Suite: res://tests/core/data/json_file_test.gd
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 30ms
+Run Test Suite: res://tests/core/data/json_merge_test.gd
+Statistics: 7 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 17ms
+Run Test Suite: res://tests/core/data/resource_json_codec_test.gd
+Statistics: 14 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 63ms
+Run Test Suite: res://tests/net/network_backend_test.gd
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 7s 549ms
+Run Test Suite: res://tests/net/net_marker_test.gd
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 21ms
+Run Test Suite: res://tests/net/playground_client_mode_test.gd
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 13ms
+Run Test Suite: res://tests/smoke_test.gd
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 13ms
+Run Test Suite: res://tests/vehicle/chase_camera_test.gd
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 97ms
+Run Test Suite: res://tests/vehicle/demo_driver_test.gd
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 4s 213ms
+Run Test Suite: res://tests/vehicle/demo_steering_test.gd
+Statistics: 10 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 42ms
+Run Test Suite: res://tests/vehicle/placeholder_bus_test.gd
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 3s 419ms
+Overall Summary: 124 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (31/31)
+Executed test cases : (124/124)
