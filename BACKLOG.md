@@ -101,6 +101,10 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **Geometría sin lógica:** surtidor, bidones, barriles, timbre y receptor de B0 son mallas y colisiones; repostar/verter (T1.2), comprar (T1.3), entregar y timbrar (T3.3/T5.2) llegan en sus tareas. El túnel bajo no afecta a nada hasta que existan flotantes (M3).
 - **Petición "mapa de bosque" del dueño (2026-09-13):** reportada como contradicción con D18 y resuelta hacia B0 Ciudad; Bosque sigue eliminado.
 - **Capturas de evidencia:** los PNG no se versionan (LFS, cuota permanente); ver `docs/evidencia/M5-T5.2a/00_capturas.txt`.
+- **Ronda 2 (v2) dejó fuera, por alcance del dueño:** rotondas de retorno con isla central, plazas de barrio (multicancha, bancas, juegos), mobiliario (postes cada ~35 m, paraderos 3,6 × 2 × 2,56 m, semáforos a 3,4 m, kiosco, almacén de esquina, perro), calle local de 11 m hacia el sitio eriazo de combustible con tambores de 200 L, y la casa de entrega con antejardín, reja y timbre en la pilastra. Medidas y fuentes en `docs/referencias/B0_ciudad_referencias.html` §3.
+- **Colisión del bandejón y las islas de rotonda al llegar T1.1:** hoy son solo malla porque la caja de D48 derrapa; con ruedas y suspensión ponerles solera real y volver a correr la evidencia 05.
+- **Islas de surtidores a 11 m en vez de los 9,5 m reales:** volver a 9,5 cuando el bus real gire sin derrapar.
+- **Señales sin texto ni pictograma:** PG-8a, RR-1, RR-6 y PF-5 son placas de color (rombo amarillo, círculo blanco) sin símbolo; el pictograma entra con el pase de arte (T8.1), sin texto real (regla PEAK 12 del documento de referencias).
 
 ## Pendientes propios de la ejecución de M0-T0.4
 

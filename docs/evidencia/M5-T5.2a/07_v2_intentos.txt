@@ -1,0 +1,7 @@
+# Ronda 2 (v2): intentos y causas, misma orden de run_demo / prueba de escena
+1) islas de surtidores a 9,5 m (real) y bajada de la estación entre las islas: rolled_over x1 antes de WP6 (la caja pisa una isla de 20 cm de costado).
+2) islas a 11 m, bajada tras la marquesina cruzando el bordillo a 2 m del final del hueco: stuck entre WP3 y WP4 (el morro pisa el extremo del bordillo).
+3) cruce por el medio del hueco (z=51,5): stuck igual -> la causa no era el punto de cruce.
+4) bajada hasta x=3 sobre el bandejón (solo malla): stuck igual. run_demo headless confirma: stuck 1 s después de WP3 a ~57 km/h, min_upright 1,00 -> derrape de salida > 5 m contra el extremo del bordillo derecho en z=44 (la pista sur va a 7 m del bordillo).
+5) bordillo derecho sur acortado a z=34 (salida ancha de estación) + bajada en dos tramos <= 34°: lap_completed t=77,0 s, max 69,5 km/h, min_upright 0,93. Suite 10/10 en BIOMAS y 106/106 en la rama.
+6) copas de árboles del bandejón subidas a 5,2 m: la ChaseCamera (5 m) quedaba dentro de una copa en la captura del paso bajo nivel.

@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 
 ## B0 city greybox through the route scene: structure checks, then a demo
-## drive that reaches waypoint 6 (station detour and speed bump behind it)
+## drive that reaches waypoint 6 (station detour and first flat speed bump)
 ## without rolled_over. Same shape as playground_scene_test: time factor 4,
 ## signal waits with explicit timeouts, never process-frame counts.
 
@@ -42,6 +42,13 @@ func test_scene_structure() -> void:
 		assert_float(bus.global_position.distance_to(segment.entry_position())).is_less(1.0)
 	var camera_node: Node = scene.get_node_or_null("ChaseCamera")
 	assert_bool(camera_node is ChaseCamera).is_true()
+	for piece: String in ["CityStreet", "CityMedian", "CityBumps", "CityStation", "CityTunnel", "CityFuelBranch", "CityDelivery"]:
+		assert_object(scene.get_node_or_null("Segments/B0City/" + piece)).override_failure_message("missing piece " + piece).is_not_null()
+	var houses_node: Node = scene.get_node_or_null("Segments/B0City/HousesEast")
+	assert_bool(houses_node is HouseRow).is_true()
+	if houses_node is HouseRow:
+		var houses: HouseRow = houses_node
+		assert_int(houses.facade_count()).is_equal(10)
 
 
 func test_demo_passes_station_and_speed_bump_without_rolling_over() -> void:

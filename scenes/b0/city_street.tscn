@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=17 format=3]
 
 [sub_resource type="StandardMaterial3D" id="mat_ground"]
 albedo_color = Color(0.45, 0.5, 0.42, 1)
@@ -9,29 +9,11 @@ albedo_color = Color(0.24, 0.25, 0.27, 1)
 [sub_resource type="StandardMaterial3D" id="mat_curb"]
 albedo_color = Color(0.72, 0.72, 0.7, 1)
 
-[sub_resource type="StandardMaterial3D" id="mat_bump"]
-albedo_color = Color(0.85, 0.55, 0.15, 1)
+[sub_resource type="StandardMaterial3D" id="mat_sidewalk"]
+albedo_color = Color(0.8, 0.78, 0.72, 1)
 
 [sub_resource type="BoxShape3D" id="shape_ground"]
 size = Vector3(110, 1, 380)
-
-[sub_resource type="BoxShape3D" id="shape_curb_left_south"]
-size = Vector3(2, 0.15, 79)
-
-[sub_resource type="BoxShape3D" id="shape_curb_left_north"]
-size = Vector3(2, 0.15, 23)
-
-[sub_resource type="BoxShape3D" id="shape_curb_right_south"]
-size = Vector3(2, 0.15, 89)
-
-[sub_resource type="BoxShape3D" id="shape_curb_right_north"]
-size = Vector3(2, 0.15, 55)
-
-[sub_resource type="BoxShape3D" id="shape_ramp"]
-size = Vector3(24, 1, 2.156)
-
-[sub_resource type="BoxShape3D" id="shape_crest"]
-size = Vector3(24, 1, 0.6)
 
 [sub_resource type="BoxMesh" id="mesh_ground"]
 material = SubResource("mat_ground")
@@ -41,29 +23,37 @@ size = Vector3(110, 1, 380)
 material = SubResource("mat_asphalt")
 size = Vector3(24, 0.02, 172)
 
-[sub_resource type="BoxMesh" id="mesh_left_south"]
+[sub_resource type="BoxMesh" id="mesh_sidewalk"]
+material = SubResource("mat_sidewalk")
+size = Vector3(2, 0.15, 172)
+
+[sub_resource type="BoxShape3D" id="shape_cls"]
+size = Vector3(2, 0.15, 79)
+
+[sub_resource type="BoxMesh" id="mesh_cls"]
 material = SubResource("mat_curb")
 size = Vector3(2, 0.15, 79)
 
-[sub_resource type="BoxMesh" id="mesh_left_north"]
+[sub_resource type="BoxShape3D" id="shape_cln"]
+size = Vector3(2, 0.15, 23)
+
+[sub_resource type="BoxMesh" id="mesh_cln"]
 material = SubResource("mat_curb")
 size = Vector3(2, 0.15, 23)
 
-[sub_resource type="BoxMesh" id="mesh_right_south"]
-material = SubResource("mat_curb")
-size = Vector3(2, 0.15, 89)
+[sub_resource type="BoxShape3D" id="shape_crs"]
+size = Vector3(2, 0.15, 79)
 
-[sub_resource type="BoxMesh" id="mesh_right_north"]
+[sub_resource type="BoxMesh" id="mesh_crs"]
 material = SubResource("mat_curb")
+size = Vector3(2, 0.15, 79)
+
+[sub_resource type="BoxShape3D" id="shape_crn"]
 size = Vector3(2, 0.15, 55)
 
-[sub_resource type="BoxMesh" id="mesh_ramp"]
-material = SubResource("mat_bump")
-size = Vector3(24, 1, 2.156)
-
-[sub_resource type="BoxMesh" id="mesh_crest"]
-material = SubResource("mat_bump")
-size = Vector3(24, 1, 0.6)
+[sub_resource type="BoxMesh" id="mesh_crn"]
+material = SubResource("mat_curb")
+size = Vector3(2, 0.15, 55)
 
 [node name="CityStreet" type="Node3D"]
 
@@ -80,70 +70,46 @@ mesh = SubResource("mesh_ground")
 position = Vector3(0, 0.01, 41)
 mesh = SubResource("mesh_asphalt")
 
+[node name="SidewalkEast" type="MeshInstance3D" parent="."]
+position = Vector3(14, 0.075, 41)
+mesh = SubResource("mesh_sidewalk")
+
+[node name="SidewalkWest" type="MeshInstance3D" parent="."]
+position = Vector3(-14, 0.075, 41)
+mesh = SubResource("mesh_sidewalk")
+
 [node name="CurbLeftSouth" type="StaticBody3D" parent="."]
 position = Vector3(-12, 0.075, -5.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CurbLeftSouth"]
-shape = SubResource("shape_curb_left_south")
+shape = SubResource("shape_cls")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CurbLeftSouth"]
-mesh = SubResource("mesh_left_south")
+mesh = SubResource("mesh_cls")
 
 [node name="CurbLeftNorth" type="StaticBody3D" parent="."]
 position = Vector3(-12, 0.075, 115.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CurbLeftNorth"]
-shape = SubResource("shape_curb_left_north")
+shape = SubResource("shape_cln")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CurbLeftNorth"]
-mesh = SubResource("mesh_left_north")
+mesh = SubResource("mesh_cln")
 
 [node name="CurbRightSouth" type="StaticBody3D" parent="."]
-position = Vector3(12, 0.075, -0.5)
+position = Vector3(12, 0.075, -5.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CurbRightSouth"]
-shape = SubResource("shape_curb_right_south")
+shape = SubResource("shape_crs")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CurbRightSouth"]
-mesh = SubResource("mesh_right_south")
+mesh = SubResource("mesh_crs")
 
 [node name="CurbRightNorth" type="StaticBody3D" parent="."]
 position = Vector3(12, 0.075, 99.5)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CurbRightNorth"]
-shape = SubResource("shape_curb_right_north")
+shape = SubResource("shape_crn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CurbRightNorth"]
-mesh = SubResource("mesh_right_north")
-
-[node name="SpeedBump" type="Node3D" parent="."]
-position = Vector3(0, 0, 20)
-
-[node name="RampSouth" type="StaticBody3D" parent="SpeedBump"]
-position = Vector3(0, -0.345, 1.367)
-rotation = Vector3(0.139626, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SpeedBump/RampSouth"]
-shape = SubResource("shape_ramp")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SpeedBump/RampSouth"]
-mesh = SubResource("mesh_ramp")
-
-[node name="Crest" type="StaticBody3D" parent="SpeedBump"]
-position = Vector3(0, -0.2, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SpeedBump/Crest"]
-shape = SubResource("shape_crest")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SpeedBump/Crest"]
-mesh = SubResource("mesh_crest")
-
-[node name="RampNorth" type="StaticBody3D" parent="SpeedBump"]
-position = Vector3(0, -0.345, -1.367)
-rotation = Vector3(-0.139626, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SpeedBump/RampNorth"]
-shape = SubResource("shape_ramp")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SpeedBump/RampNorth"]
-mesh = SubResource("mesh_ramp")
+mesh = SubResource("mesh_crn")

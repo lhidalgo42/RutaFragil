@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="StandardMaterial3D" id="mat_grass"]
+albedo_color = Color(0.35, 0.55, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_trunk"]
+albedo_color = Color(0.4, 0.28, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_crown"]
+albedo_color = Color(0.25, 0.5, 0.25, 1)
+
+[sub_resource type="BoxMesh" id="mesh_median"]
+material = SubResource("mat_grass")
+size = Vector3(3, 0.15, 172)
+
+[sub_resource type="CylinderMesh" id="mesh_trunk"]
+material = SubResource("mat_trunk")
+top_radius = 0.2
+bottom_radius = 0.2
+height = 5.2
+
+[sub_resource type="SphereMesh" id="mesh_crown"]
+material = SubResource("mat_crown")
+radius = 1.7
+height = 3.4
+
+[node name="CityMedian" type="Node3D"]
+
+[node name="Grass" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.075, 41)
+mesh = SubResource("mesh_median")
+
+[node name="Trunk1" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, -30)
+mesh = SubResource("mesh_trunk")
+
+[node name="Crown1" type="MeshInstance3D" parent="."]
+position = Vector3(0, 6.9, -30)
+mesh = SubResource("mesh_crown")
+
+[node name="Trunk2" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, -10)
+mesh = SubResource("mesh_trunk")
+
+[node name="Crown2" type="MeshInstance3D" parent="."]
+position = Vector3(0, 6.9, -10)
+mesh = SubResource("mesh_crown")
+
+[node name="Trunk3" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, 10)
+mesh = SubResource("mesh_trunk")
+
+[node name="Crown3" type="MeshInstance3D" parent="."]
+position = Vector3(0, 6.9, 10)
+mesh = SubResource("mesh_crown")
+
+[node name="Trunk4" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, 30)
+mesh = SubResource("mesh_trunk")
+
+[node name="Crown4" type="MeshInstance3D" parent="."]
+position = Vector3(0, 6.9, 30)
+mesh = SubResource("mesh_crown")
+
+[node name="Trunk5" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, 50)
+mesh = SubResource("mesh_trunk")
+
+[node name="Crown5" type="MeshInstance3D" parent="."]
+position = Vector3(0, 6.9, 50)
+mesh = SubResource("mesh_crown")
+
+[node name="Trunk6" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, 70)
+mesh = SubResource("mesh_trunk")
+
+[node name="Crown6" type="MeshInstance3D" parent="."]
+position = Vector3(0, 6.9, 70)
+mesh = SubResource("mesh_crown")
+
+[node name="Trunk7" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, 90)
+mesh = SubResource("mesh_trunk")
+
+[node name="Crown7" type="MeshInstance3D" parent="."]
+position = Vector3(0, 6.9, 90)
+mesh = SubResource("mesh_crown")
+
+[node name="Trunk8" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.6, 110)
+mesh = SubResource("mesh_trunk")
+
+[node name="Crown8" type="MeshInstance3D" parent="."]
+position = Vector3(0, 6.9, 110)
+mesh = SubResource("mesh_crown")
