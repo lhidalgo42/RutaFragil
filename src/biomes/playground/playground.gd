@@ -53,19 +53,36 @@ func _process(_delta: float) -> void:
 	# F5 stays the owner's seat and the demo needs no console. Headless
 	# delivers no InputEvent, so this is inert in tests and tools.
 	if Input.is_action_just_pressed("toggle_demo"):
-		demo_mode = not demo_mode
-		if demo_driver != null:
-			demo_driver.enabled = demo_mode
-		if bus_input != null:
-			bus_input.enabled = not demo_mode
-		# The camera follows the mode change, and the cursor with it: the demo
-		# is watched with a free mouse, playing captures it again.
-		if demo_mode:
-			CameraArbiter.apply(get_tree(), CameraArbiter.Mode.DEMO)
-			_set_mouse_captured(get_node_or_null("CrewInput"), false)
-		else:
-			CameraArbiter.apply(get_tree(), _crew_camera_mode())
-			_set_mouse_captured(get_node_or_null("CrewInput"), true)
+		set_demo_mode(not demo_mode)
+
+
+## The demo toggle as a callable (the test drives it without input).
+## Input ownership follows the CREW state, not the demo flag — the F1
+## wrinkle (T2.2 r3): leaving the demo set bus_input.enabled = true even
+## with the crew on foot, and W throttled the parked bus while walking.
+func set_demo_mode(on: bool) -> void:
+	demo_mode = on
+	if demo_driver != null:
+		demo_driver.enabled = demo_mode
+	if bus_input != null:
+		bus_input.enabled = _crew_seated() and not demo_mode
+	# The camera follows the mode change, and the cursor with it: the demo
+	# is watched with a free mouse, playing captures it again.
+	if demo_mode:
+		CameraArbiter.apply(get_tree(), CameraArbiter.Mode.DEMO)
+		_set_mouse_captured(get_node_or_null("CrewInput"), false)
+	else:
+		CameraArbiter.apply(get_tree(), _crew_camera_mode())
+		_set_mouse_captured(get_node_or_null("CrewInput"), true)
+
+
+## Whether the crew member is seated at the wheel right now.
+func _crew_seated() -> bool:
+	var crew_node: Node = get_tree().get_first_node_in_group("crew")
+	if crew_node is CrewMember:
+		var member: CrewMember = crew_node
+		return member.seated
+	return false
 
 
 ## The camera the crew returns to when the demo hands control back: the

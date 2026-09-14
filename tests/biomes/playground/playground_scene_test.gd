@@ -102,5 +102,47 @@ func test_demo_reaches_three_waypoints_without_rolling_over() -> void:
 	assert_int(_rolled_over_count).is_equal(0)
 
 
+func test_leaving_the_demo_follows_the_crew_state() -> void:
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	var scene: Node = runner.scene()
+	assert_bool(scene is Playground).is_true()
+	if not (scene is Playground):
+		return
+	var playground: Playground = scene
+	var bus_input_node: Node = scene.get_node_or_null("BusInput")
+	assert_bool(bus_input_node is BusInput).is_true()
+	if not (bus_input_node is BusInput):
+		return
+	var bus_input: BusInput = bus_input_node
+	# On foot: leaving the demo must NOT enable the driving input (the F1
+	# wrinkle: it did, and W throttled the parked bus while walking).
+	playground.set_demo_mode(true)
+	assert_bool(bus_input.enabled).is_false()
+	playground.set_demo_mode(false)
+	assert_bool(bus_input.enabled).override_failure_message("leaving the demo enabled BusInput with the crew on foot").is_false()
+	# Seated, leaving the demo restores the wheel.
+	var bus_node: Node = scene.get_tree().get_first_node_in_group("bus")
+	var crew_node: Node = scene.get_tree().get_first_node_in_group("crew")
+	var seat_node: Node = scene.get_tree().get_first_node_in_group("seat")
+	if not (bus_node is Bus) or not (crew_node is CrewMember) or not (seat_node is Seat):
+		assert_bool(false).override_failure_message("cast missing").is_true()
+		return
+	var bus: Bus = bus_node
+	var crew: CrewMember = crew_node
+	var seat: Seat = seat_node
+	crew.global_position = bus.global_transform * Vector3(0.0, -0.55, 0.0)
+	crew.aboard = true
+	for i: int in range(30):
+		await scene.get_tree().physics_frame
+	assert_bool(seat.occupy(crew)).is_true()
+	assert_bool(bus_input.enabled).is_true()
+	playground.set_demo_mode(true)
+	assert_bool(bus_input.enabled).is_false()
+	playground.set_demo_mode(false)
+	assert_bool(bus_input.enabled).override_failure_message("leaving the demo did not restore the wheel while seated").is_true()
+	seat.vacate()
+	assert_bool(bus_input.enabled).is_false()
+
+
 func _on_rolled_over() -> void:
 	_rolled_over_count += 1
