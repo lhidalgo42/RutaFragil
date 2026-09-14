@@ -1,0 +1,18 @@
+03_free_cargo_measurement.txt — M2-T2.3 paso 1 (D85: medir antes de escribir)
+Sonda temporal __free_cargo.gd (borrada en fase 0): cuatro RigidBody3D caja (8 kg, 0,4 m) sobre el piso del bus, posicionadas antes de add_child, vuelta de la demo con --fixed-fps 60, muestreo por caja y por segundo: posición local, base bajo el piso, fuera del casco, dormida.
+HEAD f587a86. Fecha UTC: 2026-09-14 20:32:46
+
+=== Corrida A: continuous_cd APAGADO (160 muestras, 36 incidentes) ===
+t=20 s (baches): las cuatro cajas despegan (y local ≈ +1,07–1,13 m dentro del casco — rebotan, que es el juego)
+box0: escapa a t≈23 s → OUTSIDE; final (24.14, -7.64, -42.05) BELOW_FLOOR SLEEPING (en el suelo del MUNDO, fuera)
+box1: se queda dentro, en el piso; final (-0.39, -0.40, -0.26)
+box2: se queda dentro, en el piso; final (-0.36, -0.40, 0.59)
+box3: escapa a t≈23-30 s → OUTSIDE; final (13.55, -6.15, -31.06) BELOW_FLOOR SLEEPING
+
+=== Corrida B: continuous_cd ENCENDIDO (53 incidentes) ===
+Idéntico en lo esencial: box0 y box3 escapan igual (los incidentes extra son las mismas cajas muestreadas más veces fuera). box1 y box2 dentro: finales (-0.39, -0.40, -0.28) y (-0.89, -0.40, 1.98).
+
+=== Lectura ===
+- CERO atravesamientos de geometría: ningún BELOW_FLOOR ocurre dentro del casco; todas las salidas fueron BALÍSTICAS por las aberturas reales (puerta lateral, parabrisas, traseras) tras despegar en los baches.
+- CCD no cambia nada medible: las salidas no son túneles.
+- Las cajas que no despegan se quedan en el piso y la deriva queda contenida (fricción por defecto basta en esta vuelta, máx 64,6 km/h).
