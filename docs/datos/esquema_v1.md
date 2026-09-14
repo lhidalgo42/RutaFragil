@@ -107,6 +107,7 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 | `player_sprint_speed_mps` | `float` | m/s | 6.0 | "sprint 6 m/s" |
 | `player_jump_height_m` | `float` | m | 1.0 | "salto 1 m" |
 | `interaction_reach_m` | `float` | m | 2.5 | "alcance de interacción 2.5 m" |
+| `player_mouse_sensitivity` | `float` | rad/px | 0.0025 | mirada con ratón (§9.2), añadido en M2-T2.2 r3 — preferencia del jugador, candidata a menú de ajustes |
 
 ### 4.6 Bus
 

@@ -52,6 +52,7 @@ player_walk_speed_mps = 4.0
 player_sprint_speed_mps = 6.0
 player_jump_height_m = 1.0
 interaction_reach_m = 2.5
+player_mouse_sensitivity = 0.0025
 bus_mass_kg = 3000
 bus_integrity_max = 100
 bus_integrity_max_loss_per_contract = 5

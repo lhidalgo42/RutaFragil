@@ -27,6 +27,15 @@ func _ready() -> void:
 	_find_crew.call_deferred()
 
 
+## Mouse capture entry point, owned by the playground (the mode owner):
+## player mode calls set_mouse_captured(true) at start and when F1 leaves the
+## demo; the demo calls set_mouse_captured(false) so the cursor stays free.
+## FASE-0 skeleton; the mouse-wiring agent implements capture, release and
+## the capture-allowed memory used by click-to-recapture.
+func set_mouse_captured(_captured: bool) -> void:
+	pass
+
+
 func _find_crew() -> void:
 	var node: Node = get_tree().get_first_node_in_group("crew")
 	if node is CrewMember:

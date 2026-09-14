@@ -51,6 +51,10 @@ extends Resource
 @export var player_sprint_speed_mps: float = 0.0
 @export var player_jump_height_m: float = 0.0
 @export var interaction_reach_m: float = 0.0
+## Mouse look sensitivity, radians per pixel of InputEventMouseMotion
+## .screen_relative (round 3). PLAYER PREFERENCE, not game balance: fine here
+## today, but a settings menu must move it out of mod reach (BACKLOG note).
+@export var player_mouse_sensitivity: float = 0.0
 
 @export_group("bus")
 @export var bus_mass_kg: int = 0

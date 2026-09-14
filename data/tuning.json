@@ -46,6 +46,7 @@
 		"jerrycan_pour_seconds": 8.0,
 		"maintenance_cost": 150,
 		"player_jump_height_m": 1.0,
+		"player_mouse_sensitivity": 0.0025,
 		"player_sprint_speed_mps": 6.0,
 		"player_walk_speed_mps": 4.0,
 		"rent_every_contracts": 3,
