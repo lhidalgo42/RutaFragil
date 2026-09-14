@@ -8,6 +8,11 @@ extends GdUnitTestSuite
 ## the bus rising ~0.4 m and tilting (the reviewer's numbers), because the
 ## capsule was teleported INTO the hull with its collision shape active.
 ## Interior bounds (D67/D72): |x| <= 1.15, z in [-3.8, 3.8], y in [-0.6, 1.30].
+## ROUND 5 note on _park_bus_input(): with the enabled-setter writing neutral
+## on disable, parking now writes zeros — both round-4 tests park BEFORE their
+## set_drive(1, 0, 0), because parking after commanding traction erases the
+## command. The round-5 throttle test is the exception on purpose: it measures
+## the real key path, so it never parks.
 
 
 func test_sitting_does_not_move_the_bus_and_standing_is_clean() -> void:
@@ -120,6 +125,62 @@ func test_standing_up_while_driving_keeps_the_crew_aboard() -> void:
 	print("SEATDRIVE-STAND ejected=%s floor_ok=%s speed_kmh=%.1f" % [ejected, floor_after_settle, bus.speed_mps() * 3.6])
 	assert_bool(ejected).override_failure_message("the crew was ejected or left the interior bounds after standing while driving").is_false()
 	assert_bool(floor_after_settle).override_failure_message("the crew is not on the floor while the bus drives at 40 km/h").is_true()
+
+
+func test_neutral_when_the_driver_stands() -> void:
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	runner.scene()
+	await _wait_ticks(120)
+	var bus: Bus = _group_bus()
+	var crew: CrewMember = _group_crew()
+	var seat: Seat = _group_seat()
+	if bus == null or crew == null or seat == null:
+		return
+	_board_on_corridor(bus, crew)
+	await _wait_ticks(45)
+	assert_bool(seat.occupy(crew)).is_true()
+	# The REAL key path (no parking): the player drives with the action.
+	Input.action_press("drive_accelerate")
+	await _wait_ticks(120)
+	Input.action_release("drive_accelerate")
+	var speed_before: float = bus.speed_mps()
+	assert_float(speed_before).override_failure_message("the bus never moved with the key pressed").is_greater(2.0)
+	# Release and stand in the SAME tick — the reviewer's exact sequence.
+	seat.vacate()
+	await get_tree().physics_frame
+	print("NEUTRAL throttle_after=%.2f steer_after=%.2f speed_at_stand_kmh=%.1f" % [bus.drive_throttle, bus.drive_steer, speed_before * 3.6])
+	assert_float(bus.drive_throttle).override_failure_message("throttle stuck after vacate").is_equal(0.0)
+	assert_float(bus.drive_steer).override_failure_message("steer stuck after vacate").is_equal(0.0)
+	await _wait_ticks(120)
+	print("NEUTRAL speed_120_ticks_later_kmh=%.1f (was %.1f)" % [bus.speed_mps() * 3.6, speed_before * 3.6])
+	assert_float(bus.speed_mps()).override_failure_message("the bus kept ACCELERATING with nobody at the wheel").is_less_equal(speed_before + 0.15)
+
+
+func test_standing_restores_to_the_corridor_when_the_saved_point_is_invalid() -> void:
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	runner.scene()
+	await _wait_ticks(120)
+	var bus: Bus = _group_bus()
+	var crew: CrewMember = _group_crew()
+	var seat: Seat = _group_seat()
+	if bus == null or crew == null or seat == null:
+		return
+	_board_on_corridor(bus, crew)
+	await _wait_ticks(45)
+	assert_bool(seat.occupy(crew)).is_true()
+	# The roof, where the reviewer measured the 16 rad/s kick (r4.3).
+	seat.saved_local_position = Vector3(0.0, 1.4, -1.4)
+	seat.vacate()
+	var local: Vector3 = bus.global_transform.affine_inverse() * crew.global_position
+	print("FALLBACK landed_local=%s" % str(local))
+	assert_vector(local).override_failure_message("standing with a poisoned point did not fall back to the corridor").is_equal_approx(Vector3(0.0, -0.55, -2.0), Vector3(0.1, 0.1, 0.1))
+	var max_omega: float = 0.0
+	for tick: int in range(30):
+		await get_tree().physics_frame
+		max_omega = maxf(max_omega, bus.angular_velocity.length())
+	print("FALLBACK max_omega=%.4f on_floor=%s" % [max_omega, crew.is_on_floor()])
+	assert_float(max_omega).override_failure_message("the fallback kicked the bus").is_less(0.05)
+	assert_bool(crew.is_on_floor()).override_failure_message("the crew is not on the floor at the corridor fallback").is_true()
 
 
 ## Teleports the crew into the corridor center (a free point, position set

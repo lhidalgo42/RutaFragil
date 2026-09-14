@@ -47,6 +47,19 @@ func test_scene_structure() -> void:
 	if seat_node is Seat:
 		var seat: Seat = seat_node
 		assert_object(seat.seat_marker).is_not_null()
+	# D80 pins: the driver sits on the LEFT (Chile drives on the right), the
+	# door stays on the right. An accidental editor drag must not move them
+	# back in silence.
+	var driver_marker_node: Node = scene.get_node_or_null("Bus/BusInterior/Positions/driver")
+	assert_bool(driver_marker_node is Marker3D).is_true()
+	if driver_marker_node is Marker3D:
+		var driver_marker: Marker3D = driver_marker_node
+		assert_float(driver_marker.position.x).is_less(0.0)
+	var cabin_node: Node = scene.get_node_or_null("Bus/CabinCamera")
+	assert_bool(cabin_node is Camera3D).is_true()
+	if cabin_node is Camera3D:
+		var cabin_cam: Camera3D = cabin_node
+		assert_float(cabin_cam.position.x).is_less(0.0)
 	var camera_node: Node = scene.get_node_or_null("ChaseCamera")
 	assert_bool(camera_node is ChaseCamera).is_true()
 	if camera_node is ChaseCamera:

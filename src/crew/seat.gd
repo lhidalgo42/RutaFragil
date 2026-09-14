@@ -19,10 +19,20 @@ signal vacated(seat_name: String)
 @export var seat_name: String = "driver"
 @export var seat_marker: Marker3D
 
+## Where standing puts the crew when the saved point is not inside the hull
+## (r4.3: a poisoned point on the roof kicked the bus to 16 rad/s, measured).
+## Verified free of the interior's shapes with an overlap probe.
+const CORRIDOR_FALLBACK_LOCAL: Vector3 = Vector3(0.0, -0.55, -2.0)
+
 var occupied_by: CrewMember = null
 ## Where the occupant stood, in the bus's local frame (test-visible state).
 var saved_local_position: Vector3 = Vector3.ZERO
 var _has_saved_position: bool = false
+
+
+## The interior bounds (D67/D72), same limits the integration test asserts.
+func _is_inside_interior(local: Vector3) -> bool:
+	return absf(local.x) <= 1.15 and local.z >= -3.8 and local.z <= 3.8 and local.y >= -0.65 and local.y <= 1.30
 
 
 func _ready() -> void:
@@ -65,8 +75,12 @@ func vacate() -> void:
 	var bus_node: Node = get_tree().get_first_node_in_group("bus")
 	if bus_node is RigidBody3D and _has_saved_position:
 		var bus: RigidBody3D = bus_node
-		# Move FIRST, to the saved point in the bus's CURRENT frame...
-		member.global_position = bus.global_transform * saved_local_position
+		# Move FIRST, to the saved point in the bus's CURRENT frame — or to the
+		# corridor fallback if the saved point is not inside the hull (r4.3).
+		var target_local: Vector3 = saved_local_position
+		if not _is_inside_interior(target_local):
+			target_local = CORRIDOR_FALLBACK_LOCAL
+		member.global_position = bus.global_transform * target_local
 		# ...inherit the bus-point velocity (standing up at 50 km/h with zero
 		# velocity would slam her against the rear wall), ...
 		member.velocity = bus.linear_velocity + bus.angular_velocity.cross(member.global_position - bus.global_position)

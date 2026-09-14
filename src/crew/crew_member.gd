@@ -107,10 +107,12 @@ func eye_position() -> Vector3:
 ## active kinematic shape inside the hull depenetrates the bus every tick
 ## (the owner's gate: the bus rocked and swerved when driving seated).
 func set_collision_disabled(on: bool) -> void:
-	var node: Node = get_node_or_null("CollisionShape3D")
-	if node is CollisionShape3D:
-		var shape: CollisionShape3D = node
-		shape.disabled = on
+	# By TYPE, not by node name (r4.2): renaming the shape when the art lands
+	# must not silently re-enable seated collision.
+	for child: Node in get_children():
+		if child is CollisionShape3D:
+			var shape: CollisionShape3D = child
+			shape.disabled = on
 
 
 func set_seated(on: bool) -> void:

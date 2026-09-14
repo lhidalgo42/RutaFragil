@@ -216,10 +216,10 @@ mesh = SubResource("mesh_Stretcher")
 [node name="Positions" type="Node3D" parent="."]
 
 [node name="driver" type="Marker3D" parent="Positions"]
-position = Vector3(0.6, 0.4, -2.9)
+position = Vector3(-0.6, 0.4, -2.9)
 
 [node name="copilot" type="Marker3D" parent="Positions"]
-position = Vector3(-0.6, 0.4, -2.9)
+position = Vector3(0.6, 0.4, -2.9)
 
 [node name="bench" type="Marker3D" parent="Positions"]
 position = Vector3(-0.85, 0.4, 2.9)

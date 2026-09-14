@@ -13,7 +13,20 @@ extends Node
 ## from CrewInput, the capture OWNER (group "crew_input"), because headless
 ## does not retain Input.mouse_mode (measured 2026-09-14).
 
-@export var enabled: bool = false
+@export var enabled: bool = false:
+	set(value):
+		enabled = value
+		if not enabled and _bus != null:
+			# Neutral when the driver stops driving (M2-T2.2 r5, r4.6): without
+			# this, the last set_drive stays latent in Bus.drive_throttle and
+			# the bus keeps ACCELERATING with nobody at the wheel (measured:
+			# 21.6 -> 33.9 km/h after vacate with the key released; control
+			# without vacating decelerates). Idempotent — every assignment to
+			# false writes it — and guarded on _bus because _find_bus lands
+			# deferred (the bus starts in neutral, so skipping there is free).
+			# No handbrake: a driverless bus coasts to a stop by its own
+			# resistance; the concept wants that chaos.
+			_bus.set_drive(0.0, 0.0, 0.0)
 
 var _bus: Bus = null
 var _cabin: Camera3D = null
