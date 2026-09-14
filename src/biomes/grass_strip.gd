@@ -11,6 +11,8 @@ const TUFT_W: float = 0.5
 const TUFT_H: float = 0.45
 
 @export var follow: Node3D
+@export var base_colour: Color = Color(0.22, 0.42, 0.18)
+@export var tip_colour: Color = Color(0.55, 0.75, 0.3)
 
 var _material: ShaderMaterial
 ## Tuft origins from the last build (readable in headless tests, unlike the MultiMesh buffer).
@@ -69,6 +71,8 @@ func _apply(transforms: Array[Transform3D]) -> void:
 	multimesh = mm
 	_material = ShaderMaterial.new()
 	_material.shader = SHADER
+	_material.set_shader_parameter("base_colour", Vector3(base_colour.r, base_colour.g, base_colour.b))
+	_material.set_shader_parameter("tip_colour", Vector3(tip_colour.r, tip_colour.g, tip_colour.b))
 	material_override = _material
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 

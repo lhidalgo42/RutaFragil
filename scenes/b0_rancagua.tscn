@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://src/biomes/biome_segment.gd" id="1_segment"]
+[ext_resource type="Script" path="res://src/biomes/axis_circuit.gd" id="2_circuit"]
+[ext_resource type="Script" path="res://src/biomes/osm_road.gd" id="3_road"]
+[ext_resource type="Script" path="res://src/biomes/osm_buildings.gd" id="4_buildings"]
+[ext_resource type="PackedScene" path="res://scenes/b0/city_station.tscn" id="5_station"]
+[ext_resource type="Script" path="res://src/biomes/osm_furniture.gd" id="6_furniture"]
+[ext_resource type="Script" path="res://src/biomes/city_backdrop.gd" id="7_backdrop"]
+[ext_resource type="Script" path="res://src/biomes/osm_gravel.gd" id="8_gravel"]
+
+[node name="B0Rancagua" type="Node3D"]
+script = ExtResource("1_segment")
+biome_id = "b0_city_rancagua"
+length_m = 2573.5
+
+[node name="Entry" type="Marker3D" parent="."]
+position = Vector3(-567.9, 1.2, 294.0)
+rotation = Vector3(0, -0.1779, 0)
+
+[node name="Exit" type="Marker3D" parent="."]
+position = Vector3(-491.5, 1.2, -1409.3)
+
+[node name="Road" type="Node3D" parent="."]
+script = ExtResource("3_road")
+data_path = "res://data/b0_rancagua.json"
+
+[node name="Gravel" type="Node3D" parent="."]
+script = ExtResource("8_gravel")
+data_path = "res://data/b0_rancagua.json"
+
+[node name="Buildings" type="Node3D" parent="."]
+script = ExtResource("4_buildings")
+data_path = "res://data/b0_rancagua.json"
+
+[node name="Furniture" type="Node3D" parent="."]
+script = ExtResource("6_furniture")
+data_path = "res://data/b0_rancagua.json"
+
+[node name="Backdrop" type="Node3D" parent="."]
+script = ExtResource("7_backdrop")
+ridge_distance_m = 9000.0
+hills = 10
+hill_min_distance_m = 1500.0
+
+[node name="Circuit" type="Node3D" parent="."]
+script = ExtResource("2_circuit")
+data_path = "res://data/b0_rancagua.json"
+
+[node name="CityStation" parent="." instance=ExtResource("5_station")]
+position = Vector3(-397.4, 0, -563.7)
+rotation = Vector3(0, -0.1664, 0)

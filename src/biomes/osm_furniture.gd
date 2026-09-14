@@ -10,6 +10,7 @@ const COLOURS: Dictionary = {
 	"stop": Color(0.85, 0.25, 0.25), "stop_roof": Color(0.95, 0.95, 0.93), "signal": Color(0.15, 0.15, 0.15), "post": Color(0.6, 0.6, 0.62),
 	"trunk": Color(0.4, 0.28, 0.18), "crown": Color(0.25, 0.5, 0.25), "crown_b": Color(0.32, 0.56, 0.24),
 	"pole": Color(0.62, 0.6, 0.56), "cable": Color(0.12, 0.12, 0.12), "lamp": Color(0.98, 0.95, 0.8), "light_pole": Color(0.35, 0.36, 0.38),
+	"fence_post": Color(0.4, 0.3, 0.2), "wire": Color(0.35, 0.35, 0.36), "poplar_trunk": Color(0.55, 0.5, 0.42), "poplar": Color(0.36, 0.55, 0.22), "orchard": Color(0.3, 0.5, 0.2),
 }
 const POLE_STEP_M: float = 35.0
 const TREE_STEP_M: float = 12.0
@@ -50,6 +51,7 @@ func build() -> void:
 		_tree(_pt(tree), 5.4, 1.7)
 	_build_lights_and_poles()
 	_build_sidewalk_trees()
+	_build_rural()
 	_b.flush(self, COLOURS)
 
 
@@ -65,7 +67,7 @@ func _build_lights_and_poles() -> void:
 	var s: float = 20.0
 	var prev_top: Dictionary = {1: Vector3.INF, -1: Vector3.INF}
 	while s < data.length - 20.0:
-		if absf(s - float(data.underpass.get("s", -1000.0))) > 24.0:
+		if absf(s - float(data.underpass.get("s", -1000.0))) > 24.0 and data.section_at(s) == "avenue":
 			var frame: Transform3D = data.sample(s)
 			var left: Vector3 = data.left_of(frame)
 			var base: Vector3 = frame.origin
@@ -85,12 +87,19 @@ func _build_lights_and_poles() -> void:
 
 
 func _pole(s: float, side: int) -> Vector3:
-	var p: Vector3 = data.lateral_point(s, float(side) * (data.sidewalk_lateral + 0.7))
-	_b.add("pole", "cyl", Transform3D(Basis.from_scale(Vector3(0.32, 8.7, 0.32)), p + Vector3.UP * 4.35))
+	var lateral: float = float(side) * (data.property_at(s) - 0.4)
+	var p: Vector3 = data.lateral_point(s, lateral)
 	var rot: Basis = data.sample(s).basis
-	_b.box("pole", MeshBatcher.along(rot, p, Vector3(1.6, 0.12, 0.12), 8.2))
+	# one pole in ten leans a few degrees (D68: worn city)
+	var lean: float = 0.0
+	if int(s * 0.37) % 10 == 3:
+		lean = deg_to_rad(5.0) * (1.0 if int(s) % 2 == 0 else -1.0)
+	var pole_basis: Basis = rot * Basis(Vector3.BACK, lean)
+	var top: Vector3 = p + pole_basis.y * 8.3
+	_b.add("pole", "cyl", Transform3D(pole_basis * Basis.from_scale(Vector3(0.32, 8.7, 0.32)), p + pole_basis.y * 4.35))
+	_b.box("pole", Transform3D(pole_basis * Basis.from_scale(Vector3(1.6, 0.12, 0.12)), p + pole_basis.y * 8.2))
 	_occupied.append(Vector2(s, float(side)))
-	return p + Vector3.UP * 8.3
+	return top
 
 
 func _cables(a: Vector3, b: Vector3) -> void:
@@ -107,11 +116,39 @@ func _build_sidewalk_trees() -> void:
 	var k: int = 0
 	while s < data.length - 26.0:
 		for side: int in [-1, 1]:
-			if _free(s, side) and not data.in_gap(side, s) and absf(s - float(data.underpass.get("s", -1000.0))) > 30.0:
-				var p: Vector3 = data.lateral_point(s, float(side) * (data.sidewalk_lateral + 0.6))
+			if _free(s, side) and not data.in_gap(side, s) and absf(s - float(data.underpass.get("s", -1000.0))) > 30.0 and data.section_at(s) != "gravel":
+				var p: Vector3 = data.lateral_point(s, float(side) * (data.property_at(s) - 0.6))
 				_tree(p, 3.6 + 0.4 * float(k % 3), 1.4 + 0.2 * float((k + side) % 3))
 		s += TREE_STEP_M
 		k += 1
+
+
+## Rural dressing of the unpaved stretches (D68): wire fences at the property line, a row of
+## poplars on one side, and the fruit orchards behind, all from the data.
+func _build_rural() -> void:
+	for fence: Dictionary in data.fences:
+		var s0: float = float(fence.get("s0", 0.0))
+		var s1: float = float(fence.get("s1", 0.0))
+		var side: float = float(int(fence.get("side", 1)))
+		var lateral: float = side * data.property_at((s0 + s1) * 0.5)
+		var prev: Vector3 = Vector3.INF
+		var s: float = s0
+		while s <= s1:
+			var p: Vector3 = data.lateral_point(s, lateral)
+			_b.box("fence_post", Transform3D(Basis.from_scale(Vector3(0.12, 1.5, 0.12)), p + Vector3.UP * 0.75))
+			if prev != Vector3.INF:
+				for h: float in [0.5, 0.9, 1.3]:
+					_b.box("wire", MeshBatcher.between(prev + Vector3.UP * h, p + Vector3.UP * h, 0.02))
+			prev = p
+			s += 3.0
+	for pop: Dictionary in data.poplars:
+		var p: Vector3 = _pt(pop)
+		_b.add("poplar_trunk", "cyl", Transform3D(Basis.from_scale(Vector3(0.35, 9.0, 0.35)), p + Vector3.UP * 4.5))
+		_b.add("poplar", "cyl", Transform3D(Basis.from_scale(Vector3(2.2, 9.0, 2.2)), p + Vector3.UP * 8.0))
+		_b.add("poplar", "sph", Transform3D(Basis.from_scale(Vector3(1.6, 2.4, 1.6)), p + Vector3.UP * 13.0))
+	for o: Vector3 in data.orchards:
+		_b.add("trunk", "cyl", Transform3D(Basis.from_scale(Vector3(0.22, 1.6, 0.22)), o + Vector3.UP * 0.8))
+		_b.add("orchard", "sph", Transform3D(Basis.from_scale(Vector3(2.6, 2.2, 2.6)), o + Vector3.UP * 2.4))
 
 
 func _free(s: float, side: int) -> bool:

@@ -92,8 +92,6 @@ func _build_ground() -> void:
 
 func _build_segments() -> void:
 	var curbs: StaticBody3D = _body("Curbs")
-	var lane: float = data.lane_offset
-	var cw: float = data.carriageway_width
 	for i: int in data.segment_count():
 		var a: Vector3 = data.axis[i]
 		var b: Vector3 = data.axis[i + 1]
@@ -101,25 +99,54 @@ func _build_segments() -> void:
 		var mid: Vector3 = (a + b) * 0.5
 		var s_mid: float = data.project(mid).x
 		var frame: Transform3D = data.sample(s_mid)
-		var left: Vector3 = data.left_of(frame)
-		var fwd: Vector3 = -frame.basis.z
-		var rot: Basis = frame.basis
-		for side: float in [-1.0, 1.0]:
-			_b.box("asphalt", MeshBatcher.along(rot, mid + left * (side * lane), Vector3(cw, 0.02, seg_len + 0.4), 0.01))
-			# markings: white edge line by the curb, yellow line by the median, dashed lane divider
-			_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * (data.curb_lateral - 1.3)), Vector3(0.12, 0.02, seg_len + 0.2), 0.025))
-			_b.box("paint_yellow", MeshBatcher.along(rot, mid + left * (side * (data.median_width * 0.5 + 0.3)), Vector3(0.12, 0.02, seg_len + 0.2), 0.025))
-			for k: float in [-0.25, 0.25]:
-				_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * lane) + fwd * (seg_len * k), Vector3(0.12, 0.02, 3.0), 0.025))
-			_b.box("sidewalk", MeshBatcher.along(rot, mid + left * (side * data.sidewalk_lateral), Vector3(2.0, 0.15, seg_len + 0.2), 0.075))
-			if not data.in_gap(int(side), s_mid):
-				var curb_t: Transform3D = MeshBatcher.along(rot, mid + left * (side * data.curb_lateral), Vector3(2.0, 0.15, seg_len + 0.2), 0.075)
-				_b.box("curb", curb_t)
-				_shape(curbs, Vector3(2.0, 0.15, seg_len + 0.2), Transform3D(rot, curb_t.origin))
-				if i % 2 == 0 and _far_from_features(s_mid, 22.0):
-					var colour: String = ["car_a", "car_b", "car_c"][_rng.randi() % 3]
-					_b.box(colour, MeshBatcher.along(rot, mid + left * (side * (data.curb_lateral - 2.1)), Vector3(1.7, 1.5, 4.4), 0.75))
-		_b.box("median", MeshBatcher.along(rot, mid, Vector3(data.median_width, 0.15, seg_len + 0.2), 0.075))
+		var kind: String = data.section_at(s_mid)
+		if kind == "gravel":
+			continue  # OsmGravel draws the unpaved stretches
+		if kind == "street":
+			_street_segment(frame, mid, seg_len, s_mid)
+		else:
+			_avenue_segment(curbs, frame, mid, seg_len, s_mid)
+
+
+## Avenue (D63): two carriageways, median, sidewalks, curbs with collision, markings, parked cars.
+func _avenue_segment(curbs: StaticBody3D, frame: Transform3D, mid: Vector3, seg_len: float, s_mid: float) -> void:
+	var lane: float = data.lane_offset
+	var cw: float = data.carriageway_width
+	var left: Vector3 = data.left_of(frame)
+	var fwd: Vector3 = -frame.basis.z
+	var rot: Basis = frame.basis
+	for side: float in [-1.0, 1.0]:
+		_b.box("asphalt", MeshBatcher.along(rot, mid + left * (side * lane), Vector3(cw, 0.02, seg_len + 0.4), 0.01))
+		_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * (data.curb_lateral - 1.3)), Vector3(0.12, 0.02, seg_len + 0.2), 0.025))
+		_b.box("paint_yellow", MeshBatcher.along(rot, mid + left * (side * (data.median_width * 0.5 + 0.3)), Vector3(0.12, 0.02, seg_len + 0.2), 0.025))
+		for k: float in [-0.25, 0.25]:
+			_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * lane) + fwd * (seg_len * k), Vector3(0.12, 0.02, 3.0), 0.025))
+		_b.box("sidewalk", MeshBatcher.along(rot, mid + left * (side * data.sidewalk_lateral), Vector3(2.0, 0.15, seg_len + 0.2), 0.075))
+		if not data.in_gap(int(side), s_mid):
+			var curb_t: Transform3D = MeshBatcher.along(rot, mid + left * (side * data.curb_lateral), Vector3(2.0, 0.15, seg_len + 0.2), 0.075)
+			_b.box("curb", curb_t)
+			_shape(curbs, Vector3(2.0, 0.15, seg_len + 0.2), Transform3D(rot, curb_t.origin))
+			if int(s_mid / 20.0) % 2 == 0 and _far_from_features(s_mid, 22.0):
+				var colour: String = ["car_a", "car_b", "car_c"][_rng.randi() % 3]
+				_b.box(colour, MeshBatcher.along(rot, mid + left * (side * (data.curb_lateral - 2.1)), Vector3(1.7, 1.5, 4.4), 0.75))
+	_b.box("median", MeshBatcher.along(rot, mid, Vector3(data.median_width, 0.15, seg_len + 0.2), 0.075))
+
+
+## Población street (D68): one two-way carriageway, dashed yellow centre line, curbs and sidewalks as mesh only
+## (the D48 box would jam on a 15 cm curb this close to its lane; T1.1 gets real curbs here).
+func _street_segment(frame: Transform3D, mid: Vector3, seg_len: float, s_mid: float) -> void:
+	var left: Vector3 = data.left_of(frame)
+	var fwd: Vector3 = -frame.basis.z
+	var rot: Basis = frame.basis
+	var curb: float = data.curb_at(s_mid)
+	_b.box("asphalt", MeshBatcher.along(rot, mid, Vector3(curb * 2.0 - 2.0, 0.02, seg_len + 0.4), 0.01))
+	for k: float in [-0.25, 0.25]:
+		_b.box("paint_yellow", MeshBatcher.along(rot, mid + fwd * (seg_len * k), Vector3(0.12, 0.02, 3.0), 0.025))
+	for side: float in [-1.0, 1.0]:
+		_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * (curb - 1.5)), Vector3(0.1, 0.02, seg_len + 0.2), 0.025))
+		if not data.in_gap(int(side), s_mid):
+			_b.box("curb", MeshBatcher.along(rot, mid + left * (side * curb), Vector3(1.0, 0.15, seg_len + 0.2), 0.075))
+		_b.box("sidewalk", MeshBatcher.along(rot, mid + left * (side * (curb + 1.4)), Vector3(1.8, 0.15, seg_len + 0.2), 0.075))
 
 
 ## Zebra crossing and stop line at every real side-street junction (gaps that are not the station or the pasaje).
@@ -129,18 +156,22 @@ func _build_crosswalks() -> void:
 		if gap_name == "estacion" or gap_name == "pasaje":
 			continue
 		var s_j: float = (float(gap.get("s0", 0.0)) + float(gap.get("s1", 0.0))) * 0.5 + CROSSWALK_OFFSET_M
-		if s_j < 20.0 or s_j > data.length - 20.0 or absf(s_j - float(data.underpass.get("s", -1000.0))) < 30.0:
+		if s_j < 20.0 or s_j > data.length - 20.0 or absf(s_j - float(data.underpass.get("s", -1000.0))) < 30.0 or data.section_at(s_j) == "gravel":
 			continue
 		var frame: Transform3D = data.sample(s_j)
 		var left: Vector3 = data.left_of(frame)
 		var fwd: Vector3 = -frame.basis.z
+		var avenue: bool = data.section_at(s_j) == "avenue"
+		var inner: float = data.median_width * 0.5 + 0.75 if avenue else 0.25
+		var bars: int = 10 if avenue else 6
 		for side: float in [-1.0, 1.0]:
-			for k: int in 10:
-				var lat: float = side * (data.median_width * 0.5 + 0.75 + float(k) * 1.0)
+			for k: int in bars:
+				var lat: float = side * (inner + float(k) * 1.0)
 				_b.box("paint_white", MeshBatcher.along(frame.basis, frame.origin + left * lat, Vector3(0.5, 0.02, 4.0), 0.026))
 			# stop line 3 m before the crossing, in the direction of travel of that carriageway (south = eastbound)
-			var stop_pos: Vector3 = frame.origin + left * (side * data.lane_offset) + fwd * (-3.0 if side < 0.0 else 3.0)
-			_b.box("paint_white", MeshBatcher.along(frame.basis, stop_pos, Vector3(data.carriageway_width - 0.6, 0.02, 0.4), 0.026))
+			var stop_pos: Vector3 = frame.origin + left * (side * data.lane_at(s_j)) + fwd * (-3.0 if side < 0.0 else 3.0)
+			var stop_w: float = data.carriageway_width - 0.6 if avenue else data.curb_at(s_j) - 1.0
+			_b.box("paint_white", MeshBatcher.along(frame.basis, stop_pos, Vector3(stop_w, 0.02, 0.4), 0.026))
 
 
 func _far_from_features(s: float, margin: float) -> bool:
@@ -251,7 +282,15 @@ func _build_grass() -> void:
 	var strip: GrassStrip = GrassStrip.new()
 	strip.name = "MedianGrass"
 	add_child(strip)
-	strip.build_along(data.axis, data.median_width * 0.5 - 0.35, grass_per_m2, seed)
+	var pts: PackedVector3Array = PackedVector3Array()
+	for i: int in data.axis.size():
+		var s: float = data.project(data.axis[i]).x
+		if data.section_at(s) == "avenue":
+			pts.append(data.axis[i])
+		elif pts.size() > 1:
+			break
+	if pts.size() > 1:
+		strip.build_along(pts, data.median_width * 0.5 - 0.35, grass_per_m2, seed)
 
 
 # ---------- helpers ----------

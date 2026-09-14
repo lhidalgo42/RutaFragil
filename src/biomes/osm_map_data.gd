@@ -26,6 +26,17 @@ var bus_stops: Array[Dictionary] = []
 var traffic_signals: Array[Dictionary] = []
 var trees: Array[Dictionary] = []
 var median_trees: Array[Dictionary] = []
+## Chained routes (D68): section per stretch ("avenue" | "street" | "gravel") and per-type widths.
+var sections: Array[Dictionary] = []
+var lane_by_type: Dictionary = {"avenue": 6.75, "street": 3.75, "gravel": 2.8}
+var curb_by_type: Dictionary = {"avenue": 12.0, "street": 8.0, "gravel": 6.5}
+var property_by_type: Dictionary = {"avenue": 15.0, "street": 10.0, "gravel": 9.0}
+var lots: Array[Dictionary] = []
+var gravel_zones: Array[Dictionary] = []
+var potholes: Array[Dictionary] = []
+var fences: Array[Dictionary] = []
+var poplars: Array[Dictionary] = []
+var orchards: PackedVector3Array = PackedVector3Array()
 
 var _cum: PackedFloat32Array = PackedFloat32Array()
 
@@ -104,6 +115,33 @@ func project(p: Vector3) -> Vector2:
 	return best
 
 
+## Section type at distance s ("avenue" when the route has no sections, i.e. a single avenue).
+func section_at(s: float) -> String:
+	for sec: Dictionary in sections:
+		if s >= float(sec.get("s0", 0.0)) - 0.01 and s <= float(sec.get("s1", 0.0)) + 0.01:
+			return str(sec.get("type", "avenue"))
+	return "avenue"
+
+
+func lane_at(s: float) -> float:
+	return float(lane_by_type.get(section_at(s), lane_offset))
+
+
+func curb_at(s: float) -> float:
+	return float(curb_by_type.get(section_at(s), curb_lateral))
+
+
+func property_at(s: float) -> float:
+	return float(property_by_type.get(section_at(s), sidewalk_lateral + 1.0))
+
+
+func in_gravel(s: float) -> bool:
+	for zone: Dictionary in gravel_zones:
+		if s >= float(zone.get("s0", 0.0)) and s <= float(zone.get("s1", 0.0)):
+			return true
+	return false
+
+
 func in_gap(side: int, s: float) -> bool:
 	for gap: Dictionary in curb_gaps:
 		if int(gap.get("side", 0)) == side and s >= float(gap.get("s0", 0.0)) and s <= float(gap.get("s1", 0.0)):
@@ -138,6 +176,21 @@ func _fill(d: Dictionary) -> void:
 	traffic_signals = _dicts(d.get("traffic_signals"))
 	trees = _dicts(d.get("trees"))
 	median_trees = _dicts(d.get("median_trees"))
+	sections = _dicts(d.get("sections"))
+	if d.get("lane_by_type") is Dictionary:
+		lane_by_type = d.get("lane_by_type")
+	if d.get("curb_by_type") is Dictionary:
+		curb_by_type = d.get("curb_by_type")
+	if d.get("property_by_type") is Dictionary:
+		property_by_type = d.get("property_by_type")
+	lots = _dicts(d.get("lots"))
+	gravel_zones = _dicts(d.get("gravel_zones"))
+	potholes = _dicts(d.get("potholes"))
+	fences = _dicts(d.get("fences"))
+	poplars = _dicts(d.get("poplars"))
+	for item: Variant in _array(d.get("orchards")):
+		var pair: Array = item
+		orchards.append(Vector3(float(pair[0]), 0.0, float(pair[1])))
 	_cum = PackedFloat32Array([0.0])
 	for i: int in segment_count():
 		_cum.append(_cum[i] + axis[i].distance_to(axis[i + 1]))

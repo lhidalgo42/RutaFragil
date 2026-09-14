@@ -1,0 +1,6 @@
+# Ronda 5 (Rancagua): intentos y causas
+1) camino más corto tomaba calles menores y no llegaba al ripio: destino en dos etapas (cruce República de Chile -> extremo del tramo sin pavimentar).
+2) esquinas de 73 grados: los nodos OSM cada pocos metros achicaban los arcos -> Douglas-Peucker antes del empalme; luego 67 grados porque los vértices de cambio de sección se forzaban junto a la esquina -> secciones por proyección al eje crudo. Resultado 49 grados.
+3) stuck tras WP0: edificio real de 22 m invadía la calzada (centro a 19 m, esquina a 8 m) -> filtro por esquinas (7 descartados).
+4) stuck tras WP114 en la esquina de regreso: derrape de 12 m a 55 km/h contra casas generadas a 16,5 m -> puntos de frenado (angulo > 60) y despeje de 50 m a cada lado de cada esquina.
+5) lap_completed 323,1 s, 197 waypoints, min_upright 0,82 (calamina + lomos).

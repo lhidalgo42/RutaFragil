@@ -16,11 +16,13 @@ uniform vec3 plinth : source_color = vec3(0.45, 0.42, 0.4);
 varying vec3 world_pos;
 varying vec3 world_n;
 varying vec4 inst_col;
+varying vec4 inst_custom;
 
 void vertex() {
 	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	world_n = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	inst_col = COLOR;
+	inst_custom = INSTANCE_CUSTOM;
 }
 
 void fragment() {
@@ -52,6 +54,22 @@ void fragment() {
 		col = door;
 		rough = 0.7;
 		spec = 0.2;
+	}
+	// light deterioration (D68): a damaged instance gets a dark diagonal crack, soot under the eaves and, on half of them, boarded windows
+	float damage = inst_custom.r;
+	if (wall && damage > 0.5) {
+		float crack_u = u * 0.7 + world_pos.y * 1.3 + inst_custom.g * 40.0;
+		float crack = abs(fract(crack_u / 9.0) - 0.5);
+		if (crack < 0.012 && world_pos.y > 0.5 && world_pos.y < floor_h * 2.2) {
+			col = col * 0.35;
+		}
+		float soot = smoothstep(0.75, 1.0, fy) * step(0.5, fract(u / 11.0 + inst_custom.g)) * 0.35;
+		col = mix(col, col * 0.55, soot);
+		if (in_glass && inst_custom.g > 0.5) {
+			col = vec3(0.36, 0.26, 0.16);
+			rough = 0.95;
+			spec = 0.1;
+		}
 	}
 	ALBEDO = col;
 	ROUGHNESS = rough;

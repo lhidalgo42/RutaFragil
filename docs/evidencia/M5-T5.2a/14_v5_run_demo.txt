@@ -1,0 +1,8 @@
+# run_demo route_rancagua (ronda 5) · código 0
+DEMO result=lap_completed t=323.1s waypoints=197 max_speed_kmh=90.0 min_upright=0.82
+# route_departamental · código 0
+DEMO result=lap_completed t=182.7s waypoints=87 max_speed_kmh=90.0 min_upright=0.93
+# route_mvp (B0 v2) · código 0
+DEMO result=lap_completed t=77.0s waypoints=30 max_speed_kmh=69.5 min_upright=0.93
+# Playground · código 0
+DEMO result=lap_completed t=36.8s waypoints=17 max_speed_kmh=51.1 min_upright=0.95
