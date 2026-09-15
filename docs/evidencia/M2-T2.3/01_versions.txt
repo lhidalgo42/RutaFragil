@@ -21,3 +21,7 @@ f587a86 test: pin the 17 circuit waypoints to their authored positions (M2-T2.3 
 --- git status --short ---
 ?? docs/evidencia/M2-T2.3/01_versions.txt
 (vacío = limpio)
+
+=== RONDA 2 (cierre, 2026-09-15 ~17:35 UTC) ===
+4.7.2.stable.official.ed1daf0bf
+HEAD final de la ronda: b7bdfca (evidencia) — ver 07 para la lista completa.

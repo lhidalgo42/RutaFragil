@@ -140,3 +140,11 @@ M  docs/evidencia/M2-T2.3/05_strapping.png (recaptura real del amarre, objeto cc
  M project.godot (solo la sonda, revertido)
  M tests/cargo/restraint_test.gd (comentarios recortados: la aserción r1.4 lo pasó de 400 a 403 líneas; R8)
 ?? docs/evidencia/M2-T2.3/10_drop_midair.png (la caja en plena caída)
+
+=== RONDA 2 — POST-COMMIT ===
+Commits de la ronda 2: 6e5f832 (docs revisor) · 70ffaef (r1.1 amortiguador + r1.2 puntos + (c'')/(d)) · b4d51bc (r1.4 unstrap al padre original + limpieza de prints de depuración) · 41dfb52 (tabla de reproducción del revisor) · b2dfa57 (tests r1.1: caída + unitarios) · b7bdfca (evidencia de la ronda) · este commit (01/07 post).
+
+--- git status --short tras el commit de evidencia ---
+ M docs/evidencia/M2-T2.3/01_versions.txt
+ M docs/evidencia/M2-T2.3/07_git.txt
+(vacío arriba = limpio salvo este propio archivo 01/07)
