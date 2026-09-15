@@ -1,0 +1,24 @@
+06_regression.txt — M2-T2.3
+run_demo, la red y las seis cifras de sensación intactos tras T2.3. HEAD 2aca07e. Fecha UTC: 2026-09-15 15:22:14
+
+=== run_demo (--headless --fixed-fps 60, exit 0) ===
+DEMO result=lap_completed t=27.3s waypoints=17 max_speed_kmh=64.6 min_upright=0.97
+
+=== Red, ruta corta (exit 0) ===
+NET summary port=47810 pids=[37192, 35412, 37544, 32244]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+
+=== Red, ruta larga (++ waypoints=16, exit 0) ===
+NET summary port=47810 pids=[11812, 2788, 9112, 34772]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+
+=== Cifras de sensación (probe_handling.gd) ===
+MEASURE rest_height_m=0.977
+MEASURE time_0_60_s=6.93
+MEASURE max_speed_kmh=90.0
+MEASURE turn_radius_m=12.4 (mean_speed_kmh=23.4)
+MEASURE brake_50kmh_distance_m=6.7 stop_time_s=0.98
+
+Referencia aprobada (T1.1): reposo 0,977/0,979 m · 0–60 en 6,93 s · tope 90,0 km/h · radio 12,4 m · frenada 6,7 m en 0,98 s. Demo de la ronda anterior: t=27,3 s, 64,6 km/h, min_upright 0,97 — idénticos.

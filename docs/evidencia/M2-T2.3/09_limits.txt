@@ -1,0 +1,4 @@
+
+Límites (R8), 2026-09-15 15:23:10 UTC: scripts nuevos de la tarea, todos ≤ 400 líneas:
+  201 src/cargo/package.gd · 27 src/cargo/restraint_anchor.gd · 357 src/crew/crew_hands.gd · 318 src/crew/crew_input.gd (editado) · 209 tests/cargo/package_test.gd · 335 tests/cargo/restraint_test.gd · 163 tests/cargo/free_cargo_ride_test.gd · 133 tests/cargo/cargo_ride_test.gd · 398 tests/crew/crew_hands_test.gd
+Escenas: playground.tscn 60 nodos (la carga nace por código, no por nodos autorados) · bus_interior.tscn 53 (52+1 parabrisas) · crew_member.tscn 6 · package.tscn 3

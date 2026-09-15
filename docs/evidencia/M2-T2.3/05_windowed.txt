@@ -1,0 +1,13 @@
+05_windowed.txt — M2-T2.3
+Capturas con ventana. Fecha UTC: 2026-09-15 15:22:14
+
+- 05_hand_fp.png: la caja en la mano en primera persona (el paquete al frente, el interior y los estantes a ambos lados).
+- 05_strapping.png: el amarre en curso (E mantenida, la caja en la mano antes de quedar en el anclaje). El progreso es una señal (strap_progress); no hay HUD todavía (M3/D29).
+- 05_bumps.png: la persecución (CameraArbiter DEMO) en el campo de baches, vuelta con carga: el bus se acerca a las rampas con una caja visible por el hueco trasero.
+- 05_bumps2.png: segundo ángulo del mismo cruce.
+
+--- git lfs ls-files ---
+e1d92ca82a * docs/evidencia/M2-T2.3/05_bumps.png
+34b21e460b * docs/evidencia/M2-T2.3/05_bumps2.png
+4b89eedf4b * docs/evidencia/M2-T2.3/05_hand_fp.png
+4b89eedf4b * docs/evidencia/M2-T2.3/05_strapping.png
