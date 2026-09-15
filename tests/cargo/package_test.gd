@@ -177,11 +177,49 @@ func test_vertical_damping_force_is_pure_vertical() -> void:
 	# Horizontal relative motion is NOT damped: that sliding is the game.
 	var horizontal: Vector3 = Package.vertical_damping_force(Vector3(3.0, 0.0, 0.0), Vector3.ZERO, Vector3.UP, 160.0)
 	assert_vector(horizontal).is_equal_approx(Vector3.ZERO, Vector3(0.001, 0.001, 0.001))
-	# Rising relative to the bus is opposed downward; sinking, upward.
+	# Rising relative to the bus is opposed downward; sinking is FREE (the
+	# r1.1 fix: the damper only pushes against upward relative motion).
 	var rising: Vector3 = Package.vertical_damping_force(Vector3(0.0, 2.0, 0.0), Vector3.ZERO, Vector3.UP, 160.0)
 	assert_vector(rising).is_equal_approx(Vector3(0.0, -320.0, 0.0), Vector3(0.001, 0.001, 0.001))
 	var sinking: Vector3 = Package.vertical_damping_force(Vector3.ZERO, Vector3(0.0, 1.0, 0.0), Vector3.UP, 160.0)
-	assert_vector(sinking).is_equal_approx(Vector3(0.0, 160.0, 0.0), Vector3(0.001, 0.001, 0.001))
+	assert_vector(sinking).is_equal_approx(Vector3.ZERO, Vector3(0.001, 0.001, 0.001))
+
+
+func test_a_free_box_falls_like_a_box() -> void:
+	# r1.1 (review 01): the vertical damper opposed ALL vertical relative
+	# motion, so a free 8 kg box reached terminal velocity m*g/k = 0.49 m/s —
+	# the rack-top boxes were measured sinking at 0.48-0.49 m/s (and a hand
+	# drop from 0.73 m took 1.5 s; free fall: 0.39 s). The damper exists to
+	# stop bumps throwing cargo at the roof — that is UPWARD relative motion
+	# only; the fall must stay free. This test measures the CONSEQUENCE: a
+	# FREE box (spawned, no release grace) dropped 1.0 m over the hull floor
+	# makes contact in < 36 ticks (0.6 s; free fall from 1 m: 0.45 s) and
+	# never bounces above 0.1 m after. (The release() path keeps its 30-tick
+	# grace by design — a hand drop is not damped mid-air anyway — so the
+	# defect is demonstrated on the FREE state, the rack-top scenario the
+	# reviewer measured.)
+	var bus: Bus = _add_bus_fixture()
+	var floor_body: StaticBody3D = auto_free(StaticBody3D.new())
+	var floor_shape: CollisionShape3D = CollisionShape3D.new()
+	var floor_box: BoxShape3D = BoxShape3D.new()
+	floor_box.size = Vector3(4.0, 0.2, 4.0)
+	floor_shape.shape = floor_box
+	floor_body.add_child(floor_shape)
+	add_child(floor_body)
+	floor_body.global_position = Vector3(0.0, -0.7, 0.0)
+	# Spawned FREE 1.0 m over the floor top (-0.6 + 0.2 + 1.0 = 0.6).
+	var package: Package = _spawn_package(Vector3(0.0, 0.6, 0.0))
+	var contact_tick: int = -1
+	var max_y_after: float = -99.0
+	for i: int in range(150):
+		await get_tree().physics_frame
+		if contact_tick < 0 and package.get_contact_count() > 0:
+			contact_tick = i
+		if contact_tick >= 0:
+			max_y_after = maxf(max_y_after, package.global_position.y)
+	print("DROP contact_tick=%d (<36 required) max_y_after=%.3f (floor rest -0.414, bounce < 0.1)" % [contact_tick, max_y_after])
+	assert_int(contact_tick).override_failure_message("the box never touched the floor in 150 ticks").is_less(36)
+	assert_float(max_y_after).override_failure_message("the box bounced above 0.1 m after landing").is_less(-0.314)
 
 
 func test_damper_brakes_vertical_motion_inside_the_hull() -> void:
@@ -191,11 +229,11 @@ func test_damper_brakes_vertical_motion_inside_the_hull() -> void:
 	package.linear_velocity = Vector3(0.0, 3.0, 0.0)
 	for i: int in range(30):
 		await get_tree().physics_frame
-	# 30 ticks = 0.5 s. Gravity alone would read 3 - 9.8*0.5 = -1.9 m/s; with
-	# k=160 on 8 kg the rise is eaten in ~3 ticks and the fall settles at the
-	# damper/gravity equilibrium of -g*m/k = -0.49 m/s.
-	assert_float(package.linear_velocity.y).override_failure_message("damper did not contain the vertical motion").is_greater(-1.0)
-	assert_float(package.linear_velocity.y).override_failure_message("damper ate gravity itself").is_less(0.2)
+	# 30 ticks = 0.5 s. The rise is eaten in ~3 ticks (v_y <= 0.2), and after
+	# that the fall is FREE (r1.1): gravity alone reads 3 - 9.8*0.5 = -1.9
+	# m/s — not the old damper/gravity equilibrium of -0.49 m/s.
+	assert_float(package.linear_velocity.y).override_failure_message("the rise was not eaten").is_less(0.2)
+	assert_float(package.linear_velocity.y).override_failure_message("the fall is not free (old 0.49 m/s equilibrium still there)").is_less(-1.5)
 	assert_bool(bus.freeze).is_true()
 
 
