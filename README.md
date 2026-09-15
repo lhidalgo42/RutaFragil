@@ -140,6 +140,18 @@ El interior greybox (M2-T2.1, `src/vehicle/bus_interior.tscn`) sigue §4.3 y D67
 
 **Ajustar la sensación sin recompilar** (D61, para lo que se construyó T0.2): edita `data/tuning.json` (grupo `bus_*`, valores en `docs/datos/esquema_v1.md`) y recarga — con el juego en marcha basta llamar a `GameConfig.reload()` desde el depurador o editar antes de arrancar. El `.tres` se regenera con `import_data_mirror.gd` (ver "Datos y mods"), nunca a mano ni desde el Inspector.
 
+## Carga: agarrar, soltar, lanzar y amarrar (M2-T2.3, D81–D89)
+
+Cuatro cajas greybox (0,4 m, 8 kg) viven en el bus: dos sobre los estantes, dos en el pasillo. Los tres estados físicos de ADR-003: suelto (rigid real, con el amortiguador vertical relativo al bus), en mano (cinemático, sigue tu mirada), amarrado (congelado en un anclaje).
+
+- **E (toque)** sobre lo más alineado con tu mirada: agarrar una caja libre, desamarrar una amarrada, o el asiento si apuntas al volante. Con una caja en la mano, E toque apunta a anclajes o a nada — el asiento se rechaza (nadie conduce cargando).
+- **E (mantener)** con una caja en la mano y un anclaje libre al alcance: **amarrar** (1,5 s; suelta E antes para cancelar).
+- **Clic izquierdo**: lanzar (6 m/s + la velocidad del bus). **Clic derecho**: soltar con cuidado (cae a tus pies si no cabe en la mano).
+- La carga suelta **rueda y golpea**: al frenar a fondo una caja suelta se viene al frente a velocidad de daño (§5.3). Amarra.
+- Los doce anclajes (`Restraints`, seis por muro sobre las tapas de los estantes) aceptan una caja cada uno; la deriva de una amarrada es cero por construcción.
+
+Los números de la carga viven en `data/tuning.json` (grupo `cargo`, D87) y se ajustan igual que el resto de la sensación (ver "Datos y mods").
+
 ## Mapa de carpetas (§20)
 
 ```

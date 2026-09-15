@@ -59,6 +59,13 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 
 - **120 Hz en ruta: medición no concluyente, número sin explicar** (2026-09-14): a 120 Hz los despegues de las cajas llegaron a 22,36 m/s (peor que a 60 Hz) con el bus idéntico en ambos modos; no es física creíble y no sabemos por qué. Si alguien retome la idea, medir de nuevo con el amortiguador puesto.
 - **El daño por impacto de carga (§5.3, umbrales 2–3 m/s) no existe aún**: la frenada (d) del paso 1 verifica que la carga suelta PUEDE deslizar y golpear a esa velocidad; el daño en sí es M3.
+- **Los anclajes en la tapa bloquean el contacto directo con la carga amarrada** (medido por el agente C, 2026-09-15): la cara del rack (x=0,6) tapa a la tripulante antes de que alcance la cara de la caja (x=0,675). Si tocar la carga amarrada ha de ser posible (M3), los anclajes deberían salir hacia el pasillo (x ≈ 0,45), no ir a la tapa. Decisión del dueño cuando llegue M3.
+- **`Positions/shelf_*` tienen el mismo defecto que los anclajes viejos** (dentro del volumen del rack): al poner arte o spawns sobre estantes en M3, revisar esos marcadores.
+- **Acarreo sobre carga amarrada (KINEMATIC)**: medido que funciona (deriva 0,185 m en la sonda aislada), pero reparent+KINEMATIC duplica el movimiento (88,5 m/vuelta) y STATIC no acarrea (22,2 m). Sin consumidor dentro del casco hoy (el techo tapa subirse a una caja: 1,2 + 1,75 > 1,30). Si M3/M4 lo necesita (carga en el techo del bus), la opción medida es el mecanismo del amortiguador de plataforma, no reparent.
+- **Prioridad de E en zona rica** (asiento + paquetes juntos): resuelta con la regla de la retícula (lo más alineado con la mirada gana). A revisar en playtest: si apuntar al asiento para conducir se siente natural con paquetes cerca.
+- **El gate duro de M2 (dos instancias) es `M2-GATE`** (D88): su propio plan, inmediatamente después de esta tarea.
+
+## Pendientes propios de la ejecución de M2-T2.3 (paso 1)
 
 ## Pendientes (copiados del plan M0-T0.1, sección 9)
 
