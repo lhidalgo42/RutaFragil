@@ -60,6 +60,18 @@ func test_scene_structure() -> void:
 	if cabin_node is Camera3D:
 		var cabin_cam: Camera3D = cabin_node
 		assert_float(cabin_cam.position.x).is_less(0.0)
+	# D89: the windshield is NOT an opening — a wall shape closes the gap
+	# above WallFront (the interior shapes re-parent onto the bus, so at
+	# runtime it hangs off the Bus node). The side door and the rear gap
+	# stay open: they are doors, and opening/closing is M3.
+	# The interior's shapes re-parent onto the bus deferred (D66): give the
+	# re-parent its frame before looking under Bus/.
+	await scene.get_tree().process_frame
+	var windshield: Node = scene.get_node_or_null("Bus/Windshield")
+	assert_bool(windshield is CollisionShape3D).override_failure_message("the windshield wall shape is missing from the bus").is_true()
+	if windshield is CollisionShape3D:
+		var shield: CollisionShape3D = windshield
+		assert_float(shield.position.z).is_less(-3.0)
 	var camera_node: Node = scene.get_node_or_null("ChaseCamera")
 	assert_bool(camera_node is ChaseCamera).is_true()
 	if camera_node is ChaseCamera:

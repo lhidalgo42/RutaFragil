@@ -24,3 +24,6 @@ mesh = SubResource("CapsuleMesh_body")
 [node name="EyeCamera" type="Camera3D" parent="."]
 position = Vector3(0, 1.65, 0)
 current = false
+
+[node name="HandAnchor" type="Marker3D" parent="EyeCamera"]
+position = Vector3(0, -0.2, -0.7)

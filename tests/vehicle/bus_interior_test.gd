@@ -16,14 +16,15 @@ func test_interior_loads_on_the_bus_and_shapes_attach_to_the_body() -> void:
 	var interior: Node = bus.get_node_or_null("BusInterior")
 	assert_object(interior).is_not_null()
 	# The reparenting is deferred (bus_interior.gd): one process frame later
-	# the 14 collision shapes must be DIRECT children of the bus body.
+	# the collision shapes must be DIRECT children of the bus body. 15 from
+	# the interior + chassis, 16 since the D89 windshield wall (2026-09-14).
 	await get_tree().process_frame
 	await get_tree().process_frame
 	var count: int = 0
 	for child: Node in bus.get_children():
 		if child is CollisionShape3D:
 			count += 1
-	assert_int(count).is_equal(15)
+	assert_int(count).is_equal(16)
 
 
 func test_six_positions_exist_with_exact_names() -> void:

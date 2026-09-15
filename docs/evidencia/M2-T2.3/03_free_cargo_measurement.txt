@@ -26,4 +26,22 @@ Sonda extendida: por caja y por EVENTO de despegue, velocidad vertical relativa 
 
 Control del bus (sonda aparte, misma vuelta): 60 Hz -> max_y 2,62, max_vy 3,61, max_omega 1,21; 120 Hz -> max_y 2,62, max_vy 3,57, max_omega 1,16. El bus es idéntico: la diferencia es el solver de las cajas, no el autobús.
 
-Regla del dueño aplicada: (b) no reduce el despegue (lo empeora) -> 120 Hz en ruta DESCARTADO por medición. (c) contiene (altura 0,27 m vs 1,53 m; cero escapes) -> amortiguador, con k en TuningTable. CCD encendido por defecto (aprobado).
+Regla del dueño aplicada: (b) no reduce el despegue (lo empeora) -> 120 Hz en ruta descartado PARA T2.3 (en BACKLOG como "medición no concluyente, número sin explicar"). (c) contiene -> amortiguador, con k en TuningTable. CCD encendido por defecto (aprobado).
+
+CORRECCIÓN DE LECTURA (del dueño, 2026-09-14): 22,36 m/s no es física creíble y queda sin explicar. Las alturas 1,53/1,52 son el techo (centro de caja de -0,4 a 1,1): no comparan nada; la métrica de esta evidencia es la VELOCIDAD DE DESPEGUE relativa. Y la causa probable no es la caja saltando sino el piso cayendo y cabeceando bajo ella a la salida de la rampa (el control lo dice: omega 1,2 rad/s del bus).
+
+=== (c') y (d) — la configuración que se comete, medida (fase 0, 2026-09-15 01:22:43) ===
+Correcciones del dueño aplicadas: amortiguador SOLO VERTICAL (componente del eje arriba del bus; el horizontal es fricción y es el juego), y la vuelta se corrió con el parabrisas ya cerrado (D89).
+
+(c') la vuelta con el amortiguador vertical (misma sonda, --fixed-fps 60):
+- k=80, fric=1.0: alturas contenidas (máx 0,45 m) pero box0 se embebe en la placa del piso en el bache (t=18,0, local (-0,87, -0,70, -2,61)) y box3 se desliza por la puerta trasera abierta.
+- k=160, fric=1.0: CERO violaciones de piso/paredes/parabrisas (box0: 9 eventos pequeños, contenido); la única salida es box3 deslizándose por la PUERTA TRASERA abierta a nivel del piso (t=14,9, local (-0,53, -0,40, 4,06)) — puerta: se cuenta, no se prohíbe.
+- k=240, fric=0.5: la penetración del piso vuelve (k no la cura: es el desacople por fricción baja, no el amortiguador).
+- fric=0.5 y 0.7 (cualquier k): la penetración del piso vuelve; y más salidas por puertas.
+CONFIGURACIÓN QUE SE COMETE: fricción por defecto (sin override), k=160 vertical, CCD encendido.
+
+(d) frenada en llano (bus a 60 km/h, una caja suelta en el piso, freno a fondo; esquina libre del mapa x=70):
+- fric=1.0, caja a mitad del pasillo (z=0,5): alcanza 4,65 m/s relativos, se desliza 2,3 m y para 1,6 m antes del frente.
+- fric=1.0, caja a 2 m del frente (z=-1,5): GOLPEA EL FRENTE a 4,65 m/s relativos — por encima de los umbrales de daño de §5.3 (2-3 m/s). (d) cumple sin tocar la fricción.
+- fric=0.5: golpea el frente a 7,71 m/s (y a 0.3 la caja se sale por la trasera ya en la aceleración — demasiado suelta).
+Lectura: la carga suelta alcanza velocidad de daño y golpea; la fricción por defecto se queda. "Fuera por paredes o parabrisas": cero. "Fuera por puertas": la trasera abierta, una por vuelta, contada y reportada.

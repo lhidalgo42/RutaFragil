@@ -45,6 +45,10 @@
 		"jerrycan_liters": 10,
 		"jerrycan_pour_seconds": 8.0,
 		"maintenance_cost": 150,
+		"package_hold_distance_m": 0.7,
+		"package_mass_kg": 8.0,
+		"package_relative_damping_ns_per_m": 160.0,
+		"package_throw_speed_mps": 6.0,
 		"player_jump_height_m": 1.0,
 		"player_mouse_sensitivity": 0.0025,
 		"player_sprint_speed_mps": 6.0,
@@ -64,6 +68,7 @@
 			"medkit": 120
 		},
 		"starting_money": 500,
+		"strap_hold_seconds": 1.5,
 		"target_minutes_max": 25,
 		"target_minutes_min": 15
 	}

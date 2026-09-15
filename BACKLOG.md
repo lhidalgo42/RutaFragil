@@ -55,6 +55,11 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **Re-guardados de escena fuera de banda (editor) pueden corromper silenciosamente** (2026-09-14): una reescritura de `playground.tscn` dejó el bus spawneando a y=14,08 y borró `seat_marker` del Seat; pasó desapercibida porque la demo aterriza y corre igual. Pines añadidos en `playground_scene_test` (spawn del bus < 3 m, `seat_marker` no nulo). Candidato: fijar también los transforms de los waypoints del circuito.
 - **`seat_marker` hand-escrito sin `../` no resolvía en runtime** (mismo incidente): `NodePath("Bus/...")` se resuelve relativo al propio `Seat`, no a la raíz; corregido a `../Bus/BusInterior/Positions/driver` y pineado por el test anterior. En T2.2 r1 ocupar el asiento nunca teletransportó al volante y nadie lo notó (el dueño se sentó estando ya junto a él).
 
+## Pendientes propios de la ejecución de M2-T2.3 (paso 1)
+
+- **120 Hz en ruta: medición no concluyente, número sin explicar** (2026-09-14): a 120 Hz los despegues de las cajas llegaron a 22,36 m/s (peor que a 60 Hz) con el bus idéntico en ambos modos; no es física creíble y no sabemos por qué. Si alguien retome la idea, medir de nuevo con el amortiguador puesto.
+- **El daño por impacto de carga (§5.3, umbrales 2–3 m/s) no existe aún**: la frenada (d) del paso 1 verifica que la carga suelta PUEDE deslizar y golpear a esa velocidad; el daño en sí es M3.
+
 ## Pendientes (copiados del plan M0-T0.1, sección 9)
 
 - **M4:** `export_presets.cfg` con exclusión `addons/gdUnit4/*` (respetar mayúsculas). Según la doc de 4.7, `--export-release` **no** implica `--import`: correr `--import` explícito antes. Export templates 4.7.2 = `Godot_v4.7.2-stable_export_templates.tpz`, ~1,41 GB, verificar con `SHA512-SUMS.txt`.
