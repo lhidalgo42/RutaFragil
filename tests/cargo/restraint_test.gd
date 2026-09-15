@@ -5,9 +5,8 @@ extends GdUnitTestSuite
 ## their rack-top positions — pinned so an editor re-save fails HERE (round-3).
 ## strap()/unstrap() are Package's fixed phase-0 contract; the HELD
 ## precondition is set directly on the public state so this suite does not
-## depend on CrewHands (the strap-hold progress lives there, outside the
-## RestraintAnchor signature). Drift vs the anchor is zero by construction
-## (ADR-006) and measured over a full demo lap.
+## depend on CrewHands. Drift vs the anchor is zero by construction (ADR-006)
+## and measured over a full demo lap.
 
 const PLAYGROUND_SCENE: String = "res://scenes/playground.tscn"
 const BUS_SCENE: String = "res://src/vehicle/bus.tscn"
@@ -339,11 +338,9 @@ func _anchor(restraints: Node, anchor_name: String) -> RestraintAnchor:
 	return null
 
 
-## The package comes from agent A's package.tscn when it exists; until it
-## lands, the same box is built by hand from the package.gd docstring (0.4 m,
-## mass from TuningTable, layer 2 = cargo). Either way it is a Package: this
-## suite tests the class contract, not the scene's authored visuals. Position
-## is set BEFORE the caller's add_child (the reviewer's rule).
+## The package comes from package.tscn; the hand-built fallback (same box:
+## 0.4 m, mass from TuningTable, layer 2) keeps the suite on the class
+## contract. Position is set BEFORE the caller's add_child (the rule).
 func _make_package(at: Transform3D) -> Package:
 	var package: Package = null
 	if ResourceLoader.exists(PACKAGE_SCENE):

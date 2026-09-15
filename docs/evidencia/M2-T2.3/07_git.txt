@@ -118,3 +118,25 @@ f587a86 test: pin the 17 circuit waypoints to their authored positions (M2-T2.3 
 (sin líneas entre esta sección = árbol limpio)
 
 Commits de la tarea: 379724b (plan+prompt) · 77a243f (r4.1) · 8c9acf1 (r4.5) · 8fb6dc4 (F1) · f587a86 (pines WP) · c1acc40 (tabla paso 1) · 5993d11 (tabla tres condiciones) · ff949b1 (fase 0: firmas + 5 campos + D89) · 7a42ff2 (D90 capas) · 9950679 (entrega del enjambre) · ef1621d (anclajes a la tapa + menores) · 4652f5a (paso 4-5: carga en el Playground + criterio) · 9b0b13e (regla de la retícula + capturas) · 2aca07e (D81-D89/BACKLOG/README) · b40dfaa (evidencia).
+
+=== RONDA 2 — PRE-COMMIT (2026-09-15 ~17:25 UTC) ===
+
+--- git log --oneline main..HEAD (la ronda 2 arriba) ---
+b2dfa57 test: r1.1 drop test + damper unit assertions (M2-T2.3)
+41dfb52 docs: reviewer's filled-in reproduction table (M2-T2.3 review 01)
+b4d51bc fix: unstrap() returns to the original parent (M2-T2.3 r1.4); remove debug prints committed by mistake
+70ffaef fix: upward-only vertical damper, spawn points inside the racks, measured re-runs (M2-T2.3 r1.1/r1.2)
+6e5f832 docs: review 01 and round-2 prompt (M2-T2.3)
+
+--- git status --short antes del commit de evidencia (project.godot está modificado solo por la sonda unsafe_*=2 en curso; se revierte con git checkout al terminar, sin tocar nada buscado) ---
+ M DECISIONS.md (D85: corrección r1.1, m·g/k = 0,49 m/s)
+ M docs/evidencia/M2-T2.3/03_free_cargo_measurement.txt (re-demostración del fail-first)
+ M docs/evidencia/M2-T2.3/04_cargo_ride.txt (re-corrida de la vuelta, ronda 2)
+M  docs/evidencia/M2-T2.3/05_strapping.png (recaptura real del amarre, objeto cc21e70cab)
+ M docs/evidencia/M2-T2.3/05_windowed.txt (descripción + tabla LFS corregida)
+ M docs/evidencia/M2-T2.3/08_no_verificado.txt
+ M docs/evidencia/M2-T2.3/09_limits.txt (restraint_test.gd en 400 tras recorte de comentarios)
+ M docs/evidencia/M2-T2.3/10_windowed_clean_log.txt (la caída con ventana)
+ M project.godot (solo la sonda, revertido)
+ M tests/cargo/restraint_test.gd (comentarios recortados: la aserción r1.4 lo pasó de 400 a 403 líneas; R8)
+?? docs/evidencia/M2-T2.3/10_drop_midair.png (la caja en plena caída)

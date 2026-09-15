@@ -61,3 +61,5 @@ Nota: la vía release() conserva su gracia de 30 ticks por diseño (soltar/lanza
 
 (d) frenada en llano (bus a 60 km/h, caja a 2 m del frente, freno a fondo):
 - golpea el frente a 3,65 m/s relativos (pico 4,48), min_z_local=-3,61 — sigue golpeando a >= 2 m/s: la amenaza de §5.3 intacta con el amortiguador nuevo.
+
+Re-demostración del fail-first (ronda 2, evidencia final, 2026-09-15 ~17:20 UTC): con src/cargo/package.gd revertido a 1f689f4 (git show 1f689f4:... > archivo), la suite tests/cargo/package_test.gd da exit 100 con 3 fallos — DROP contact_tick=123 (los dos unitarios del amortiguador también fallan: muerden). Restaurado (git checkout --), exit 0 con DROP contact_tick=27, max_y_after=-0.414 (reposo, sin rebote).

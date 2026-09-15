@@ -1,4 +1,5 @@
 
-Límites (R8), 2026-09-15 15:23:10 UTC: scripts nuevos de la tarea, todos ≤ 400 líneas:
-  201 src/cargo/package.gd · 27 src/cargo/restraint_anchor.gd · 357 src/crew/crew_hands.gd · 318 src/crew/crew_input.gd (editado) · 209 tests/cargo/package_test.gd · 335 tests/cargo/restraint_test.gd · 163 tests/cargo/free_cargo_ride_test.gd · 133 tests/cargo/cargo_ride_test.gd · 398 tests/crew/crew_hands_test.gd
+Límites (R8), ronda 1: 2026-09-15 15:23:10 UTC · ronda 2: 2026-09-15 ~17:10 UTC
+Scripts de la tarea, todos ≤ 400 líneas:
+  212 src/cargo/package.gd · 14 src/cargo/restraint_anchor.gd · 357 src/crew/crew_hands.gd · 322 src/crew/crew_input.gd (editado) · 247 tests/cargo/package_test.gd · 400 tests/cargo/restraint_test.gd (en el límite: la aserción r1.4 lo pasó a 403 y se recortaron 3 líneas de comentarios — la próxima prueba aquí obliga a dividir la suite) · 201 tests/cargo/free_cargo_ride_test.gd · 136 tests/cargo/cargo_ride_test.gd · 398 tests/crew/crew_hands_test.gd · 219 tests/biomes/playground/playground_scene_test.gd · 157 src/biomes/playground/playground.gd
 Escenas: playground.tscn 60 nodos (la carga nace por código, no por nodos autorados) · bus_interior.tscn 53 (52+1 parabrisas) · crew_member.tscn 6 · package.tscn 3

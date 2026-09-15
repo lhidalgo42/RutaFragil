@@ -22,3 +22,10 @@ MEASURE turn_radius_m=12.4 (mean_speed_kmh=23.4)
 MEASURE brake_50kmh_distance_m=6.7 stop_time_s=0.98
 
 Referencia aprobada (T1.1): reposo 0,977/0,979 m · 0–60 en 6,93 s · tope 90,0 km/h · radio 12,4 m · frenada 6,7 m en 0,98 s. Demo de la ronda anterior: t=27,3 s, 64,6 km/h, min_upright 0,97 — idénticos.
+
+=== RONDA 2 (2026-09-15 ~17:30 UTC): re-verificación tras el amortiguador nuevo y los puntos de aparición ===
+run_demo (--headless --fixed-fps 60 -s res://src/tooling/run_demo.gd, exit 0):
+DEMO result=lap_completed t=27.3s waypoints=17 max_speed_kmh=64.6 min_upright=0.97
+Idéntico a la ronda 1 y a T2.2: la carga no se genera en modo demo (por diseño) y el amortiguador solo toca paquetes.
+Red: el bloque de red del arnés pasó en las tres corridas de la ronda 2 (net scenario exit code 0, 1 host + 3 clientes, ver 02).
+Cifras de sensación: ningún archivo de la ronda 2 toca el bus, la suspensión ni data/tuning.json (el diff de la ronda es package.gd, playground.gd (puntos), tests y docs) — probe_handling no se re-corrió; las seis cifras de la ronda 1 siguen siendo las vigentes.
