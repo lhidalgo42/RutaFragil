@@ -256,50 +256,50 @@ position = Vector3(0.8, -0.35, 2.2)
 [node name="Restraints" type="Node3D" parent="."]
 
 [node name="restraint_left_0" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(-0.575, 0.45, -1.0)
+position = Vector3(-0.875, 1.0, -1.0)
 script = ExtResource("2_anchor")
 
 [node name="restraint_left_1" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(-0.575, 0.45, -0.6)
+position = Vector3(-0.875, 1.0, -0.6)
 script = ExtResource("2_anchor")
 
 [node name="restraint_left_2" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(-0.575, 0.45, -0.2)
+position = Vector3(-0.875, 1.0, -0.2)
 script = ExtResource("2_anchor")
 
 [node name="restraint_left_3" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(-0.575, 0.45, 0.2)
+position = Vector3(-0.875, 1.0, 0.2)
 script = ExtResource("2_anchor")
 
 [node name="restraint_left_4" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(-0.575, 0.45, 0.6)
+position = Vector3(-0.875, 1.0, 0.6)
 script = ExtResource("2_anchor")
 
 [node name="restraint_left_5" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(-0.575, 0.45, 1.0)
+position = Vector3(-0.875, 1.0, 1.0)
 script = ExtResource("2_anchor")
 
 [node name="restraint_right_0" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(0.575, 0.45, -1.0)
+position = Vector3(0.875, 1.0, -1.0)
 script = ExtResource("2_anchor")
 
 [node name="restraint_right_1" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(0.575, 0.45, -0.6)
+position = Vector3(0.875, 1.0, -0.6)
 script = ExtResource("2_anchor")
 
 [node name="restraint_right_2" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(0.575, 0.45, -0.2)
+position = Vector3(0.875, 1.0, -0.2)
 script = ExtResource("2_anchor")
 
 [node name="restraint_right_3" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(0.575, 0.45, 0.2)
+position = Vector3(0.875, 1.0, 0.2)
 script = ExtResource("2_anchor")
 
 [node name="restraint_right_4" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(0.575, 0.45, 0.6)
+position = Vector3(0.875, 1.0, 0.6)
 script = ExtResource("2_anchor")
 
 [node name="restraint_right_5" type="Marker3D" parent="Restraints" groups=["restraint_anchor"]]
-position = Vector3(0.575, 0.45, 1.0)
+position = Vector3(0.875, 1.0, 1.0)
 script = ExtResource("2_anchor")
 

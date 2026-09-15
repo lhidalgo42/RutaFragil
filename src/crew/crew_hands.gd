@@ -138,6 +138,10 @@ func is_strapping() -> bool:
 
 ## Reads (and clears) the strap-completed latch: true exactly once after a
 ## hold reached strap_hold_seconds and the strap landed.
+## Latch for the E-release after a completed strap: without it, letting E go
+## once the strap finished fired a tap that instantly unstrapped the very
+## package just strapped (measured by agent B while wiring the duration
+## detector). Consumed once by the tap handler.
 func consume_strap_completed() -> bool:
 	var done: bool = _strap_completed
 	_strap_completed = false
