@@ -60,6 +60,54 @@ func test_scene_structure() -> void:
 	if cabin_node is Camera3D:
 		var cabin_cam: Camera3D = cabin_node
 		assert_float(cabin_cam.position.x).is_less(0.0)
+	# D89: the windshield is NOT an opening — a wall shape closes the gap
+	# above WallFront (the interior shapes re-parent onto the bus, so at
+	# runtime it hangs off the Bus node). The side door and the rear gap
+	# stay open: they are doors, and opening/closing is M3.
+	# The interior's shapes re-parent onto the bus deferred (D66): give the
+	# re-parent its frame before looking under Bus/.
+	await scene.get_tree().process_frame
+	var windshield: Node = scene.get_node_or_null("Bus/Windshield")
+	assert_bool(windshield is CollisionShape3D).override_failure_message("the windshield wall shape is missing from the bus").is_true()
+	if windshield is CollisionShape3D:
+		var shield: CollisionShape3D = windshield
+		assert_float(shield.position.z).is_less(-3.0)
+	# T2.3 cargo spawn (paso 4): four greybox packages ride in the bus in
+	# player mode, all on collision layer 2 (D90 layers). The spawn is
+	# deferred: the frame waited above already covered it.
+	var cargo_node: Node = scene.get_node_or_null("Cargo")
+	assert_object(cargo_node).override_failure_message("no Cargo node: the deferred spawn did not run").is_not_null()
+	if cargo_node != null:
+		assert_int(cargo_node.get_child_count()).override_failure_message("expected 4 spawned packages").is_equal(4)
+		for child: Node in cargo_node.get_children():
+			if child is Package:
+				var package: Package = child
+				assert_int(package.collision_layer).is_equal(2)
+			else:
+				assert_bool(false).override_failure_message("a Cargo child is not a Package").is_true()
+		# r1.2 (review 01): the pin asserts WHERE each package rests, not just
+		# how many there are — the old rack-top spots were off the rack ends
+		# and the boxes fell to the floor unnoticed. Bus-local rest position
+		# per package at 120 ticks after the deferred spawn, tolerance 0.05.
+		var bus_pin_node: Node = scene.get_tree().get_first_node_in_group("bus")
+		assert_bool(bus_pin_node is Bus).is_true()
+		if bus_pin_node is Bus:
+			var bus: Bus = bus_pin_node
+			for i: int in range(120):
+				await scene.get_tree().physics_frame
+			var expected: Array[Vector3] = [
+				Vector3(-0.875, 1.0, -0.4),
+				Vector3(0.875, 1.0, 0.4),
+				Vector3(-0.4, -0.4, 0.5),
+				Vector3(0.2, -0.4, 2.5),
+			]
+			var idx2: int = 0
+			for child: Node in cargo_node.get_children():
+				if child is Package:
+					var package: Package = child
+					var local: Vector3 = bus.global_transform.affine_inverse() * package.global_position
+					assert_vector(local).override_failure_message("package %d rests at %s, expected %s" % [idx2, str(local), str(expected[idx2])]).is_equal_approx(expected[idx2], Vector3(0.05, 0.05, 0.05))
+					idx2 += 1
 	var camera_node: Node = scene.get_node_or_null("ChaseCamera")
 	assert_bool(camera_node is ChaseCamera).is_true()
 	if camera_node is ChaseCamera:
@@ -100,6 +148,71 @@ func test_demo_reaches_three_waypoints_without_rolling_over() -> void:
 	await await_signal_on(driver, "waypoint_reached", [2], 15000)
 	assert_int(driver.current_index).is_equal(3)
 	assert_int(_rolled_over_count).is_equal(0)
+
+
+func test_leaving_the_demo_follows_the_crew_state() -> void:
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	var scene: Node = runner.scene()
+	assert_bool(scene is Playground).is_true()
+	if not (scene is Playground):
+		return
+	var playground: Playground = scene
+	var bus_input_node: Node = scene.get_node_or_null("BusInput")
+	assert_bool(bus_input_node is BusInput).is_true()
+	if not (bus_input_node is BusInput):
+		return
+	var bus_input: BusInput = bus_input_node
+	# On foot: leaving the demo must NOT enable the driving input (the F1
+	# wrinkle: it did, and W throttled the parked bus while walking).
+	playground.set_demo_mode(true)
+	assert_bool(bus_input.enabled).is_false()
+	playground.set_demo_mode(false)
+	assert_bool(bus_input.enabled).override_failure_message("leaving the demo enabled BusInput with the crew on foot").is_false()
+	# Seated, leaving the demo restores the wheel.
+	var bus_node: Node = scene.get_tree().get_first_node_in_group("bus")
+	var crew_node: Node = scene.get_tree().get_first_node_in_group("crew")
+	var seat_node: Node = scene.get_tree().get_first_node_in_group("seat")
+	if not (bus_node is Bus) or not (crew_node is CrewMember) or not (seat_node is Seat):
+		assert_bool(false).override_failure_message("cast missing").is_true()
+		return
+	var bus: Bus = bus_node
+	var crew: CrewMember = crew_node
+	var seat: Seat = seat_node
+	crew.global_position = bus.global_transform * Vector3(0.0, -0.55, 0.0)
+	crew.aboard = true
+	for i: int in range(30):
+		await scene.get_tree().physics_frame
+	assert_bool(seat.occupy(crew)).is_true()
+	assert_bool(bus_input.enabled).is_true()
+	playground.set_demo_mode(true)
+	assert_bool(bus_input.enabled).is_false()
+	playground.set_demo_mode(false)
+	assert_bool(bus_input.enabled).override_failure_message("leaving the demo did not restore the wheel while seated").is_true()
+	seat.vacate()
+	assert_bool(bus_input.enabled).is_false()
+
+
+func test_circuit_waypoints_match_the_authored_positions() -> void:
+	# The 17 waypoints pinned to their authored values, tolerance 0.01 (paso
+	# 0e of M2-T2.3): WP16 was dragged to y=14 in the editor re-save incident
+	# and only got noticed by chance. Note: the plan says "16 waypoints"; the
+	# circuit has 17 markers (WP0..WP16) and all are pinned.
+	var expected: Array[Vector3] = [
+		Vector3(-30, 1.2, 20), Vector3(-30, 2.7, 0.5), Vector3(-30, 1.2, -26),
+		Vector3(-26, 1.2, -34), Vector3(-20, 1.2, -39), Vector3(-12, 1.2, -40),
+		Vector3(0, 1.2, -40), Vector3(20, 1.2, -38), Vector3(30, 1.2, -32),
+		Vector3(30, 1.2, -24), Vector3(30, 1.2, -12), Vector3(30, 1.2, 52),
+		Vector3(8, 1.2, 50), Vector3(0, 1.2, 46), Vector3(-12, 1.2, 42),
+		Vector3(-24, 1.2, 38), Vector3(-30, 1.2, 31),
+	]
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	var scene: Node = runner.scene()
+	for i: int in range(expected.size()):
+		var node: Node = scene.get_node_or_null("Circuit/WP%d" % i)
+		assert_bool(node is Marker3D).override_failure_message("missing waypoint WP%d" % i).is_true()
+		if node is Marker3D:
+			var marker: Marker3D = node
+			assert_vector(marker.position).override_failure_message("WP%d moved: %s" % [i, str(marker.position)]).is_equal_approx(expected[i], Vector3(0.01, 0.01, 0.01))
 
 
 func _on_rolled_over() -> void:

@@ -109,6 +109,16 @@ Claves de `shop_prices`: `medkit`, `armor`, `cushion`, `float` (precio por unida
 | `interaction_reach_m` | `float` | m | 2.5 | "alcance de interacción 2.5 m" |
 | `player_mouse_sensitivity` | `float` | rad/px | 0.0025 | mirada con ratón (§9.2), añadido en M2-T2.2 r3 — preferencia del jugador, candidata a menú de ajustes |
 
+### 4.5b Carga (M2-T2.3)
+
+| Campo | Tipo | Unidad | Valor v0 | Origen |
+|---|---|---|---|---|
+| `package_mass_kg` | `float` | kg | 8.0 | ejemplo de §19 |
+| `package_throw_speed_mps` | `float` | m/s | 6.0 | lanzamiento, §9.2/D87 |
+| `package_hold_distance_m` | `float` | m | 0.7 | por delante de los ojos, D82/D87 |
+| `strap_hold_seconds` | `float` | s | 1.5 | mantener E para amarrar, D86/D87 |
+| `package_relative_damping_ns_per_m` | `float` | N·s/m | 160.0 | amortiguador vertical relativo al bus, ADR-003 — medido en el paso 1 (03): 80 deja escapes, 160 no |
+
 ### 4.6 Bus
 
 | Campo | Tipo | Unidad | Valor v0 | Origen (§8.1) |

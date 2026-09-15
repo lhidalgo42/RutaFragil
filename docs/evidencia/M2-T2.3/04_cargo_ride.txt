@@ -1,0 +1,19 @@
+04_cargo_ride.txt — M2-T2.3 (el criterio de un jugador con carga, D88)
+Una vuelta completa del circuito con dos paquetes amarrados en anclajes, dos sueltos en el pasillo y la tripulante CAMINANDO el pasillo. Fecha UTC: 2026-09-15 15:22:14
+
+=== tests/cargo/cargo_ride_test.gd (headless, escena real, muestreo por tick) ===
+ticks=1590 (vuelta completa) · below_floor=0 · hard_exits=0 (cero por paredes/parabrisas/techo) · door_exits=0 (contadas, no prohibidas) · strap_drift=0.000004 m · crew_off_floor=0
+
+=== La jugada con ventana (sonda borrada tras la captura; cada beat por el camino real de acciones) ===
+agarrar: held=Package (a la primera tras apuntar) · llevar por el pasillo · soltar: held=null · re-agarrar · lanzar: held=null (la caja salió) · re-agarrar · amarrar manteniendo E 1,5 s: held=null (amarrada en el anclaje) · desamarrar: held=Package · soltar · sentarse: seated=true · conducir: 26,4 km/h · levantarse en marcha: seated=false a 26,3 km/h · caminar al pasillo y agarrar una caja en la mano rodando: held=Package, on_floor=true, a 16,5 km/h
+fps con ventana durante la jugada: 164,9 (objetivo 60+)
+
+Nota de método de la sonda: los pulsos de input cuentan TICKS de física, no frames de proceso (a ~165 fps con ventana, los taps por frames caían entre ticks y por debajo de strap_hold_seconds — medido en la propia sonda: 130 frames a 164 fps = 0,79 s < 1,5 s).
+
+=== RONDA 2 (2026-09-15): la vuelta con el amortiguador corregido (r1.1) y los anclajes nuevos ===
+La vuelta del criterio ahora amarra en restraint_left_5 / restraint_right_0 (z = ±1,0) y afirma en el propio test que ningún footprint de anclaje usado se solapa con una caja de aparición (≥ 0,4 m en z en la misma tapa; precisión del dueño sobre la ronda 2). Re-corrida con el amortiguador solo-hacia-arriba (arnés 1 de 3):
+
+CRITERION ticks=1590 lap_done=true below_floor=0 hard_exits=0 door_exits=0 strap_drift=0.000000 crew_off_floor=0
+free cargo lap: ticks=1636 below_floor=0 hard_exits=0 door_exits=0 max_lift=0.083 m max_rel_vy=3.50 m/s
+
+Cero por paredes/parabrisas/techo, cero bases bajo el piso, cero salidas por puertas EN ESTA corrida (la medición (c'') de la 03 contó una salida por la puerta trasera a nivel del piso — contada, no prohibida), deriva de amarrados 0,000000, la tripulante nunca perdió el piso.

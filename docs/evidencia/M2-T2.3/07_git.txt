@@ -1,0 +1,150 @@
+07_git.txt — M2-T2.3
+PRE-COMMIT. Fecha UTC: 2026-09-15 15:23:29 · HEAD 2aca07e (todo el código de la tarea ya commiteado; pendiente solo la evidencia).
+
+--- git log --oneline main..HEAD ---
+2aca07e docs: D81-D89 decisions, BACKLOG and README cargo section (M2-T2.3)
+9b0b13e feat: the reticle rule for E — the most ray-aligned interactable wins (M2-T2.3)
+4652f5a feat: cargo in the playground + the single-player cargo criterion (M2-T2.3 paso 4-5)
+ef1621d feat: restraint anchors moved to the rack tops (M2-T2.3 point 4, owner decision)
+9950679 feat: grab, drop, throw and strap cargo — swarm delivery (M2-T2.3)
+7a42ff2 fix: the suspension ray reads only the world layer — D90 layer scheme (M2-T2.3)
+ff949b1 feat: fase 0 for the cargo swarm — fixed interfaces, five tuning fields, D89 windshield (M2-T2.3)
+5993d11 docs: free-cargo takeoff measurement, three conditions (M2-T2.3 paso 1-bis, D85)
+c1acc40 docs: free-cargo measurement before writing Package (M2-T2.3 paso 1, D85)
+f587a86 test: pin the 17 circuit waypoints to their authored positions (M2-T2.3 paso 0e)
+8fb6dc4 fix: leaving the demo, the driving input follows the crew state (M2-T2.3 paso 0d, F1 wrinkle)
+8c9acf1 test: occupying the seat at 40 km/h keeps the bus calm (M2-T2.3 paso 0c, r4.5)
+77a243f fix: the seat drags the seated crew body to the marker each physics tick (M2-T2.3 paso 0b, r4.1)
+379724b docs: plan and round-1 prompt (M2-T2.3)
+
+--- git status --short ---
+?? docs/evidencia/M2-T2.3/01_versions.txt
+?? docs/evidencia/M2-T2.3/02_run_tests.txt
+?? docs/evidencia/M2-T2.3/04_cargo_ride.txt
+?? docs/evidencia/M2-T2.3/05_windowed.txt
+?? docs/evidencia/M2-T2.3/06_regression.txt
+?? docs/evidencia/M2-T2.3/07_git.txt
+?? docs/evidencia/M2-T2.3/08_no_verificado.txt
+?? docs/evidencia/M2-T2.3/09_limits.txt
+?? docs/evidencia/M2-T2.3/10_windowed_clean_log.txt
+?? docs/evidencia/M2-T2.3/11_paso0.txt
+
+--- git diff --stat main..HEAD ---
+ src/biomes/playground/playground.gd                |  83 ++++-
+ src/cargo/package.gd                               | 201 +++++++++++
+ src/cargo/package.gd.uid                           |   1 +
+ src/cargo/package.tscn                             |  26 ++
+ src/cargo/restraint_anchor.gd                      |  14 +
+ src/cargo/restraint_anchor.gd.uid                  |   1 +
+ src/core/data/tuning_table.gd                      |  11 +
+ src/crew/crew_hands.gd                             | 357 ++++++++++++++++++
+ src/crew/crew_hands.gd.uid                         |   1 +
+ src/crew/crew_input.gd                             | 147 +++++++-
+ src/crew/crew_member.tscn                          |  11 +-
+ src/crew/seat.gd                                   |  19 +-
+ src/vehicle/bus.gd                                 |  11 +
+ src/vehicle/bus_interior.gd                        |   7 +
+ src/vehicle/bus_interior.tscn                      |  82 +++--
+ tests/biomes/playground/playground_scene_test.gd   |  90 +++++
+ tests/biomes/playground/seat_physics_test.gd       |  93 +++++
+ tests/cargo/cargo_ride_test.gd                     | 125 +++++++
+ tests/cargo/cargo_ride_test.gd.uid                 |   1 +
+ tests/cargo/free_cargo_ride_test.gd                | 201 +++++++++++
+ tests/cargo/free_cargo_ride_test.gd.uid            |   1 +
+ tests/cargo/package_test.gd                        | 209 +++++++++++
+ tests/cargo/package_test.gd.uid                    |   1 +
+ tests/cargo/restraint_test.gd                      | 400 +++++++++++++++++++++
+ tests/cargo/restraint_test.gd.uid                  |   1 +
+ tests/crew/crew_hands_test.gd                      | 398 ++++++++++++++++++++
+ tests/crew/crew_hands_test.gd.uid                  |   1 +
+ tests/crew/crew_ride_test.gd                       |   1 +
+ tests/vehicle/bus_interior_test.gd                 |   5 +-
+ 44 files changed, 2738 insertions(+), 49 deletions(-)
+
+--- git diff main -- project.godot (árbol vs main) ---
+diff --git a/project.godot b/project.godot
+index 4ed04a7..c9ce2c2 100644
+--- a/project.godot
++++ b/project.godot
+@@ -115,6 +115,24 @@ interact={
+ ]
+ }
+ 
++throw={
++"deadzone": 0.2,
++"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
++]
++}
++drop={
++"deadzone": 0.2,
++"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":2,"canceled":false,"pressed":false,"double_click":false,"script":null)
++]
++}
++
++
++[layer_names]
++
++3d_physics/layer_1="world"
++3d_physics/layer_2="cargo"
++3d_physics/layer_3="crew"
++
+ [physics]
+ 
+ 3d/physics_engine="Jolt Physics"
+
+Sección post-commit capturada tras el commit de evidencia, en un commit de docs aparte.
+
+=== POST-COMMIT (parte 2) ===
+Fecha UTC: 2026-09-15 15:23:54 · rama m2/t2.3-cargo · HEAD b40dfaa
+
+--- git log --oneline main..HEAD ---
+b40dfaa docs: evidence 01/02/04/05/06/08/09/10/11 and 07 pre-commit (M2-T2.3)
+2aca07e docs: D81-D89 decisions, BACKLOG and README cargo section (M2-T2.3)
+9b0b13e feat: the reticle rule for E — the most ray-aligned interactable wins (M2-T2.3)
+4652f5a feat: cargo in the playground + the single-player cargo criterion (M2-T2.3 paso 4-5)
+ef1621d feat: restraint anchors moved to the rack tops (M2-T2.3 point 4, owner decision)
+9950679 feat: grab, drop, throw and strap cargo — swarm delivery (M2-T2.3)
+7a42ff2 fix: the suspension ray reads only the world layer — D90 layer scheme (M2-T2.3)
+ff949b1 feat: fase 0 for the cargo swarm — fixed interfaces, five tuning fields, D89 windshield (M2-T2.3)
+5993d11 docs: free-cargo takeoff measurement, three conditions (M2-T2.3 paso 1-bis, D85)
+c1acc40 docs: free-cargo measurement before writing Package (M2-T2.3 paso 1, D85)
+f587a86 test: pin the 17 circuit waypoints to their authored positions (M2-T2.3 paso 0e)
+8fb6dc4 fix: leaving the demo, the driving input follows the crew state (M2-T2.3 paso 0d, F1 wrinkle)
+8c9acf1 test: occupying the seat at 40 km/h keeps the bus calm (M2-T2.3 paso 0c, r4.5)
+77a243f fix: the seat drags the seated crew body to the marker each physics tick (M2-T2.3 paso 0b, r4.1)
+379724b docs: plan and round-1 prompt (M2-T2.3)
+
+--- git status --short ---
+(sin líneas entre esta sección = árbol limpio)
+
+Commits de la tarea: 379724b (plan+prompt) · 77a243f (r4.1) · 8c9acf1 (r4.5) · 8fb6dc4 (F1) · f587a86 (pines WP) · c1acc40 (tabla paso 1) · 5993d11 (tabla tres condiciones) · ff949b1 (fase 0: firmas + 5 campos + D89) · 7a42ff2 (D90 capas) · 9950679 (entrega del enjambre) · ef1621d (anclajes a la tapa + menores) · 4652f5a (paso 4-5: carga en el Playground + criterio) · 9b0b13e (regla de la retícula + capturas) · 2aca07e (D81-D89/BACKLOG/README) · b40dfaa (evidencia).
+
+=== RONDA 2 — PRE-COMMIT (2026-09-15 ~17:25 UTC) ===
+
+--- git log --oneline main..HEAD (la ronda 2 arriba) ---
+b2dfa57 test: r1.1 drop test + damper unit assertions (M2-T2.3)
+41dfb52 docs: reviewer's filled-in reproduction table (M2-T2.3 review 01)
+b4d51bc fix: unstrap() returns to the original parent (M2-T2.3 r1.4); remove debug prints committed by mistake
+70ffaef fix: upward-only vertical damper, spawn points inside the racks, measured re-runs (M2-T2.3 r1.1/r1.2)
+6e5f832 docs: review 01 and round-2 prompt (M2-T2.3)
+
+--- git status --short antes del commit de evidencia (project.godot está modificado solo por la sonda unsafe_*=2 en curso; se revierte con git checkout al terminar, sin tocar nada buscado) ---
+ M DECISIONS.md (D85: corrección r1.1, m·g/k = 0,49 m/s)
+ M docs/evidencia/M2-T2.3/03_free_cargo_measurement.txt (re-demostración del fail-first)
+ M docs/evidencia/M2-T2.3/04_cargo_ride.txt (re-corrida de la vuelta, ronda 2)
+M  docs/evidencia/M2-T2.3/05_strapping.png (recaptura real del amarre, objeto cc21e70cab)
+ M docs/evidencia/M2-T2.3/05_windowed.txt (descripción + tabla LFS corregida)
+ M docs/evidencia/M2-T2.3/08_no_verificado.txt
+ M docs/evidencia/M2-T2.3/09_limits.txt (restraint_test.gd en 400 tras recorte de comentarios)
+ M docs/evidencia/M2-T2.3/10_windowed_clean_log.txt (la caída con ventana)
+ M project.godot (solo la sonda, revertido)
+ M tests/cargo/restraint_test.gd (comentarios recortados: la aserción r1.4 lo pasó de 400 a 403 líneas; R8)
+?? docs/evidencia/M2-T2.3/10_drop_midair.png (la caja en plena caída)
+
+=== RONDA 2 — POST-COMMIT ===
+Commits de la ronda 2: 6e5f832 (docs revisor) · 70ffaef (r1.1 amortiguador + r1.2 puntos + (c'')/(d)) · b4d51bc (r1.4 unstrap al padre original + limpieza de prints de depuración) · 41dfb52 (tabla de reproducción del revisor) · b2dfa57 (tests r1.1: caída + unitarios) · b7bdfca (evidencia de la ronda) · este commit (01/07 post).
+
+--- git status --short tras el commit de evidencia ---
+ M docs/evidencia/M2-T2.3/01_versions.txt
+ M docs/evidencia/M2-T2.3/07_git.txt
+(vacío arriba = limpio salvo este propio archivo 01/07)

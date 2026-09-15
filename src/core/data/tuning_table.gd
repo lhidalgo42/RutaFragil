@@ -56,6 +56,17 @@ extends Resource
 ## today, but a settings menu must move it out of mod reach (BACKLOG note).
 @export var player_mouse_sensitivity: float = 0.0
 
+@export_group("cargo")
+@export var package_mass_kg: float = 0.0
+@export var package_throw_speed_mps: float = 0.0
+@export var package_hold_distance_m: float = 0.0
+@export var strap_hold_seconds: float = 0.0
+## Vertical relative-velocity damper for FREE cargo inside the hull (D85,
+## measured: k=160 contains the bump embedding and leaves zero wall/floor
+## violations on the lap; applied ONLY along the bus's up axis so braking and
+## sliding sideways stay the game — §5.3 needs the 2-3 m/s impacts).
+@export var package_relative_damping_ns_per_m: float = 0.0
+
 @export_group("bus")
 @export var bus_mass_kg: int = 0
 @export var bus_integrity_max: int = 0

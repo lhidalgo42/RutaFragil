@@ -11,6 +11,13 @@ extends Node3D
 ## No gameplay here: no walking, boarding or seats (that is T2.2/T2.3).
 
 
+## The ONE definition of "inside the hull" (interior bounds D67/D72):
+## Seat's restore-point validation and Package's damper gate both call this;
+## two copies of the limits would drift apart. Bus-local coordinates.
+static func is_inside_local(local: Vector3) -> bool:
+	return absf(local.x) <= 1.15 and local.z >= -3.8 and local.z <= 3.8 and local.y >= -0.65 and local.y <= 1.30
+
+
 func _ready() -> void:
 	_reparent_shapes.call_deferred()
 

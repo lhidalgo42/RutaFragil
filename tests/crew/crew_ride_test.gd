@@ -16,6 +16,7 @@ func test_one_minute_ride_at_speed_over_the_bumps() -> void:
 	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
 	runner.set_time_factor(4.0)
 	var scene: Node = runner.scene()
+	scene.set("cargo_spawn", false)
 	scene.set("demo_mode", true)
 	scene.get_node("DemoDriver").set("enabled", true)
 	scene.get_node("BusInput").set("enabled", false)

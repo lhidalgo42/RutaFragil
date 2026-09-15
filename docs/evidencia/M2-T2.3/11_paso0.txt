@@ -1,0 +1,8 @@
+11_paso0.txt — M2-T2.3 (los cinco cierres, con números)
+Fecha UTC: 2026-09-15 15:23:10
+
+(a) archivos del revisor: commit 379724b (plan + prompt, tal cual).
+(b) r4.1 — la tripulante sentada es arrastrada al marcador cada tick: commit 77a243f. Antes: la dejaba 33,7 m atrás a los 5 s conduciendo. Después: deriva en marcha acotada a un tick de física (0,192 m a ~40 km/h) y exacta 0,0007 m en reposo tras frenar. Test nuevo en seat_physics_test.gd.
+(c) r4.5 — ocupar el asiento con el bus en marcha: commit 8c9acf1 (test). El spawn mira a la rampa: a 40 km/h el bus ya sube (medido y=2,4, ω ~0,37, upright ~0,987 — los números del control del revisor con y sin nadie a bordo). Aserción control-vs-ocupar en la misma pendiente: los 60 ticks tras ocupar no peores que los 60 antes (medido: antes ω 0,4012/upright 0,98766, después ω 0,3237/upright 0,99990), más la cota absoluta de la ronda 4 (upright > 0,98).
+(d) arruga de F1 — al salir de la demo, bus_input.enabled sigue a crew.seated: commit 8fb6dc4. Antes (sonda sobre el archivo viejo): demo off dejaba enabled=true con la tripulante a pie (W aceleraba el bus aparcado). Después: test en playground_scene_test.gd — a pie, demo off deja BusInput deshabilitado; sentado, devuelve el volante; al levantarse, se apaga.
+(e) pines de los 17 waypoints del circuito en el test de escena, tolerancia 0,01: commit f587a86. (El plan decía "16 waypoints"; el circuito tiene 17 marcadores, WP0..WP16, y todos quedan pineados.)

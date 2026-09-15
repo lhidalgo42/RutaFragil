@@ -16,6 +16,9 @@ export.cfg
 
 # Salida de gdUnit4
 /reports/
+/reports_a/
+/reports_b/
+/reports_c/
 
 # Ruta local al ejecutable de Godot (D39)
 tools/godot_bin.local

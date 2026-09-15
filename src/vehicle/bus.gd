@@ -1,6 +1,11 @@
 class_name Bus
 extends RigidBody3D
 
+## D90 layer scheme: the suspension ray reads only this layer (world).
+## Cargo (2) and crew (3) are invisible to it.
+const WORLD_LAYER: int = 1
+
+
 ## Raycast-suspension bus (ADR-007, D59, D60): replaces the T0.3 placeholder,
 ## keeping its public interface (set_drive, speed_mps, forward, is_grounded,
 ## upright_dot, rolled_over, group "bus", freezable) so DemoDriver, run_demo
@@ -133,6 +138,12 @@ func _simulate_wheel(wheel: Marker3D, delta: float) -> bool:
 	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
 		origin, origin + down * ray_length)
 	query.exclude = [get_rid()]
+	# D90: the ray reads ONLY the world layer. Unmasked it read cargo as
+	# ground: a box in a wheel column (the FR column sits in the side-door
+	# gap, where the crew steps every boarding) was seen 0.2 m below the
+	# anchor -> ~54 kN of spring in one corner and the parked bus flew to
+	# y=3.84 m (measured 2026-09-15; exit 100 without this line).
+	query.collision_mask = WORLD_LAYER
 	var hit: Dictionary = state.intersect_ray(query)
 	var wheel_key: String = wheel.name
 	var prev_distance: float = ray_length

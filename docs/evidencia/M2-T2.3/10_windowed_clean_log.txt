@@ -1,0 +1,26 @@
+10_windowed_clean_log.txt — M2-T2.3
+La corrida con ventana de la jugada completa (agarrar → llevar → soltar → lanzar → amarrar → desamarrar → soltar → sentarse → conducir a 26,4 km/h → levantarse en marcha → agarrar en la mano rodando a 16,5 km/h), con el registro leído donde manda: user://logs/godot.log, no la consola (la lección de T0.4/T2.2).
+Fecha UTC: 2026-09-15 15:23:10
+
+Comando: timeout 150 $GODOT_BIN --path . -s res://src/tooling/__jugada.gd (sonda temporal, borrada tras la captura; exit 0)
+Log leído: %APPDATA%/Godot/app_userdata/RutaFragil/logs/godot.log, mtime 2026-09-15 11:45:54 -0300, 1312 bytes.
+
+grep -c ERROR        -> 0
+grep -c WARNING      -> 0
+
+Las líneas JUGADA del log son los beats de la secuencia (en 04); el registro no contiene ni una línea de error ni de aviso del motor.
+
+=== RONDA 2 (2026-09-15 ~17:00 UTC): suelta una caja y cae como una caja (r1.1) ===
+Corrida con ventana cuya única misión es soltar una caja y medir la caída: la tripulante agarra la caja libre del rack izquierdo, se gira al pasillo y la suelta desde la mano (1,182 m de caída medida). Comando: $GODOT_BIN --path . -s tools/__dropcap.gd (sonda temporal windowed, borrada tras la captura; exit 0).
+
+DROPCAP: grab=true
+DROPCAP: dropped at tick 16
+DROPCAP: release_y=1.751
+DROPCAP: CONTACT tick=46 fell=1.182 m in 30 ticks (free fall ~29 ticks)
+DROPCAP: rest speed=0.010 m/s y=0.566
+
+La caída es a velocidad de gravedad (30 ticks medidos, 29 la estimación de caída libre para 1,182 m); en 1f689f4 la misma caída de mano tardaba 1,5 s (~90 ticks, terminal m·g/k = 0,49 m/s). Captura en plena caída: 10_drop_midair.png (la caja gris entre los racks, a media altura).
+
+Log leído: %APPDATA%/Godot/app_userdata/RutaFragil/logs/godot.log (9 líneas: el banner y las seis líneas DROPCAP de arriba).
+grep -c ERROR        -> 0
+grep -c WARNING      -> 0

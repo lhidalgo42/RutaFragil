@@ -1,0 +1,11 @@
+08_no_verificado.txt — M2-T2.3 (R7)
+Fecha UTC: 2026-09-15 15:23:10 · HEAD 2aca07e — actualizado en la ronda 2 (2026-09-15 ~17:10 UTC, HEAD de la ronda).
+
+1. EL GATE del dueño (cinco minutos): F5, entrar, agarrar una caja, llevarla por el pasillo, soltarla, lanzarla, amarrarla manteniendo E, desamarrarla, conducir sobre los saltos con carga amarrada y suelta, levantarse en marcha con una caja en la mano, y ahora también SOLTAR UNA CAJA Y VERLA CAER (r1.1: tiene que caer como una caja, no como en agua). Ningún test lo sustituye: el tacto de la retícula (apuntar al asiento vs a una caja) solo lo juzga el dueño.
+2. El gate DURO de M2 (dos instancias, red real, con paquetes): es M2-GATE, la tarea siguiente (D88).
+3. Daño por impacto de carga (§5.3, umbrales 2-3 m/s): no existe (M3). La frenada (d) prueba que la carga PUEDE deslizar y golpear a esa velocidad; nada la daña todavía.
+4. Amarrar/desamarrar y la red: no se replica nada (M4/M2-GATE). Los anclajes y la carga son de un jugador en esta tarea.
+5. 120 Hz en ruta: medición no concluyente, número sin explicar (22,36 m/s en la sonda del paso 1). En BACKLOG, no descartado como imposible.
+6. Tocar la carga amarrada (empujarla como estante): la cara del rack tapa el contacto directo con la geometría de anclajes en tapa (medido por el agente C: clearance mínimo 0,384 m al footprint). Solo afecta si M3 quiere interacción física con lo amarrado; los amarres funcionan (ocupación, desamarrar).
+7. El amortiguador vertical en mods: package_relative_damping_ns_per_m es campo de tuning y un mod puede cambiarlo; sus efectos de sensación no están medidos fuera del valor 160. (Ronda 2: el amortiguador solo opone la componente hacia arriba — la caída libre queda libre; la caída de mano con ventana se midió a velocidad de gravedad, evidencia 10.)
+8. macOS (D42): todo corrió en Windows.

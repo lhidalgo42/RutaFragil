@@ -28,11 +28,19 @@ var occupied_by: CrewMember = null
 ## Where the occupant stood, in the bus's local frame (test-visible state).
 var saved_local_position: Vector3 = Vector3.ZERO
 var _has_saved_position: bool = false
+## r4.1: while seated, the body is DRAGGED to the marker every physics tick —
+## without it the crew stayed at the world point where she sat and the bus
+## left her 30+ m behind (invisible today, a lie in M4). The flag exists
+## because the drag may only start after the deferred pair (shape off, then
+## move): dragging with the shape still active is the overlap bug again.
+var _dragging: bool = false
 
 
-## The interior bounds (D67/D72), same limits the integration test asserts.
+## The interior bounds (D67/D72) live in ONE place now (BusInterior.
+## is_inside_local): Seat's restore validation and Package's damper gate call
+## it; two copies of the limits would drift apart.
 func _is_inside_interior(local: Vector3) -> bool:
-	return absf(local.x) <= 1.15 and local.z >= -3.8 and local.z <= 3.8 and local.y >= -0.65 and local.y <= 1.30
+	return BusInterior.is_inside_local(local)
 
 
 func _ready() -> void:
@@ -90,8 +98,14 @@ func vacate() -> void:
 		member.aboard = true
 	member.set_seated(false)
 	member.visible = true
+	_dragging = false
 	_set_driving_ui(false)
 	vacated.emit(seat_name)
+
+
+func _physics_process(_delta: float) -> void:
+	if _dragging and occupied_by != null and seat_marker != null:
+		occupied_by.global_position = seat_marker.global_position
 
 
 ## Deferred occupy transform: disable first, then move (never an overlapped
@@ -101,6 +115,7 @@ func _apply_seat_transform(target: Vector3) -> void:
 		return
 	occupied_by.set_collision_disabled(true)
 	occupied_by.global_position = target
+	_dragging = true
 
 
 func _set_driving_ui(driving: bool) -> void:

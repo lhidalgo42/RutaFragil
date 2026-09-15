@@ -1,0 +1,21 @@
+05_windowed.txt — M2-T2.3
+Capturas con ventana. Fecha UTC: 2026-09-15 15:22:14; 05_strapping.png recapturada en la ronda 2 (2026-09-15 17:05 UTC).
+
+- 05_hand_fp.png: la caja en la mano en primera persona (el paquete al frente, el interior y los estantes a ambos lados).
+- 05_strapping.png (RONDA 2, r1.3): el amarre en curso de verdad — la caja en la mano sobre la tapa del rack izquierdo cuyo anclaje es el objetivo (restraint_left_4), capturada a los 44 ticks de los 90 del mantenido (strap_hold_seconds 1,5 s), is_strapping=true. Sonda windowed temporal (borrada): agarrar la caja libre del rack, encarar el rack, begin_strap, captura a mitad. El progreso es una señal (strap_progress); no hay HUD todavía (M3/D29).
+- 05_bumps.png: la persecución (CameraArbiter DEMO) en el campo de baches, vuelta con carga: el bus se acerca a las rampas con una caja visible por el hueco trasero.
+- 05_bumps2.png: segundo ángulo del mismo cruce.
+
+r1.3 de la revisión 01: la 05_strapping.png de la ronda 1 era el MISMO objeto LFS que 05_hand_fp.png (la captura del amarre no existía). La recaptura tiene objeto distinto, verificado:
+
+--- git lfs ls-files (ronda 2) ---
+e1d92ca82a * docs/evidencia/M2-T2.3/05_bumps.png
+34b21e460b * docs/evidencia/M2-T2.3/05_bumps2.png
+4b89eedf4b * docs/evidencia/M2-T2.3/05_hand_fp.png
+cc21e70cab * docs/evidencia/M2-T2.3/05_strapping.png
+
+--- git lfs ls-files (ronda 1, el defecto) ---
+e1d92ca82a * docs/evidencia/M2-T2.3/05_bumps.png
+34b21e460b * docs/evidencia/M2-T2.3/05_bumps2.png
+4b89eedf4b * docs/evidencia/M2-T2.3/05_hand_fp.png
+4b89eedf4b * docs/evidencia/M2-T2.3/05_strapping.png
