@@ -30,17 +30,72 @@ enum Restraint { FREE, HELD, STRAPPED }
 
 signal restraint_changed(from: Restraint, to: Restraint)
 
+## Damper grace after release() (D85): a throw is not damped mid-air; the
+## first contact ends the grace early.
+const RELEASE_GRACE_TICKS: int = 30
+
 var restraint: Restraint = Restraint.FREE
 var held_by: CrewMember = null
 var strapped_to: RestraintAnchor = null
+
+var _shape: CollisionShape3D = null
+var _damping_k: float = 0.0
+var _bus: Bus = null
+var _grace_ticks: int = 0
+
+
+func _ready() -> void:
+	freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+	# get_contact_count() — what ends the release grace early — never
+	# reports without this.
+	max_contacts_reported = maxi(max_contacts_reported, 1)
+	# By TYPE, not by node name (r4.2 of T2.2): an art rename must not
+	# silently strip the collision logic.
+	for child: Node in get_children():
+		if child is CollisionShape3D:
+			_shape = child
+	if _shape == null:
+		push_error("Package: missing CollisionShape3D child")
+	var tuning: TuningTable = GameConfig.tuning
+	if tuning == null:
+		push_error("Package: GameConfig.tuning is null; authored mass kept, damper off")
+		return
+	mass = tuning.package_mass_kg
+	_damping_k = tuning.package_relative_damping_ns_per_m
+
+
+## The bus-point velocity at a world offset (v + w x r): the damper's
+## reference, and the same composition CrewHands uses for drop/throw.
+static func rigid_point_velocity(body_linear: Vector3, body_angular: Vector3, offset: Vector3) -> Vector3:
+	return body_linear + body_angular.cross(offset)
+
+
+## The D85 damper as a PURE function: only the component along the bus's up
+## axis is opposed (vertical is what ejects cargo over the bumps);
+## horizontal sliding under braking is the game (§5.3 needs it).
+static func vertical_damping_force(box_velocity: Vector3, point_velocity: Vector3, up: Vector3, k: float) -> Vector3:
+	var relative: Vector3 = box_velocity - point_velocity
+	var vertical_speed: float = relative.dot(up)
+	return up * (-k * vertical_speed)
 
 
 ## Precondition: restraint == FREE. Fails (false) on HELD or STRAPPED (an
 ## anchored package is unstrapped first — never grabbed off the anchor).
 ## Disables collision and goes kinematic; the HandAnchor follow runs every
 ## physics tick from CrewHands.
-func hold(_by: CrewMember) -> bool:
-	return false
+func hold(by: CrewMember) -> bool:
+	if restraint != Restraint.FREE or _shape == null:
+		return false
+	var from: Restraint = restraint
+	restraint = Restraint.HELD
+	held_by = by
+	freeze = true
+	_shape.disabled = true
+	# Ordered AFTER any release() enable still pending in the deferred queue
+	# (a same-frame release-then-hold): the last deferred write wins.
+	_shape.set_deferred("disabled", true)
+	restraint_changed.emit(from, restraint)
+	return true
 
 
 ## Releases at `at` with `velocity`. The FULL pair lives HERE — place,
@@ -48,19 +103,99 @@ func hold(_by: CrewMember) -> bool:
 ## split between two owners (coordinator decision, round-1 approval).
 ## Precondition: restraint == HELD. `at` is a free point the caller computed
 ## with an overlap test; a caller passing an occupied point is a bug.
-func release(_at: Transform3D, _velocity: Vector3) -> void:
-	pass
+func release(at: Transform3D, velocity: Vector3) -> void:
+	if restraint != Restraint.HELD or _shape == null:
+		push_error("Package.release: precondition violated (restraint %d)" % restraint)
+		return
+	var from: Restraint = restraint
+	restraint = Restraint.FREE
+	held_by = null
+	_grace_ticks = RELEASE_GRACE_TICKS
+	global_transform = at
+	freeze = false
+	linear_velocity = velocity
+	angular_velocity = Vector3.ZERO
+	_shape.set_deferred("disabled", false)
+	restraint_changed.emit(from, restraint)
 
 
 ## Precondition: restraint == HELD and anchor.is_free(). Reparents to the bus
 ## at the anchor — position fixed BEFORE the reparent — frozen kinematic,
 ## collision ON. One package per anchor. Drift vs the anchor is zero by
 ## construction and measured anyway.
-func strap(_anchor: RestraintAnchor) -> bool:
-	return false
+func strap(anchor: RestraintAnchor) -> bool:
+	if restraint != Restraint.HELD or _shape == null:
+		return false
+	if anchor == null or not anchor.is_free():
+		return false
+	var bus: Bus = _find_bus()
+	if bus == null:
+		push_error("Package.strap: no node in group 'bus'")
+		return false
+	var from: Restraint = restraint
+	restraint = Restraint.STRAPPED
+	strapped_to = anchor
+	held_by = null
+	anchor.occupant = self
+	# Pose fixed BEFORE the reparent (the measured rule); the reparent keeps
+	# the global pose, so the anchor's bus-local transform becomes ours.
+	global_transform = anchor.global_transform
+	reparent(bus)
+	freeze = true
+	_shape.disabled = false
+	restraint_changed.emit(from, restraint)
+	return true
 
 
 ## Back to the hand (precondition: restraint == STRAPPED and the caller's
 ## hand is empty). The anchor frees and the package is HELD again.
 func unstrap() -> void:
-	pass
+	if restraint != Restraint.STRAPPED or _shape == null:
+		push_error("Package.unstrap: precondition violated (restraint %d)" % restraint)
+		return
+	var from: Restraint = restraint
+	var anchor: RestraintAnchor = strapped_to
+	restraint = Restraint.HELD
+	strapped_to = null
+	if anchor != null:
+		anchor.occupant = null
+	# Back to the world frame with the pose preserved; CrewHands drives the
+	# transform from the next physics tick on.
+	var bus: Bus = _find_bus()
+	if bus != null and bus.get_parent() != null:
+		reparent(bus.get_parent())
+	_shape.disabled = true
+	restraint_changed.emit(from, restraint)
+
+
+func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
+	if restraint != Restraint.FREE or _damping_k <= 0.0:
+		return
+	if _grace_ticks > 0:
+		if state.get_contact_count() > 0:
+			_grace_ticks = 0
+		else:
+			_grace_ticks -= 1
+			return
+	var bus: Bus = _find_bus()
+	if bus == null:
+		return
+	var origin: Vector3 = state.transform.origin
+	var local: Vector3 = bus.global_transform.affine_inverse() * origin
+	if not BusInterior.is_inside_local(local):
+		return
+	var up: Vector3 = bus.global_transform.basis.y.normalized()
+	var reference: Vector3 = rigid_point_velocity(
+		bus.linear_velocity, bus.angular_velocity, origin - bus.global_position)
+	state.apply_central_force(vertical_damping_force(state.linear_velocity, reference, up, _damping_k))
+
+
+## The bus by GROUP, never by name (D59); no bus in the scene turns the
+## damper off (and strap fails).
+func _find_bus() -> Bus:
+	if _bus != null and is_instance_valid(_bus):
+		return _bus
+	var node: Node = get_tree().get_first_node_in_group("bus")
+	if node is Bus:
+		_bus = node
+	return _bus

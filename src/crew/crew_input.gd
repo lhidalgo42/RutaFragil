@@ -7,11 +7,17 @@ extends Node
 ## Input.action_press/release DO drive the action state — measured by the
 ## reviewer 2026-09-14 — so tests exercise this node for real).
 ## Sprint = walk_sprint (Shift), jump = walk_jump (Space), per §9.2's style.
-## interact (E) toggles the nearest seat in reach. It is read whenever the
-## member is seated even with enabled=false, because Seat clears `enabled`
-## exactly while seated (D76): gating interact on `enabled` would lock the
-## crew in the seat (the round-1 lesson: a wire nobody calls does not exist).
-## The press edge is detected by hand (is_action_pressed + last-tick state).
+## interact (E) is a DURATION detector (D86): a TAP (press + release before
+## strap_hold_seconds) grabs a free package / unstraps a strapped one to the
+## hand / toggles the nearest seat, in that priority; a HOLD with a package
+## in hand and a free anchor in reach straps (CrewHands owns the progress).
+## With a package in hand the tap never seats: the seat is rejected with a
+## print and no effect (nobody drives while carrying — owner's priority).
+## interact is read whenever the member is seated even with enabled=false,
+## because Seat clears `enabled` exactly while seated (D76): gating interact
+## on `enabled` would lock the crew in the seat (the round-1 lesson: a wire
+## nobody calls does not exist). The press edge is detected by hand
+## (is_action_pressed + last-tick state) — and so is the release edge.
 ## is_action_just_pressed is NOT visible in the same call that pressed the
 ## action, but it DOES reach a node's _physics_process when press and release
 ## land in different physics ticks (measured 2026-09-14: 20/20); the manual
@@ -24,15 +30,23 @@ extends Node
 ## Input.mouse_mode — set CAPTURED, read back VISIBLE (measured 2026-09-14) —
 ## so gating on the engine flag would make the wiring untestable headless.
 ## Every capture change still writes Input.mouse_mode for the real runs.
+## throw (left) / drop (right) arrive as ACTIONS (mouse buttons are in the
+## input map) and act ONLY with the pointer captured and a package in hand.
+## A click with a FREE pointer only re-captures and never throws (D83):
+## _set_captured swallows any throw/drop press already in flight, so the
+## recapture click produces no edge in the physics poll.
 
 @export var enabled: bool = false
 
 var _crew: CrewMember = null
 var _interact_was_held: bool = false
+var _throw_was_held: bool = false
+var _drop_was_held: bool = false
 var _captured: bool = false
 var _capture_allowed: bool = false
 var _eye: Camera3D = null
 var _eye_missing_reported: bool = false
+var _hands: CrewHands = null
 
 
 func _ready() -> void:
@@ -57,6 +71,12 @@ func is_pointer_captured() -> bool:
 
 func _set_captured(captured: bool) -> void:
 	_captured = captured
+	if captured:
+		# The click that recaptures must NEVER throw (D83): swallow whatever
+		# throw/drop press is already in flight, so the physics poll below
+		# sees no edge from the recapture click.
+		_throw_was_held = Input.is_action_pressed("throw")
+		_drop_was_held = Input.is_action_pressed("drop")
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if captured else Input.MOUSE_MODE_VISIBLE
 
 
@@ -133,8 +153,11 @@ func _physics_process(_delta: float) -> void:
 		return
 	var interact_held: bool = Input.is_action_pressed("interact")
 	if interact_held and not _interact_was_held:
-		toggle_nearest_seat(_crew)
+		_on_interact_pressed()
+	elif not interact_held and _interact_was_held:
+		_on_interact_released()
 	_interact_was_held = interact_held
+	_poll_clicks()
 	if not enabled or _crew.seated:
 		return
 	var input: Vector2 = Vector2(
@@ -143,6 +166,71 @@ func _physics_process(_delta: float) -> void:
 	var sprint: bool = Input.is_action_pressed("walk_sprint")
 	var jump: bool = Input.is_action_just_pressed("walk_jump")
 	_crew.drive_move(input, sprint, jump, _crew.global_basis)
+
+
+## E went down: with a package in hand this MAY become a strap hold, so
+## CrewHands starts counting (it no-ops without a free anchor in reach).
+func _on_interact_pressed() -> void:
+	var hands: CrewHands = _hands_node()
+	if hands != null and hands.held != null and not _crew.seated:
+		hands.begin_strap()
+
+
+## E went up: an interrupted hold cancels (nothing changes) and the press
+## degrades to a TAP, dispatched by the owner's priority (D86). A hold that
+## COMPLETED the strap spends the press: the release is not a tap, or the
+## package would bounce straight back to the hand.
+func _on_interact_released() -> void:
+	var hands: CrewHands = _hands_node()
+	if hands != null and hands.is_strapping():
+		hands.cancel_strap()
+	elif hands != null and hands.consume_strap_completed():
+		return
+	_interact_tap(hands)
+
+
+## Tap priority: a package in hand REJECTS the seat (print, no effect —
+## nobody drives while carrying); an empty hand grabs the free package on
+## the look ray, else unstraps the strapped one in reach, else seats as
+## before. Seated with an empty hand: only the seat route remains.
+func _interact_tap(hands: CrewHands) -> void:
+	if hands != null and hands.held != null:
+		if _crew.seated or nearest_free_seat_in_reach(_crew.global_position) != null:
+			print("CrewInput: seat refused while carrying a package")
+		return
+	if not _crew.seated and hands != null:
+		if hands.try_grab():
+			return
+		if hands.try_unstrap():
+			return
+	toggle_nearest_seat(_crew)
+
+
+## throw (left) / drop (right) are actions bound to the mouse buttons. They
+## act ONLY with the pointer captured and never while seated; the free-pointer
+## click's recapture press was already swallowed in _set_captured.
+func _poll_clicks() -> void:
+	var hands: CrewHands = _hands_node()
+	var throw_held: bool = Input.is_action_pressed("throw")
+	if throw_held and not _throw_was_held and _captured \
+			and not _crew.seated and hands != null:
+		hands.throw()
+	_throw_was_held = throw_held
+	var drop_held: bool = Input.is_action_pressed("drop")
+	if drop_held and not _drop_was_held and _captured \
+			and not _crew.seated and hands != null:
+		hands.drop()
+	_drop_was_held = drop_held
+
+
+## The hands are found by GROUP (D59): the node lives inside crew_member.tscn
+## (one pair of hands per crew member).
+func _hands_node() -> CrewHands:
+	if _hands == null:
+		var node: Node = get_tree().get_first_node_in_group("crew_hands")
+		if node is CrewHands:
+			_hands = node
+	return _hands
 
 
 ## Interact logic as a named entry point so tests call it WITHOUT input:
