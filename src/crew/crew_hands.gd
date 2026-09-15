@@ -65,6 +65,29 @@ func try_grab() -> bool:
 	return true
 
 
+## The package of the given restraint state best aligned with the look ray
+## within reach (null when none): the reticle-rule accessor, same selection
+## as try_grab/try_unstrap but with no side effects.
+func ray_best_package(restraint_value: Package.Restraint) -> Package:
+	if not _nodes_ready():
+		return null
+	return closest_to_ray(
+		_packages_with_restraint(restraint_value),
+		_hand.global_position, _eye.global_position, -_eye.global_basis.z, _reach_m())
+
+
+## Distance from the hand to the nearest FREE package (INF when none or the
+## nodes are not ready). The tap priority (seat vs grab) compares this
+## against the seat's distance — the closest interactable wins.
+func nearest_free_package_distance() -> float:
+	if not _nodes_ready():
+		return INF
+	var best: float = INF
+	for pkg: Package in _packages_with_restraint(Package.Restraint.FREE):
+		best = minf(best, _hand.global_position.distance_to(pkg.global_position))
+	return best
+
+
 ## Unstraps the STRAPPED package best aligned with the look ray, back to the
 ## hand. Precondition: held == null.
 func try_unstrap() -> bool:

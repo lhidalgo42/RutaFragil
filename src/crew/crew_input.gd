@@ -199,11 +199,58 @@ func _interact_tap(hands: CrewHands) -> void:
 			print("CrewInput: seat refused while carrying a package")
 		return
 	if not _crew.seated and hands != null:
-		if hands.try_grab():
-			return
-		if hands.try_unstrap():
-			return
+		# The RETICLE rule (measured in the playthrough probe: in a cargo-filled
+		# bus grab always won by distance, so E never reached the seat): the
+		# interactable best aligned with the look ray within reach wins — point
+		# at the wheel to drive, at a free box to grab, at a strapped one to
+		# unstrap. Nothing in the reticle: the seat as before.
+		var eye_node: Node = get_tree().get_first_node_in_group("eye_camera")
+		if eye_node is Camera3D:
+			var eye: Camera3D = eye_node
+			# No absolute radial cutoff: floor packages sit ~1.4 m below the eye
+			# line and any fixed threshold would exclude them (measured in the
+			# probe). The MOST ray-aligned candidate wins; "nothing in reach"
+			# falls through to the seat below.
+			var best_radial: float = INF
+			var best: String = ""
+			var seat: Seat = nearest_free_seat_in_reach(_crew.global_position)
+			if seat != null and seat.seat_marker != null:
+				var radial: float = _ray_radial(eye.global_position, -eye.global_basis.z, seat.seat_marker.global_position)
+				if radial < best_radial:
+					best_radial = radial
+					best = "seat"
+			var free_pkg: Package = hands.ray_best_package(Package.Restraint.FREE)
+			if free_pkg != null:
+				var radial: float = _ray_radial(eye.global_position, -eye.global_basis.z, free_pkg.global_position)
+				if radial < best_radial:
+					best_radial = radial
+					best = "grab"
+			var strapped_pkg: Package = hands.ray_best_package(Package.Restraint.STRAPPED)
+			if strapped_pkg != null:
+				var radial: float = _ray_radial(eye.global_position, -eye.global_basis.z, strapped_pkg.global_position)
+				if radial < best_radial:
+					best_radial = radial
+					best = "unstrap"
+			if best == "seat":
+				toggle_nearest_seat(_crew)
+				return
+			if best == "grab":
+				if hands.try_grab():
+					return
+			elif best == "unstrap":
+				if hands.try_unstrap():
+					return
 	toggle_nearest_seat(_crew)
+
+
+## Lateral distance of a point to the look ray (INF behind the camera).
+func _ray_radial(origin: Vector3, dir: Vector3, point: Vector3) -> float:
+	var to_point: Vector3 = point - origin
+	var axial: float = to_point.dot(dir)
+	if axial <= 0.0:
+		return INF
+	var lateral: Vector3 = to_point - dir * axial
+	return lateral.length()
 
 
 ## throw (left) / drop (right) are actions bound to the mouse buttons. They
