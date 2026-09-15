@@ -85,6 +85,29 @@ func test_scene_structure() -> void:
 				assert_int(package.collision_layer).is_equal(2)
 			else:
 				assert_bool(false).override_failure_message("a Cargo child is not a Package").is_true()
+		# r1.2 (review 01): the pin asserts WHERE each package rests, not just
+		# how many there are — the old rack-top spots were off the rack ends
+		# and the boxes fell to the floor unnoticed. Bus-local rest position
+		# per package at 120 ticks after the deferred spawn, tolerance 0.05.
+		var bus_pin_node: Node = scene.get_tree().get_first_node_in_group("bus")
+		assert_bool(bus_pin_node is Bus).is_true()
+		if bus_pin_node is Bus:
+			var bus: Bus = bus_pin_node
+			for i: int in range(120):
+				await scene.get_tree().physics_frame
+			var expected: Array[Vector3] = [
+				Vector3(-0.875, 1.0, -0.4),
+				Vector3(0.875, 1.0, 0.4),
+				Vector3(-0.4, -0.4, 0.5),
+				Vector3(0.2, -0.4, 2.5),
+			]
+			var idx2: int = 0
+			for child: Node in cargo_node.get_children():
+				if child is Package:
+					var package: Package = child
+					var local: Vector3 = bus.global_transform.affine_inverse() * package.global_position
+					assert_vector(local).override_failure_message("package %d rests at %s, expected %s" % [idx2, str(local), str(expected[idx2])]).is_equal_approx(expected[idx2], Vector3(0.05, 0.05, 0.05))
+					idx2 += 1
 	var camera_node: Node = scene.get_node_or_null("ChaseCamera")
 	assert_bool(camera_node is ChaseCamera).is_true()
 	if camera_node is ChaseCamera:

@@ -132,11 +132,16 @@ func _spawn_cargo() -> void:
 	var cargo_node: Node3D = Node3D.new()
 	cargo_node.name = "Cargo"
 	add_child(cargo_node)
+	# Two on the rack tops (inside the racks, |z| <= 1.0, NOT on any anchor
+	# z — anchors sit at -1.0/-0.6/-0.2/0.2/0.6/1.0 — and 1.4 m of z away
+	# from the anchors the lap test uses, so no footprints overlap; r1.2 of
+	# review 01: the old +/-1.5 spots were off the rack ends and the boxes
+	# fell to the floor), two on the aisle floor.
 	var local_points: Array[Vector3] = [
-		Vector3(-0.875, 1.0, -1.5),
-		Vector3(0.875, 1.0, 1.5),
+		Vector3(-0.875, 1.0, -0.4),
+		Vector3(0.875, 1.0, 0.4),
 		Vector3(-0.4, -0.4, 0.5),
-		Vector3(0.4, -0.4, 2.5),
+		Vector3(0.2, -0.4, 2.5),
 	]
 	for point: Vector3 in local_points:
 		var package: RigidBody3D = scene.instantiate()

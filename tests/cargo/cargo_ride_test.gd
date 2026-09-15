@@ -41,9 +41,20 @@ func test_lap_with_strapped_free_and_a_walking_crew() -> void:
 		if child is Package:
 			packages.append(child)
 	assert_int(packages.size()).is_equal(4)
-	var anchors: Array[RestraintAnchor] = [_anchor(scene, "Bus/BusInterior/Restraints/restraint_left_2"), _anchor(scene, "Bus/BusInterior/Restraints/restraint_right_3")]
+	var anchors: Array[RestraintAnchor] = [_anchor(scene, "Bus/BusInterior/Restraints/restraint_left_5"), _anchor(scene, "Bus/BusInterior/Restraints/restraint_right_0")]
 	assert_object(anchors[0]).is_not_null()
 	assert_object(anchors[1]).is_not_null()
+	# r1.2 precision: no anchor's footprint may overlap a spawned package —
+	# a strap born inside a resting box would depenetrate it. Assert the
+	# z-distance between every spawned package on a rack top and every used
+	# anchor (same top) is >= 0.4 m (spawns at z=-/+0.4, used anchors at
+	# z=+1.0/-1.0: 1.4 m).
+	for pkg: Package in packages:
+		var pkg_local: Vector3 = bus.global_transform.affine_inverse() * pkg.global_position
+		for anchor: RestraintAnchor in anchors:
+			var anchor_local: Vector3 = bus.global_transform.affine_inverse() * anchor.global_position
+			if absf(anchor_local.y - pkg_local.y) < 0.3:
+				assert_float(absf(anchor_local.z - pkg_local.z)).override_failure_message("anchor footprint overlaps a spawned package").is_greater_equal(0.4)
 	assert_bool(packages[0].hold(crew)).is_true()
 	assert_bool(packages[0].strap(anchors[0])).is_true()
 	assert_bool(packages[1].hold(crew)).is_true()

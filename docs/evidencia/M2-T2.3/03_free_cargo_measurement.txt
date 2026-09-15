@@ -45,3 +45,19 @@ CONFIGURACIÓN QUE SE COMETE: fricción por defecto (sin override), k=160 vertic
 - fric=1.0, caja a 2 m del frente (z=-1,5): GOLPEA EL FRENTE a 4,65 m/s relativos — por encima de los umbrales de daño de §5.3 (2-3 m/s). (d) cumple sin tocar la fricción.
 - fric=0.5: golpea el frente a 7,71 m/s (y a 0.3 la caja se sale por la trasera ya en la aceleración — demasiado suelta).
 Lectura: la carga suelta alcanza velocidad de daño y golpea; la fricción por defecto se queda. "Fuera por paredes o parabrisas": cero. "Fuera por puertas": la trasera abierta, una por vuelta, contada y reportada.
+
+=== (c'') y (d) — re-medición con el amortiguador SOLO HACIA ARRIBA (ronda 2, r1.1, 2026-09-15 16:11:48) ===
+El defecto: el amortiguador oponía TODA la velocidad relativa vertical, incluida la caída libre -> velocidad terminal m*g/k = 8*9.8/160 = 0,49 m/s (medido por el revisor: las dos cajas de arriba a 0,48-0,49 constantes; una caja soltada de la mano a 0,73 m tardó 1,5 s cuando caída libre es 0,39 s). El amortiguador existe para que un bache no lance la carga al techo: eso es velocidad relativa HACIA ARRIBA. Corregido a oponer solo la componente positiva.
+
+Test de caída (tests/cargo/package_test.gd, escena real, caja FREE a 1,0 m sobre el piso del casco):
+- ANTES (HEAD 1f689f4): contacto a los 123 ticks (> 36 exigidos; ~2,05 s a velocidad terminal 0,49). FALLA, con números.
+- DESPUÉS (amortiguador solo hacia arriba): contacto a los 27 ticks (0,45 s, caída libre de 1 m), apoyada a -0,414 sin rebote (> 0,1 m). PASA.
+Nota: la vía release() conserva su gracia de 30 ticks por diseño (soltar/lanzar no se amortiguan en el aire): una caída de mano de ~1 m ya caía bien; el defecto vivía en el estado FREE sin gracia (el escenario de las cajas de los estantes que midió el revisor).
+
+(c'') la vuelta con el amortiguador nuevo (misma sonda, --fixed-fps 60):
+- box0: 8 eventos de despegue, takeoff máx 1,32 m/s, altura máx 0,36 m; box1: 3 eventos, máx 0,90 m/s, altura máx 0,11 m; box2: 0 eventos.
+- Salidas: solo box3 deslizándose por la PUERTA TRASERA a nivel del piso (t=10,8, local (-0,46, -0,40, 4,10)) — contada, no prohibida. CERO por paredes, parabrisas, techo o piso.
+- El rebote se ve: las cajas despegan y vuelven (alturas contenidas < 0,4 m), con caídas a velocidad de gravedad en vez del agua.
+
+(d) frenada en llano (bus a 60 km/h, caja a 2 m del frente, freno a fondo):
+- golpea el frente a 3,65 m/s relativos (pico 4,48), min_z_local=-3,61 — sigue golpeando a >= 2 m/s: la amenaza de §5.3 intacta con el amortiguador nuevo.
