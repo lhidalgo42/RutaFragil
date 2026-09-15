@@ -33,6 +33,8 @@ func test_free_packages_ride_the_lap_contained() -> void:
 	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
 	runner.set_time_factor(4.0)
 	var scene: Node = runner.scene()
+	# This suite spawns its own four packages: suppress the scene spawn.
+	scene.set("cargo_spawn", false)
 	# demo_mode is enabled explicitly: the authored default is false (M1-T1.1).
 	scene.set("demo_mode", true)
 	scene.get_node("DemoDriver").set("enabled", true)

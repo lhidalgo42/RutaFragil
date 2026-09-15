@@ -19,6 +19,10 @@ extends Node3D
 @export var demo_driver: DemoDriver
 @export var bus_input: BusInput
 @export var network_role: String = "single"
+## Spawn the four greybox packages at load (T2.3). Skipped in demo_mode so
+## run_demo's regression numbers stay intact; tests that spawn their own
+## cargo can also set this false after load (the spawn is deferred).
+@export var cargo_spawn: bool = true
 
 
 func _ready() -> void:
@@ -46,6 +50,8 @@ func _ready() -> void:
 	else:
 		CameraArbiter.apply(get_tree(), CameraArbiter.Mode.DEMO)
 	_set_mouse_captured(crew_input, player_mode)
+	if cargo_spawn and not demo_mode:
+		_spawn_cargo.call_deferred()
 
 
 func _process(_delta: float) -> void:
@@ -102,6 +108,40 @@ func _set_mouse_captured(crew_input: Node, captured: bool) -> void:
 	if crew_input is CrewInput:
 		var input: CrewInput = crew_input
 		input.set_mouse_captured(captured)
+
+
+## The four greybox packages of T2.3: two resting on the rack tops, two on
+## the aisle floor, positioned BEFORE add_child (the measured rule). The
+## scene stays at 60 authored nodes (R8): the Cargo node and its packages
+## are runtime instances, not authored ones.
+func _spawn_cargo() -> void:
+	# Re-checked at fire time: deferred, so demo_mode set right after load
+	# (demo, run_demo) and tests setting cargo_spawn=false both skip it.
+	if not cargo_spawn or demo_mode:
+		return
+	var packed: Resource = load("res://src/cargo/package.tscn")
+	if not (packed is PackedScene):
+		push_error("Playground: package.tscn did not load")
+		return
+	var scene: PackedScene = packed
+	var bus_node: Node = get_tree().get_first_node_in_group("bus")
+	if not (bus_node is RigidBody3D):
+		push_error("Playground: no bus for cargo spawn")
+		return
+	var bus: RigidBody3D = bus_node
+	var cargo_node: Node3D = Node3D.new()
+	cargo_node.name = "Cargo"
+	add_child(cargo_node)
+	var local_points: Array[Vector3] = [
+		Vector3(-0.875, 1.0, -1.5),
+		Vector3(0.875, 1.0, 1.5),
+		Vector3(-0.4, -0.4, 0.5),
+		Vector3(0.4, -0.4, 2.5),
+	]
+	for point: Vector3 in local_points:
+		var package: RigidBody3D = scene.instantiate()
+		package.position = bus.global_transform * point
+		cargo_node.add_child(package)
 
 
 func _freeze_bus_for_client() -> void:

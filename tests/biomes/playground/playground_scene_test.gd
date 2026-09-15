@@ -72,6 +72,19 @@ func test_scene_structure() -> void:
 	if windshield is CollisionShape3D:
 		var shield: CollisionShape3D = windshield
 		assert_float(shield.position.z).is_less(-3.0)
+	# T2.3 cargo spawn (paso 4): four greybox packages ride in the bus in
+	# player mode, all on collision layer 2 (D90 layers). The spawn is
+	# deferred: the frame waited above already covered it.
+	var cargo_node: Node = scene.get_node_or_null("Cargo")
+	assert_object(cargo_node).override_failure_message("no Cargo node: the deferred spawn did not run").is_not_null()
+	if cargo_node != null:
+		assert_int(cargo_node.get_child_count()).override_failure_message("expected 4 spawned packages").is_equal(4)
+		for child: Node in cargo_node.get_children():
+			if child is Package:
+				var package: Package = child
+				assert_int(package.collision_layer).is_equal(2)
+			else:
+				assert_bool(false).override_failure_message("a Cargo child is not a Package").is_true()
 	var camera_node: Node = scene.get_node_or_null("ChaseCamera")
 	assert_bool(camera_node is ChaseCamera).is_true()
 	if camera_node is ChaseCamera:
