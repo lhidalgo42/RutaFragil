@@ -93,3 +93,28 @@ index 4ed04a7..c9ce2c2 100644
  3d/physics_engine="Jolt Physics"
 
 Sección post-commit capturada tras el commit de evidencia, en un commit de docs aparte.
+
+=== POST-COMMIT (parte 2) ===
+Fecha UTC: 2026-09-15 15:23:54 · rama m2/t2.3-cargo · HEAD b40dfaa
+
+--- git log --oneline main..HEAD ---
+b40dfaa docs: evidence 01/02/04/05/06/08/09/10/11 and 07 pre-commit (M2-T2.3)
+2aca07e docs: D81-D89 decisions, BACKLOG and README cargo section (M2-T2.3)
+9b0b13e feat: the reticle rule for E — the most ray-aligned interactable wins (M2-T2.3)
+4652f5a feat: cargo in the playground + the single-player cargo criterion (M2-T2.3 paso 4-5)
+ef1621d feat: restraint anchors moved to the rack tops (M2-T2.3 point 4, owner decision)
+9950679 feat: grab, drop, throw and strap cargo — swarm delivery (M2-T2.3)
+7a42ff2 fix: the suspension ray reads only the world layer — D90 layer scheme (M2-T2.3)
+ff949b1 feat: fase 0 for the cargo swarm — fixed interfaces, five tuning fields, D89 windshield (M2-T2.3)
+5993d11 docs: free-cargo takeoff measurement, three conditions (M2-T2.3 paso 1-bis, D85)
+c1acc40 docs: free-cargo measurement before writing Package (M2-T2.3 paso 1, D85)
+f587a86 test: pin the 17 circuit waypoints to their authored positions (M2-T2.3 paso 0e)
+8fb6dc4 fix: leaving the demo, the driving input follows the crew state (M2-T2.3 paso 0d, F1 wrinkle)
+8c9acf1 test: occupying the seat at 40 km/h keeps the bus calm (M2-T2.3 paso 0c, r4.5)
+77a243f fix: the seat drags the seated crew body to the marker each physics tick (M2-T2.3 paso 0b, r4.1)
+379724b docs: plan and round-1 prompt (M2-T2.3)
+
+--- git status --short ---
+(sin líneas entre esta sección = árbol limpio)
+
+Commits de la tarea: 379724b (plan+prompt) · 77a243f (r4.1) · 8c9acf1 (r4.5) · 8fb6dc4 (F1) · f587a86 (pines WP) · c1acc40 (tabla paso 1) · 5993d11 (tabla tres condiciones) · ff949b1 (fase 0: firmas + 5 campos + D89) · 7a42ff2 (D90 capas) · 9950679 (entrega del enjambre) · ef1621d (anclajes a la tapa + menores) · 4652f5a (paso 4-5: carga en el Playground + criterio) · 9b0b13e (regla de la retícula + capturas) · 2aca07e (D81-D89/BACKLOG/README) · b40dfaa (evidencia).
