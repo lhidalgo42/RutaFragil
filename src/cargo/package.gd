@@ -37,6 +37,7 @@ const RELEASE_GRACE_TICKS: int = 30
 var restraint: Restraint = Restraint.FREE
 var held_by: CrewMember = null
 var strapped_to: RestraintAnchor = null
+var _original_parent: Node = null
 
 var _shape: CollisionShape3D = null
 var _damping_k: float = 0.0
@@ -71,11 +72,17 @@ static func rigid_point_velocity(body_linear: Vector3, body_angular: Vector3, of
 
 
 ## The D85 damper as a PURE function: only the component along the bus's up
-## axis is opposed (vertical is what ejects cargo over the bumps);
-## horizontal sliding under braking is the game (§5.3 needs it).
+## axis is opposed, and ONLY when it is POSITIVE (the box rising relative to
+## the bus — that is what ejects cargo over the bumps). Sinking is left to
+## gravity: opposing the whole vertical component gave the box a terminal
+## velocity of m*g/k = 8*9.8/160 = 0.49 m/s (measured in review 01: boxes
+## "falling like in water", a 0.73 m drop taking 1.5 s instead of 0.39 s).
+## Horizontal sliding under braking is the game (§5.3 needs it).
 static func vertical_damping_force(box_velocity: Vector3, point_velocity: Vector3, up: Vector3, k: float) -> Vector3:
 	var relative: Vector3 = box_velocity - point_velocity
 	var vertical_speed: float = relative.dot(up)
+	if vertical_speed <= 0.0:
+		return Vector3.ZERO
 	return up * (-k * vertical_speed)
 
 
@@ -133,6 +140,10 @@ func strap(anchor: RestraintAnchor) -> bool:
 		push_error("Package.strap: no node in group 'bus'")
 		return false
 	var from: Restraint = restraint
+	# r1.4: remember the original parent so unstrap() returns to it (the
+	# Cargo node), not to the bus's parent (the Playground) — that mattered
+	# for M4's MultiplayerSpawner watching a concrete node.
+	_original_parent = get_parent()
 	restraint = Restraint.STRAPPED
 	strapped_to = anchor
 	held_by = null
@@ -159,11 +170,10 @@ func unstrap() -> void:
 	strapped_to = null
 	if anchor != null:
 		anchor.occupant = null
-	# Back to the world frame with the pose preserved; CrewHands drives the
-	# transform from the next physics tick on.
-	var bus: Bus = _find_bus()
-	if bus != null and bus.get_parent() != null:
-		reparent(bus.get_parent())
+	# Back to the ORIGINAL parent with the pose preserved (r1.4); CrewHands
+	# drives the transform from the next physics tick on.
+	if _original_parent != null and is_instance_valid(_original_parent):
+		reparent(_original_parent)
 	_shape.disabled = true
 	restraint_changed.emit(from, restraint)
 
@@ -187,7 +197,8 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	var up: Vector3 = bus.global_transform.basis.y.normalized()
 	var reference: Vector3 = rigid_point_velocity(
 		bus.linear_velocity, bus.angular_velocity, origin - bus.global_position)
-	state.apply_central_force(vertical_damping_force(state.linear_velocity, reference, up, _damping_k))
+	var force: Vector3 = vertical_damping_force(state.linear_velocity, reference, up, _damping_k)
+	state.apply_central_force(force)
 
 
 ## The bus by GROUP, never by name (D59); no bus in the scene turns the

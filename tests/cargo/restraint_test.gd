@@ -140,6 +140,9 @@ func test_unstrap_returns_to_held_and_frees_the_anchor() -> void:
 	assert_bool(anchor.is_free()).is_true()
 	assert_object(anchor.occupant).is_null()
 	assert_bool(box.strapped_to == null).is_true()
+	# r1.4: unstrap() returns to the ORIGINAL parent (the node it came from),
+	# not to the bus's parent.
+	assert_object(box.get_parent()).override_failure_message("unstrap did not return to the original parent").is_same(self)
 	# HELD keeps collision OFF (a live shape inside the hull kicks the bus).
 	var shape_node: CollisionShape3D = _collision_shape_of(box)
 	assert_object(shape_node).is_not_null()
