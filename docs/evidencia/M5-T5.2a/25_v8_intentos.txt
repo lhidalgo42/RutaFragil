@@ -1,0 +1,13 @@
+# Ronda 8 — intentos fallidos y su causa (en orden, todos medidos sobre la escena construida).
+1) Agua a y = -0,06: invisible. Queda dentro de la caja del terreno -> y = +0,04, encima del suelo.
+2) Cerros del telón de fondo con hills=10: se leían como muralla gigante a 4 km -> hills = 0 (es una planicie inundada).
+3) Juncal con hojas de 50 cm: se veía como naipes clavados -> tres cañas de 5 cm; con tres se veían palitos sueltos -> cinco cañas y paso de 2,2 m junto al camino.
+4) Agua con metallic 0,3: charco de aceite -> metallic 0,08, roughness 0,3.
+5) Un paño por polígono: los solapes oscurecían la juntura y dibujaban rectas en medio del pantano -> Geometry2D.merge_polygons antes de triangular (82 paños -> 21 superficies).
+6) Empuje del agua fuera del corredor en una sola pasada: las aristas largas seguían cruzando la calzada -> tres pasadas (subdividir, empujar, soltar).
+7) Empuje justo al deslinde: no converge (365 -> 211 -> 215 vértices). En el interior de una curva el punto vuelve a medir "dentro" contra el tramo siguiente -> se pasa 2 m del deslinde (365 -> 20 -> soltar 20).
+8) Cenital con la niebla de la escena de mapa: todo gris a 2 km -> se apaga la niebla para la foto y el encuadre baja a 2700 m de lado.
+9) Vista de apertura del mapa: abría mirando al humedal vacío, con el camino en una esquina -> cámara sobre el recorrido y niebla del mapa a 0,0003.
+10) Foto del muelle: la casa de la entrega estaba encima del muelle y los tablones la atravesaban -> la casa se corre 13 m a lo largo del eje.
+11) Liana con hoja de 50 cm en la punta: se veía como chupete -> 22 cm y colgantes más largos.
+12) Troncos muertos pálidos al borde del camino: se leían como tablones blancos tirados -> color más apagado y nunca a menos de 6 m del deslinde.

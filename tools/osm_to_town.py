@@ -201,7 +201,12 @@ def project(x, z):
         if ll < 1e-9: continue
         sl = math.sqrt(ll); u = max(0.0, min(1.0, ((x - x1) * dx + (z - z1) * dz) / ll))
         px, pz = x1 + dx * u, z1 + dz * u; d = math.hypot(x - px, z - pz)
-        if d < best[0]: best = (d, cum[i] + sl * u, (x - px) * (dz / sl) + (z - pz) * (-dx / sl))
+        if d < best[0]:
+            # El costado firmado NO puede salir de la normal del tramo: si el punto más
+            # cercano cae en un EXTREMO, esa componente es menor que la distancia real y un
+            # edificio a 7,7 km pasaba como si estuviera a 96 m (medido en B2, 2026-09-16).
+            perp = (x - px) * (dz / sl) + (z - pz) * (-dx / sl)
+            best = (d, cum[i] + sl * u, math.copysign(d, perp if perp != 0.0 else 1.0))
     return best[1], best[2]
 def yaw_facing(tx, tz): return math.atan2(-tx, -tz)
 

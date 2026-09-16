@@ -54,6 +54,8 @@ var water: Array = []
 var fields: Array[Dictionary] = []
 var vine_rows: Array = []
 var streets: Array = []
+## Bioma B2 Pantano (D71): agua, juncales, troncos, hualve, vados, pasarela, muelle.
+var swamp: Dictionary = {}
 
 var _cum: PackedFloat32Array = PackedFloat32Array()
 
@@ -163,7 +165,11 @@ func project(p: Vector3) -> Vector2:
 			best_d = d
 			var tangent: Vector3 = ab / sqrt(ll)
 			var left: Vector3 = Vector3.UP.cross(tangent)
-			best = Vector2(_cum[i] + sqrt(ll) * t, (_flat(p) - q).dot(left))
+			# El costado firmado se saca de la DISTANCIA, con el signo de la normal: si el punto
+			# más cercano cae en un extremo del eje, la componente normal es menor que la
+			# distancia real y un edificio lejano se lee como pegado a la pista (medido en B2).
+			var perp: float = (_flat(p) - q).dot(left)
+			best = Vector2(_cum[i] + sqrt(ll) * t, d if perp >= 0.0 else -d)
 	return best
 
 
@@ -264,6 +270,8 @@ func _fill(d: Dictionary) -> void:
 	fields = _dicts(d.get("fields"))
 	vine_rows = _array(d.get("vine_rows"))
 	streets = _array(d.get("streets"))
+	if d.get("swamp") is Dictionary:
+		swamp = d.get("swamp")
 	_cum = PackedFloat32Array([0.0])
 	for i: int in segment_count():
 		_cum.append(_cum[i] + _flat(axis[i]).distance_to(_flat(axis[i + 1])))

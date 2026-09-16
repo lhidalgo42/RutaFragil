@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/biomes/biome_segment.gd" id="1_segment"]
+[ext_resource type="Script" path="res://src/biomes/axis_circuit.gd" id="2_circuit"]
+[ext_resource type="Script" path="res://src/biomes/osm_road.gd" id="3_road"]
+[ext_resource type="Script" path="res://src/biomes/osm_buildings.gd" id="4_buildings"]
+[ext_resource type="Script" path="res://src/biomes/osm_gravel.gd" id="5_gravel"]
+[ext_resource type="Script" path="res://src/biomes/swamp_water.gd" id="6_water"]
+[ext_resource type="Script" path="res://src/biomes/swamp_road.gd" id="7_swamp"]
+[ext_resource type="Script" path="res://src/biomes/city_backdrop.gd" id="8_backdrop"]
+
+[node name="B2Pantano" type="Node3D"]
+script = ExtResource("1_segment")
+biome_id = "b2_pantano_rio_cruces"
+length_m = 6065.1
+
+[node name="Entry" type="Marker3D" parent="."]
+position = Vector3(-1891.0, 1.2, 1617.5)
+rotation = Vector3(0, 2.3215, 0)
+
+[node name="Exit" type="Marker3D" parent="."]
+position = Vector3(-3932.0, 1.2, 1274.2)
+
+[node name="Road" type="Node3D" parent="."]
+script = ExtResource("3_road")
+data_path = "res://data/b2_pantano.json"
+
+[node name="Gravel" type="Node3D" parent="."]
+script = ExtResource("5_gravel")
+data_path = "res://data/b2_pantano.json"
+
+[node name="SwampWater" type="Node3D" parent="."]
+script = ExtResource("6_water")
+data_path = "res://data/b2_pantano.json"
+
+[node name="SwampRoad" type="Node3D" parent="."]
+script = ExtResource("7_swamp")
+data_path = "res://data/b2_pantano.json"
+
+[node name="Buildings" type="Node3D" parent="."]
+script = ExtResource("4_buildings")
+data_path = "res://data/b2_pantano.json"
+
+[node name="Backdrop" type="Node3D" parent="."]
+script = ExtResource("8_backdrop")
+ridge_distance_m = 9000.0
+peaks = 10
+hills = 0
+hill_min_distance_m = 4200.0
+
+[node name="Circuit" type="Node3D" parent="."]
+script = ExtResource("2_circuit")
+data_path = "res://data/b2_pantano.json"

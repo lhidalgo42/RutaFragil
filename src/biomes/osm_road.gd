@@ -23,7 +23,6 @@ const HUMP_H: float = 0.15
 const HUMP_RAMP: float = 1.8
 const HUMP_CREST: float = 5.0
 const SIGN_BEFORE_M: float = 35.0
-const CROSSWALK_OFFSET_M: float = 12.0
 
 @export var data_path: String = "res://data/b0_departamental.json"
 @export var grass_per_m2: float = 5.0
@@ -51,7 +50,7 @@ func build() -> void:
 	_build_ground()
 	_build_segments()
 	_build_roundabout()
-	_build_crosswalks()
+	OsmCrosswalks.build(_b, data)   # las cebras y las líneas de detención (D67)
 	_build_humps()
 	_build_underpass()
 	_build_pasaje()
@@ -90,6 +89,17 @@ func _build_ground() -> void:
 		for p: Vector3 in data.axis:
 			lo = lo.min(p)
 			hi = hi.max(p)
+		# El pantano tiene agua más allá del eje: si el suelo solo cubre la ruta, el agua
+		# queda flotando sobre el vacío y se ve el corte (medido en B2, 2026-09-16).
+		for item: Variant in (data.swamp.get("bodies", []) if not data.swamp.is_empty() else []):
+			if not (item is Dictionary):
+				continue
+			for q: Variant in ((item as Dictionary).get("polygon", []) as Array):
+				var pair: Array = q
+				if pair.size() >= 2:
+					var w: Vector3 = Vector3(float(pair[0]), 0.0, float(pair[1]))
+					lo = lo.min(w)
+					hi = hi.max(w)
 		var size: Vector3 = Vector3(hi.x - lo.x + 1200.0, 1.0, hi.z - lo.z + 1200.0)
 		var center: Vector3 = Vector3((lo.x + hi.x) * 0.5, -0.5, (lo.z + hi.z) * 0.5)
 		_shape(body, size, Transform3D(Basis.IDENTITY, center))
@@ -135,8 +145,8 @@ func _build_segments() -> void:
 			continue
 		if maxf(a.y, b.y) > 0.05:
 			_deck_collision(frame, mid, seg_len, data.curb_at(s_mid) * 2.0)
-		if kind == "gravel":
-			continue  # OsmGravel draws the unpaved stretches
+		if kind in ["gravel", "mud", "ford", "causeway"]:
+			continue  # OsmGravel hace el ripio; SwampRoad hace el barro, el vado y la pasarela
 		if kind == "street":
 			_street_segment(frame, mid, seg_len, s_mid)
 		else:
@@ -230,30 +240,6 @@ func _build_roundabout() -> void:
 
 
 ## Zebra crossing and stop line at every real side-street junction (gaps that are not the station or the pasaje).
-func _build_crosswalks() -> void:
-	for gap: Dictionary in data.curb_gaps:
-		var gap_name: String = str(gap.get("name", ""))
-		if gap_name == "estacion" or gap_name == "pasaje":
-			continue
-		var s_j: float = (float(gap.get("s0", 0.0)) + float(gap.get("s1", 0.0))) * 0.5 + CROSSWALK_OFFSET_M
-		if s_j < 20.0 or s_j > data.length - 20.0 or absf(s_j - float(data.underpass.get("s", -1000.0))) < 30.0 or data.section_at(s_j) == "gravel":
-			continue
-		var frame: Transform3D = data.sample(s_j)
-		var left: Vector3 = data.left_of(frame)
-		var fwd: Vector3 = -frame.basis.z
-		var avenue: bool = data.section_at(s_j) == "avenue"
-		var inner: float = data.median_width * 0.5 + 0.75 if avenue else 0.25
-		var bars: int = 10 if avenue else 6
-		for side: float in [-1.0, 1.0]:
-			for k: int in bars:
-				var lat: float = side * (inner + float(k) * 1.0)
-				_b.box("paint_white", MeshBatcher.along(frame.basis, frame.origin + left * lat, Vector3(0.5, 0.02, 4.0), 0.026))
-			# stop line 3 m before the crossing, in the direction of travel of that carriageway (south = eastbound)
-			var stop_pos: Vector3 = frame.origin + left * (side * data.lane_at(s_j)) + fwd * (-3.0 if side < 0.0 else 3.0)
-			var stop_w: float = data.carriageway_width - 0.6 if avenue else data.curb_at(s_j) - 1.0
-			_b.box("paint_white", MeshBatcher.along(frame.basis, stop_pos, Vector3(stop_w, 0.02, 0.4), 0.026))
-
-
 func _far_from_features(s: float, margin: float) -> bool:
 	for h: Dictionary in data.humps:
 		if absf(float(h.get("s", 0.0)) - s) < margin:

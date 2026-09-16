@@ -1,0 +1,15 @@
+# Ronda 8 — B2 Pantano del río Cruces. Vuelta completa con el bus real de Leo, en el
+# banco BIOMAS (la rama sigue con el placeholder hasta que se funda `main`).
+# 2026-09-16, Godot 4.7.2.stable.official.ed1daf0bf, Windows.
+
+$ Godot_v4.7.2-stable_win64_console.exe --headless --fixed-fps 60 \
+    -s res://src/tooling/run_demo.gd ++ scene=res://scenes/route_pantano.tscn seconds=1200
+DEMO result=lap_completed t=270.7s waypoints=397 max_speed_kmh=90.2 min_upright=0.98
+
+# El mismo comando sobre el pueblo, después del arreglo del costado firmado de project()
+# (los dos biomas se regeneraron): la ruta de Requínoa no se rompió.
+$ ... ++ scene=res://scenes/route_requinoa.tscn seconds=1200
+DEMO result=lap_completed t=222.6s waypoints=348 max_speed_kmh=90.1 min_upright=0.99
+
+# Con el bus placeholder, dentro del clon del repo, la prueba de escena del pantano
+# alcanza los 5 primeros puntos de paso (test_la_escena_de_ruta_arranca_y_avanza).

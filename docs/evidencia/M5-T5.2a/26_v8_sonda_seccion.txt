@@ -1,0 +1,13 @@
+# Ronda 8 — sonda de sección transversal sobre el ripio del pantano, para descartar
+# escalones junto a la calzada (el corte oscuro que se ve en la foto pt_ripio es la cara
+# lateral de la malla del afirmado, sin colisión).
+$ Godot --headless -s res://src/tooling/probe_surface.gd ++ \
+    scene=res://scenes/route_pantano.tscn data=res://data/b2_pantano.json \
+    mode=cross s0=700 s1=700 step=1.0
+PROBE s= 700.0 -14:0.00 -12:0.00 -10:0.00 -8:0.00 -6:0.00 -4:0.00 -2:0.00 +0:0.00 \
+      +2:0.00 +4:0.00 +6:0.00 +8:0.00 +10:0.00 +12:0.00 +14:0.00
+# Plano en los 15 puntos: no hay junta ni escalón donde el camión pueda tropezar.
+
+# Agua sobre la calzada, medida sobre los datos (muestreo de cada arista cada 3 m):
+# 5 puntos, todos junto al puente (s=2779), al pie del muelle (s=5327/5338) y en las
+# aproximaciones del vado (s=5614/5654). Es donde el agua debe llegar al camino.

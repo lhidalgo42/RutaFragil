@@ -1,0 +1,18 @@
+# Ronda 8 — suites completas. 2026-09-16.
+
+## Banco BIOMAS (con el bus y la tripulación reales de `main`)
+$ Godot --headless -s addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -a tests
+Overall Summary: 53 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans
+
+## Clon del repo, rama m5/t5.2a-biome-greybox-b0 (con el bus placeholder)
+$ Godot --headless -s addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -a tests
+Overall Summary: 143 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans
+
+# Suite nueva: tests/biomes/pantano_route_test.gd (7 casos)
+#  - la ruta alterna asfalto, ripio y barro, y el agua va SOBRE el suelo
+#  - el pantano tiene sus piezas (paños, orillas inundadas, juncal, troncos, hualve)
+#  - los edificios no invaden la huella (filtro por las 4 esquinas contra todo el eje)
+#  - el agua se construye en una sola cota y los paños solapados se funden
+#  - el barro avisa al camión y la pasarela es una sola caja de colisión
+#  - la escena de ruta arranca y avanza cinco puntos de paso
+#  - el agua no pisa la calzada salvo en el puente, el vado y el pie del muelle

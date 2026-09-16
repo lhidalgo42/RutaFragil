@@ -151,3 +151,15 @@ Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: 
 - **El pueblo se puede conducir a mano** (`BusInput` + acciones de `main`, F1 alterna demo y volante). Falta decidir si la ruta de biomas lleva tripulante (`src/crew`) para entrar y salir del bus como en el Playground.
 - **Las naves industriales reales** (Delipack, David del Curto, Chilefood) salen como losas planas de 1–2 pisos. Si el arte final las quiere, necesitan altura y techo propios.
 - **Las barreras del cruce a nivel siguen levantadas y sin tren.**
+
+## Pendientes de M5-T5.2a ronda 8 (B2 Pantano del río Cruces)
+
+- **Fauna del humedal.** El sitio queda listo para cisnes de cuello negro y garzas sobre el espejo; es contenido animado, no geometría. Dato de diseño: la población de cisnes se hundió de ~6000 a ~500 tras la desaparición del luchecillo en 2004 y recién se recuperó hacia 2018; sirve para ambientar la misión.
+- **El agua es una lámina plana translúcida.** Un shader con profundidad falsa, oleaje y reflejo es el siguiente salto visual y **no toca la geometría** (la cota única de D71 se mantiene).
+- **El luchecillo (*Egeria densa*) quedó fuera** por ser planta sumergida: no se ve desde la cabina. Entra si hay cámara baja o misión en bote.
+- **El vado es visual.** Cruzar el río San Ramón no frena al camión ni moja la carga; la profundidad está en los datos (`swamp.fords[].w`) para cuando exista la mecánica.
+- **La lluvia no existe todavía.** El agarre del barro está parametrizado (`MUD_GRIP` 0,35): bajarlo con el clima es un número, no un rediseño.
+- **20 vértices de agua se sueltan** en la vuelta en punta, donde el camino se abraza a sí mismo y el agua no cabe entre las dos pasadas. Es una pérdida de 20 puntos de polígono, no un hueco.
+- **El costado firmado de `OsmMapData.project()` estaba mal** y se arregló en esta ronda: la componente normal del tramo subestima la distancia cuando el punto más cercano cae en un extremo, y un edificio a 7,7 km se leía a 96 m. Afecta a **los dos biomas**: `data/b0_requinoa.json` se regeneró (773 edificios) y la vuelta del pueblo sigue cerrando (222,6 s).
+- **Igual que el pueblo, la ruta del pantano es una sola línea A→B.** La biblia pide desvíos que se puedan elegir.
+
