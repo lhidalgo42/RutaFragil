@@ -17,7 +17,8 @@ const COLOURS: Dictionary = {
 	"bench": Color(0.45, 0.32, 0.2), "trunk": Color(0.4, 0.28, 0.18), "crown": Color(0.26, 0.48, 0.24),
 	"tower": Color(0.85, 0.8, 0.72), "cross_church": Color(0.9, 0.88, 0.84),
 	"water": Color(0.32, 0.42, 0.45), "bank": Color(0.46, 0.4, 0.3),
-	"vine": Color(0.3, 0.42, 0.22), "vine_post": Color(0.5, 0.42, 0.32),
+	"vine": Color(0.3, 0.42, 0.22), "vine_post": Color(0.5, 0.42, 0.32), "vine_wire": Color(0.35, 0.35, 0.36),
+	"fountain_stream": Color(0.55, 0.75, 0.8),
 	"motorway": Color(0.26, 0.27, 0.29), "motorway_paint": Color(0.92, 0.92, 0.88),
 	"street": Color(0.27, 0.28, 0.3), "street_dirt": Color(0.54, 0.44, 0.32), "street_line": Color(0.86, 0.85, 0.8),
 	"truck_a": Color(0.85, 0.85, 0.85), "truck_b": Color(0.2, 0.35, 0.6),
@@ -55,6 +56,7 @@ func build() -> void:
 	_build_motorway()
 	_b.flush(self, COLOURS)
 	_r.flush(self, COLOURS)
+	MeshBatcher.update_canopy()
 
 
 func batch_count(kind: String) -> int:
@@ -78,11 +80,17 @@ func _build_streets() -> void:
 			continue
 		var half: float = float(street.get("w", 6.0)) * 0.5
 		var dirt: bool = str(street.get("surface", "street")) == "gravel"
+		# Las calles de OSM llegan hasta el EJE de la ruta: la cinta pisaba la calzada
+		# principal con otra textura y otra altura (D76). Se recortan al cordón.
+		pts = _trim_to_route(pts)
+		if pts.size() < 2:
+			continue
 		# Cinta continua (D72): en las esquinas del pueblo la cadena de cajas dejaba
 		# el mismo diente que en la ruta, y aquí hay 217 calles con esquinas.
 		var lefts: PackedVector3Array = RoadRibbon.lefts(pts)
 		# La textura de la calzada (D74) trae la línea central pintada: ya no se dibuja aparte.
-		_r.band("street_dirt" if dirt else "street", pts, lefts, -half, half, 0.04)
+		# A la misma altura que la calzada de la ruta: a 4 cm quedaba un escalón visible.
+		_r.band("street_dirt" if dirt else "street", pts, lefts, -half, half, 0.02)
 
 
 func _build_rail() -> void:
@@ -219,7 +227,8 @@ func _build_fountain(centre: Vector3) -> void:
 		var ang: float = TAU * float(k) / 8.0
 		var from: Vector3 = centre + Vector3(cos(ang), 0.0, sin(ang)) * 2.3 + Vector3.UP * 2.85
 		var to: Vector3 = centre + Vector3(cos(ang), 0.0, sin(ang)) * 2.5 + Vector3.UP * 1.35
-		_b.box("fountain_water", MeshBatcher.between(from, to, 0.09))
+		# hilo que cae: mismo shader de agua, pero con el patrón corriendo hacia abajo
+		_b.box("fountain_stream", MeshBatcher.between(from, to, 0.09))
 
 
 func _build_churches() -> void:
@@ -258,10 +267,25 @@ func _build_vines() -> void:
 		var seg: float = a.distance_to(b)
 		if seg < 1.0:
 			continue
-		var mid: Vector3 = (a + b) * 0.5
-		_b.box("vine", Transform3D(Basis.from_scale(Vector3(seg, 1.1, 0.7)), mid + Vector3.UP * 1.0))
-		for end: Vector3 in [a, b]:
-			_b.add("vine_post", "cyl", Transform3D(Basis.from_scale(Vector3(0.14, 1.9, 0.14)), end + Vector3.UP * 0.95))
+		# Una parra cada 1,6 m como mechón de hojas sobre el alambre, no una barra verde de
+		# 60 m (D76): «solo líneas verdes rectangulares en 3D», dijo el dueño, y tenía razón.
+		var dir: Vector3 = (b - a) / seg
+		var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+		rng.seed = int(a.x * 31.0 + a.z * 17.0)
+		# cada 3,2 m y algo más grandes: a 1,6 m eran 54.000 mechones en un solo lote y la
+		# tarjeta pesaba más que todo el pasto del recorrido
+		var t: float = 1.2
+		while t < seg:
+			var size: float = rng.randf_range(1.6, 2.2)
+			var yaw: float = OsmMapData.yaw_facing(dir) + rng.randf_range(-0.3, 0.3)
+			_b.add("vine", "card", Transform3D(Basis(Vector3.UP, yaw) * Basis.from_scale(Vector3(size, size * 0.7, size * 0.5)), a + dir * t + Vector3.UP * (size * 0.5)))
+			t += 3.2
+		for h: float in [0.7, 1.3]:
+			_b.box("vine_wire", MeshBatcher.between(a + Vector3.UP * h, b + Vector3.UP * h, 0.02))
+		var post: float = 0.0
+		while post <= seg:
+			_b.add("vine_post", "cyl", Transform3D(Basis.from_scale(Vector3(0.14, 1.9, 0.14)), a + dir * post + Vector3.UP * 0.95))
+			post += 6.0
 
 
 ## The Ruta 5 Sur inside the cutting under the bridge (D69): only the stretch that the trench
@@ -295,11 +319,37 @@ func _build_motorway() -> void:
 				_b.box(colour, Transform3D(rot * Basis.from_scale(Vector3(2.5, 3.6, 14.0)), mid + Vector3.UP * 1.9 + rot.x * 2.6))
 
 
+## Árbol de plaza: tronco con corteza y copa de mechones de hojas (D76), no esferas.
 func _tree(p: Vector3, trunk_h: float, crown_r: float) -> void:
-	_b.add("trunk", "cyl", Transform3D(Basis.from_scale(Vector3(0.45, trunk_h, 0.45)), p + Vector3.UP * (trunk_h * 0.5)))
-	var top: Vector3 = p + Vector3.UP * (trunk_h + crown_r * 0.7)
-	_b.add("crown", "sph", Transform3D(Basis.from_scale(Vector3.ONE * crown_r * 2.0), top))
-	_b.add("crown", "sph", Transform3D(Basis.from_scale(Vector3.ONE * crown_r * 1.3), top + Vector3(crown_r * 0.6, crown_r * 0.4, 0.0)))
+	_b.tree(p, trunk_h, crown_r, 8, 2, "trunk", "crown", 0.45)
+
+
+## Acorta una calle lateral para que termine en el borde del cordón de la ruta y no encima
+## de su calzada. Solo mira los dos extremos: es donde OSM la une al eje.
+func _trim_to_route(pts: PackedVector3Array) -> PackedVector3Array:
+	var out: PackedVector3Array = pts.duplicate()
+	for end: int in [0, out.size() - 1]:
+		var inner: int = 1 if end == 0 else out.size() - 2
+		if inner < 0 or inner >= out.size() or inner == end:
+			break
+		var pr: Vector2 = data.project(out[end])
+		var limit: float = data.curb_at(pr.x) + 0.6
+		if absf(pr.y) >= limit:
+			continue
+		if absf(data.project(out[inner]).y) < limit:
+			# el tramo entero corre dentro del corredor (una calle paralela pegada al eje): se deja
+			continue
+		# bisección sobre el tramo hasta caer justo fuera del corredor
+		var lo: float = 0.0
+		var hi: float = 1.0
+		for _i: int in 12:
+			var mid: float = (lo + hi) * 0.5
+			if absf(data.project(out[inner].lerp(out[end], mid)).y) < limit:
+				hi = mid
+			else:
+				lo = mid
+		out[end] = out[inner].lerp(out[end], lo)
+	return out
 
 
 func _near_route(p: Vector3) -> bool:

@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://src/biomes/biome_segment.gd" id="1_segment"]
 [ext_resource type="Script" path="res://src/biomes/axis_circuit.gd" id="2_circuit"]
 [ext_resource type="Script" path="res://src/biomes/osm_road.gd" id="3_road"]
 [ext_resource type="Script" path="res://src/biomes/osm_buildings.gd" id="4_buildings"]
-[ext_resource type="PackedScene" path="res://scenes/b0/city_station.tscn" id="5_station"]
 [ext_resource type="Script" path="res://src/biomes/osm_furniture.gd" id="6_furniture"]
 [ext_resource type="Script" path="res://src/biomes/city_backdrop.gd" id="7_backdrop"]
 [ext_resource type="Script" path="res://src/biomes/osm_gravel.gd" id="8_gravel"]
@@ -52,7 +51,3 @@ hill_min_distance_m = 1600.0
 [node name="Circuit" type="Node3D" parent="."]
 script = ExtResource("2_circuit")
 data_path = "res://data/b0_requinoa.json"
-
-[node name="CityStation" parent="." instance=ExtResource("5_station")]
-position = Vector3(-221.9, 0, 233.5)
-rotation = Vector3(0, -1.9504, 0)

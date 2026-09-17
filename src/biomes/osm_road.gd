@@ -18,7 +18,7 @@ const COLOURS: Dictionary = {
 	"post": Color(0.6, 0.6, 0.62), "diamond": Color(0.95, 0.75, 0.1), "disc": Color(0.95, 0.95, 0.95), "dirt": Color(0.5, 0.38, 0.25),
 	"car_a": Color(0.85, 0.85, 0.88), "car_b": Color(0.25, 0.3, 0.55), "car_c": Color(0.6, 0.15, 0.15),
 	"parapet": Color(0.68, 0.66, 0.62), "pier": Color(0.5, 0.48, 0.46), "island": Color(0.62, 0.6, 0.55), "crown": Color(0.28, 0.5, 0.26), "monument": Color(0.8, 0.78, 0.72),
-	"canopy": Color(0.93, 0.93, 0.9), "canopy_band": Color(0.16, 0.5, 0.45), "pump": Color(0.9, 0.89, 0.86),
+	"canopy": Color(0.93, 0.93, 0.9), "canopy_band": Color(0.16, 0.5, 0.45), "pump": Color(0.9, 0.89, 0.86), "pump_island": Color(0.62, 0.6, 0.55),
 	"pump_dark": Color(0.2, 0.22, 0.24), "hose": Color(0.12, 0.12, 0.13), "shop": Color(0.88, 0.86, 0.8),
 	"glass": Color(0.55, 0.68, 0.72), "totem": Color(0.16, 0.5, 0.45), "forecourt": Color(0.66, 0.65, 0.63),
 }
@@ -53,6 +53,8 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _built_at: PackedVector3Array = PackedVector3Array()
 var _built_dir: PackedVector3Array = PackedVector3Array()
 var _built_index: PackedInt32Array = PackedInt32Array()
+## Bocacalles derivadas de las calles del pueblo: (s0, s1, lado). Ver _collect_street_gaps.
+var _street_gaps: Array[Vector3] = []
 
 
 func _ready() -> void:
@@ -66,6 +68,8 @@ func build() -> void:
 		remove_child(child)
 		child.free()
 	_rng.seed = seed
+	# Un mapa nuevo empieza sin copas anotadas; Furniture y Town las vuelven a anotar (D76).
+	MeshBatcher.reset_canopy()
 	MeshBatcher.set_ground_over_amount(ground_snow)
 	MeshBatcher.set_ground_tile_m(ground_tile_m)
 	_build_ground()
@@ -75,6 +79,7 @@ func build() -> void:
 	_build_humps()
 	_build_underpass()
 	_build_pasaje()
+	_build_station_lot()
 	_build_grass()
 	_b.flush(self, COLOURS)
 	_r.flush(self, COLOURS)
@@ -86,6 +91,12 @@ func curb_shape_count() -> int:
 
 func hump_shape_count() -> int:
 	return _shape_count("Humps")
+
+
+## Orígenes de las instancias de un lote (las pruebas leen esto: bajo el renderizador
+## headless los MultiMesh no devuelven sus transformaciones).
+func positions_of(kind: String) -> PackedVector3Array:
+	return _b.positions(kind)
 
 
 func batch_count(kind: String) -> int:
@@ -149,6 +160,7 @@ func _is_repeat(mid: Vector3, dir: Vector3, index: int) -> bool:
 
 func _build_segments() -> void:
 	var curbs: StaticBody3D = _body("Curbs")
+	_collect_street_gaps()
 	_built_at.clear()
 	_built_dir.clear()
 	_built_index.clear()
@@ -192,6 +204,43 @@ func _build_segments() -> void:
 	_close_run(run, run_s, run_kind)
 
 
+## Bocacalles que abren cordón y vereda: los `curb_gaps` reales de OSM más cada calle del
+## pueblo que llega al corredor de la ruta (D76). Cada hueco es (s0, s1, lado).
+func _collect_street_gaps() -> void:
+	_street_gaps.clear()
+	for item: Variant in data.streets:
+		if not (item is Dictionary):
+			continue
+		var street: Dictionary = item
+		var raw: Array = street.get("pts", []) as Array
+		if raw.size() < 2:
+			continue
+		var half: float = float(street.get("w", 6.0)) * 0.5 + 1.5
+		for end: int in [0, raw.size() - 1]:
+			var inner: int = 1 if end == 0 else raw.size() - 2
+			var pe: Array = raw[end]
+			var pi: Array = raw[inner]
+			if pe.size() < 2 or pi.size() < 2:
+				continue
+			var p_end: Vector3 = Vector3(float(pe[0]), 0.0, float(pe[1]))
+			var pr: Vector2 = data.project(p_end)
+			if absf(pr.y) > data.curb_at(pr.x) + 4.0:
+				continue   # este extremo no toca la ruta
+			# el lado lo dice el punto interior: el extremo cae casi sobre el eje
+			var pr_in: Vector2 = data.project(Vector3(float(pi[0]), 0.0, float(pi[1])))
+			var side: float = 1.0 if pr_in.y >= 0.0 else -1.0
+			_street_gaps.append(Vector3(pr.x - half, pr.x + half, side))
+
+
+func _in_gap(side: int, s: float) -> bool:
+	if data.in_gap(side, s):
+		return true
+	for g: Vector3 in _street_gaps:
+		if int(g.z) == side and s >= g.x and s <= g.y:
+			return true
+	return false
+
+
 ## Una tirada continua del mismo tipo de calzada, emitida como cinta (D72). Antes cada
 ## tramo era una caja rotada y en las curvas dos cajas vecinas dejaban una cuña abierta
 ## por fuera y se pisaban por dentro. Aquí los dos tramos comparten la fila de vértices.
@@ -208,14 +257,14 @@ func _close_run(points: PackedVector3Array, s_list: PackedFloat32Array, kind: St
 			_r.wall("median", points, lefts, side * half_median, 0.02, 0.15, side)
 			# asfalto liso: la avenida pinta sus propias marcas (dos calzadas de un sentido)
 			_side_band("asphalt_plain", points, lefts, side, half_median, curb - 1.0, 0.02)
-			_side_band("sidewalk", points, lefts, side, curb + 1.0, walk + 1.0, 0.15)
-			_curb_ribbon(points, lefts, s_list, side, curb - 1.0, curb + 1.0)
+			_gapped_band("sidewalk", points, lefts, s_list, side, curb + 1.0, walk + 1.0, false)
+			_gapped_band("curb", points, lefts, s_list, side, curb - 1.0, curb + 1.0, true)
 	else:
 		var street_curb: float = data.curb_at(s_list[0])
 		_r.band("asphalt", points, lefts, -(street_curb - 1.0), street_curb - 1.0, 0.02)
 		for side: float in [-1.0, 1.0]:
-			_side_band("sidewalk", points, lefts, side, street_curb + 0.5, street_curb + 2.3, 0.15)
-			_curb_ribbon(points, lefts, s_list, side, street_curb - 0.5, street_curb + 0.5)
+			_gapped_band("sidewalk", points, lefts, s_list, side, street_curb + 0.5, street_curb + 2.3, false)
+			_gapped_band("curb", points, lefts, s_list, side, street_curb - 0.5, street_curb + 0.5, true)
 
 
 ## Banda de un costado. `lat_in` es el borde que mira al eje; la cinta siempre se emite
@@ -227,27 +276,29 @@ func _side_band(kind: String, points: PackedVector3Array, lefts: PackedVector3Ar
 		_r.band(kind, points, lefts, -lat_out, -lat_in, y)
 
 
-## El cordón se corta en cada entrada de calle lateral (los `curb_gaps` reales): una
-## solera cruzando por delante de un pasaje se ve peor que la junta que vinimos a quitar.
-func _curb_ribbon(points: PackedVector3Array, lefts: PackedVector3Array, s_list: PackedFloat32Array, side: float, lat_in: float, lat_out: float) -> void:
+## El cordón Y la vereda se cortan en cada bocacalle: en los `curb_gaps` reales de OSM y
+## donde una calle del pueblo llega a la ruta (D76). Antes solo se abría el cordón y la
+## vereda cruzaba entera por delante de cada calle lateral, como un puente de 15 cm.
+func _gapped_band(kind: String, points: PackedVector3Array, lefts: PackedVector3Array, s_list: PackedFloat32Array, side: float, lat_in: float, lat_out: float, with_wall: bool) -> void:
 	var sub: PackedVector3Array = PackedVector3Array()
 	var sub_lefts: PackedVector3Array = PackedVector3Array()
 	for i: int in points.size():
-		if data.in_gap(int(side), s_list[i]):
-			_emit_curb(sub, sub_lefts, side, lat_in, lat_out)
+		if _in_gap(int(side), s_list[i]):
+			_emit_band(kind, sub, sub_lefts, side, lat_in, lat_out, with_wall)
 			sub = PackedVector3Array()
 			sub_lefts = PackedVector3Array()
 			continue
 		sub.append(points[i])
 		sub_lefts.append(lefts[i])
-	_emit_curb(sub, sub_lefts, side, lat_in, lat_out)
+	_emit_band(kind, sub, sub_lefts, side, lat_in, lat_out, with_wall)
 
 
-func _emit_curb(points: PackedVector3Array, lefts: PackedVector3Array, side: float, lat_in: float, lat_out: float) -> void:
+func _emit_band(kind: String, points: PackedVector3Array, lefts: PackedVector3Array, side: float, lat_in: float, lat_out: float, with_wall: bool) -> void:
 	if points.size() < 2:
 		return
-	_side_band("curb", points, lefts, side, lat_in, lat_out, 0.15)
-	_r.wall("curb", points, lefts, side * lat_in, 0.02, 0.15, -side)
+	_side_band(kind, points, lefts, side, lat_in, lat_out, 0.15)
+	if with_wall:
+		_r.wall(kind, points, lefts, side * lat_in, 0.02, 0.15, -side)
 
 
 ## Avenue (D63): lo que NO es superficie continua — pintura, colisión del cordón y autos
@@ -431,6 +482,56 @@ func _build_pasaje() -> void:
 	_build_fuel_station(lot_centre, rot, dir, left)
 
 
+## La bencinera del pueblo, en un lote retirado de la calle (D76). Antes estaba la escena
+## `CityStation` de la ronda 1 (techo rojo, cajas) puesta a 30 m del eje, y su explanada
+## pisaba la calzada: «la bencinera sigue apareciendo al medio de la calle». Ahora se arma
+## con el mismo código que la del pasaje, en el lado que dice OSM y a 26 m del cordón.
+func _build_station_lot() -> void:
+	if not data.pasaje.is_empty() or data.station.is_empty() or not data.station.has("s"):
+		return
+	var s: float = float(data.station.get("s", 0.0))
+	var side: float = float(data.station.get("side", 1.0))
+	if absf(side) < 0.01:
+		side = 1.0
+	var frame: Transform3D = data.sample(s)
+	# El lazo del pueblo pasa DOS veces cerca de la Copec: a 26 m de una pasada el lote caía
+	# justo sobre la otra (lo cazó la prueba). Se prueban los dos lados y varias distancias
+	# y se toma el primer lote cuya explanada entera queda fuera de cualquier pasada.
+	var best_centre: Vector3 = Vector3.ZERO
+	var best_away: Vector3 = Vector3.ZERO
+	var best_clear: float = -INF
+	for try_side: float in [signf(side), -signf(side)]:
+		var away: Vector3 = data.left_of(frame) * try_side
+		for dist: float in [26.0, 34.0, 44.0, 56.0]:
+			var centre: Vector3 = frame.origin + away * (data.curb_at(s) + dist)
+			var clear: float = _lot_clearance(centre, away)
+			if clear > best_clear:
+				best_clear = clear
+				best_centre = centre
+				best_away = away
+			if clear > 3.0:
+				break
+		if best_clear > 3.0:
+			break
+	var rot: Basis = Basis(Vector3.UP, OsmMapData.yaw_facing(best_away))
+	_b.box("forecourt", MeshBatcher.along(rot, best_centre, Vector3(52.0, 0.02, 44.0), 0.015))
+	_build_fuel_station(best_centre, rot, best_away, Vector3.UP.cross(best_away))
+
+
+## Metros que sobran entre la explanada de la bencinera (52 × 44 m, centrada en `centre`,
+## con el fondo hacia `away`) y el cordón de la pasada de la ruta más cercana a cada esquina.
+## Negativo = la explanada pisa la calzada.
+func _lot_clearance(centre: Vector3, away: Vector3) -> float:
+	var along: Vector3 = Vector3.UP.cross(away)
+	var worst: float = INF
+	for sx: float in [-1.0, 1.0]:
+		for sz: float in [-1.0, 1.0]:
+			var corner: Vector3 = centre + along * (sx * 26.0) + away * (sz * 22.0)
+			var pr: Vector2 = data.project(corner)
+			worst = minf(worst, absf(pr.y) - data.curb_at(pr.x))
+	return worst
+
+
 ## Bencinera "Quenlobo" (D72). Antes eran puras cajas superpuestas sobre tierra. Ahora:
 ## marquesina con el canto grueso a la vista y cuatro pilares redondos, dos islas con sus
 ## surtidores y la manguera colgando, la tienda con su vitrina y el tótem de precios en la
@@ -448,7 +549,7 @@ func _build_fuel_station(centre: Vector3, rot: Basis, dir: Vector3, left: Vector
 			_b.add("canopy_band", "cyl", Transform3D(Basis.from_scale(Vector3(0.62, canopy_h - 0.4, 0.62)), pillar + Vector3.UP * (canopy_h - 0.4) * 0.5))
 	for sx2: float in [-1.0, 1.0]:
 		var island: Vector3 = centre + left * (sx2 * 4.6)
-		_b.box("island", MeshBatcher.along(rot, island, Vector3(2.4, 0.22, 9.0), 0.11))
+		_b.box("pump_island", MeshBatcher.along(rot, island, Vector3(2.4, 0.22, 9.0), 0.11))
 		for sz2: float in [-1.0, 1.0]:
 			var pump: Vector3 = island + dir * (sz2 * 2.4)
 			_b.box("pump", MeshBatcher.along(rot, pump, Vector3(1.1, 1.5, 0.75), 0.97))

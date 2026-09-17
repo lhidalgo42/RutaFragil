@@ -32,6 +32,10 @@
   - `Terrain001` — https://ambientcg.com/view?id=Terrain001 (escaneo de terreno; se usan
     `Color`, `Soil` y `Protrusion` del paquete 2K-JPG, estirados a 900 m como mapa de la
     zona, no como baldosa, D74)
+  - `Bark012` — https://ambientcg.com/view?id=Bark012 (corteza de los troncos, D76)
+  - `LeafSet010` — https://ambientcg.com/view?id=LeafSet010 (atlas de hojas con opacidad;
+    Color + Opacity fundidos en `assets/textures/tree/leaf_atlas.png`, D76)
+  - `Ground068` — https://ambientcg.com/view?id=Ground068 (suelo de bosque bajo las copas, D76)
   - `DayEnvironmentHDRI108` — se probó como cielo en D74 y se **retiró** en D75: es un parque
     fotografiado a nivel del suelo y sus árboles quedaban de horizonte del pueblo. No queda
     ningún archivo suyo en el repo.
@@ -40,7 +44,7 @@
     AmbientOcclusion, Displacement, `.blend`, `.usdc` ni `.mtlx`. Todo se **reduce** con
     `src/tooling/shrink_texture.gd` antes de entrar al repo —512 px los materiales,
     1024 px los tres mapas del terreno—: los objetos de Git LFS en GitHub son permanentes
-    (nota de D36). Viven en `assets/textures/{ground,road}/` y los usan
+    (nota de D36). Viven en `assets/textures/{ground,road,tree}/` y los usan
     `assets/shaders/ground.gdshader` (D73, D74) y `assets/shaders/ribbon.gdshader` (D74).
 
 ## Modelos generativos

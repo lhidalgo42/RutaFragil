@@ -8,9 +8,13 @@ extends SceneTree
 ## Una sola: ++ in=/ruta/color.jpg out=/ruta/salida.jpg size=512 quality=0.85
 ## Una carpeta entera: ++ dir_in=/ruta/origen dir_out=/ruta/destino size=512
 ## En una carpeta, cada `nombre_src.jpg` sale como `nombre.jpg`.
+## Con alfa: ++ in=color.jpg alpha_from=opacity.jpg out=hojas.png — funde el mapa de
+## opacidad en el canal alfa y guarda PNG (un JPG no tiene alfa). Así un atlas de hojas
+## de ambientCG queda listo para recortarse con `alpha_scissor` en un material normal.
 
 var _in: String = ""
 var _out: String = ""
+var _alpha_from: String = ""
 var _dir_in: String = ""
 var _dir_out: String = ""
 var _size: int = 512
@@ -28,6 +32,8 @@ func _initialize() -> void:
 				_in = parts[1]
 			"out":
 				_out = parts[1]
+			"alpha_from":
+				_alpha_from = parts[1]
 			"dir_in":
 				_dir_in = parts[1]
 			"dir_out":
@@ -76,7 +82,19 @@ func _shrink(from: String, to: String) -> bool:
 		return false
 	var before: Vector2i = image.get_size()
 	image.resize(_size, _size, Image.INTERPOLATE_LANCZOS)
-	var err: int = image.save_jpg(to, _quality)
+	if not _alpha_from.is_empty():
+		var mask: Image = Image.load_from_file(_alpha_from)
+		if mask == null:
+			print("SHRINK error=no_se_pudo_leer alpha_from=", _alpha_from)
+			return false
+		mask.resize(_size, _size, Image.INTERPOLATE_LANCZOS)
+		image.convert(Image.FORMAT_RGBA8)
+		for y: int in _size:
+			for x: int in _size:
+				var c: Color = image.get_pixel(x, y)
+				c.a = mask.get_pixel(x, y).get_luminance()
+				image.set_pixel(x, y, c)
+	var err: int = image.save_png(to) if to.to_lower().ends_with(".png") else image.save_jpg(to, _quality)
 	if err != OK:
 		print("SHRINK error=no_se_pudo_escribir out=%s codigo=%d" % [to, err])
 		return false

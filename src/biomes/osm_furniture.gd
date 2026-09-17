@@ -57,6 +57,7 @@ func build() -> void:
 	_build_sidewalk_trees()
 	_build_rural()
 	_b.flush(self, COLOURS)
+	MeshBatcher.update_canopy()
 
 
 func batch_count(kind: String) -> int:
@@ -174,14 +175,13 @@ func _build_rural() -> void:
 		var p: Vector3 = _pt(pop)
 		if _on_road(p, 1.0):
 			continue
-		_b.add("poplar_trunk", "cyl", Transform3D(Basis.from_scale(Vector3(0.35, 9.0, 0.35)), p + Vector3.UP * 4.5))
-		_b.add("poplar", "cyl", Transform3D(Basis.from_scale(Vector3(2.2, 9.0, 2.2)), p + Vector3.UP * 8.0))
-		_b.add("poplar", "sph", Transform3D(Basis.from_scale(Vector3(1.6, 2.4, 1.6)), p + Vector3.UP * 13.0))
+		# álamo: columna de mechones de hojas de 10 m sobre un tronco con corteza (D76)
+		_b.tree(p, 4.0, 1.5, 6, 1, "poplar_trunk", "poplar", 0.35, 10.0)
 	for o: Vector3 in data.orchards:
 		if _on_road(o, 1.0):
 			continue
-		_b.add("trunk", "cyl", Transform3D(Basis.from_scale(Vector3(0.22, 1.6, 0.22)), o + Vector3.UP * 0.8))
-		_b.add("orchard", "sph", Transform3D(Basis.from_scale(Vector3(2.6, 2.2, 2.6)), o + Vector3.UP * 2.4))
+		# frutal bajo y redondo, sin helechos al pie: es un huerto trabajado
+		_b.tree(o, 1.4, 1.5, 4, 0, "trunk", "orchard", 0.22)
 
 
 ## Un árbol en medio de una calle lateral es de las cosas que más saltan a la vista.
@@ -201,12 +201,10 @@ func _occupy(d: Dictionary) -> void:
 	_occupied.append(Vector2(float(d.get("s", 0.0)), float(int(d.get("side", 1)))))
 
 
+## Árbol de vereda o de OSM: tronco con corteza y copa de mechones de hojas (D76). Antes
+## eran tres esferas verdes sobre un cilindro café — «Mickey», dijo el dueño.
 func _tree(p: Vector3, trunk_h: float, crown_r: float) -> void:
-	_b.add("trunk", "cyl", Transform3D(Basis.from_scale(Vector3(0.4, trunk_h, 0.4)), p + Vector3.UP * (trunk_h * 0.5)))
-	var top: Vector3 = p + Vector3.UP * (trunk_h + crown_r * 0.8)
-	_b.add("crown", "sph", Transform3D(Basis.from_scale(Vector3.ONE * crown_r * 2.0), top))
-	_b.add("crown_b", "sph", Transform3D(Basis.from_scale(Vector3.ONE * crown_r * 1.4), top + Vector3(crown_r * 0.7, crown_r * 0.35, 0.2)))
-	_b.add("crown", "sph", Transform3D(Basis.from_scale(Vector3.ONE * crown_r * 1.2), top + Vector3(-crown_r * 0.5, crown_r * 0.5, -crown_r * 0.5)))
+	_b.tree(p, trunk_h, crown_r)
 
 
 func _pt(d: Dictionary) -> Vector3:

@@ -34,6 +34,9 @@ const GROUND_TEXTURES: Dictionary = {
 	"terrain_color": "res://assets/textures/ground/terrain_color.jpg",
 	"terrain_soil": "res://assets/textures/ground/terrain_soil.jpg",
 	"terrain_protrusion": "res://assets/textures/ground/terrain_protrusion.jpg",
+	"forest_albedo": "res://assets/textures/ground/forest_color.jpg",
+	"forest_normal": "res://assets/textures/ground/forest_normal.jpg",
+	"forest_rough": "res://assets/textures/ground/forest_rough.jpg",
 }
 ## Los colores que pasan a llevar textura: el color plano del diccionario deja de mandar.
 const TEXTURED: Array[String] = ["ground"]
@@ -59,10 +62,40 @@ const RIBBON_MATERIALS: Dictionary = {
 	"street_dirt": [ROCK_TEXTURES, 2.5, 1.0, 0.0],
 }
 
+## Vegetación con textura (D76): corteza real en los troncos y mechones de hojas
+## recortadas en las copas, en vez de cilindros cafés con esferas verdes encima.
+## kind -> [color, normal, roughness, escala UV]. Los troncos son cilindros escalados a
+## su altura, así que la escala UV en Y es cuántas baldosas de corteza caben a lo alto.
+const BARK_MATERIALS: Dictionary = {
+	"trunk": ["res://assets/textures/tree/bark_color.jpg", "res://assets/textures/tree/bark_normal.jpg", "res://assets/textures/tree/bark_rough.jpg", Vector3(2.0, 3.0, 1.0)],
+	"poplar_trunk": ["res://assets/textures/tree/bark_color.jpg", "res://assets/textures/tree/bark_normal.jpg", "res://assets/textures/tree/bark_rough.jpg", Vector3(2.0, 6.0, 1.0)],
+}
+## kind -> [atlas con alfa, repeticiones por tarjeta, tinte]. El recorte es `alpha_scissor`:
+## sin mezcla de transparencia, así que las tarjetas se ordenan solas en profundidad.
+const LEAF_ATLAS: String = "res://assets/textures/tree/leaf_atlas.png"
+const CUTOUT_MATERIALS: Dictionary = {
+	"crown": [LEAF_ATLAS, 3.0, Color(0.72, 0.86, 0.5)],
+	"crown_b": [LEAF_ATLAS, 3.0, Color(0.6, 0.78, 0.42)],
+	"poplar": [LEAF_ATLAS, 3.0, Color(0.7, 0.84, 0.44)],
+	"orchard": [LEAF_ATLAS, 3.0, Color(0.6, 0.8, 0.46)],
+	"fern": [LEAF_ATLAS, 2.0, Color(0.3, 0.5, 0.24)],
+	"vine": [LEAF_ATLAS, 2.5, Color(0.34, 0.55, 0.26)],
+}
+
 static var _grain: NoiseTexture2D
 static var _blend: NoiseTexture2D
 static var _ground: ShaderMaterial
 static var _ribbons: Dictionary = {}
+static var _pbr: Dictionary = {}
+static var _cutouts: Dictionary = {}
+static var _waters: Dictionary = {}
+## Agua en movimiento (D76): kind -> flow (0 superficie quieta, 1 chorro que cae).
+const WATER_SHADER: Shader = preload("res://assets/shaders/water.gdshader")
+const WATER_MATERIALS: Dictionary = {"fountain_water": 0.0, "fountain_stream": 1.0, "water": 0.0}
+## Máscara de copas: dónde hay sombra de árbol, para que el suelo ponga hojas y musgo.
+static var _canopy_points: PackedVector3Array = PackedVector3Array()
+static var _canopy_radii: PackedFloat32Array = PackedFloat32Array()
+static var _canopy_texture: ImageTexture
 
 var _batches: Dictionary = {}
 var _flushed: Dictionary = {}
@@ -159,6 +192,9 @@ static func unit_mesh(mesh_kind: String, colour: Color, kind: String = "") -> Me
 		"wedge":
 			# Media caja cortada en diagonal: el faldón de un techo, una rampa.
 			mesh = wedge_mesh()
+		"card":
+			# Tres tarjetas cruzadas: un mechón de hojas, un helecho.
+			mesh = card_mesh()
 		_:
 			var box: BoxMesh = BoxMesh.new()
 			box.size = Vector3.ONE
@@ -174,6 +210,12 @@ static func unit_mesh(mesh_kind: String, colour: Color, kind: String = "") -> Me
 static func surface_material(colour: Color, kind: String = "") -> Material:
 	if kind in TEXTURED:
 		return ground_material()
+	if BARK_MATERIALS.has(kind):
+		return bark_material(kind)
+	if CUTOUT_MATERIALS.has(kind):
+		return cutout_material(kind)
+	if WATER_MATERIALS.has(kind):
+		return water_material(kind)
 	var material: StandardMaterial3D = StandardMaterial3D.new()
 	material.albedo_color = colour
 	material.albedo_texture = grain_texture()
@@ -203,6 +245,154 @@ static func ground_material() -> ShaderMaterial:
 		material.set_shader_parameter("blend_noise", blend_texture())
 		_ground = material
 	return _ground
+
+
+## Agua que se mueve: mismo shader para el estanque, el chorro y los canales; cambia `flow`.
+static func water_material(kind: String) -> ShaderMaterial:
+	if not _waters.has(kind):
+		var material: ShaderMaterial = ShaderMaterial.new()
+		material.shader = WATER_SHADER
+		material.set_shader_parameter("noise_map", blend_texture())
+		material.set_shader_parameter("flow", float(WATER_MATERIALS[kind]))
+		_waters[kind] = material
+	return _waters[kind]
+
+
+## Corteza sobre el cilindro del tronco: el CylinderMesh ya trae UV que dan la vuelta, así
+## que basta un StandardMaterial3D con las tres texturas. Uno por tipo, compartido.
+static func bark_material(kind: String) -> StandardMaterial3D:
+	if not _pbr.has(kind):
+		var spec: Array = BARK_MATERIALS[kind]
+		var material: StandardMaterial3D = StandardMaterial3D.new()
+		material.albedo_texture = load(spec[0])
+		material.normal_enabled = true
+		material.normal_texture = load(spec[1])
+		material.roughness_texture = load(spec[2])
+		material.uv1_scale = spec[3]
+		material.vertex_color_use_as_albedo = true
+		_pbr[kind] = material
+	return _pbr[kind]
+
+
+## Hojas recortadas por alfa sobre las tarjetas. Sin culling: una tarjeta se ve por los
+## dos lados. El tinte por tipo separa un huerto de un álamo con el mismo atlas.
+static func cutout_material(kind: String) -> StandardMaterial3D:
+	if not _cutouts.has(kind):
+		var spec: Array = CUTOUT_MATERIALS[kind]
+		var material: StandardMaterial3D = StandardMaterial3D.new()
+		material.albedo_texture = load(spec[0])
+		material.albedo_color = spec[2]
+		material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+		material.alpha_scissor_threshold = 0.45
+		material.cull_mode = BaseMaterial3D.CULL_DISABLED
+		material.uv1_scale = Vector3(spec[1], spec[1], 1.0)
+		material.roughness = 0.85
+		material.vertex_color_use_as_albedo = true
+		_cutouts[kind] = material
+	return _cutouts[kind]
+
+
+## Un árbol (D76): tronco con corteza y una copa de `clumps` mechones de hojas repartidos
+## dentro del elipsoide de la copa, más `ferns` helechos al pie. Determinista por posición,
+## como todo lo demás. Deja la copa anotada en la máscara para el suelo de bosque.
+func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 7, ferns: int = 2, trunk_kind: String = "trunk", crown_kind: String = "crown", trunk_w: float = 0.4, column_h: float = 0.0) -> void:
+	add(trunk_kind, "cyl", Transform3D(Basis.from_scale(Vector3(trunk_w, trunk_h, trunk_w)), p + Vector3.UP * (trunk_h * 0.5)))
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.seed = int(p.x * 73.0 + p.z * 131.0)
+	var top: Vector3 = p + Vector3.UP * (trunk_h + crown_r * 0.7)
+	for k: int in clumps:
+		var off: Vector3 = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-0.5, 0.8), rng.randf_range(-1.0, 1.0)) * (crown_r * 0.7)
+		if column_h > 0.0:
+			# álamo: la copa es una columna, los mechones suben apilados desde media altura
+			off = Vector3(rng.randf_range(-0.4, 0.4), 0.0, rng.randf_range(-0.4, 0.4)) * crown_r + Vector3.UP * (column_h * (float(k) + 0.5) / float(clumps) - crown_r * 0.7 - trunk_h * 0.5)
+		var size: float = crown_r * rng.randf_range(1.3, 1.9)
+		var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU) * Basis(Vector3.RIGHT, rng.randf_range(-0.35, 0.35)) * Basis.from_scale(Vector3(size, size * 0.85, size))
+		add(crown_kind, "card", Transform3D(basis, top + off))
+	for _f: int in ferns:
+		var ang: float = rng.randf() * TAU
+		var foot: Vector3 = p + Vector3(cos(ang), 0.0, sin(ang)) * rng.randf_range(0.8, crown_r * 1.2)
+		var fsize: float = rng.randf_range(0.7, 1.2)
+		add("fern", "card", Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3(fsize, fsize * 0.8, fsize)), foot + Vector3.UP * (fsize * 0.35)))
+	add_canopy(p, crown_r * 1.8)
+
+
+## Tres tarjetas verticales cruzadas de 1x1, centradas, normal hacia arriba (así la luz
+## las trata como follaje y no como paredes). Con `cull_disabled` el orden no importa.
+static func card_mesh() -> ArrayMesh:
+	var st: SurfaceTool = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for q: int in 3:
+		var angle: float = float(q) * PI / 3.0
+		var side: Vector3 = Vector3(cos(angle), 0.0, sin(angle)) * 0.5
+		var lo_a: Vector3 = -side - Vector3.UP * 0.5
+		var lo_b: Vector3 = side - Vector3.UP * 0.5
+		var hi_b: Vector3 = side + Vector3.UP * 0.5
+		var hi_a: Vector3 = -side + Vector3.UP * 0.5
+		for v: Array in [[lo_a, Vector2(0, 1)], [hi_b, Vector2(1, 0)], [lo_b, Vector2(1, 1)], [lo_a, Vector2(0, 1)], [hi_a, Vector2(0, 0)], [hi_b, Vector2(1, 0)]]:
+			st.set_normal(Vector3.UP)
+			st.set_uv(v[1])
+			st.add_vertex(v[0])
+	return st.commit()
+
+
+## Anota una copa en la máscara del suelo. `update_canopy()` la vuelca al shader.
+static func add_canopy(p: Vector3, radius_m: float) -> void:
+	_canopy_points.append(p)
+	_canopy_radii.append(radius_m)
+
+
+## Un mapa nuevo empieza sin copas anotadas. Lo llama el primer constructor del bioma.
+static func reset_canopy() -> void:
+	_canopy_points = PackedVector3Array()
+	_canopy_radii = PackedFloat32Array()
+	_canopy_texture = null
+	ground_material().set_shader_parameter("canopy_size", Vector2.ZERO)
+
+
+## Vuelca las copas anotadas a una imagen de 2 m por píxel y se la pasa al shader del
+## suelo: donde hay sombra de árbol, el suelo pone hojas y musgo (Ground068).
+static func update_canopy() -> ImageTexture:
+	if _canopy_points.is_empty():
+		return null
+	var cell: float = 2.0
+	var lo: Vector3 = _canopy_points[0]
+	var hi: Vector3 = _canopy_points[0]
+	for i: int in _canopy_points.size():
+		var r: float = _canopy_radii[i]
+		lo = lo.min(_canopy_points[i] - Vector3(r, 0.0, r))
+		hi = hi.max(_canopy_points[i] + Vector3(r, 0.0, r))
+	var origin: Vector2 = Vector2(lo.x, lo.z) - Vector2.ONE * cell
+	var size: Vector2 = Vector2(hi.x - lo.x, hi.z - lo.z) + Vector2.ONE * (cell * 2.0)
+	var w: int = clampi(int(ceil(size.x / cell)), 1, 4096)
+	var h: int = clampi(int(ceil(size.y / cell)), 1, 4096)
+	var image: Image = Image.create(w, h, false, Image.FORMAT_R8)
+	for i: int in _canopy_points.size():
+		var p: Vector3 = _canopy_points[i]
+		var r: float = _canopy_radii[i]
+		var cx: int = int((p.x - origin.x) / cell)
+		var cy: int = int((p.z - origin.y) / cell)
+		var reach: int = int(ceil(r / cell))
+		for dy: int in range(-reach, reach + 1):
+			for dx: int in range(-reach, reach + 1):
+				var x: int = cx + dx
+				var y: int = cy + dy
+				if x < 0 or y < 0 or x >= w or y >= h:
+					continue
+				var d: float = Vector2(dx, dy).length() * cell
+				# borde suave: pleno bajo la copa, se apaga hacia el radio
+				var v: float = clampf(1.0 - (d / r) * 0.85, 0.0, 1.0)
+				if v > image.get_pixel(x, y).r:
+					image.set_pixel(x, y, Color(v, v, v, 1.0))
+	_canopy_texture = ImageTexture.create_from_image(image)
+	var material: ShaderMaterial = ground_material()
+	material.set_shader_parameter("canopy_mask", _canopy_texture)
+	material.set_shader_parameter("canopy_origin", origin)
+	material.set_shader_parameter("canopy_size", size)
+	return _canopy_texture
+
+
+static func canopy_texture() -> ImageTexture:
+	return _canopy_texture
 
 
 ## Material de una cinta: con textura si el color está en RIBBON_MATERIALS, si no el

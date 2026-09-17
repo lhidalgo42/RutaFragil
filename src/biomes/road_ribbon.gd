@@ -38,7 +38,9 @@ static func lefts(points: PackedVector3Array, closed: bool = false) -> PackedVec
 		bisector = bisector.normalized()
 		var left: Vector3 = Vector3.UP.cross(bisector)
 		# 1/cos(θ/2): sin esto la cinta se angosta justo en la curva y aparece el diente.
-		var cos_half: float = maxf(0.35, before.dot(bisector))
+		# Tope en 0,7 (1,43 veces el ancho): con 0,35 una esquina muy cerrada disparaba el
+		# vértice a casi tres anchos y la vereda se abría en un triángulo gigante (D76).
+		var cos_half: float = maxf(0.7, before.dot(bisector))
 		out.append(left / cos_half)
 	return out
 

@@ -42,6 +42,17 @@ uniform sampler2D terrain_soil : hint_default_white, filter_linear_mipmap, repea
 uniform sampler2D terrain_protrusion : hint_default_black, filter_linear_mipmap, repeat_enable;
 uniform sampler2D blend_noise : hint_default_white, filter_linear_mipmap, repeat_enable;
 
+group_uniforms bosque;
+// Suelo de bosque (Ground068) bajo las copas (D76). `canopy_mask` la arma MeshBatcher al
+// colocar los árboles: 2 m por píxel, 1 bajo la copa, 0 fuera. Sin máscara no hay bosque.
+uniform sampler2D forest_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D forest_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D forest_rough : hint_default_white, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D canopy_mask : hint_default_black, filter_linear, repeat_disable;
+uniform vec2 canopy_origin = vec2(0.0, 0.0);
+uniform vec2 canopy_size = vec2(0.0, 0.0);
+uniform float forest_tile_m = 2.6;
+
 group_uniforms escalas;
 // Metros que mide una baldosa de pasto y una de piedra.
 uniform float tile_m = 3.0;
@@ -93,6 +104,20 @@ void fragment() {
 	vec3 albedo = mix(texture(base_albedo, uv).rgb, texture(rock_albedo, uv_rock).rgb, bare);
 	float rough = mix(texture(base_rough, uv).r, texture(rock_rough, uv_rock).r, bare);
 	vec3 normal = mix(texture(base_normal, uv).rgb, texture(rock_normal, uv_rock).rgb, bare);
+
+	// Bajo las copas, suelo de bosque: hojas y musgo donde la máscara dice que hay árbol.
+	float canopy = 0.0;
+	if (canopy_size.x > 0.5 && canopy_size.y > 0.5) {
+		vec2 cuv = (v_world.xz - canopy_origin) / canopy_size;
+		if (cuv.x >= 0.0 && cuv.x <= 1.0 && cuv.y >= 0.0 && cuv.y <= 1.0) {
+			canopy = texture(canopy_mask, cuv).r;
+		}
+	}
+	canopy = smoothstep(0.05, 0.6, canopy + (noise - 0.5) * 0.25);
+	vec2 uv_forest = v_world.xz / max(forest_tile_m, 0.01);
+	albedo = mix(albedo, texture(forest_albedo, uv_forest).rgb, canopy);
+	rough = mix(rough, texture(forest_rough, uv_forest).r, canopy);
+	normal = mix(normal, texture(forest_normal, uv_forest).rgb, canopy);
 
 	// La nieve va encima de todo, con su propio umbral.
 	float snow = clamp((noise - (1.0 - over_amount)) * blend_sharpness + 0.5, 0.0, 1.0);

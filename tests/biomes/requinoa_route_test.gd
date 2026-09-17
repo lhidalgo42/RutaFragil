@@ -136,6 +136,12 @@ func test_road_opens_the_cutting_and_keeps_the_crossing_solid() -> void:
 	assert_object(road.get_node_or_null("Deck")).is_null()
 	assert_int(road.batch_count("parapet")).is_greater_equal(4)
 	assert_int(road.batch_count("island")).is_equal(1)
+	# D76: la bencinera la arma OsmRoad en un lote junto a la ruta, retirada del cordón
+	assert_int(road.batch_count("canopy")).is_greater_equal(1)
+	assert_int(road.batch_count("pump")).is_greater_equal(4)
+	for p: Vector3 in road.positions_of("pump"):
+		var pr: Vector2 = data.project(p)
+		assert_float(absf(pr.y)).override_failure_message("un surtidor cayó sobre la calzada en %s" % p).is_greater(data.curb_at(pr.x) + 3.0)
 
 
 func test_route_spawns_at_entry_and_reaches_first_waypoints() -> void:
@@ -145,7 +151,9 @@ func test_route_spawns_at_entry_and_reaches_first_waypoints() -> void:
 	assert_bool(scene is RouteGreybox).is_true()
 	var segment_node: Node = scene.get_node_or_null("Segments/B0Requinoa")
 	assert_bool(segment_node is BiomeSegment).is_true()
-	for piece: String in ["Road", "Gravel", "Buildings", "Furniture", "Town", "Backdrop", "Circuit", "CityStation"]:
+	# D76: la escena CityStation de la ronda 1 salió del pueblo; la bencinera la arma OsmRoad
+	# en un lote junto a la ruta (_build_station_lot), así que ya no es un nodo aparte.
+	for piece: String in ["Road", "Gravel", "Buildings", "Furniture", "Town", "Backdrop", "Circuit"]:
 		assert_object(scene.get_node_or_null("Segments/B0Requinoa/" + piece)).override_failure_message("missing " + piece).is_not_null()
 	var bus_node: Node = scene.get_node_or_null("PlaceholderBus")
 	var driver_node: Node = scene.get_node_or_null("DemoDriver")
