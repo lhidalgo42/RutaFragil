@@ -326,6 +326,60 @@ func axis_centre() -> Vector2:
 	return sum / maxf(1.0, float(axis.size()))
 
 
+## El tramo HABITADO de una calle (D79): los puntos entre la primera y la última muestra
+## que tiene casa a `radius_m`, con 25 m de gracia a cada lado. Una calle con casas en su
+## primer tercio ya no sigue 400 m hasta morir en un potrero. Las salidas van enteras.
+## Devuelve pares [x, z] como los de OSM, para que los tres consumidores no cambien.
+func inhabited_span(street: Dictionary, radius_m: float = 45.0) -> Array:
+	var raw: Array = street.get("pts", []) as Array
+	if raw.size() < 2 or is_exit_street(street):
+		return raw
+	_ensure_building_grid()
+	var pts: Array[Vector2] = []
+	for pair: Variant in raw:
+		var arr: Array = pair
+		if arr.size() >= 2:
+			pts.append(Vector2(float(arr[0]), float(arr[1])))
+	if pts.size() < 2:
+		return []
+	var cum: Array[float] = [0.0]
+	for i: int in range(1, pts.size()):
+		cum.append(cum[i - 1] + pts[i - 1].distance_to(pts[i]))
+	var total: float = cum[cum.size() - 1]
+	var first: float = -1.0
+	var last: float = -1.0
+	var s: float = 0.0
+	while s <= total:
+		if _building_near(_point_at(pts, cum, s), radius_m):
+			if first < 0.0:
+				first = s
+			last = s
+		s += 20.0
+	if first < 0.0:
+		return []
+	first = maxf(0.0, first - 25.0)
+	last = minf(total, last + 25.0)
+	if last - first < 30.0:
+		return []
+	var out: Array = []
+	var a: Vector2 = _point_at(pts, cum, first)
+	out.append([a.x, a.y])
+	for i: int in pts.size():
+		if cum[i] > first and cum[i] < last:
+			out.append([pts[i].x, pts[i].y])
+	var b: Vector2 = _point_at(pts, cum, last)
+	out.append([b.x, b.y])
+	return out
+
+
+static func _point_at(pts: Array[Vector2], cum: Array[float], s: float) -> Vector2:
+	for i: int in range(1, pts.size()):
+		if s <= cum[i]:
+			var seg: float = maxf(cum[i] - cum[i - 1], 0.001)
+			return pts[i - 1].lerp(pts[i], (s - cum[i - 1]) / seg)
+	return pts[pts.size() - 1]
+
+
 func in_gap(side: int, s: float) -> bool:
 	for gap: Dictionary in curb_gaps:
 		if int(gap.get("side", 0)) == side and s >= float(gap.get("s0", 0.0)) and s <= float(gap.get("s1", 0.0)):

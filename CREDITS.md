@@ -47,6 +47,16 @@
     (nota de D36). Viven en `assets/textures/{ground,road,tree}/` y los usan
     `assets/shaders/ground.gdshader` (D73, D74) y `assets/shaders/ribbon.gdshader` (D74).
 
+- **Poly Haven** — licencia **CC0 1.0** (dominio público). https://polyhaven.com — de cada
+  asset se usa solo el mapa de color y el de alfa, recortados a una tarjeta de 512 px con
+  `src/tooling/shrink_texture.gd ++ crop=` (D79). Descargados el 2026-09-17 en 1K.
+  - `grass_medium_01` — https://polyhaven.com/a/grass_medium_01 (mata de pasto de la franja
+    y del campo, `assets/textures/grass/grass_card.png`)
+  - `fern_02` — https://polyhaven.com/a/fern_02 (helecho al pie de los árboles,
+    `assets/textures/tree/fern_card.png`)
+  - `tree_small_02` — https://polyhaven.com/a/tree_small_02 (hojas, `assets/textures/tree/leaf_card.png`,
+    de reserva: la copa sigue usando la mata estampada de LeafSet010)
+
 ## Modelos generativos
 
 *(Sección vacía — se llenará según §10.2 del maestro.)*

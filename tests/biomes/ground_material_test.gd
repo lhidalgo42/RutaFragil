@@ -108,10 +108,11 @@ func test_trees_get_bark_and_cutout_leaves() -> void:
 			assert_int(leaf_material.transparency).override_failure_message(kind + " no recorta por alfa").is_equal(BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR)
 			assert_bool(leaf_material.albedo_texture is Texture2D).is_true()
 			assert_int(leaf_material.cull_mode).is_equal(BaseMaterial3D.CULL_DISABLED)
-	# la tarjeta: tres quads cruzados = 18 vértices, todos con la normal hacia arriba
+	# la tarjeta: tres quads cruzados + dos tapas casi horizontales = 30 vértices (D79),
+	# todos con la normal hacia arriba
 	var card: ArrayMesh = MeshBatcher.card_mesh()
 	var arrays: Array = card.surface_get_arrays(0)
-	assert_int((arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()).is_equal(18)
+	assert_int((arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()).is_equal(30)
 	for n: Vector3 in (arrays[Mesh.ARRAY_NORMAL] as PackedVector3Array):
 		assert_float(n.y).is_greater(0.99)
 

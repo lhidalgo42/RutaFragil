@@ -9,15 +9,20 @@ extends MultiMeshInstance3D
 const SHADER: Shader = preload("res://assets/shaders/grass_tuft.gdshader")
 ## Cada tarjeta es una MATA pintada (D78), no una hoja: 0,9 m de ancho por 0,7 de alto,
 ## con la textura `grass_clump.png` recortada por alfa. Antes eran hojas-triángulo de 34 cm.
-const TUFT_W: float = 0.9
-const TUFT_H: float = 0.7
-const GRASS_TEXTURE: Texture2D = preload("res://assets/textures/grass/grass_clump.png")
+const TUFT_W: float = 0.75
+const TUFT_H: float = 0.6
+## Mata de pasto FOTOGRAFIADA (D79): recorte de `grass_medium_01` de Poly Haven (CC0), la
+## mata real del escaneo. La pintada (`grass_clump.png`) queda de reserva.
+const GRASS_TEXTURE: Texture2D = preload("res://assets/textures/grass/grass_card.png")
 ## Tres tarjetas cruzadas: desde cualquier ángulo se ve una mata llena, no una lámina.
 const BLADES: int = 3
 
 @export var follow: Node3D
 @export var base_colour: Color = Color(0.22, 0.42, 0.18)
 @export var tip_colour: Color = Color(0.55, 0.75, 0.3)
+## Escala de la mata (D79): el pasto de campo va con matas grandes y ralas, la franja con
+## matas normales y tupidas.
+@export var tuft_scale: float = 1.0
 
 var _material: ShaderMaterial
 ## Tuft origins from the last build (readable in headless tests, unlike the MultiMesh buffer).
@@ -61,7 +66,7 @@ func build_along(points: PackedVector3Array, half_width: float, per_m2: float, s
 			var along: float = rng.randf() * length
 			var across: float = rng.randf_range(-half_width, half_width)
 			var pos: Vector3 = a + tangent * along + normal * across
-			var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(rng.randf_range(0.75, 1.25), rng.randf_range(0.6, 1.5), rng.randf_range(0.75, 1.25)))
+			var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(rng.randf_range(0.75, 1.25), rng.randf_range(0.6, 1.5), rng.randf_range(0.75, 1.25)) * tuft_scale)
 			if skip.is_valid() and skip.call(pos):
 				continue
 			transforms.append(Transform3D(basis, pos))

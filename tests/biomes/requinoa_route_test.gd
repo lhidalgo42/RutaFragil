@@ -111,10 +111,22 @@ func test_town_builder_draws_rail_plaza_and_vines() -> void:
 	town.data_path = DATA
 	add_child(town)
 	assert_object(town.data).is_not_null()
-	assert_int(town.batch_count("rail")).is_greater(50)
-	assert_int(town.batch_count("sleeper")).is_greater(100)
+	# D79: dos vías RECTAS de punta a punta (N–S y E–O por la estación), de bioma a bioma.
+	# Cada vía son dos rieles enteros → 4, más los del cruce a nivel. Antes eran cientos de
+	# tramos siguiendo la curva de OSM; si vuelven, esto falla.
+	assert_int(town.batch_count("rail")).is_between(4, 12)
+	assert_int(town.batch_count("sleeper")).is_greater(1000)
+	var rail_origins: PackedVector3Array = town.positions_of("rail")
+	var station: Vector3 = Vector3(float(town.data.rail_station.get("x", 0.0)), 0.0, float(town.data.rail_station.get("z", 0.0)))
+	var long_ns: int = 0
+	for o: Vector3 in rail_origins:
+		# los rieles de vía están centrados en la estación (between() centra la caja)
+		if o.distance_to(Vector3(station.x, o.y, station.z)) < 2.0:
+			long_ns += 1
+	assert_int(long_ns).override_failure_message("las vías no pasan por la estación en línea recta").is_greater_equal(4)
 	assert_int(town.batch_count("platform")).is_greater_equal(2)
-	assert_int(town.batch_count("paving")).is_greater_equal(1)
+	# D79: el pavimento de la plaza es una losa con la forma del polígono, no una caja
+	assert_object(town.get_node_or_null("Slab_paving")).override_failure_message("falta la losa de la plaza").is_not_null()
 	assert_int(town.batch_count("vine")).is_greater(50)
 	assert_int(town.batch_count("motorway")).is_greater_equal(4)
 	assert_int(town.batch_count("barrier_red")).is_greater_equal(2)

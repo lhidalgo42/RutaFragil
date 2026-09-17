@@ -66,6 +66,7 @@ func build(data: OsmMapData) -> void:
 	_cells.fill(0)
 	_stamp_route(data)
 	_stamp_streets(data)
+	_stamp_exits(data)
 	_stamp_plaza(data)
 	_stamp_roundabout(data)
 
@@ -143,7 +144,7 @@ func _stamp_streets(data: OsmMapData) -> void:
 		# las calles de campo sin casas no se dibujan (D78): tampoco cuentan como pavimento
 		if not (data.street_is_inhabited(street) or data.is_exit_street(street)):
 			continue
-		var raw: Array = street.get("pts", []) as Array
+		var raw: Array = data.inhabited_span(street)
 		var half: float = float(street.get("w", 6.0)) * 0.5 + 1.0
 		for i: int in maxi(0, raw.size() - 1):
 			var pa: Array = raw[i]
@@ -167,6 +168,41 @@ func _stamp_streets(data: OsmMapData) -> void:
 					_mark(pos - left * lat, CALZADA)
 					lat += 1.0
 				t += 1.0
+
+
+## Las cuatro salidas se prolongan 700 m rectas (BiomeHints, D78): también son calzada, si
+## no el pasto les crece encima (D79). Mismo largo que `BiomeHints.road_extension_m`.
+const EXIT_EXTENSION_M: float = 700.0
+
+
+func _stamp_exits(data: OsmMapData) -> void:
+	var centre2: Vector2 = data.axis_centre()
+	var centre: Vector3 = Vector3(centre2.x, 0.0, centre2.y)
+	for street: Dictionary in data.exit_streets():
+		var raw: Array = street.get("pts", []) as Array
+		var far: Vector3 = centre
+		var best: float = -1.0
+		for pair: Variant in raw:
+			var arr: Array = pair
+			if arr.size() < 2:
+				continue
+			var p: Vector3 = Vector3(float(arr[0]), 0.0, float(arr[1]))
+			if p.distance_to(centre) > best:
+				best = p.distance_to(centre)
+				far = p
+		var q: int = OsmMapData.exit_quadrant(Vector2(far.x - centre.x, far.z - centre.z))
+		var dir: Vector3 = [Vector3(1, 0, 0), Vector3(0, 0, -1), Vector3(-1, 0, 0), Vector3(0, 0, 1)][q]
+		var left: Vector3 = Vector3.UP.cross(dir)
+		var half: float = float(street.get("w", 6.0)) * 0.5 + 1.0
+		var t: float = 0.0
+		while t < EXIT_EXTENSION_M:
+			var pos: Vector3 = far + dir * t
+			var lat: float = 0.0
+			while lat <= half:
+				_mark(pos + left * lat, CALZADA)
+				_mark(pos - left * lat, CALZADA)
+				lat += 1.0
+			t += 1.0
 
 
 func _stamp_plaza(data: OsmMapData) -> void:

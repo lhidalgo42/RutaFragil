@@ -200,7 +200,8 @@ func _lot(lot: Dictionary) -> void:
 	var yaw: float = float(lot.get("yaw", 0.0))
 	var rot: Basis = Basis(Vector3.UP, yaw)
 	var center: Vector3 = Vector3(float(lot.get("x", 0.0)), 0.0, float(lot.get("z", 0.0)))
-	_b.box("dirt", Transform3D(rot * Basis.from_scale(Vector3(w, 0.02, d)), center + Vector3.UP * 0.01))
+	# Sin la plancha de tierra (D79): el eriazo es pasto seco y basura sobre el mismo suelo;
+	# la caja café se leía como un parche de otro color puesto encima del campo.
 	var grass: GrassStrip = GrassStrip.new()
 	grass.name = "Lot%d" % (lot_count() + 1)
 	grass.base_colour = Color(0.55, 0.48, 0.25)

@@ -35,9 +35,15 @@ const SIGN_BEFORE_M: float = 35.0
 ## todas las matas caían sobre la calzada y la máscara las botaba todas.
 @export var verge_half_width_m: float = 11.0
 ## Matas de 0,9 m (D78): la mitad de las hojas-triángulo de antes cubren más suelo.
-@export var verge_per_m2: float = 0.55
+@export var verge_per_m2: float = 1.4
 ## Puntos del eje por tramo de pasto (~300 m): el trozo que la cámara descarta o dibuja.
 const VERGE_CHUNK: int = 30
+## Pasto por TODO el campo (D79), no solo la franja: matas grandes y ralas en tramos de
+## 300 m sobre el rectángulo del pueblo, saltando pavimento. «Más tupido a lo largo de
+## todo el mapa», dijo el dueño; es lo que quita la sensación de losa verde lisa.
+@export var field_per_m2: float = 0.05
+@export var field_margin_m: float = 250.0
+const FIELD_CHUNK_M: float = 300.0
 ## Suelo con textura (D73): cuánto del segundo juego de texturas —la nieve— se ve
 ## mezclado con el pasto, y cuántos metros mide una baldosa. 0.0 deja el suelo solo de
 ## pasto; 1.0 lo deja nevado entero. Va en 0 por defecto y lo sube **la escena** que lo
@@ -56,6 +62,9 @@ var _built_dir: PackedVector3Array = PackedVector3Array()
 var _built_index: PackedInt32Array = PackedInt32Array()
 ## Bocacalles derivadas de las calles del pueblo: (s0, s1, lado). Ver _collect_street_gaps.
 var _street_gaps: Array[Vector3] = []
+## La misma máscara que consultan pasto y árboles: aquí dice dónde una vereda o un cordón
+## caería sobre OTRA calzada (la otra pasada del lazo, una calle del pueblo) y se omite.
+var _mask: RoadMask
 
 
 func _ready() -> void:
@@ -71,6 +80,7 @@ func build() -> void:
 	_rng.seed = seed
 	# Un mapa nuevo empieza sin copas anotadas; Furniture y Town las vuelven a anotar (D76).
 	MeshBatcher.reset_canopy()
+	_mask = RoadMask.shared(data, data_path)
 	MeshBatcher.set_ground_over_amount(ground_snow)
 	MeshBatcher.set_ground_tile_m(ground_tile_m)
 	_build_ground()
@@ -216,7 +226,7 @@ func _collect_street_gaps() -> void:
 		# una calle podada (sin casas) no abre bocacalle en el cordón (D78)
 		if not (data.street_is_inhabited(street) or data.is_exit_street(street)):
 			continue
-		var raw: Array = street.get("pts", []) as Array
+		var raw: Array = data.inhabited_span(street)
 		if raw.size() < 2:
 			continue
 		var half: float = float(street.get("w", 6.0)) * 0.5 + 1.5
@@ -287,7 +297,11 @@ func _gapped_band(kind: String, points: PackedVector3Array, lefts: PackedVector3
 	var sub: PackedVector3Array = PackedVector3Array()
 	var sub_lefts: PackedVector3Array = PackedVector3Array()
 	for i: int in points.size():
-		if _in_gap(int(side), s_list[i]):
+		# Bocacalle registrada, o el borde exterior de la banda cae sobre OTRA calzada (la otra
+		# pasada del lazo en una T, una calle del pueblo): en la foto la vereda de una pasada
+		# cruzaba por delante de la otra como un puente (D79).
+		var outer: Vector3 = points[i] + lefts[i] * (side * lat_out)
+		if _in_gap(int(side), s_list[i]) or (_mask != null and _mask.is_roadway(outer, 0.0)):
 			_emit_band(kind, sub, sub_lefts, side, lat_in, lat_out, with_wall)
 			sub = PackedVector3Array()
 			sub_lefts = PackedVector3Array()
@@ -573,6 +587,69 @@ func _build_fuel_station(centre: Vector3, rot: Basis, dir: Vector3, left: Vector
 func _build_grass() -> void:
 	_build_median_grass()
 	_build_verge_grass()
+	_build_field_grass()
+
+
+## Pasto de campo (D79): el rectángulo del pueblo más `field_margin_m`, en tramos de
+## FIELD_CHUNK_M para que la cámara descarte los que no mira, con matas grandes y ralas.
+func _build_field_grass() -> void:
+	if field_per_m2 <= 0.0 or data.axis.size() < 2:
+		return
+	var mask: RoadMask = RoadMask.shared(data, data_path)
+	var lo: Vector3 = data.axis[0]
+	var hi: Vector3 = data.axis[0]
+	for p: Vector3 in data.axis:
+		lo = lo.min(p)
+		hi = hi.max(p)
+	# El campo se desvanece hacia afuera (D79): la densidad baja con la distancia al borde
+	# del pueblo hasta llegar a cero en `field_margin_m`. Con densidad uniforme el pasto
+	# terminaba en una raya recta a 250 m, una costura tan visible como la losa de antes.
+	var fade_from: Vector3 = lo
+	var fade_to: Vector3 = hi
+	lo -= Vector3(field_margin_m, 0.0, field_margin_m)
+	hi += Vector3(field_margin_m, 0.0, field_margin_m)
+	var fade_skip: Callable = func(p: Vector3) -> bool:
+		if mask.is_paved(p, 0.5):
+			return true
+		var dx: float = maxf(fade_from.x - p.x, p.x - fade_to.x)
+		var dz: float = maxf(fade_from.z - p.z, p.z - fade_to.z)
+		var outside: float = maxf(0.0, maxf(dx, dz)) / field_margin_m
+		# afuera del pueblo se conserva (1 - outside)^2 de las matas; el hash es determinista
+		return MeshBatcher._hash01(p, 3.0) > (1.0 - outside) * (1.0 - outside)
+	var root_node: Node3D = Node3D.new()
+	root_node.name = "Field"
+	add_child(root_node)
+	var x: float = lo.x
+	var k: int = 0
+	while x < hi.x:
+		var z: float = lo.z
+		while z < hi.z:
+			var strip: GrassStrip = GrassStrip.new()
+			strip.name = "Field%03d" % k
+			strip.base_colour = Color(0.24, 0.36, 0.16)
+			strip.tip_colour = Color(0.58, 0.68, 0.3)
+			strip.tuft_scale = 1.5
+			root_node.add_child(strip)
+			# una línea por el centro del tramo con medio ancho = medio tramo cubre el cuadrado
+			var line: PackedVector3Array = PackedVector3Array([Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z), Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z + FIELD_CHUNK_M)])
+			strip.build_along(line, FIELD_CHUNK_M * 0.5, field_per_m2, seed + 1000 + k, fade_skip)
+			k += 1
+			z += FIELD_CHUNK_M
+		x += FIELD_CHUNK_M
+
+
+## Matas de pasto de campo, sumando todos los tramos.
+func field_tuft_count() -> int:
+	var total: int = 0
+	var root_node: Node = get_node_or_null("Field")
+	if root_node == null:
+		return 0
+	for child: Node in root_node.get_children():
+		if child is GrassStrip:
+			var strip: GrassStrip = child
+			if strip.multimesh != null:
+				total += strip.multimesh.instance_count
+	return total
 
 
 func _build_median_grass() -> void:

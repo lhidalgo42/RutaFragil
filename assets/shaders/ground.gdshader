@@ -64,16 +64,18 @@ uniform float macro_m = 900.0;
 uniform float patch_m = 420.0;
 
 group_uniforms mezcla;
-// Cuánta piedra asoma por el mapa de tierra del terreno.
-uniform float soil_amount : hint_range(0.0, 1.0) = 0.45;
+// Cuánta piedra asoma por el mapa de tierra del terreno. En 0 por defecto (D79): sobre
+// un valle agrícola plano, la roca siguiendo las quebradas del escaneo se leía como vetas
+// grises sin sentido. Queda como dial para un bioma que sí tenga roca.
+uniform float soil_amount : hint_range(0.0, 1.0) = 0.0;
 // Cuánta piedra asoma donde el terreno sobresale.
-uniform float rock_amount : hint_range(0.0, 1.0) = 0.55;
+uniform float rock_amount : hint_range(0.0, 1.0) = 0.0;
 // Cuánta nieve: 0 = nada, 1 = todo nevado.
 uniform float over_amount : hint_range(0.0, 1.0) = 0.0;
 // Qué tan cortado es el borde de la nieve.
 uniform float blend_sharpness : hint_range(1.0, 24.0) = 7.0;
 // Cuánto manda el color del terreno sobre el resultado.
-uniform float macro_strength : hint_range(0.0, 1.0) = 0.3;
+uniform float macro_strength : hint_range(0.0, 1.0) = 0.18;
 uniform vec3 tint : source_color = vec3(1.0, 1.0, 1.0);
 
 // Promedio de luz medido en terrain_color al reducirla (src/tooling/shrink_texture.gd).

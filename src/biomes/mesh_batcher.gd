@@ -86,7 +86,7 @@ const CUTOUT_MATERIALS: Dictionary = {
 	"crown_b": [LEAF_CLUMP, 1.0, Color(0.55, 0.7, 0.4)],
 	"poplar": [LEAF_CLUMP, 1.0, Color(0.66, 0.78, 0.42)],
 	"orchard": [LEAF_CLUMP, 1.0, Color(0.56, 0.72, 0.42)],
-	"fern": [LEAF_CLUMP, 1.0, Color(0.3, 0.48, 0.24)],
+	"fern": ["res://assets/textures/tree/fern_card.png", 1.0, Color(0.85, 0.95, 0.8)],
 	"vine": [LEAF_CLUMP, 1.0, Color(0.36, 0.56, 0.28)],
 }
 
@@ -349,8 +349,12 @@ func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 14, ferns: i
 		var ang: float = rng.randf() * TAU
 		var foot: Vector3 = p + Vector3(cos(ang), 0.0, sin(ang)) * rng.randf_range(0.8, crown_r * 1.2)
 		var fsize: float = rng.randf_range(0.7, 1.2)
-		add("fern", "card", Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3(fsize, fsize * 0.8, fsize)), foot + Vector3.UP * (fsize * 0.35)))
-	add_canopy(p, crown_r * 1.8)
+		# la fronda de Poly Haven viene apretada a lo ancho: la tarjeta va alta y angosta
+		add("fern", "card", Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3(fsize * 0.7, fsize * 1.1, fsize * 0.7)), foot + Vector3.UP * (fsize * 0.5)))
+	# Solo los árboles de verdad dejan sombra de bosque en el suelo (D79): bajo los 1100
+	# frutales de 1,4 m los parches oscuros se leían como manchas sin sentido por el campo.
+	if trunk_h >= 2.0:
+		add_canopy(p, crown_r * 1.8)
 
 
 ## Tres tarjetas verticales cruzadas de 1x1, centradas, normal hacia arriba (así la luz
@@ -366,6 +370,21 @@ static func card_mesh() -> ArrayMesh:
 		var hi_b: Vector3 = side + Vector3.UP * 0.5
 		var hi_a: Vector3 = -side + Vector3.UP * 0.5
 		for v: Array in [[lo_a, Vector2(0, 1)], [hi_b, Vector2(1, 0)], [lo_b, Vector2(1, 1)], [lo_a, Vector2(0, 1)], [hi_a, Vector2(0, 0)], [hi_b, Vector2(1, 0)]]:
+			st.set_normal(Vector3.UP)
+			st.set_uv(v[1])
+			st.add_vertex(v[0])
+	# Dos TAPAS casi horizontales, inclinadas ±22° (D79). El dueño mira el mapa desde arriba
+	# volando, y desde arriba tres tarjetas verticales son tres láminas en estrella: «planchas
+	# de hojas». Con las tapas la mata se cierra por arriba y la copa se ve llena.
+	for cap: int in 2:
+		var tilt: float = deg_to_rad(22.0) * (1.0 if cap == 0 else -1.0)
+		var yaw: float = float(cap) * PI * 0.5
+		var basis: Basis = Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, tilt)
+		var c_a: Vector3 = basis * Vector3(-0.5, 0.0, -0.5)
+		var c_b: Vector3 = basis * Vector3(0.5, 0.0, -0.5)
+		var c_c: Vector3 = basis * Vector3(0.5, 0.0, 0.5)
+		var c_d: Vector3 = basis * Vector3(-0.5, 0.0, 0.5)
+		for v: Array in [[c_a, Vector2(0, 0)], [c_c, Vector2(1, 1)], [c_b, Vector2(1, 0)], [c_a, Vector2(0, 0)], [c_d, Vector2(0, 1)], [c_c, Vector2(1, 1)]]:
 			st.set_normal(Vector3.UP)
 			st.set_uv(v[1])
 			st.add_vertex(v[0])

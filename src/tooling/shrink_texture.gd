@@ -24,6 +24,11 @@ var _stamp: int = 0
 ## transparente. El pasto del greybox eran triángulos recortados por shader — «el pasto se ve
 ## triangular», dijo el dueño (D78) —; una mata pintada con hojas finas y curvas es pasto.
 var _grass: int = 0
+## `crop=x,y,w,h` recorta esa región de `in` (y de `alpha_from`) antes de reducir: los atlas
+## de Poly Haven son texturas de modelo desplegadas, y la parte útil para una tarjeta es
+## una esquina. `whole=1` hace que `stamp=` estampe la imagen entera en vez de cuadrantes.
+var _crop: Rect2i = Rect2i()
+var _whole: bool = false
 var _dir_in: String = ""
 var _dir_out: String = ""
 var _size: int = 512
@@ -47,6 +52,12 @@ func _initialize() -> void:
 				_stamp = int(parts[1])
 			"grass":
 				_grass = int(parts[1])
+			"crop":
+				var c: PackedStringArray = parts[1].split(",")
+				if c.size() == 4:
+					_crop = Rect2i(int(c[0]), int(c[1]), int(c[2]), int(c[3]))
+			"whole":
+				_whole = parts[1] == "1"
 			"dir_in":
 				_dir_in = parts[1]
 			"dir_out":
@@ -111,7 +122,7 @@ func _stamp_clump() -> bool:
 	var centre: Vector2 = Vector2(_size, _size) * 0.5
 	for _k: int in _stamp:
 		var q: int = rng.randi_range(0, 3)
-		var leaf: Image = atlas.get_region(Rect2i((q % 2) * half, (q / 2) * half, half, half))
+		var leaf: Image = atlas.duplicate() if _whole else atlas.get_region(Rect2i((q % 2) * half, (q / 2) * half, half, half))
 		var scale: float = rng.randf_range(0.28, 0.5)
 		var side: int = maxi(8, int(float(_size) * scale))
 		leaf.resize(side, side, Image.INTERPOLATE_BILINEAR)
@@ -194,12 +205,16 @@ func _shrink(from: String, to: String) -> bool:
 		print("SHRINK error=no_se_pudo_leer in=", from)
 		return false
 	var before: Vector2i = image.get_size()
+	if _crop.size.x > 0 and _crop.size.y > 0:
+		image = image.get_region(_crop)
 	image.resize(_size, _size, Image.INTERPOLATE_LANCZOS)
 	if not _alpha_from.is_empty():
 		var mask: Image = Image.load_from_file(_alpha_from)
 		if mask == null:
 			print("SHRINK error=no_se_pudo_leer alpha_from=", _alpha_from)
 			return false
+		if _crop.size.x > 0 and _crop.size.y > 0:
+			mask = mask.get_region(_crop)
 		mask.resize(_size, _size, Image.INTERPOLATE_LANCZOS)
 		image.convert(Image.FORMAT_RGBA8)
 		for y: int in _size:

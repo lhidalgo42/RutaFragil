@@ -68,6 +68,12 @@ func batch_count(kind: String) -> int:
 	return 0
 
 
+## Orígenes de las instancias de un lote (las pruebas leen esto: bajo el renderizador
+## headless los MultiMesh no devuelven sus transformaciones).
+func positions_of(kind: String) -> PackedVector3Array:
+	return _b.positions(kind)
+
+
 ## The rest of the town's streets (D69 round 7): every drivable OSM way within 520 m of the
 ## route, minus the route itself, so the town reads as connected instead of one loose ribbon.
 ## Mesh only: the ground is flat, so the bus can drive on any of them.
@@ -80,7 +86,8 @@ func _build_streets() -> void:
 		# no pueblo, y no se dibuja — salvo las cuatro salidas, que llevan a los otros biomas.
 		if not (data.street_is_inhabited(street) or data.is_exit_street(street)):
 			continue
-		var pts: PackedVector3Array = _points(street.get("pts", []))
+		# solo el tramo con casas (D79): una calle no sigue hasta morir en un potrero
+		var pts: PackedVector3Array = _points(data.inhabited_span(street))
 		if pts.size() < 2:
 			continue
 		var half: float = float(street.get("w", 6.0)) * 0.5
@@ -98,30 +105,34 @@ func _build_streets() -> void:
 		_r.band("street_dirt" if dirt else "street", pts, lefts, -half, half, 0.02)
 
 
+## Dos vías RECTAS que cruzan el mapa entero (D79): una de norte a sur y otra de este a
+## oeste, las dos por la estación. El dueño lo pidió así: «la línea del tren tiene que ser
+## solo derecha, de un bioma a otro». Ya no se sigue la curva de OSM. Rieles de punta a
+## punta; balasto y durmientes solo fuera de la calzada, así el cruce a nivel se lee con
+## los rieles cruzando el asfalto y no con un lomo de balasto de 30 cm sobre la calle.
 func _build_rail() -> void:
-	var sleepers: int = 0
-	for line: Variant in data.rail_lines:
-		var pts: PackedVector3Array = _points(line)
-		for i: int in maxi(0, pts.size() - 1):
-			var a: Vector3 = pts[i]
-			var b: Vector3 = pts[i + 1]
-			if not (_near_route(a) or _near_route(b)):
-				continue
-			var seg: float = a.distance_to(b)
-			if seg < 0.5:
-				continue
-			var dir: Vector3 = (b - a) / seg
-			var across: Vector3 = Vector3.UP.cross(dir)
-			var mid: Vector3 = (a + b) * 0.5
-			var rot: Basis = Basis.looking_at(dir, Vector3.UP)
-			_b.box("ballast", Transform3D(rot * Basis.from_scale(Vector3(4.2, 0.3, seg)), mid + Vector3.UP * 0.15))
-			for side: float in [-1.0, 1.0]:
-				_b.box("rail", Transform3D(rot * Basis.from_scale(Vector3(0.12, 0.16, seg)), mid + across * (side * RAIL_GAUGE_M * 0.5) + Vector3.UP * 0.38))
-			var t: float = 0.0
-			while t < seg and sleepers < MAX_SLEEPERS:
-				_b.box("sleeper", Transform3D(rot * Basis.from_scale(Vector3(2.6, 0.16, 0.24)), a + dir * t + Vector3.UP * 0.31))
-				sleepers += 1
-				t += SLEEPER_STEP_M
+	var reach: float = 2600.0
+	var station: Vector3 = Vector3(float(data.rail_station.get("x", 0.0)), 0.0, float(data.rail_station.get("z", 0.0)))
+	var mask: RoadMask = RoadMask.shared(data, data_path)
+	for dir: Vector3 in [Vector3(0.0, 0.0, 1.0), Vector3(1.0, 0.0, 0.0)]:
+		var a: Vector3 = station - dir * reach
+		var b: Vector3 = station + dir * reach
+		var across: Vector3 = Vector3.UP.cross(dir)
+		var rot: Basis = Basis.looking_at(dir, Vector3.UP)
+		for side: float in [-1.0, 1.0]:
+			var off: Vector3 = across * (side * RAIL_GAUGE_M * 0.5) + Vector3.UP * 0.38
+			_b.box("rail", MeshBatcher.between(a + off, b + off, 0.12))
+		var t: float = 0.0
+		while t < reach * 2.0:
+			var seg: float = minf(20.0, reach * 2.0 - t)
+			var mid: Vector3 = a + dir * (t + seg * 0.5)
+			if not mask.is_roadway(mid, 1.0):
+				_b.box("ballast", Transform3D(rot * Basis.from_scale(Vector3(4.2, 0.3, seg + 0.2)), mid + Vector3.UP * 0.15))
+				var s2: float = 0.0
+				while s2 < seg:
+					_b.box("sleeper", Transform3D(rot * Basis.from_scale(Vector3(2.6, 0.16, 0.24)), a + dir * (t + s2) + Vector3.UP * 0.31))
+					s2 += 1.0
+			t += seg
 
 
 ## Level crossing: rails across the asphalt, the Saint Andrew's cross and a raised boom each side.
@@ -185,7 +196,9 @@ func _build_plaza() -> void:
 	var centre: Vector3 = (lo + hi) * 0.5
 	var size: Vector3 = hi - lo
 	var reach: float = minf(size.x, size.z) * 0.5
-	_b.box("paving", Transform3D(Basis.from_scale(Vector3(size.x, 0.12, size.z)), centre + Vector3.UP * 0.06))
+	# La losa con la forma REAL del polígono de OSM (D79), no su caja envolvente: con la caja
+	# el pavimento se salía a las calles vecinas como una plancha clara de más.
+	_polygon_slab(poly, "paving", 0.12)
 	# Cuatro canteros de césped chicos y a ras (D77): los de antes eran losas de 27 m
 	# flotando 10 cm, «cuatro losas verdes enormes» en la foto. Cada cantero: borde de
 	# seto bajo por sus cuatro lados, dos árboles grandes y una banca.
@@ -330,14 +343,16 @@ func _build_vines() -> void:
 		var dir: Vector3 = (b - a) / seg
 		var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 		rng.seed = int(a.x * 31.0 + a.z * 17.0)
-		# cada 3,2 m y algo más grandes: a 1,6 m eran 54.000 mechones en un solo lote y la
-		# tarjeta pesaba más que todo el pasto del recorrido
-		var t: float = 1.2
+		# Una parra CONTINUA por hilera (D79): tarjetas de 4 m encadenadas, solapadas medio
+		# metro, giradas con el alambre. Las matas sueltas cada 3 m se veían desde el aire
+		# como una retícula de puntos negros sobre el campo; una hilera cerrada se ve como viña.
+		var t: float = 0.0
+		var yaw: float = OsmMapData.yaw_facing(dir)
 		while t < seg:
-			var size: float = rng.randf_range(1.6, 2.2)
-			var yaw: float = OsmMapData.yaw_facing(dir) + rng.randf_range(-0.3, 0.3)
-			_b.add("vine", "card", Transform3D(Basis(Vector3.UP, yaw) * Basis.from_scale(Vector3(size, size * 0.7, size * 0.5)), a + dir * t + Vector3.UP * (size * 0.5)))
-			t += 3.2
+			var len_k: float = minf(4.0, seg - t)
+			var h: float = rng.randf_range(1.5, 1.9)
+			_b.add("vine", "card", Transform3D(Basis(Vector3.UP, yaw) * Basis.from_scale(Vector3(len_k + 0.5, h, 0.9)), a + dir * (t + len_k * 0.5) + Vector3.UP * (h * 0.5 + 0.15)))
+			t += 3.5
 		for h: float in [0.7, 1.3]:
 			_b.box("vine_wire", MeshBatcher.between(a + Vector3.UP * h, b + Vector3.UP * h, 0.02))
 		var post: float = 0.0
@@ -408,6 +423,45 @@ func _trim_to_route(pts: PackedVector3Array) -> PackedVector3Array:
 				lo = mid
 		out[end] = out[inner].lerp(out[end], lo)
 	return out
+
+
+## Losa plana con la forma de un polígono (D79): se triangula con Geometry2D y sale como
+## MeshInstance3D "Slab_<kind>". Godot toma como frontal la cara horaria y el sentido del
+## polígono de OSM no está garantizado, así que se emite, se mira la normal que calculó
+## el motor y, si mira hacia abajo, se rehace al revés (la lección de D75, aplicada).
+func _polygon_slab(poly: PackedVector3Array, kind: String, top_y: float) -> void:
+	var flat: PackedVector2Array = PackedVector2Array()
+	for p: Vector3 in poly:
+		flat.append(Vector2(p.x, p.z))
+	if flat.size() >= 2 and flat[0].distance_to(flat[flat.size() - 1]) < 0.01:
+		flat.remove_at(flat.size() - 1)
+	var idx: PackedInt32Array = Geometry2D.triangulate_polygon(flat)
+	if idx.is_empty():
+		return
+	var mesh: ArrayMesh = _slab_mesh(flat, idx, top_y, false)
+	var normals: PackedVector3Array = mesh.surface_get_arrays(0)[Mesh.ARRAY_NORMAL]
+	if normals.size() > 0 and normals[0].y < 0.0:
+		mesh = _slab_mesh(flat, idx, top_y, true)
+	mesh.surface_set_material(0, MeshBatcher.surface_material(COLOURS.get(kind, Color.MAGENTA), kind))
+	var inst: MeshInstance3D = MeshInstance3D.new()
+	inst.name = "Slab_" + kind
+	inst.mesh = mesh
+	add_child(inst)
+
+
+func _slab_mesh(flat: PackedVector2Array, idx: PackedInt32Array, top_y: float, flip: bool) -> ArrayMesh:
+	var st: SurfaceTool = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i: int in range(0, idx.size() - 2, 3):
+		# un ternario de dos literales sale como Array sin tipo: se arma explícito
+		var order: Array[int] = [idx[i], idx[i + 1], idx[i + 2]]
+		if flip:
+			order = [idx[i], idx[i + 2], idx[i + 1]]
+		for k: int in order:
+			st.set_uv(flat[k] * 0.1)
+			st.add_vertex(Vector3(flat[k].x, top_y, flat[k].y))
+	st.generate_normals()
+	return st.commit()
 
 
 func _near_route(p: Vector3) -> bool:
