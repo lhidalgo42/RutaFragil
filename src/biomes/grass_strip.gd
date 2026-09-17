@@ -7,10 +7,12 @@ extends MultiMeshInstance3D
 ## can hand it the bus with set_follow().
 
 const SHADER: Shader = preload("res://assets/shaders/grass_tuft.gdshader")
-const TUFT_W: float = 0.34
-const TUFT_H: float = 0.62
-## Tres hojas cruzadas en vez de dos: con dos, de frente se ve UN triángulo suelto y el
-## pasto se lee como recortes de cartón. La tercera llena el hueco desde cualquier ángulo.
+## Cada tarjeta es una MATA pintada (D78), no una hoja: 0,9 m de ancho por 0,7 de alto,
+## con la textura `grass_clump.png` recortada por alfa. Antes eran hojas-triángulo de 34 cm.
+const TUFT_W: float = 0.9
+const TUFT_H: float = 0.7
+const GRASS_TEXTURE: Texture2D = preload("res://assets/textures/grass/grass_clump.png")
+## Tres tarjetas cruzadas: desde cualquier ángulo se ve una mata llena, no una lámina.
 const BLADES: int = 3
 
 @export var follow: Node3D
@@ -88,6 +90,7 @@ func _apply(transforms: Array[Transform3D]) -> void:
 	# pálido, casi blancas (D75).
 	_material.set_shader_parameter("base_colour", base_colour)
 	_material.set_shader_parameter("tip_colour", tip_colour)
+	_material.set_shader_parameter("grass_tex", GRASS_TEXTURE)
 	material_override = _material
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
@@ -100,20 +103,19 @@ func _make_tuft_mesh() -> ArrayMesh:
 	for q: int in BLADES:
 		var angle: float = float(q) * PI / float(BLADES)
 		var side: Vector3 = Vector3(cos(angle), 0.0, sin(angle)) * (TUFT_W * 0.5)
-		# La punta cae hacia un lado y la hoja queda curva: una hoja recta y simétrica
-		# es un triángulo, no pasto.
-		var lean: Vector3 = Vector3(-sin(angle), 0.0, cos(angle)) * (TUFT_H * 0.28)
+		# Tarjeta rectangular: la forma la da la textura, no la geometría (D78).
 		var base: int = verts.size()
 		verts.append(-side)
 		verts.append(side)
-		verts.append(side * 0.45 + Vector3.UP * TUFT_H + lean)
-		verts.append(-side * 0.45 + Vector3.UP * TUFT_H + lean)
+		verts.append(side + Vector3.UP * TUFT_H)
+		verts.append(-side + Vector3.UP * TUFT_H)
 		for _n: int in 4:
 			normals.append(Vector3.UP)
-		uvs.append(Vector2(0.0, 0.0))
-		uvs.append(Vector2(1.0, 0.0))
-		uvs.append(Vector2(1.0, 1.0))
+		# la raíz de la mata está ABAJO de la imagen (v = 1): la base del quad va a v = 1
 		uvs.append(Vector2(0.0, 1.0))
+		uvs.append(Vector2(1.0, 1.0))
+		uvs.append(Vector2(1.0, 0.0))
+		uvs.append(Vector2(0.0, 0.0))
 		indices.append_array(PackedInt32Array([base, base + 1, base + 2, base, base + 2, base + 3]))
 	var arrays: Array = []
 	arrays.resize(Mesh.ARRAY_MAX)

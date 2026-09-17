@@ -173,5 +173,36 @@ func test_route_spawns_at_entry_and_reaches_first_waypoints() -> void:
 	assert_int(_rolled_over_count).is_equal(0)
 
 
+## Poda y salidas (D78): las calles de campo sin casas no se dibujan, quedan cuatro salidas
+## —una por cuadrante— y al final de tres de ellas hay una silueta de bioma (la cordillera
+## del este ya la pone CityBackdrop).
+func test_streets_without_houses_are_pruned_and_four_exits_remain() -> void:
+	var data: OsmMapData = OsmMapData.load_from(DATA)
+	if data == null:
+		return
+	var kept: int = 0
+	for item: Variant in data.streets:
+		if item is Dictionary and data.street_is_inhabited(item):
+			kept += 1
+	assert_int(kept).override_failure_message("la poda dejó demasiado poco pueblo").is_greater(20)
+	assert_int(kept).override_failure_message("la poda no quitó nada").is_less(data.streets.size() * 3 / 4)
+	var exits: Array[Dictionary] = data.exit_streets()
+	assert_int(exits.size()).is_equal(4)
+	var centre: Vector2 = data.axis_centre()
+	var quadrants: Dictionary = {}
+	for e: Dictionary in exits:
+		var far: Vector3 = BiomeHints._far_end(e, Vector3(centre.x, 0.0, centre.y))
+		quadrants[OsmMapData.exit_quadrant(Vector2(far.x - centre.x, far.z - centre.y))] = true
+		assert_bool(data.is_exit_street(e)).is_true()
+	assert_int(quadrants.size()).override_failure_message("las salidas no cubren los cuatro cuadrantes").is_equal(4)
+	var hints: BiomeHints = auto_free(BiomeHints.new())
+	hints.data_path = DATA
+	add_child(hints)
+	assert_int(hints.batch_count("dune")).is_greater(3)
+	assert_int(hints.batch_count("dead_trunk")).is_greater(50)
+	assert_int(hints.batch_count("sea")).is_equal(1)
+	assert_object(hints.get_node_or_null("Ribbon_street")).override_failure_message("las salidas no se prolongan").is_not_null()
+
+
 func _on_rolled_over() -> void:
 	_rolled_over_count += 1

@@ -20,6 +20,10 @@ var _in: String = ""
 var _out: String = ""
 var _alpha_from: String = ""
 var _stamp: int = 0
+## Con `grass=N` no hace falta entrada: pinta N hojas de pasto curvas y tupidas en un lienzo
+## transparente. El pasto del greybox eran triángulos recortados por shader — «el pasto se ve
+## triangular», dijo el dueño (D78) —; una mata pintada con hojas finas y curvas es pasto.
+var _grass: int = 0
 var _dir_in: String = ""
 var _dir_out: String = ""
 var _size: int = 512
@@ -41,6 +45,8 @@ func _initialize() -> void:
 				_alpha_from = parts[1]
 			"stamp":
 				_stamp = int(parts[1])
+			"grass":
+				_grass = int(parts[1])
 			"dir_in":
 				_dir_in = parts[1]
 			"dir_out":
@@ -60,6 +66,9 @@ func _process(_delta: float) -> bool:
 		return true
 	if _stamp > 0:
 		quit(0 if _stamp_clump() else 1)
+		return true
+	if _grass > 0:
+		quit(0 if _paint_grass() else 1)
 		return true
 	if _in.is_empty() or _out.is_empty():
 		print("SHRINK error=faltan in= y out= (o dir_in= y dir_out=)")
@@ -115,6 +124,17 @@ func _stamp_clump() -> bool:
 		var ang: float = rng.randf() * TAU
 		var pos: Vector2 = centre + Vector2(cos(ang), sin(ang)) * r - Vector2(side, side) * 0.5
 		canvas.blend_rect(leaf, Rect2i(0, 0, side, side), Vector2i(int(pos.x), int(pos.y)))
+	# Sombreado de volumen (D78): más oscuro abajo y hacia el centro, como una mata de
+	# verdad que se ensombrece a sí misma. Sin esto la tarjeta se leía como una plancha plana.
+	for y: int in _size:
+		for x: int in _size:
+			var c: Color = canvas.get_pixel(x, y)
+			if c.a <= 0.01:
+				continue
+			var fy: float = float(y) / float(_size)
+			var d: float = Vector2(x, y).distance_to(centre) / (float(_size) * 0.5)
+			var shade: float = clampf(1.05 - fy * 0.45 - (1.0 - clampf(d, 0.0, 1.0)) * 0.2, 0.45, 1.05)
+			canvas.set_pixel(x, y, Color(c.r * shade, c.g * shade, c.b * shade, c.a))
 	var err: int = canvas.save_png(_out)
 	if err != OK:
 		print("SHRINK error=no_se_pudo_escribir out=%s codigo=%d" % [_out, err])
@@ -125,6 +145,46 @@ func _stamp_clump() -> bool:
 			if canvas.get_pixel(x, y).a > 0.5:
 				covered += 1
 	print("SHRINK mata ok estampas=%d cobertura=%.0f%% %s" % [_stamp, 100.0 * float(covered) / float((_size / 4) * (_size / 4)), _out])
+	return true
+
+
+## Mata de pasto pintada: N hojas que nacen abajo al centro, suben curvándose hacia un lado
+## (Bézier cuadrática) y se afinan hasta la punta. Color oscuro en la base y claro arriba,
+## con variación por hoja. Sale como PNG con alfa para recortar con `alpha_scissor`.
+func _paint_grass() -> bool:
+	var canvas: Image = Image.create(_size, _size, false, Image.FORMAT_RGBA8)
+	canvas.fill(Color(0.0, 0.0, 0.0, 0.0))
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.seed = 11
+	var w: float = float(_size)
+	var h: float = float(_size)
+	for _k: int in _grass:
+		var base: Vector2 = Vector2(w * rng.randf_range(0.3, 0.7), h * rng.randf_range(0.96, 1.0))
+		var height: float = h * rng.randf_range(0.45, 0.98)
+		var drift: float = w * rng.randf_range(-0.28, 0.28)
+		var tip: Vector2 = Vector2(base.x + drift, base.y - height)
+		var ctrl: Vector2 = Vector2(base.x + drift * 0.15, base.y - height * 0.55)
+		var half_w: float = w * rng.randf_range(0.012, 0.022)
+		var dark: Color = Color(0.16, 0.3, 0.09).lerp(Color(0.22, 0.36, 0.12), rng.randf())
+		var light: Color = Color(0.5, 0.68, 0.28).lerp(Color(0.62, 0.74, 0.34), rng.randf())
+		var steps: int = int(height * 1.4)
+		for i: int in steps:
+			var t: float = float(i) / float(maxi(steps - 1, 1))
+			var p: Vector2 = base.lerp(ctrl, t).lerp(ctrl.lerp(tip, t), t)
+			var hw: float = half_w * (1.0 - t * t)
+			var colour: Color = dark.lerp(light, t)
+			var x0: int = int(floor(p.x - hw))
+			var x1: int = int(ceil(p.x + hw))
+			var y: int = int(round(p.y))
+			if y < 0 or y >= _size:
+				continue
+			for x: int in range(maxi(x0, 0), mini(x1, _size - 1) + 1):
+				canvas.set_pixel(x, y, colour)
+	var err: int = canvas.save_png(_out)
+	if err != OK:
+		print("SHRINK error=no_se_pudo_escribir out=%s codigo=%d" % [_out, err])
+		return false
+	print("SHRINK pasto ok hojas=%d %s" % [_grass, _out])
 	return true
 
 

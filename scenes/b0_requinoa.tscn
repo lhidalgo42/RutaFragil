@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://src/biomes/biome_segment.gd" id="1_segment"]
 [ext_resource type="Script" path="res://src/biomes/axis_circuit.gd" id="2_circuit"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://src/biomes/city_backdrop.gd" id="7_backdrop"]
 [ext_resource type="Script" path="res://src/biomes/osm_gravel.gd" id="8_gravel"]
 [ext_resource type="Script" path="res://src/biomes/osm_town.gd" id="9_town"]
+[ext_resource type="Script" path="res://src/biomes/biome_hints.gd" id="10_hints"]
 
 [node name="B0Requinoa" type="Node3D"]
 script = ExtResource("1_segment")
@@ -50,4 +51,8 @@ hill_min_distance_m = 1600.0
 
 [node name="Circuit" type="Node3D" parent="."]
 script = ExtResource("2_circuit")
+data_path = "res://data/b0_requinoa.json"
+
+[node name="Hints" type="Node3D" parent="."]
+script = ExtResource("10_hints")
 data_path = "res://data/b0_requinoa.json"

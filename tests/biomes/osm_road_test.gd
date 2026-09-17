@@ -30,7 +30,8 @@ func test_builds_collision_bodies_and_batches() -> void:
 	assert_int(road.batch_count("paint_yellow")).is_greater(50)
 	# El pasto de los costados va en tramos para que la cámara pueda descartarlos:
 	# en un solo MultiMesh de 5 km se dibujarían las 190.000 matas en cada cuadro.
-	assert_int(road.verge_tuft_count()).is_greater(20000)
+	# D78: matas de 0,9 m a la mitad de densidad; cubren más con menos instancias
+	assert_int(road.verge_tuft_count()).is_greater(8000)
 	var verge_root: Node = road.get_node_or_null("Verge")
 	assert_object(verge_root).is_not_null()
 	if verge_root == null:

@@ -140,6 +140,9 @@ func _stamp_streets(data: OsmMapData) -> void:
 		if not (item is Dictionary):
 			continue
 		var street: Dictionary = item
+		# las calles de campo sin casas no se dibujan (D78): tampoco cuentan como pavimento
+		if not (data.street_is_inhabited(street) or data.is_exit_street(street)):
+			continue
 		var raw: Array = street.get("pts", []) as Array
 		var half: float = float(street.get("w", 6.0)) * 0.5 + 1.0
 		for i: int in maxi(0, raw.size() - 1):

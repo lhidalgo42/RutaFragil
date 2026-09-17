@@ -181,7 +181,7 @@ func _build_rural() -> void:
 		if _on_road(o, 1.0):
 			continue
 		# frutal bajo y redondo, sin helechos al pie: es un huerto trabajado
-		_b.tree(o, 1.4, 1.5, 4, 0, "trunk", "orchard", 0.22)
+		_b.tree(o, 1.4, 1.5, 6, 0, "trunk", "orchard", 0.22)
 
 
 ## Un árbol en medio de una calle lateral es de las cosas que más saltan a la vista.

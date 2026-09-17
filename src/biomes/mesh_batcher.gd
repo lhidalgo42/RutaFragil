@@ -111,10 +111,21 @@ var _flushed: Dictionary = {}
 
 func add(kind: String, mesh_kind: String, xform: Transform3D) -> void:
 	if not _batches.has(kind):
-		_batches[kind] = {"mesh": mesh_kind, "xforms": []}
+		_batches[kind] = {"mesh": mesh_kind, "xforms": [], "colours": []}
 	var entry: Dictionary = _batches[kind]
 	var xforms: Array = entry["xforms"]
 	xforms.append(xform)
+	var colours: Array = entry["colours"]
+	colours.append(Color.TRANSPARENT)   # transparente = «usa el tono por posición»
+
+
+## Como `add`, con un tono propio para esa instancia (D78): las matas de una copa se
+## sombrean según dónde están en ella, y eso no lo puede saber el tono por posición.
+func add_coloured(kind: String, mesh_kind: String, xform: Transform3D, colour: Color) -> void:
+	add(kind, mesh_kind, xform)
+	var entry: Dictionary = _batches[kind]
+	var colours: Array = entry["colours"]
+	colours[colours.size() - 1] = colour
 
 
 func box(kind: String, xform: Transform3D) -> void:
@@ -147,10 +158,12 @@ func flush(parent: Node, colours: Dictionary) -> void:
 		mm.use_colors = true
 		mm.mesh = unit_mesh(str(entry["mesh"]), colours.get(kind, Color.MAGENTA), kind)
 		mm.instance_count = xforms.size()
+		var own_colours: Array = entry.get("colours", [])
 		for i: int in xforms.size():
 			var xf: Transform3D = xforms[i]
 			mm.set_instance_transform(i, xf)
-			mm.set_instance_color(i, tint_at(xf.origin))
+			var own: Color = own_colours[i] if i < own_colours.size() else Color.TRANSPARENT
+			mm.set_instance_color(i, own if own.a > 0.0 else tint_at(xf.origin))
 		var origins: PackedVector3Array = PackedVector3Array()
 		for xf: Transform3D in xforms:
 			origins.append(xf.origin)
@@ -303,21 +316,35 @@ static func cutout_material(kind: String) -> StandardMaterial3D:
 ## Un árbol (D76): tronco con corteza y una copa de `clumps` mechones de hojas repartidos
 ## dentro del elipsoide de la copa, más `ferns` helechos al pie. Determinista por posición,
 ## como todo lo demás. Deja la copa anotada en la máscara para el suelo de bosque.
-func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 9, ferns: int = 2, trunk_kind: String = "trunk", crown_kind: String = "crown", trunk_w: float = 0.4, column_h: float = 0.0) -> void:
+func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 14, ferns: int = 2, trunk_kind: String = "trunk", crown_kind: String = "crown", trunk_w: float = 0.4, column_h: float = 0.0) -> void:
 	add(trunk_kind, "cyl", Transform3D(Basis.from_scale(Vector3(trunk_w, trunk_h, trunk_w)), p + Vector3.UP * (trunk_h * 0.5)))
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = int(p.x * 73.0 + p.z * 131.0)
 	var top: Vector3 = p + Vector3.UP * (trunk_h + crown_r * 0.7)
+	# Ramas (D78): tres o cuatro cilindros de corteza que salen del tronco hacia la copa.
+	# Sin ramas las matas flotaban alrededor de un palo — «planchas pegadas», dijo el dueño.
+	var branches: int = 0 if (column_h > 0.0 or trunk_h < 2.0) else 4
+	for _br: int in branches:
+		var ang_b: float = rng.randf() * TAU
+		var reach: Vector3 = Vector3(cos(ang_b), 0.0, sin(ang_b)) * (crown_r * rng.randf_range(0.5, 0.85)) + Vector3.UP * (crown_r * rng.randf_range(0.2, 0.7))
+		add(trunk_kind, "cyl", between(p + Vector3.UP * (trunk_h * rng.randf_range(0.8, 0.98)), top + reach, trunk_w * 0.45))
 	for k: int in clumps:
-		var off: Vector3 = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-0.5, 0.8), rng.randf_range(-1.0, 1.0)) * (crown_r * 0.7)
+		# Las matas van sobre un CASCARÓN esférico, no repartidas por todo el volumen: así se
+		# solapan en una copa cerrada y ninguna queda suelta hacia adentro.
+		var dir_k: Vector3 = Vector3(rng.randf_range(-1.0, 1.0), rng.randf_range(-0.35, 1.0), rng.randf_range(-1.0, 1.0)).normalized()
+		var off: Vector3 = dir_k * (crown_r * rng.randf_range(0.55, 0.8))
 		if column_h > 0.0:
 			# álamo: la copa es una columna, los mechones suben apilados desde media altura
 			off = Vector3(rng.randf_range(-0.4, 0.4), 0.0, rng.randf_range(-0.4, 0.4)) * crown_r + Vector3.UP * (column_h * (float(k) + 0.5) / float(clumps) - crown_r * 0.7 - trunk_h * 0.5)
-		# matas algo más chicas que antes y más juntas: con la textura densa, nueve tarjetas
-		# de 1,2–1,6 radios se solapan en una copa cerrada
-		var size: float = crown_r * rng.randf_range(1.2, 1.6)
-		var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU) * Basis(Vector3.RIGHT, rng.randf_range(-0.35, 0.35)) * Basis.from_scale(Vector3(size, size * 0.85, size))
-		add(crown_kind, "card", Transform3D(basis, top + off))
+		var size: float = crown_r * rng.randf_range(1.05, 1.4)
+		var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU) * Basis(Vector3.RIGHT, rng.randf_range(-0.4, 0.4)) * Basis.from_scale(Vector3(size, size * 0.9, size))
+		# Sombreado de volumen por mata: las de arriba y afuera al sol, las de abajo y adentro
+		# en sombra. Es lo que convierte un montón de tarjetas en una copa con bulto.
+		var height_k: float = clampf(off.y / maxf(crown_r, 0.1) * 0.5 + 0.5, 0.0, 1.0)
+		var outer_k: float = clampf(off.length() / maxf(crown_r * 0.8, 0.1), 0.0, 1.0)
+		var shade: float = 0.55 + 0.3 * height_k + 0.15 * outer_k
+		var jitter: float = 0.92 + 0.16 * _hash01(top + off, 5.0)
+		add_coloured(crown_kind, "card", Transform3D(basis, top + off), Color(shade * jitter, shade * (0.97 + 0.06 * _hash01(top + off, 9.0)), shade * 0.95, 1.0))
 	for _f: int in ferns:
 		var ang: float = rng.randf() * TAU
 		var foot: Vector3 = p + Vector3(cos(ang), 0.0, sin(ang)) * rng.randf_range(0.8, crown_r * 1.2)

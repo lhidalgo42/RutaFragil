@@ -208,6 +208,124 @@ func in_gravel(s: float) -> bool:
 	return false
 
 
+## ¿Esta calle tiene casas? (D78). OSM trae 217 calles y muchas cruzan campo vacío: una
+## cuadrícula de ripio sobre pasto que no lleva a ninguna parte. Se mira la calle cada 20 m
+## y se cuenta cuánta parte tiene algún edificio a `radius_m`; con menos de `min_share` es
+## una calle de campo y no se dibuja. La grilla de edificios se arma una vez, perezosa.
+func street_is_inhabited(street: Dictionary, radius_m: float = 45.0, min_share: float = 0.3) -> bool:
+	var raw: Array = street.get("pts", []) as Array
+	if raw.size() < 2:
+		return false
+	_ensure_building_grid()
+	var samples: int = 0
+	var near: int = 0
+	for i: int in raw.size() - 1:
+		var pa: Array = raw[i]
+		var pb: Array = raw[i + 1]
+		if pa.size() < 2 or pb.size() < 2:
+			continue
+		var a: Vector2 = Vector2(float(pa[0]), float(pa[1]))
+		var b: Vector2 = Vector2(float(pb[0]), float(pb[1]))
+		var seg_len: float = a.distance_to(b)
+		var t: float = 0.0
+		while t <= seg_len:
+			samples += 1
+			if _building_near(a.lerp(b, t / maxf(seg_len, 0.001)), radius_m):
+				near += 1
+			t += 20.0
+	if samples == 0:
+		return false
+	return float(near) / float(samples) >= min_share
+
+
+var _building_cells: Dictionary = {}
+const BUILDING_CELL_M: float = 50.0
+
+
+func _ensure_building_grid() -> void:
+	if not _building_cells.is_empty() or buildings.is_empty():
+		return
+	for b: Dictionary in buildings:
+		var p: Vector2 = Vector2(float(b.get("x", 0.0)), float(b.get("z", 0.0)))
+		var key: Vector2i = Vector2i(int(floor(p.x / BUILDING_CELL_M)), int(floor(p.y / BUILDING_CELL_M)))
+		if not _building_cells.has(key):
+			_building_cells[key] = PackedVector2Array()
+		var cell: PackedVector2Array = _building_cells[key]
+		cell.append(p)
+		_building_cells[key] = cell
+
+
+func _building_near(p: Vector2, radius_m: float) -> bool:
+	var reach: int = int(ceil(radius_m / BUILDING_CELL_M))
+	var centre: Vector2i = Vector2i(int(floor(p.x / BUILDING_CELL_M)), int(floor(p.y / BUILDING_CELL_M)))
+	for dy: int in range(-reach, reach + 1):
+		for dx: int in range(-reach, reach + 1):
+			var key: Vector2i = centre + Vector2i(dx, dy)
+			if not _building_cells.has(key):
+				continue
+			for q: Vector2 in (_building_cells[key] as PackedVector2Array):
+				if q.distance_to(p) <= radius_m:
+					return true
+	return false
+
+
+## Las cuatro SALIDAS del pueblo (D78): por cada cuadrante (E, N, O, S respecto al centro
+## del eje) la calle cuyo extremo llega más lejos del pueblo. Son las que llevarán a los
+## otros biomas cuando el mapa los junte; se dibujan aunque no tengan casas, y al final de
+## cada una BiomeHints pone la silueta del bioma que viene.
+var _exits: Array[Dictionary] = []
+
+
+func exit_streets() -> Array[Dictionary]:
+	if not _exits.is_empty() or streets.is_empty():
+		return _exits
+	var centre: Vector2 = axis_centre()
+	var best: Array = [null, null, null, null]
+	var best_d: Array[float] = [0.0, 0.0, 0.0, 0.0]
+	for item: Variant in streets:
+		if not (item is Dictionary):
+			continue
+		var street: Dictionary = item
+		var raw: Array = street.get("pts", []) as Array
+		for end: int in [0, raw.size() - 1]:
+			if end < 0 or end >= raw.size():
+				continue
+			var pe: Array = raw[end]
+			if pe.size() < 2:
+				continue
+			var p: Vector2 = Vector2(float(pe[0]), float(pe[1]))
+			var d: float = p.distance_to(centre)
+			var q: int = exit_quadrant(p - centre)
+			if d > best_d[q]:
+				best_d[q] = d
+				best[q] = street
+	for q: int in 4:
+		if best[q] != null:
+			_exits.append(best[q])
+	return _exits
+
+
+func is_exit_street(street: Dictionary) -> bool:
+	for e: Dictionary in exit_streets():
+		if e == street:
+			return true
+	return false
+
+
+## 0 = este (+x), 1 = norte (−z), 2 = oeste (−x), 3 = sur (+z).
+static func exit_quadrant(v: Vector2) -> int:
+	if absf(v.x) >= absf(v.y):
+		return 0 if v.x >= 0.0 else 2
+	return 1 if v.y < 0.0 else 3
+
+
+func axis_centre() -> Vector2:
+	var sum: Vector2 = Vector2.ZERO
+	for p: Vector3 in axis:
+		sum += Vector2(p.x, p.z)
+	return sum / maxf(1.0, float(axis.size()))
+
+
 func in_gap(side: int, s: float) -> bool:
 	for gap: Dictionary in curb_gaps:
 		if int(gap.get("side", 0)) == side and s >= float(gap.get("s0", 0.0)) and s <= float(gap.get("s1", 0.0)):

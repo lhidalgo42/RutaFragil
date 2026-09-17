@@ -34,7 +34,8 @@ const SIGN_BEFORE_M: float = 35.0
 ## La franja va CORRIDA hacia afuera del pavimento, no centrada en el eje: centrada, casi
 ## todas las matas caían sobre la calzada y la máscara las botaba todas.
 @export var verge_half_width_m: float = 11.0
-@export var verge_per_m2: float = 1.1
+## Matas de 0,9 m (D78): la mitad de las hojas-triángulo de antes cubren más suelo.
+@export var verge_per_m2: float = 0.55
 ## Puntos del eje por tramo de pasto (~300 m): el trozo que la cámara descarta o dibuja.
 const VERGE_CHUNK: int = 30
 ## Suelo con textura (D73): cuánto del segundo juego de texturas —la nieve— se ve
@@ -212,6 +213,9 @@ func _collect_street_gaps() -> void:
 		if not (item is Dictionary):
 			continue
 		var street: Dictionary = item
+		# una calle podada (sin casas) no abre bocacalle en el cordón (D78)
+		if not (data.street_is_inhabited(street) or data.is_exit_street(street)):
+			continue
 		var raw: Array = street.get("pts", []) as Array
 		if raw.size() < 2:
 			continue

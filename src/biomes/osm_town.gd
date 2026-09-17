@@ -76,6 +76,10 @@ func _build_streets() -> void:
 		if not (item is Dictionary):
 			continue
 		var street: Dictionary = item
+		# Poda (D78): una calle sin casas a 45 m en al menos el 30 % de su largo es campo,
+		# no pueblo, y no se dibuja — salvo las cuatro salidas, que llevan a los otros biomas.
+		if not (data.street_is_inhabited(street) or data.is_exit_street(street)):
+			continue
 		var pts: PackedVector3Array = _points(street.get("pts", []))
 		if pts.size() < 2:
 			continue
@@ -238,19 +242,51 @@ func _build_fountain(centre: Vector3) -> void:
 	# láminas de 35 cm de ancho con el shader corriendo hacia abajo, espuma blanca donde
 	# caen y un penacho de rocío arriba. Con hilos de 9 cm la fuente se leía como palitos
 	# azules (D77): agua cayendo es ancha, blanca y salpica.
-	for k: int in 8:
-		var ang: float = TAU * float(k) / 8.0
-		var out_dir: Vector3 = Vector3(cos(ang), 0.0, sin(ang))
-		var facing: Basis = Basis(Vector3.UP, -ang)
+	# Chorros en ARCO (D78): un surtidor central que sube 1,3 m y se abre en seis arcos
+	# hasta la taza alta, y de cada taza ocho arcos al nivel de abajo. Cada arco es una
+	# cadena de tramos que se afinan, siguiendo una parábola: las láminas rectangulares de
+	# antes «no parecían agua fluida», y el penacho suelto arriba no se entendía.
+	_jet(centre + Vector3.UP * 4.32, Vector3.UP, 1.3, 0.16, 0.06)
+	for k: int in 6:
+		var ang0: float = TAU * float(k) / 6.0
+		_arc(centre + Vector3.UP * 5.55, Vector3(cos(ang0), 0.0, sin(ang0)), 0.6, 1.25, 2.95, 0.07)
+	for k1: int in 8:
+		var ang1: float = TAU * float(k1) / 8.0 + PI / 8.0
+		var out_dir: Vector3 = Vector3(cos(ang1), 0.0, sin(ang1))
 		# taza alta -> taza media
-		_b.box("fountain_stream", Transform3D(facing * Basis.from_scale(Vector3(0.3, 1.55, 0.05)), centre + out_dir * 1.25 + Vector3.UP * 2.1))
-		_b.add("foam", "cyl", Transform3D(Basis.from_scale(Vector3(0.7, 0.05, 0.7)), centre + out_dir * 1.3 + Vector3.UP * 1.36))
+		_arc(centre + out_dir * 1.2 + Vector3.UP * 2.9, out_dir, 0.45, 1.05, 1.36, 0.09)
+		_b.add("foam", "cyl", Transform3D(Basis.from_scale(Vector3(0.6, 0.05, 0.6)), centre + out_dir * 2.25 + Vector3.UP * 1.36))
 		# taza media -> estanque
-		_b.box("fountain_stream", Transform3D(facing * Basis.from_scale(Vector3(0.38, 0.92, 0.05)), centre + out_dir * 2.35 + Vector3.UP * 0.88))
-		_b.add("foam", "cyl", Transform3D(Basis.from_scale(Vector3(1.1, 0.05, 1.1)), centre + out_dir * 2.45 + Vector3.UP * 0.62))
-	for k2: int in 5:
-		var a2: float = TAU * float(k2) / 5.0 + 0.3
-		_b.add("spray", "sph", Transform3D(Basis.from_scale(Vector3(0.45, 0.8, 0.45)), centre + Vector3(cos(a2), 0.0, sin(a2)) * 0.3 + Vector3.UP * 4.6))
+		_arc(centre + out_dir * 2.25 + Vector3.UP * 1.25, out_dir, 0.5, 1.3, 0.62, 0.11)
+		_b.add("foam", "cyl", Transform3D(Basis.from_scale(Vector3(1.0, 0.05, 1.0)), centre + out_dir * 3.55 + Vector3.UP * 0.62))
+
+
+## Chorro vertical: cadena de tramos que sube `height` y se afina de `w0` a `w1`.
+func _jet(from: Vector3, dir: Vector3, height: float, w0: float, w1: float) -> void:
+	var steps: int = 4
+	for i: int in steps:
+		var t0: float = float(i) / float(steps)
+		var t1: float = float(i + 1) / float(steps)
+		var w: float = lerpf(w0, w1, (t0 + t1) * 0.5)
+		_b.box("fountain_stream", MeshBatcher.between(from + dir * (height * t0), from + dir * (height * t1), w))
+	_b.add("spray", "sph", Transform3D(Basis.from_scale(Vector3(0.28, 0.42, 0.28)), from + dir * (height + 0.1)))
+
+
+## Arco de agua: sale de `from` con impulso hacia arriba `rise`, avanza `run` metros en `dir`
+## y cae hasta la altura `land_y`, como parábola en seis tramos que se afinan hacia el final.
+func _arc(from: Vector3, dir: Vector3, rise: float, run: float, land_y: float, width: float) -> void:
+	var steps: int = 6
+	var prev: Vector3 = from
+	var drop: float = from.y - land_y
+	for i: int in steps:
+		var t: float = float(i + 1) / float(steps)
+		# altura: sube con `rise` y baja parabólicamente hasta land_y
+		var y: float = from.y + rise * 4.0 * t * (1.0 - t) - drop * t * t
+		var p: Vector3 = from + dir * (run * t)
+		p.y = y
+		var w: float = width * (1.0 - t * 0.45)
+		_b.box("fountain_stream", MeshBatcher.between(prev, p, w))
+		prev = p
 
 
 func _build_churches() -> void:
