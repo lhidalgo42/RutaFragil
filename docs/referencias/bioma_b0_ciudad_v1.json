@@ -1,0 +1,12 @@
+{
+	"file": "bioma_b0_ciudad_v1.png",
+	"model": "flux1-schnell.safetensors",
+	"licence": "Apache-2.0",
+	"prompt": "flat-shaded low-poly 3D game environment, small coastal town delivery route at golden hour, simple blocky buildings, a service station with fuel pumps, narrow streets with speed bumps, a low tunnel underpass, flat colour blocks, visible polygon facets, clear readable landmarks, warm palette, no text, no logos, no brand names",
+	"seed": 11,
+	"steps": 4,
+	"width": 1152,
+	"height": 648,
+	"server": "http://192.168.50.200:8188",
+	"generated_utc": "2026-09-17T18:17:57Z"
+}

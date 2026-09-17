@@ -1,0 +1,12 @@
+{
+	"file": "bioma_b2_pantano_v1.png",
+	"model": "flux1-schnell.safetensors",
+	"licence": "Apache-2.0",
+	"prompt": "flat-shaded low-poly 3D game environment, tropical swamp crossing, deep muddy track and shallow water channels, mangrove roots and hanging vines, murky green water, mist, visible polygon facets, flat colour blocks, readable path through the water, no text, no logos",
+	"seed": 13,
+	"steps": 4,
+	"width": 1152,
+	"height": 648,
+	"server": "http://192.168.50.200:8188",
+	"generated_utc": "2026-09-17T18:18:19Z"
+}
