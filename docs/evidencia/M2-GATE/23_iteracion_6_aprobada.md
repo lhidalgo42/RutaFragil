@@ -4,7 +4,7 @@
 
 **Veredicto automático: `status: passed`, `valid: true`, `logic_passed: true`, `render_verified: true`, `failures: []`, `invalid_reasons: []`.** Código de salida 0.
 
-**`human_gate_approval: pending`. El gate NO está aprobado.** D97 exige que el dueño juegue la instancia cliente cinco minutos, y eso no lo sustituye ninguna cifra de este documento.
+**GATE APROBADO (D97) por el dueño el 2026-09-17.** Jugó la instancia cliente y su veredicto fue «se siente bien al estar en el auto manejando»; la única pega que levantó resultó ser la puerta de carga (D99), no el acarreo. Cerró la ventana antes de los 300 s, así que la sesión no fue completa y queda dicho; el dueño dio el gate por bueno con lo que sintió («todo ok sigamos»). Sesión y mediciones en [25_gate_humano.md](25_gate_humano.md).
 
 Muestreo: observador independiente `GateMetrics` posterior a los nodos, `process_priority` y `process_physics_priority` = 1000, idéntico en ambas instancias, solo lectura. Precondición: [`22_raw/r6_pre_aa8058f`](22_raw/r6_pre_aa8058f/summary.json), verde sobre este mismo commit y configuración, verificada por la guardia de `gate_launcher.gd`.
 
