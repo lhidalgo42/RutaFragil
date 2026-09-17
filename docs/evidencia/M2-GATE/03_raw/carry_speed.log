@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SPEED attack_entry_kmh=66.5 from_start_m=97.1
+SPEED reach80 dist_m=144.3 t_s=11.2 (not reached if dist<0)

@@ -1,0 +1,16 @@
+{
+	"airborne_ticks": 0,
+	"bus_support_percent": 100.0,
+	"case": "jump_bumps",
+	"flights": [],
+	"hull_exit_ticks": 0,
+	"jump_bus_speed_kmh": 85.5408828735352,
+	"jump_command_tick": 835,
+	"last_supported": true,
+	"max_off_run_ticks": 0,
+	"platform_on_leave": 0,
+	"recording": "res://docs/evidencia/M2-GATE/16_bank/recording.json",
+	"sampling": "independent post-node observer, both priorities 1000",
+	"support_losses": 0,
+	"ticks": 1064
+}

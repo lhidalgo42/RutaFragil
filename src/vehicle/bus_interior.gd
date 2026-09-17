@@ -9,6 +9,15 @@ extends Node3D
 ## the suspension rays exclude the interior for free and nothing pushes the
 ## chassis around. Meshes, positions and restraints stay under this node.
 ## No gameplay here: no walking, boarding or seats (that is T2.2/T2.3).
+##
+## THE OPEN REAR IS THE CARGO DOOR (D99, owner 2026-09-17). WallRearLeft and
+## WallRearRight are 0.55 m wide at x = +/-0.975, leaving a 1.4 m by 1.9 m gap
+## in the middle; a 0.4 m package passes through it easily. That is deliberate,
+## NOT a greybox omission like the windshield of D89, so do not "fix" it with a
+## sill, a pane or a ramp. Free cargo sliding out of the back while the bus
+## accelerates is what the straps exist for: in the owner's 300 s session all
+## four boxes left through it at floor level, the first after 5.4 s untouched.
+## A closable door would be M3 mechanics, not a correction.
 
 
 ## The ONE definition of "inside the hull" (interior bounds D67/D72):

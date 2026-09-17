@@ -1,0 +1,150 @@
+{
+	"activity": {
+		"authority_transfers": 0,
+		"complete_cycles": 0,
+		"hold_denied": 0,
+		"hold_granted": 0,
+		"hold_requested": 0,
+		"release": 0,
+		"strap_denied": 0,
+		"strap_ok": 0,
+		"unstrap": 0
+	},
+	"cameras": {
+		"max": 1,
+		"min": 1
+	},
+	"display_server": "Windows",
+	"drift_final_m": [
+		-0.848320007324219,
+		-0.0014946460723877,
+		0.611793518066406
+	],
+	"drift_max_abs_m": [
+		0.851051330566406,
+		0.211480379104614,
+		1.04738187789917
+	],
+	"duration_s": 119.999999999994,
+	"exit": 0,
+	"finish_utc_us": 1789594792240000,
+	"fps": {
+		"frames": 7197,
+		"p1": 52.7120341573981,
+		"percent_below_60": 74.1420036126164,
+		"render_no_verificado": false,
+		"windowed": true
+	},
+	"human": true,
+	"instrumentation_missing": [],
+	"iteration": 1,
+	"off_bus_support_ticks": 1,
+	"peer_id": 1594924885,
+	"penetration": {
+		"entities": {
+			"cargo/Package_0": {
+				"current_run_ticks": 0,
+				"deepest_piece": "",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0,
+				"penetrating_ticks": 0,
+				"samples": 7200
+			},
+			"cargo/Package_1": {
+				"current_run_ticks": 0,
+				"deepest_piece": "",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0,
+				"penetrating_ticks": 0,
+				"samples": 7200
+			},
+			"cargo/Package_2": {
+				"current_run_ticks": 0,
+				"deepest_piece": "WallLeft",
+				"excluded_ticks": 4468,
+				"max_depth_m": 0.145823629438325,
+				"max_run_ticks": 25,
+				"penetrating_ticks": 867,
+				"samples": 7200
+			},
+			"cargo/Package_3": {
+				"current_run_ticks": 0,
+				"deepest_piece": "Floor",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.0200087176191877,
+				"max_run_ticks": 137,
+				"penetrating_ticks": 137,
+				"samples": 7200
+			},
+			"crew/1": {
+				"current_run_ticks": 2,
+				"deepest_piece": "Roof",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.0693912355642492,
+				"max_run_ticks": 9,
+				"penetrating_ticks": 924,
+				"samples": 7200
+			},
+			"crew/1594924885": {
+				"current_run_ticks": 2,
+				"deepest_piece": "Floor",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.0613401413446418,
+				"max_run_ticks": 315,
+				"penetrating_ticks": 4483,
+				"samples": 7200
+			}
+		},
+		"excluded": "seated crew and HELD cargo (collision disabled)",
+		"max_depth_m": 0.145823629438325,
+		"max_run_ticks": 315,
+		"method": "finite authored hull boxes; capsule distance / oriented box SAT",
+		"noise_epsilon_m": 0.000001
+	},
+	"remote_crew_simulation_ticks": 0,
+	"requested_seconds": 120.0,
+	"role": "client",
+	"run_id": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/05_raw/manual_01",
+	"sampling_phase": "after_all_node_physics",
+	"sampling_process_physics_priority": 1000,
+	"sampling_process_priority": 1000,
+	"simulation_entities": {
+		"cargo/Package_0": {
+			"physics_simulation_ticks": 7199,
+			"unauthorized_simulation_ticks": 7199
+		},
+		"cargo/Package_1": {
+			"physics_simulation_ticks": 7199,
+			"unauthorized_simulation_ticks": 7199
+		},
+		"cargo/Package_2": {
+			"physics_simulation_ticks": 7093,
+			"unauthorized_simulation_ticks": 7093
+		},
+		"cargo/Package_3": {
+			"physics_simulation_ticks": 7199,
+			"unauthorized_simulation_ticks": 7199
+		},
+		"crew/1": {
+			"physics_simulation_ticks": 0
+		},
+		"crew/1594924885": {
+			"physics_simulation_ticks": 7200
+		}
+	},
+	"slip": {
+		"max_m": 0.841040313243866,
+		"p95_m": 0.380288302898407,
+		"p999_m": 0.832914769649506,
+		"p99_m": 0.765950441360474,
+		"samples": 7199
+	},
+	"start_utc_us": 1789594672313000,
+	"ticks": 7200,
+	"trace_clock": "system UTC microseconds, same machine",
+	"trace_hz": 10,
+	"trace_samples": 16807,
+	"unauthorized_cargo_simulation_ticks": 28690
+}

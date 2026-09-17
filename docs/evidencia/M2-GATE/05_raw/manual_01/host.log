@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+GATE begin role=host peer=1 seconds=120.0 sample=after_all_node_physics priority=1000
+GATE complete role=host ticks=7200 activity={ "hold_requested": 53, "hold_granted": 53, "hold_denied": 0, "release": 52, "strap_ok": 53, "strap_denied": 0, "unstrap": 53, "authority_transfers": 0, "complete_cycles": 52 }

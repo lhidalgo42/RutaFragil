@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[38652, 21140, 47552, 48324]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence

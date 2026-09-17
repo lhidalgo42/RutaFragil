@@ -1,0 +1,22 @@
+﻿{
+    "source_commit":  "6454cea70c4bd00aeb7cc93bac54401897761776",
+    "arguments":  [
+                      "--headless",
+                      "--path",
+                      "C:\\Users\\Leo\\Documents\\RutaFragil",
+                      "-s",
+                      "res://src/tooling/run_net_scenario.gd",
+                      "++",
+                      "mode=gate",
+                      "role=launcher",
+                      "experiment=1",
+                      "seconds=120",
+                      "cargo=on",
+                      "walk_only=0",
+                      "vsync=off",
+                      "human=none",
+                      "windowed=both",
+                      "output=res://docs/evidencia/M2-GATE/13_raw/r5_motion_baseline_01"
+                  ],
+    "exit":  0
+}

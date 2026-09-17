@@ -1,0 +1,7 @@
+﻿bash.exe : /usr/bin/bash: reports/gate_wrapper_probe/check.sh: No such file or directory
+En línea: 9 Carácter: 1
++ & 'C:/Program Files/Git/bin/bash.exe' reports/gate_wrapper_probe/chec ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (/usr/bin/bash: ...le or directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

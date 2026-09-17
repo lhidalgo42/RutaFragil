@@ -1,0 +1,3 @@
+﻿stub arguments: <--headless> <--path> </c/Users/Leo/Documents/RutaFragil> <--log-file> <user://gate_launcher.log> <-s> <res://src/tooling/run_net_scenario.gd> <++> <mode=gate> <role=launcher> <seconds=300> <human=client> <output=user://gate/run_20260916_195200> <seconds=2> <human=none> <windowed=none>
+normal exit requested=0 observed=0
+stub arguments: <--headless> <--path> </c/Users/Leo/Documents/RutaFragil> <--log-file> <user://gate_launcher.log> <-s> <res://src/tooling/run_net_scenario.gd> <++> <mode=gate> <role=launcher> <seconds=300> <human=client> <output=user://gate/run_20260916_195201> <seconds=2> <human=none> <windowed=none>

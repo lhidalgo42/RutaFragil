@@ -1,0 +1,255 @@
+03_client_carry_measurement.txt — M2-GATE, ronda 3b (2026-09-16)
+
+ESTADO: g2.1 retirado por revisión 03. Tabla completa repetida con observador
+separado al final del procesado de nodos. Esta sonda de fase 0 no consume D96.
+Las corridas posteriores de 300 s viven en 04_gate_iteration_N.md y su ledger;
+las frases sobre gate pendiente más abajo describen el momento de esta sonda.
+
+PUNTO DE MUESTREO, IDÉNTICO EN LAS DOS CORRIDAS Y EN TODAS SUS FILAS
+  Nodo dedicado carry_probe_sampler.gd, solo lector, _physics_process.
+  process_physics_priority = 1000 (orden físico real en Godot 4.7).
+  process_priority = 1000 (también fijado y documentado).
+  El escritor y la tripulante se procesan antes del observador.
+  JSON: sampling_phase = "after_all_node_physics";
+        sampling_process_physics_priority = 1000;
+        sampling_process_priority = 1000.
+
+El observador es distinto del escritor y no mueve el bus ni la tripulante.
+Cada fila contiene 3600 muestras, 60 s a 60 Hz. Las trayectorias real de pie
+y real caminando se graban por separado; cada réplica usa la de SU régimen.
+Es un proceso que graba y reproduce, no dos instancias conectadas en red.
+
+EJECUCIONES VÁLIDAS (Godot 4.7.2.stable.official.ed1daf0bf, Jolt)
+  timeout 120 godot --headless --fixed-fps 60 --path . -s res://src/tooling/run_carry_probe.gd ++ window_s=60 save_raw=1 write=physics_frame
+  timeout 120 godot --headless --fixed-fps 60 --path . -s res://src/tooling/run_carry_probe.gd ++ window_s=60 save_raw=1 write=physics_process
+Ambas terminaron en código 0, sin ERROR ni WARNING en sus logs.
+Windows: Start-Process -WindowStyle Hidden, WaitForExit(120000), plazo
+individual; solo se habría terminado ese proceso si se agotaba el plazo.
+
+Fuentes vigentes: 03_raw/r3b_physics_frame.log y r3b_physics_process.log,
+sus *_summary.json y ocho CSV por modo. Los 16 CSV tienen 3601 líneas
+(cabecera + 3600 muestras). No se copiaron residuos speed.json de user://.
+
+TABLA COMPLETA — write=physics_frame; observador postnodos, prioridades 1000
+Metros; deslizamiento por tick. Bajo piso = ticks / profundidad máx / racha.
+| Configuración / régimen | deriva máx / p95 | desliz. p95 | p99 | p99,9 | máximo | sin apoyo bus | bajo piso | fuera casco |
+|---|---|---|---|---|---|---|---|---|
+| Anfitrión, de pie | 0,312 / 0,302 | 0,0031 | 0,0062 | 0,0084 | 0,0085 | 0 | 0 / 0 / 0 | 0 |
+| Anfitrión, caminando | 3,140 / 2,844 | 0,0669 | 0,0673 | 0,0674 | 0,0687 | 0 | 0 / 0 / 0 | 0 |
+| STATIC, de pie | 90,272 / 88,683 | 1,5578 | 2,3028 | 2,3700 | 2,3908 | 3508 | 1963 / 8,05 / 328 | 3514 |
+| STATIC, caminando | 60,791 / 56,694 | 0,8162 | 1,1435 | 1,4438 | 1,4848 | 3440 | 1518 / 6,95 / 258 | 3447 |
+| KINEMATIC a saltos, de pie | 0,627 / 0,532 | 0,5921 | 0,6129 | 0,6183 | 0,6194 | 0 | 0 / 0 / 0 | 0 |
+| KINEMATIC a saltos, caminando | 3,205 / 2,715 | 0,6323 | 0,6772 | 0,6865 | 0,6869 | 18 | 0 / 0 / 0 | 0 |
+| KINEMATIC interpolado, de pie | 0,388 / 0,335 | 0,0061 | 0,0099 | 0,0213 | 0,0778 | 0 | 0 / 0 / 0 | 0 |
+| KINEMATIC interpolado, caminando | 3,132 / 2,846 | 0,0679 | 0,0711 | 0,0767 | 0,1427 | 0 | 0 / 0 / 0 | 0 |
+
+TABLA COMPLETA — write=physics_process; observador postnodos, prioridades 1000
+Mismas unidades y columnas; cada baseline pertenece a esta misma corrida.
+| Configuración / régimen | deriva máx / p95 | desliz. p95 | p99 | p99,9 | máximo | sin apoyo bus | bajo piso | fuera casco |
+|---|---|---|---|---|---|---|---|---|
+| Anfitrión, de pie | 0,312 / 0,302 | 0,0031 | 0,0062 | 0,0084 | 0,0085 | 0 | 0 / 0 / 0 | 0 |
+| Anfitrión, caminando | 3,140 / 2,844 | 0,0669 | 0,0673 | 0,0674 | 0,0687 | 0 | 0 / 0 / 0 | 0 |
+| STATIC, de pie | 90,272 / 88,683 | 1,5578 | 2,3028 | 2,3700 | 2,3908 | 3509 | 1963 / 8,05 / 328 | 3515 |
+| STATIC, caminando | 60,844 / 56,646 | 0,8167 | 1,1457 | 1,4455 | 1,4866 | 3441 | 1521 / 6,94 / 258 | 3449 |
+| KINEMATIC a saltos, de pie | 0,627 / 0,532 | 0,5921 | 0,6129 | 0,6183 | 0,6194 | 0 | 0 / 0 / 0 | 0 |
+| KINEMATIC a saltos, caminando | 3,201 / 2,698 | 0,6318 | 0,6772 | 0,6865 | 0,6869 | 20 | 0 / 0 / 0 | 0 |
+| KINEMATIC interpolado, de pie | 0,388 / 0,335 | 0,0061 | 0,0099 | 0,0213 | 0,0778 | 0 | 0 / 0 / 0 | 0 |
+| KINEMATIC interpolado, caminando | 3,146 / 2,850 | 0,0679 | 0,0711 | 0,0780 | 0,1434 | 0 | 0 / 0 / 0 | 0 |
+
+COCIENTE p99, CALCULADO CON PRECISIÓN DEL JSON (límite D95: <=1,5)
+| Escritura / régimen interpolado | p99 anfitrión m | p99 réplica m | cociente | comparación parcial |
+|---|---|---|---|---|
+| Señal, de pie | 0,00620688637718558 | 0,00985229294747114 | 1,58731646573793 | supera 1,5 |
+| Nodo, de pie | 0,00620688637718558 | 0,00985229294747114 | 1,58731646573793 | supera 1,5 |
+| Señal, caminando | 0,0672827214002609 | 0,0711070373654366 | 1,05683949587034 | <=1,5 |
+| Nodo, caminando | 0,0672827214002609 | 0,0711025297641754 | 1,05677250093959 | <=1,5 |
+
+La comparación de pie supera el límite sin tocar el criterio. El máximo se
+reporta, no se juzga. Estos cocientes pertenecen a la sonda de un proceso:
+NO son el veredicto de una iteración del gate D95/D96, que además necesita
+dos instancias, actividad, errores remotos, penetraciones y FPS.
+
+CAMBIO RESPECTO DE RONDA 3
+Los números cambiaron al fijar ahora la lectura después de los nodos; las
+tablas anteriores con sampling_phase=before_all_writers_after_previous_physics
+no son comparables como si hubieran usado el mismo reloj. Por ejemplo, p99
+del anfitrión de pie pasó de ~0,0072 a 0,00620688637718558; el cociente de pie
+interpolado/anfitrión pasó de ~1,3983 a 1,58731646573793. No se conserva el
+veredicto favorable anterior bajo el método nuevo.
+
+DISTANCIA ENTRE REGÍMENES (g2.14/g2.6)
+3600 pares por índice, distancia euclídea entre orígenes:
+  p95 = 3,53380084037781 m; máximo = 3,84059858322144 m.
+Ambos modos de escritura producen las mismas distancias. El p95 anterior
+era 3,5358579158783 m con el otro punto de muestreo; el máximo coincide.
+Esto sustituye el checksum con signo: caminar sí perturba la trayectoria
+del bus en esta medición; no se interpreta una suma de coordenadas como metros.
+
+APOYO EN BUS (g2.13)
+Se exige colisión de suelo con bus/su interior; si floor snap no expone
+colisión, se exige is_on_floor y posición local dentro del casco. Ground
+fuera del bus no cuenta. Las filas a saltos/interpoladas no registraron
+penetraciones bajo piso ni salida del casco; STATIC sí falla esas métricas.
+
+VELOCIDAD: pico vuelta 66,7 km/h; baches media 47,6, máximo 62,8,
+mínimo 34,6 km/h y 402 ticks. Son las líneas SPEED de estas dos corridas.
+La recta de 66,5 km/h y las cifras hasta 80 km/h siguen siendo históricas;
+no se volvió a ejecutar mode=speed en esta subtarea.
+
+PROCEDENCIA Y AVISOS VIGENTES
+- r3b_* son las mediciones vigentes y sus dos logs están limpios.
+- El primer intento bajo sandbox devolvió 0 de proceso, pero no produjo
+  los logs solicitados y denegó las copias. Se descarta íntegramente: no se
+  usaron datos de user:// de ese intento. Las dos corridas válidas completas
+  se repitieron con acceso autorizado y sus salidas se copiaron inmediatamente.
+- El aviso histórico «Jolt Physics job system exceeded the maximum number
+  of jobs» está en 03_raw/carry_final.log:3. Se sospechó relación con STATIC
+  patológico, pero no se demostró causalidad. No aparece en los logs r3b_*.
+- final_*, codex_* y archivos sin prefijo quedan como histórico de métodos
+  anteriores; sus advertencias de procedencia se conservan abajo.
+- g2.1 está RETIRADO: no se exige que una escritura gane a la otra ni un
+  umbral de 0,3 m. La retractación de referencia es revisión 03.
+
+=== HISTÓRICO RONDA 3, SUPERSEDIDO POR RONDA 3b ARRIBA ===
+Se conservan números y diagnósticos anteriores. La afirmación de bloqueo
+por g2.1 y los veredictos asociados que siguen ya no están vigentes.
+
+03_client_carry_measurement.txt — M2-GATE, corrección ronda 3 (2026-09-16)
+
+ESTADO: medición de acarreo corregida; fase 0 sigue ABIERTA por g2.1.
+No se ha ejecutado el gate de 300 s ni se declara aprobado el gate humano.
+
+CORRIDA ACTUAL VÁLIDA
+  timeout 120 godot --headless --fixed-fps 60 --path . -s res://src/tooling/run_carry_probe.gd ++ window_s=60 save_raw=1 write=physics_frame
+  timeout 120 godot --headless --fixed-fps 60 --path . -s res://src/tooling/run_carry_probe.gd ++ window_s=60 save_raw=1 write=physics_process
+
+Godot 4.7.2.stable.official.ed1daf0bf, Jolt. Ambas corridas exit 0 y logs
+sin ERROR/WARNING. Fuentes finales: 03_raw/final_physics_frame.log y
+final_physics_process.log, sus *_summary.json y ocho CSV por cada modo.
+El campo sampling_phase identifica before_all_writers_after_previous_physics:
+callback physics_frame conectado ANTES de los escritores, que toma los dos
+cuerpos del último paso completado. La ventana es de 3600 muestras por fila.
+Cada régimen reproduce SU grabación; no se compara walking con standing.
+No son dos procesos en red: se reproduce una trayectoria grabada en un proceso.
+
+TABLA CORREGIDA (write=physics_frame; metros por tick)
+| Configuración / régimen | p95 | p99 | p99,9 | máximo | ticks sin apoyo en bus |
+|---|---|---|---|---|---|
+| Anfitrión, de pie | 0,0040 | 0,0072 | 0,0217 | 0,0782 | 0 |
+| Anfitrión, caminando | 0,0675 | 0,0700 | 0,0780 | 0,1432 | 0 |
+| STATIC, de pie | 1,5500 | 2,3037 | 2,3726 | 2,3896 | 3510 |
+| STATIC, caminando | 0,8212 | 1,1488 | 1,4471 | 1,4844 | 3442 |
+| KINEMATIC a saltos, de pie | 0,5919 | 0,6129 | 0,6189 | 0,6191 | 0 |
+| KINEMATIC a saltos, caminando | 0,6321 | 0,6798 | 0,6870 | 0,6873 | 18 |
+| KINEMATIC interpolado, de pie | 0,0061 | 0,0100 | 0,0333 | 0,0401 | 0 |
+| KINEMATIC interpolado, caminando | 0,0679 | 0,0712 | 0,0775 | 0,1057 | 0 |
+
+D95 aplicado SOLO a esta medición de deslizamiento: interpolado/anfitrión
+p99 = 1,3983 de pie y 1,0173 caminando, ambos <= 1,5. Máximo reportado,
+sin juicio. Las filas KINEMATIC/interpolado no tienen ticks bajo piso ni
+fuera del casco. STATIC sí falla el casco y sale del bus (ver CSV/JSON).
+Esto no prueba actividad, errores remotos, FPS o jugabilidad del gate.
+
+g2.13: apoyo exige colisión de suelo con el bus/su interior; cuando floor snap
+no expone una colisión, exige is_on_floor y posición dentro del casco.
+Estar de pie sobre Ground fuera del bus ya NO cuenta como apoyo válido.
+
+g2.14/g2.6: distancia por índice entre las dos trayectorias (3600 pares):
+p95 = 3,5358579158783 m; máximo = 3,84059858322144 m.
+Retirado el supuesto de «0,25 m por vuelta»: la suma con signo de coordenadas
+no medía una distancia. El hallazgo y su consecuencia para M4 van a BACKLOG.
+
+g2.1: no se sostiene la explicación anterior del orden de escritura. La sonda
+original del revisor, conservada intacta, reproduce 0,1586 frente a 0,6009,
+pero toma muestras en fases distintas respecto de la escritura. Un observador
+añadido a ESE MISMO montaje conserva esas cifras y mide también después de
+todos los nodos: máximo 0,600858509540558 y p99 0,594772160053253 en AMBOS
+órdenes (1800 muestras; 12_audit_frame/before.json y CSV pareados).
+Con muestreo común, el KINEMATIC a saltos DE PIE de esta sonda carry da 0,6191
+en ambos modos. Un
+fixture con bus y tripulante reales, ambas variantes explícitas y muestreo
+común después de nodos, da 0,616669 en ambas. El test solicitado <0,3 para
+la señal sigue rojo. Véase 12_orden_de_escritura.md: no se ha fabricado un verde.
+
+VELOCIDAD ACTUAL: pico vuelta 66,7 km/h; en baches media 47,6, máximo 62,8,
+mínimo 34,6, 402 ticks (misma referencia de ronda 2). La medición EN RECTA
+66,5 km/h y 144,3 m/11,2 s hasta 80 es histórica, no se repitió en esta sesión.
+
+PROCEDENCIA Y AVISOS
+- 03_raw/carry_final.log:3 contiene WARNING «Jolt Physics job system exceeded
+  the maximum number of jobs». No había sido declarado. Se sospechó relación
+  con el caso STATIC patológico; no se probó causalidad y el log no permite
+  atribuirlo con certeza a una fila. Las corridas final_* no repiten el aviso.
+- 03_raw/codex_carry.log es INVÁLIDO: se corrió antes de importar NetAuthority
+  y contiene errores de carga de scripts. Sus cifras no validan el cambio.
+- codex_physics_* son diagnósticos con muestreo postnodos, NO la tabla final.
+  Sus *_speed.json fueron copiados de residuos anteriores en user:// y NO
+  son evidencia de esa corrida. Se usan solo los logs SPEED de final_*.
+- Los archivos carry_full_*/carry_final y CSV sin prefijo son el histórico
+  de ronda 2; walking usaba entonces la grabación equivocada.
+
+=== HISTÓRICO RONDA 2, SUPERSEDIDO POR LA TABLA Y MÉTODO DE ARRIBA ===
+Los criterios de máximo y las explicaciones del orden de escritura siguientes
+se conservan solo como contexto de revisión; no son el criterio vigente.
+
+03_client_carry_measurement.txt — paso 1 tras revisión 01
+Fecha UTC: 2026-09-15 (ronda 2) · rama m2/gate-two-instances · ANTES de construir la réplica.
+
+SONDA COMMITTEADA Y REPETIBLE (g0.2): src/tooling/run_carry_probe.gd — determinista, un proceso, --fixed-fps 60:
+  godot --headless --fixed-fps 60 --path . -s res://src/tooling/run_carry_probe.gd ++ window_s=60 ++ save_raw=1
+grabando primero la trayectoria real del bus (demo a fondo, 3600 muestras) y reproduciéndola sobre el bus congelado con los tres mecanismos: (a) STATIC manteniendo la última foto de 30 Hz (como hoy), (b) KINEMATIC manteniendo, (c) KINEMATIC + interpolación a 60 Hz entre las dos últimas fotos con una foto de latencia. La línea base es el ANFITRIÓN con el bus real simulado (sin réplica), misma ventana. Dos regímenes: de pie y CAMINANDO el pasillo (drive_move acotado en el marco del bus, sin salir por el hueco trasero).
+
+Determinismo demostrado, no supuesto:
+- El checksum histórico difería (53475,8969 frente a 54368,3575), pero no era una distancia; la interpretación «0,25 m por vuelta» queda retirada. Las réplicas walking de esta tabla histórica usaban incorrectamente la trayectoria standing. La tabla actual y sus distancias por índice están al comienzo del archivo.
+- Dos corridas completas de la sonda dan TODAS las cifras idénticas al cuarto decimal (logs en 03_raw/carry_full_1.log y carry_full_2.log). Y la corrida final con la sonda ya commiteada reproduce esas mismas cifras.
+
+Métrica: por tick de física, en el marco del bus — deriva respecto al punto de asiento (se reporta, no se juzga: no es acotada, g0.1) y DESLIZAMIENTO POR TICK (lo que el gate llama jitter). Violaciones del casco: bajo el piso (y_local < −0,65, con profundidad máxima y racha) y fuera del interior (|x|>1,15, z fuera de [−3,8,3,8], y>1,30). El hueco de la puerta no interviene en estos regímenes (la tripulante no sale del pasillo); queda para el modo gate.
+
+=== LA TABLA (ventana 60 s, 3600 ticks; idéntica en las tres corridas) ===
+
+DE PIE:
+| Fila | deriva máx / p95 (m) | desliz./tick máx / p95 (m) | sin suelo | bajo piso | fuera |
+|---|---|---|---|---|---|
+| Anfitrión, bus REAL (línea base) | 0,387 / 0,334 | 0,0782 / 0,0040 | 0 | 0 | 0 |
+| (a) STATIC (hoy) | 90,243 / 88,695 | 2,3896 / 1,5500 | 14 | 1961 (prof. 8,04, racha 326) | 3517 |
+| (b) KINEMATIC sin interpolar | 0,627 / 0,532 | 0,6191 / 0,5919 | 0 | 0 | 0 |
+| (c) KINEMATIC + interpolación | 0,387 / 0,335 | 0,0401 / 0,0060 | 0 | 0 | 0 |
+
+CAMINANDO (la deriva mide el paseo guionizado, por eso no se juzga):
+| Fila | deriva máx / p95 (m) | desliz./tick máx / p95 (m) | sin suelo | bajo piso | fuera |
+|---|---|---|---|---|---|
+| Anfitrión, bus REAL | 3,147 / 2,863 | 0,1432 / 0,0675 | 0 | 0 | 0 |
+| (a) STATIC | 60,884 / 56,674 | 1,4861 / 0,8290 | 39 | 1489 (prof. 7,00, racha 260) | 3451 |
+| (b) KINEMATIC sin interpolar | 3,216 / 2,711 | 0,6873 / 0,6323 | 16 | 0 | 0 |
+| (c) KINEMATIC + interpolación | 3,145 / 2,852 | 0,1061 / 0,0679 | 0 | 0 | 0 |
+
+Contra el criterio duro de D95 (pico de deslizamiento del cliente ≤ 1,3× el del anfitrión en la misma corrida):
+- de pie: (b) 0,6191/0,0782 = 7,9× FALLA · (c) 0,0401/0,0782 = 0,51× PASA.
+- caminando: (b) 0,6873/0,1432 = 4,8× FALLA · (c) 0,1061/0,1432 = 0,74× PASA.
+- (a) es catastrófica en las dos (la tripulante sale del casco; ~90 m de deriva).
+La interpolación queda incluso por DEBAJO de la línea base en el pico (es un filtro de un periodo sobre los golpes más bruscos de los baches): el cliente no es peor que el anfitrión, que es lo que el criterio mide.
+
+EXPLICACIÓN HISTÓRICA RETIRADA: no se establece un mecanismo del motor a partir de estas fases de muestreo. El requisito de revisión 02 pide physics_frame; el receptor lo implementa, pero la contraprueba común de ronda 3 no demuestra todavía su ventaja. No se recomienda aquí un nodo _physics_process como remedio.
+
+DIFERENCIA CON LA SONDA DEL REVISOR: la reconstrucción reproduce sus cifras; el código ahora disponible mide después de escribir en modo frame y antes de escribir en modo nodo. La explicación «mete la velocidad en el mismo paso» se retira. La evidencia 12 separa reproducción de cifras y comprobación física en una fase común.
+
+=== VELOCIDAD (la sección rehecha) ===
+
+| Medición | Valor (esta sonda) | Valor (revisor) |
+|---|---|---|
+| Pico de la vuelta de la demo | 66,7 km/h | 66,7 km/h |
+| Cruce del campo de baches en la vuelta (AABB x∈[24,36], z∈[2,46], 402 ticks) | media 47,6 · pico 62,8 · mínimo 34,6 km/h | media 46,8 · pico 62,8 · mínimo 34,6 (380 ticks) |
+| Ataque EN RECTA por el carril de los baches, al primer bache | 66,5 km/h tras 97,1 m de carrerilla | 66,6 km/h, ~102 m |
+| ¿80 km/h con el bus actual? | SÍ: a los 144,3 m y 11,2 s de recta (sigue subiendo) | sí: 144,2 m y 11,0 s |
+
+Conclusiones:
+- "80 km/h no se alcanza en este Playground" era impreciso: se alcanza sobre el suelo de 200×200; lo que no cabe es la carrerilla antes del primer bache (144 m necesarios frente a ~102 disponibles en el carril).
+- El número del criterio no es el pico de la vuelta (66,7) sino el cruce de los baches: 47,6 de media siguiendo el circuito.
+- RECORRIDO PROPUESTO PARA EL MODO GATE: atacar el campo de baches EN RECTA por el carril (x≈30) en vez de seguir el circuito — el cruce sube de ~47 a 66,5 km/h sin tocar ninguna escena. El hueco hasta los 80 del maestro queda en un 17 %, declarado, con la distancia que faltaría (144 m necesarios, ~102 disponibles).
+
+=== Qué se sostiene de la medición de la ronda 1 (tiempo real, dos procesos) y qué no ===
+
+- (a) STATIC: SE SOSTIENE y con el mismo número (90,0 m de deriva entonces, 90,2 m ahora): un STATIC no transporta nada y la tripulante sale del casco.
+- (b) KINEMATIC sin interpolar: SE SOSTIENE el veredicto (el jitter es real e incumple el criterio); el número cambia porque ahora entiendo el mecanismo (el retardo de un paso de la velocidad de plataforma).
+- (c) interpolado: NO SE SOSTIENE el 0,099/0,099 — máx igual a p95 significaba que la tripulante se había quedado quieta (atascada contra la geometría, como señaló el revisor): medía el punto donde se atascó, no la estabilidad del bus. Los números honestos de (c) son los de esta tabla (0,387/0,335 de pie — igual a la línea base, como predijo el revisor: la interpolación quita jitter, no deriva).
+- Velocidad: se sostiene el pico de 66,7 pero era el número equivocado para el criterio; la sección de velocidad queda rehecha arriba.

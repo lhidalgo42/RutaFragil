@@ -1,0 +1,3 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ORDER path=step   order=before   | slip p95=0.5751 p99=0.5948 p99.9=0.5997 max=0.6009 | platform velocity received/true: mean=0.00 | zero-platform ticks 900/1800

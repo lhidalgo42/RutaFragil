@@ -1,0 +1,50 @@
+[
+  {
+    "run": 1,
+    "exit": 0,
+    "expected_tests": 241,
+    "executed": 241,
+    "gdunit_exit": 0,
+    "imports": [
+      0,
+      0
+    ],
+    "net_exit": 0,
+    "source_commit": "25c7a72206666cccfd748ee67c1a3de94068373b",
+    "captured_log_sha256": "c2cb3372f26d90607033fa97f3449a0d292450df09bb94cde6412c067ee1096b",
+    "log_sha256": "57ceae6b40caf7c86424f6e354d0fee295ca1be116c155aa8a8b8a71813da96f",
+    "log_sha256_encoding": "UTF-8, LF normalized as stored by Git attributes"
+  },
+  {
+    "run": 2,
+    "exit": 0,
+    "expected_tests": 241,
+    "executed": 241,
+    "gdunit_exit": 0,
+    "imports": [
+      0,
+      0
+    ],
+    "net_exit": 0,
+    "source_commit": "25c7a72206666cccfd748ee67c1a3de94068373b",
+    "captured_log_sha256": "f8836fd6d379451e9f693698851d1489242b135247f0485ea503a9e6204bab75",
+    "log_sha256": "e6521d814ff5b7960481501598ec9ac34914d737448a82949711315e55830772",
+    "log_sha256_encoding": "UTF-8, LF normalized as stored by Git attributes"
+  },
+  {
+    "run": 3,
+    "exit": 0,
+    "expected_tests": 241,
+    "executed": 241,
+    "gdunit_exit": 0,
+    "imports": [
+      0,
+      0
+    ],
+    "net_exit": 0,
+    "source_commit": "25c7a72206666cccfd748ee67c1a3de94068373b",
+    "captured_log_sha256": "b248cd8bf0210cf2b3a443a5e590063450df5eb4e94460eafc4d2bd4aedf1fd5",
+    "log_sha256": "45898ff7f05b2de5d4472bf3af09f9fc02e6f9904d888914bda0a5d4f8046f86",
+    "log_sha256_encoding": "UTF-8, LF normalized as stored by Git attributes"
+  }
+]

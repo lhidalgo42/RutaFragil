@@ -1,5 +1,117 @@
 # DECISIONS.md — Ruta Frágil
 
+**D98, decisión del dueño (2026-09-17):** que la carga empuje a la tripulación
+es juego. La [revisión 06](docs/revisiones/M2-GATE_revision_06.md) documenta la
+expulsión; la resolución del dueño en
+[D98 y D95 v5](docs/planes/M2-GATE_plan.md#4-decisiones-de-esta-tarea) descarta
+la inmunidad propuesta por el revisor: se mantienen réplicas FREE cinemáticas
+y colisión tripulante–carga. No se implementa la opción B. Se autoriza corregir
+la pérdida de inercia aérea: conservar la velocidad acarreada del último tick
+con apoyo y sumar el paseo; al aterrizar el motor retoma el acarreo.
+Se mide antes/después el salto a 80 km/h de pie y caminando, sobre baches,
+el empujón de caja lenta y el control sin carga con presión −0,5.
+El límite de 0,30 m en los saltos en recta se aplica al residuo respecto al
+paseo esperado, según la aclaración del
+[prompt de ronda 6](docs/planes/M2-GATE_ronda6_prompt_codex.md), no a toda la
+distancia recorrida durante el vuelo. Se autoriza el trabajo; no se acredita
+aún su resultado.
+
+Se acepta y reporta la asimetría actual: la carga rígida no desplaza a la
+tripulante del anfitrión como lo hace la réplica cinemática con la del cliente.
+El empujón simétrico en anfitrión y single queda en M3/BACKLOG. Los empujones
+por correcciones de réplica también se cuentan; solo si el dueño los siente
+injustos se medirá un tope de velocidad de corrección relativo al bus.
+No se suprime la colisión ni se cambia bus, suspensión o tuning.
+
+**D95 v5 / D96, vigentes desde ronda 6 (2026-09-17):** primera condición:
+cero ticks fuera de `BusInterior.is_inside_local` en ambas tripulantes locales.
+El apoyo es descriptivo; se retira el umbral del 95 %. Una pérdida de apoyo
+con contacto de carga en los tres ticks anteriores cuenta como empujón:
+se reportan número, recuperación, duración y desplazamiento local máximos;
+ninguno puede durar más de 45 ticks. El p99 cliente ≤1,5× anfitrión de la misma
+corrida se calcula solo con apoyo y sin contacto de carga en esos tres ticks,
+y se juzga solo con al menos diez ciclos confirmados por instancia.
+Los percentiles sin filtrar se conservan como descriptivos. Continúan el
+observador postnodos 1000, penetración local máxima 5 cm y rachas ≤3 ticks
+por encima de 3 cm, errores remotos con interpretación de latencia, FPS p1
+con ventana/VSync off/max_fps=0 y los demás controles del plan.
+
+D96 conserva **dos fallos válidos**, corridas 2 y 4; el tercero no se ha
+consumido. Sus CSV dan `hull_exit_ticks` anfitrión/cliente **0/16.784** y
+**0/14.494**, respectivamente. El experimento `r5_final_300` da **0/13.066**
+y no cuenta como iteración. El p99 filtrado v5 no se reconstruye con esos
+CSV: falta contacto de carga por tick.
+D98 autoriza **una sola ronda experimental adicional**. La precondición es
+exactamente 300 s, cero salidas, ningún empujón >45 ticks y ≥10 ciclos por
+instancia, sobre commit limpio y configuración idénticos al eventual tercer
+gate, sin cambios intermedios. Si no cumple, se para y el revisor redacta el
+plan B con D98; si la tercera iteración falla, se aplica D96. No hay otra
+ronda posterior. El gate humano D97 sigue pendiente.
+
+**Histórico de rondas 4–5:** los umbrales y estados de autorización siguientes
+quedan sustituidos por D95 v5/D98; se conserva lo decidido y observado entonces.
+
+**Resultado histórico de ronda 5 (antes de D98):** el experimento300s sobre25c7a72 incumple la
+precondición D: apoyo cliente27,333333 %, pérdida final13078ticks y último
+tick sin apoyo. Se detiene la experimentación conforme a E; dos fallos
+válidos D96, tercero sin consumir. El revisor redactará el planB. El arreglo
+de fase se conserva con test; el acarreo explícito se rechaza por romper
+cero aire sobre baches. [Evidencia18](docs/evidencia/M2-GATE/18_experiment_300.md).
+
+**D95/D96, ronda 5 (2026-09-17):** [revisión 05](docs/revisiones/M2-GATE_revision_05.md)
+introduce un umbral provisional de reposo de 3 cm: la racha cuenta solo
+profundidades estrictamente mayores; el máximo permitido sigue en 5 cm.
+Histogramas excluyen cuerpos no simulados, conservando diagnóstico separado.
+Antes del tercer intento: 300 s completos, misma configuración y commit limpio,
+ambos peers con apoyo ≥95 %, último tick apoyado y pérdidas ≤30 ticks.
+La propuesta de que esta sea la última ronda de experimentos queda PENDIENTE
+DEL DUEÑO en el plan; el ejecutor la aplica como límite provisional conforme
+al prompt. Si no hay experimento apto, para; el revisor redacta el plan B.
+No se cambia ADR-003 ni se aprueba jugabilidad.
+
+**D95, corrección autorizada por revisión 04 (2026-09-16):** primero se juzga
+el apoyo de la tripulante local en el bus: menos del 95 % de los ticks falla
+por «la tripulante no puede viajar». En ese caso el desplazamiento local se
+conserva como dato descriptivo, no se cita ni se juzga como jitter. El cociente
+p99 ≤ 1,5× solo se juzga si ambas instancias cumplen la precondición de apoyo.
+La penetración se juzga exclusivamente en cuerpos simulados localmente:
+tripulante propia no sentada y carga FREE dinámica con autoridad local;
+réplicas, HELD y STRAPPED quedan en diagnóstico separado. Rendimiento solo
+evaluable con ventana, VSync desactivado y `Engine.max_fps=0`; no se borran los
+FPS históricos, se retira su uso como motivo de fallo. Se mantienen punto de
+muestreo 1000, diez ciclos por peer, errores remotos y demás criterios.
+Los experimentos de reducción se identifican expresamente y no consumen D96.
+La corrida 2 conserva su fallo válido por falta de apoyo; sus datos también
+registran penetración de las tripulantes locales (0,074849 m/7 ticks y
+0,200542 m/58 ticks), discrepancia con «queda un motivo» de la revisión.
+
+**Resolución M2-GATE, 2026-09-16 (no es un ADR nuevo):** g2.1 queda retirado
+por [revisión 03](docs/revisiones/M2-GATE_revision_03.md). Se elimina su test;
+no se ajusta el umbral ni se registra una ventaja física del punto de escritura.
+NetBusSync conservó inicialmente la conexión a physics_frame como elección de implementación.
+Esa señal se emite antes de procesar los nodos de física (Godot 4.7.2).
+D95 exige el mismo observador independiente para anfitrión, cliente y todas
+las filas: `_physics_process`, `process_physics_priority=1000` y
+`process_priority=1000`, después de los escritores y del movimiento. El
+observador solo lee; cada JSON y cada tabla declaran ese punto. En 4.7 la
+prioridad que ordena callbacks físicos es process_physics_priority, no
+process_priority. Las cifras históricas de otras fases no son comparables.
+D91–D98 viven en el plan; contrato en evidencia `00_phase0_contract.md` y
+trazas preservadas en `12_orden_de_escritura.md`. El gate humano sigue pendiente.
+
+**Integración M2-GATE, 2026-09-16:** la corrida 1 fue inválida (cliente 5 ciclos,
+expulsado). El receptor reiniciado por llegada produjo saltos de 0/0,6167 m
+en una trayectoria analítica de 18,5 m/s con intervalos de entrega 1/3 ticks.
+Se sustituye por cola de tiempos del origen y reloj continuo, con margen
+de dos snapshots (66,7 ms); el error remoto conserva esa latencia, sin compensarla.
+Los preflights 03/04 mantienen el observador a 1000 y comparan la escritura:
+la variante de nodo a -100 mantuvo el cliente dentro durante 45 s, pero no
+cumplió D95 ni los ciclos. Se elige esa variante para la siguiente corrida;
+no se restablece g2.1 ni se afirma una ley del motor. Carga escribe a -90.
+La validación de alcance reconstruye la mano del peer en el marco del bus de
+su snapshot; el render remoto sigue recibiendo transformadas de mundo.
+Fuera del bus la mano conserva coordenadas de mundo. No cambia el alcance.
+
 Registro de decisiones del proyecto. Jerarquía: maestro v0.2 > briefing v0.2 > plan de tarea (`docs/planes/`).
 
 ## ADR-000..009
@@ -121,5 +233,8 @@ Copia del D-log del briefing (`docs/CONTEXTO_RUTA_FRAGIL_v0.2.md` §3); si difie
 | D88 | El gate duro de M2 es la tarea siguiente (`M2-GATE`), no parte de T2.3 | T2.3 entrega el criterio de un jugador con carga (la vuelta con dos amarrados, dos sueltos y la tripulante caminando: cero atravesamientos, cero fuera por paredes/parabrisas, deriva de amarrados 0,000, 60+ fps). El gate con dos instancias necesita replicar tripulantes y paquetes (subconjunto de ADR-006 que nada antes de M4 construye): su propio plan, justo después. **Decisión del dueño.** | Meter la replicación aquí triplica la ronda y mezcla dos preguntas: "¿funcionan los tres estados?" y "¿sobreviven a la red?". |
 | D89 | El parabrisas no es una abertura | `WallFront` mide 0,8 m (de −0,6 a 0,2) y encima no había colisión: omisión del greybox de T2.1, no una puerta. `BoxShape3D` 2,5 × 1,1 × 0,1 en (0, 0,75, −3,85) añadida como texto con malla translúcida y pin en el test de escena. La puerta lateral y el hueco trasero se quedan abiertos (son puertas; abrir y cerrar es M3). La métrica de escapes se parte: "fuera por paredes o parabrisas" = cero; "fuera por puertas" = se cuenta y se reporta, no se prohíbe. | Las salidas medidas en el paso 1 eran balísticas por las aberturas; cerrar la que no es puerta y contar las que sí lo son. |
 | D90 | Esquema de capas físicas y el rayo de suspensión solo lee `world` (enmienda de alcance autorizada por el dueño 2026-09-15, tras diagnóstico medido) | Capa 1 `world` (suelo, rampa, baches, el propio bus), capa 2 `cargo`, capa 3 `crew`, en `project.godot [layer_names]`. Tripulante: `collision_layer = 4`, máscara 3 (mundo+carga). Paquete: capa 2, máscara 7 (mundo+carga+tripulante). Bus: capa 1, máscara 1 (sin cambio). El rayo de suspensión (`bus.gd`) fija `query.collision_mask = WORLD_LAYER` (constante nombrada con el porqué en comentario). **Medido:** sin máscara, el rayo leía una caja en la columna de una rueda (la delantera derecha cae en el hueco de la puerta) como suelo a 0,2 m → ~54 kN de muelle en una esquina y el bus parado voló a y = 3,84 m; la vuelta con carga daba exit 100. Con la línea: 19/19 en verde y la vuelta limpia. La regla "colisionan si la máscara de CUALQUIERA incluye la capa del otro" quedó demostrada sin querer: las cajas con máscara 3 descansan sobre el bus (máscara 1) — va citada, no asumida. | La columna de rueda cae en la puerta: la tripulante la pisa a cada abordaje y las cajas ruedan por ella; la línea sola no bastaba. Con capas no hace falta excluir RIDs por tick ni ahora ni con cuatro peers en M4. |
+| D98 | **La carga puede empujar a la tripulación: es característica del juego, no defecto** (decisión del dueño, 2026-09-17, sobre [revisión 06](docs/revisiones/M2-GATE_revision_06.md)) | No se construye inmunidad: ni réplicas de carga dinámicas, ni supresión de la colisión tripulante–carga, ni opción B. **Lo que sí era defecto y se arregló: la pérdida de inercia en el aire.** `drive_move()` sobrescribía cada tick `velocity.x/z` con la de paseo, así que al despegar la tripulante conservaba la velocidad del bus **un tick** y al siguiente se quedaba a ~1,5 m/s en el mundo mientras el bus se iba a 62 km/h; por eso **las cinco expulsiones de M2-GATE fueron definitivas**, y no era de red: afectaba igual al anfitrión y a un jugador. Ahora, al perder el suelo se suma una vez la velocidad de la última plataforma apoyada (`platform_on_leave = DO_NOTHING`, reserva propia) y el input añade el paseo encima; aterrizar o sentarse la borra. Medido: residuos de 0,0317 m de pie, 0,0032 m caminando y 0,0121 m en baches, saltando a 80 km/h, con los controles sin carga en cero ticks en el aire. `slide_on_ceiling = false` recupera 0,32 m que se perdían al rozar el techo. **Asimetría declarada y aceptada:** la carga rígida del anfitrión no puede mover a su tripulante (un `CharacterBody3D` es inamovible para cuerpos rígidos) y las réplicas cinemáticas del cliente sí mueven a la suya; el empujón simétrico es tarea de M3. **Límite declarado ([evidencia 21](docs/evidencia/M2-GATE/21_estimulo_del_banco.md)):** sostenido el tiempo suficiente, un empujón saca a la tripulante del bus — en el banco con déficit permanente, 695 ticks fuera. En lo medido no ocurre: los doce empujones reales de 120 s se recuperan en 1–3 ticks. | El dueño decide qué es juego. El revisor decide qué es medible: que te empuje una caja es juego; quedarte en la carretera a 60 km/h es física mal hecha. |
+| D99 | **El fondo abierto del bus es la PUERTA DE CARGA, y perder carga suelta por ahí es juego** (decisión del dueño, 2026-09-17: «sí es una puerta, no la detallé en el plan») | **Geometría medida, que hasta hoy no estaba escrita en ningún sitio:** el suelo mide 2,5 × 7,8 y termina en `z = 3,9`; atrás hay dos paredes de **0,55 m de ancho** en `x = ±0,975`, `z = 3,85`, altura 1,9 desde la superficie del suelo. Entre ellas queda un **hueco de 1,4 m de ancho por 1,9 m de alto**, y la caja mide 0,4 m: pasa holgada. **Consecuencia, comprobada en la sesión del dueño del 2026-09-17:** cuando el bus acelera, una caja suelta se queda atrás respecto al suelo —física correcta— y se desliza hacia el fondo hasta salir. Las cuatro salieron por el mismo sitio, a ras de suelo, con `z` entre 4,5 y 5,8; una a los **5,4 s**, sin que nadie la tocara. No se añade bordillo, panel ni rampa: **no es una omisión del greybox como el parabrisas de D89**, es la puerta. **Lo que sí queda establecido:** que la carga suelta se pierda es la razón de ser de las correas (maestro §5.1, amarrar es el bucle central), así que es contenido, no defecto; el criterio del gate **no** cuenta salidas de carga por la puerta; y el hueco trasero se documenta en `src/vehicle/bus_interior.tscn` para que nadie lo «arregle» creyendo que falta una pared. Si alguna vez se quiere una puerta cerrable, es mecánica de M3, no una corrección. | Lo había diagnosticado como posible omisión por analogía con D89. El dueño aclara que es intencional; lo que faltaba era escribirlo, y eso sí era un defecto — del plan, no del juego. |
+| D97 — CUMPLIDA | **Gate humano superado el 2026-09-17** | El dueño jugó la instancia cliente con ventana mientras el anfitrión conducía. Veredicto literal: «se siente bien al estar en el auto manejando». La única objeción que planteó —cajas que «saltan lejos»— se midió sobre su propio rastro y resultó ser la puerta de carga (D99), no un fallo del acarreo: `Package_3` salió a los 5,4 s sin que nadie la tocara. **Limitación declarada:** cerró la ventana antes de los 300 s, así que la sesión no fue de cinco minutos completos; el dueño dio el gate por bueno igualmente. Con esto **ADR-003 queda validado en su opción A** y M2 cierra. | El riesgo #1 del proyecto se valida con una persona sintiendo, no con una tabla; y la tabla sola nunca habría encontrado que la queja era una puerta. |
 
 **D32 — hash del commit clonado:** `08ffc7c65b61b1b2edd545616061a99973c13ce1` (tag `v6.2.1` del repo `godot-gdunit-labs/gdUnit4`).

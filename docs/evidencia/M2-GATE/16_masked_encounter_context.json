@@ -1,0 +1,38 @@
+{
+  "command": [
+    "C:\\Godot\\4.7.2\\Godot_v4.7.2-stable_win64_console.exe",
+    "--headless",
+    "--fixed-fps",
+    "60",
+    "--path",
+    "C:\\Users\\Leo\\Documents\\RutaFragil",
+    "-s",
+    "res://src/tooling/run_platform_adoption_probe.gd",
+    "++",
+    "output=res://docs/evidencia/M2-GATE/16_bank",
+    "label=masked_encounter",
+    "candidate=masked",
+    "ratio=0.665",
+    "walking=0",
+    "box_z=1.5",
+    "box_x=0.3"
+  ],
+  "exit": 0,
+  "source_commit": "6454cea70c4bd00aeb7cc93bac54401897761776",
+  "source_dirty": [
+    " M src/net/net_cargo_sync.gd",
+    " M src/tooling/gate_config.gd",
+    " M src/tooling/gate_launcher.gd",
+    " M src/tooling/gate_metrics.gd",
+    " M src/tooling/gate_metrics_util.gd",
+    " M tests/net/gate_metrics_test.gd",
+    "?? src/tooling/cargo_release_phase_probe.gd",
+    "?? src/tooling/gate_readiness.gd",
+    "?? src/tooling/platform_adoption_probe.gd",
+    "?? src/tooling/platform_probe_crew.gd",
+    "?? src/tooling/platform_probe_driver.gd",
+    "?? src/tooling/run_platform_adoption_probe.gd",
+    "?? tests/net/cargo_release_phase_test.gd",
+    "?? tests/net/gate_readiness_test.gd"
+  ]
+}

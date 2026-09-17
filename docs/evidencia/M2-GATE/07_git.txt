@@ -1,0 +1,66 @@
+M2-GATE ronda 3b — ANTES del commit de cierre de evidencia
+
+Rama: m2/gate-two-instances
+HEAD de código/envoltorios: 95455f573e2eddc6a7ce08035fd8c7199c2a49dc
+main: 2b16e99ce9a485dc5342d55774d7d33f6d2a9f2c (sin merge ni cambios).
+Base indicada por el dueño: bc2323fd16e4d1eddaaba8b2e40753645c1b2165.
+6002a11 fue el primer commit de este relevo: conserva tal cual revisión03 y
+prompt3b. Fase0 en un commit, 61c8c5d. A y B tienen commits separados, también
+sus correcciones de marcos/autoridad. El coordinador integra herramientas.
+
+COMMITS
+6002a11e061e868b7cd11e1b96b173f0c9757899 docs: preserve reviewer withdrawal of g2.1 and phase-zero handoff
+61c8c5d8e9a1c9b5adb4d1935a6366c4e08f70fb fix: close M2 gate phase zero with declared sampling and authority lookups
+3f1d17ecd216b72cf3da37e36bc26900d1fb4866 feat(net): spawn and interpolate one local-authority crew per peer
+53901a455c03555c8a0a6fb9be1a8cfdf32f7c93 feat(net): replicate cargo states and validate host authority transfers
+469e28c372eebbb51a469c463dcf72019d3bd0f9 fix(net): validate held snapshots and allow ground drops beside a moving bus
+cd76dc51a83e4962f9a7fcd6c11f3654a177f5f3 feat(tooling): run the two-instance gate with declared observation and metrics
+ff1e96ed04b8432f5f4933750731826fe66795e8 fix(net): preserve crew interaction frame alongside world snapshots
+078e36c80c69eb053c701434ac84bc0a2f7ee8a0 fix(net): validate cargo reach in the sender bus frame
+dabd154fa741c3471a4066e5154622a3699753e1 fix(net): interpolate bus snapshots on a continuous source timeline
+9a4be92341ab1cd0ebcdc6a7c3adb24237e5ea61 fix(net): replicate bus velocity as interpolation reference data
+7762949caa18271b10f23da965d490a75e3d1a44 fix(crew): use the replicated bus reference when releasing aboard
+d237f8fed09fff979ac0862b859f8c755b69c91d fix(cargo): preserve world drop velocity with a frozen client bus
+000c52f9604edf3c0f8681e369f53b39ca719b25 test(gate): record first valid D95 failure and expose render configuration
+47c3b410eb3295d9201b60917117bf5fc21d990d fix(tooling): bound the Bash gate launcher independently of Godot ticks
+95455f573e2eddc6a7ce08035fd8c7199c2a49dc fix(tooling): retain the gate process exit code for short runs
+
+ESTADO ANTES (solo documentación/evidencia por cerrar)
+ M BACKLOG.md
+ M docs/evidencia/M2-GATE/01_versions.txt
+ M docs/evidencia/M2-GATE/02_run_tests.txt
+ M docs/evidencia/M2-GATE/04_gate_iteration_1.md
+ M docs/evidencia/M2-GATE/04_gate_iteration_2.md
+ M docs/evidencia/M2-GATE/04_iteration_ledger.json
+ M docs/evidencia/M2-GATE/04_timing_resolution.md
+ M docs/evidencia/M2-GATE/08_no_verificado.txt
+ M docs/evidencia/M2-GATE/09_limits.txt
+ M docs/evidencia/M2-GATE/summarize_gate.py
+?? docs/evidencia/M2-GATE/02_final_run_1.log
+?? docs/evidencia/M2-GATE/02_final_run_2.log
+?? docs/evidencia/M2-GATE/02_final_run_3.log
+?? docs/evidencia/M2-GATE/02_final_runs.json
+?? docs/evidencia/M2-GATE/02_final_unsafe.log
+?? docs/evidencia/M2-GATE/02_final_unsafe_result.json
+?? docs/evidencia/M2-GATE/04_csv_reduction_check.json
+?? docs/evidencia/M2-GATE/04_gate_iteration_3.md
+?? docs/evidencia/M2-GATE/04_iteration_3_context.txt
+?? docs/evidencia/M2-GATE/04_iteration_3_wrapper.log
+?? docs/evidencia/M2-GATE/04_raw/iteration_3/
+?? docs/evidencia/M2-GATE/04_verdict.md
+?? docs/evidencia/M2-GATE/05_manual_02_wrapper.log
+?? docs/evidencia/M2-GATE/05_raw/manual_02/
+?? docs/evidencia/M2-GATE/05_windowed.md
+?? docs/evidencia/M2-GATE/06_final_demo.log
+?? docs/evidencia/M2-GATE/06_final_demo_stderr.log
+?? docs/evidencia/M2-GATE/06_final_handling.log
+?? docs/evidencia/M2-GATE/06_final_handling_stderr.log
+?? docs/evidencia/M2-GATE/06_final_net_long.log
+?? docs/evidencia/M2-GATE/06_final_net_long_stderr.log
+?? docs/evidencia/M2-GATE/06_final_results.json
+?? docs/evidencia/M2-GATE/06_regression.md
+?? docs/evidencia/M2-GATE/06_runner_initial_result.json
+?? docs/evidencia/M2-GATE/10_windowed_clean_log.md
+
+La parte DESPUÉS se conserva en 07_git_after.txt, tras commit e import fresco.
+No se infiere limpieza de este listado previo: se verifica expresamente después.

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+printf "accelerated watchdog: original args %s\n" "$*" >&2
+printf "1\n"

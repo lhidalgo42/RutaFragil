@@ -1,0 +1,50 @@
+class_name NetBusSync
+extends Node
+
+## D92: RPC reception only buffers. The physics-frame callback owns writes
+## to the kinematic bus, including the non-interpolated packet-loss path.
+var bus: RigidBody3D = null
+var interpolate: bool = true
+var network_enabled: bool = false
+var snapshot_hz: float = 30.0
+var _previous: Transform3D = Transform3D.IDENTITY
+var _latest: Transform3D = Transform3D.IDENTITY
+var _received: bool = false
+var _elapsed: float = 0.0
+var _send_elapsed: float = 0.0
+
+
+func _ready() -> void:
+	get_tree().physics_frame.connect(_on_physics_frame)
+
+
+func _on_physics_frame() -> void:
+	advance(1.0 / float(Engine.physics_ticks_per_second))
+
+
+func accept_snapshot(at: Transform3D) -> void:
+	_previous = _latest if _received else at
+	_latest = at
+	_elapsed = 0.0
+	_received = true
+
+
+func advance(delta: float) -> void:
+	if not is_instance_valid(bus):
+		return
+	if network_enabled and multiplayer.is_server():
+		_send_elapsed += delta
+		if _send_elapsed >= 1.0 / snapshot_hz:
+			_send_elapsed = 0.0
+			_receive.rpc(bus.global_transform)
+		return
+	if not _received:
+		return
+	var weight: float = clampf(_elapsed * snapshot_hz, 0.0, 1.0)
+	bus.global_transform = _previous.interpolate_with(_latest, weight) if interpolate else _latest
+	_elapsed += delta
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _receive(at: Transform3D) -> void:
+	accept_snapshot(at)

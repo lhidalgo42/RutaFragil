@@ -1,0 +1,22 @@
+﻿{
+    "source_commit":  "19836c7497166927b4c298f3bde47f15835b1ed1",
+    "arguments":  [
+                      "--headless",
+                      "--path",
+                      "C:\\Users\\Leo\\Documents\\RutaFragil",
+                      "-s",
+                      "res://src/tooling/run_net_scenario.gd",
+                      "++",
+                      "mode=gate",
+                      "role=launcher",
+                      "experiment=1",
+                      "seconds=60",
+                      "cargo=on",
+                      "walk_only=0",
+                      "vsync=off",
+                      "human=none",
+                      "windowed=both",
+                      "output=res://docs/evidencia/M2-GATE/13_raw/r4_transition_fix_01"
+                  ],
+    "exit":  0
+}

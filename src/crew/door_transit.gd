@@ -27,17 +27,17 @@ func _ready() -> void:
 
 
 func _find() -> void:
-	var crew_node: Node = get_tree().get_first_node_in_group("crew")
-	if crew_node is CrewMember:
-		_crew = crew_node
+	_crew = NetAuthority.local_crew(get_tree())
+	_bus = null
 	var bus_node: Node = get_tree().get_first_node_in_group("bus")
 	if bus_node is RigidBody3D:
 		_bus = bus_node
-	if _crew == null or _bus == null:
-		push_error("DoorTransit: needs one 'crew' and one 'bus' node")
 
 
 func _physics_process(_delta: float) -> void:
+	# Spawn delivery can follow _ready; absence is pending, not an error.
+	if not NetAuthority.is_local(_crew) or not is_instance_valid(_bus):
+		_find()
 	if _crew == null or _bus == null or _crew.seated:
 		return
 	var local: Vector3 = _bus.global_transform.affine_inverse() * _crew.global_position

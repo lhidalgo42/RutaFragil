@@ -1,0 +1,56 @@
+[
+  {
+    "folder": "preflight_03",
+    "role": "host",
+    "rows": 2700,
+    "slip_samples": 2699,
+    "maximum_rounding_error_m": 4.813042048246174e-10,
+    "pass_check": true,
+    "off_bus_support_ticks": 22
+  },
+  {
+    "folder": "preflight_03",
+    "role": "client",
+    "rows": 2700,
+    "slip_samples": 2699,
+    "maximum_rounding_error_m": 3.50340201293875e-10,
+    "pass_check": true,
+    "off_bus_support_ticks": 1667
+  },
+  {
+    "folder": "preflight_04",
+    "role": "host",
+    "rows": 2700,
+    "slip_samples": 2699,
+    "maximum_rounding_error_m": 4.905987005532353e-10,
+    "pass_check": true,
+    "off_bus_support_ticks": 22
+  },
+  {
+    "folder": "preflight_04",
+    "role": "client",
+    "rows": 2700,
+    "slip_samples": 2699,
+    "maximum_rounding_error_m": 2.9542730067833034e-10,
+    "pass_check": true,
+    "off_bus_support_ticks": 24
+  },
+  {
+    "folder": "iteration_2",
+    "role": "host",
+    "rows": 18000,
+    "slip_samples": 17999,
+    "maximum_rounding_error_m": 2.6856040308276263e-10,
+    "pass_check": true,
+    "off_bus_support_ticks": 79
+  },
+  {
+    "folder": "iteration_2",
+    "role": "client",
+    "rows": 18000,
+    "slip_samples": 17999,
+    "maximum_rounding_error_m": 3.350520971778792e-10,
+    "pass_check": true,
+    "off_bus_support_ticks": 16806
+  }
+]

@@ -1,0 +1,201 @@
+{
+	"activity": {
+		"authority_transfers": 0.0,
+		"complete_cycles": 19.0,
+		"hold_denied": 0.0,
+		"hold_granted": 20.0,
+		"hold_requested": 20.0,
+		"release": 19.0,
+		"strap_denied": 0.0,
+		"strap_ok": 20.0,
+		"unstrap": 20.0
+	},
+	"bus_interpolation_delay_s": 0.0666666666666667,
+	"bus_remote_error": {
+		"applicable": false,
+		"local_samples": 451,
+		"matched": 0,
+		"max_deg": null,
+		"max_m": null,
+		"p95_deg": null,
+		"p95_m": null,
+		"status": "not_applicable",
+		"unmatched": 0
+	},
+	"cameras": {
+		"max": 1.0,
+		"min": 1.0
+	},
+	"cargo_remote_error": {
+		"applicable": true,
+		"local_samples": 1651,
+		"matched": 140,
+		"max_deg": 47.6817145203991,
+		"max_m": 2.3592689037323,
+		"p95_deg": 29.799206933606,
+		"p95_m": 2.09294676780701,
+		"status": "measured",
+		"unmatched": 13
+	},
+	"crew_remote_error": {
+		"applicable": true,
+		"local_samples": 451,
+		"matched": 450,
+		"max_deg": 88.9295274464296,
+		"max_m": 2.29322266578674,
+		"p95_deg": 10.5298294358419,
+		"p95_m": 1.20180058479309,
+		"status": "measured",
+		"unmatched": 1
+	},
+	"display_server": "Windows",
+	"drift_final_m": [
+		-0.16131591796875,
+		0.00002294778823852,
+		0.386056900024414
+	],
+	"drift_max_abs_m": [
+		0.33336067199707,
+		0.223865747451782,
+		2.84994888305664
+	],
+	"drive": {
+		"bump_ticks": 288.0,
+		"bumps_max_kmh": 82.3852317810059,
+		"bumps_mean_kmh": 57.6166745185852,
+		"bumps_min_kmh": 42.2812889099121,
+		"entry_speeds_kmh": [
+			66.4168235778809,
+			82.3852317810059
+		],
+		"laps": 1.0,
+		"route": "straight_x30_with_outer_return"
+	},
+	"duration_s": 44.9999999999987,
+	"exit": 0.0,
+	"finish_utc_us": 1789596636900000.0,
+	"fps": {
+		"frames": 2694.0,
+		"p1": 53.1660375352225,
+		"percent_below_60": 74.5731254639941,
+		"render_no_verificado": false,
+		"windowed": true
+	},
+	"human": false,
+	"instrumentation_missing": [],
+	"iteration": 1.0,
+	"off_bus_support_ticks": 22.0,
+	"peer_id": 1.0,
+	"penetration": {
+		"entities": {
+			"cargo/Package_0": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "",
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"samples": 2700.0
+			},
+			"cargo/Package_1": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "",
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"samples": 2700.0
+			},
+			"cargo/Package_2": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"excluded_ticks": 1685.0,
+				"max_depth_m": 0.0822684772256607,
+				"max_run_ticks": 26.0,
+				"penetrating_ticks": 324.0,
+				"samples": 2700.0
+			},
+			"cargo/Package_3": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"excluded_ticks": 899.0,
+				"max_depth_m": 0.0200006606533276,
+				"max_run_ticks": 936.0,
+				"penetrating_ticks": 1036.0,
+				"samples": 2700.0
+			},
+			"crew/1": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Roof",
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.074849353341179,
+				"max_run_ticks": 6.0,
+				"penetrating_ticks": 20.0,
+				"samples": 2700.0
+			},
+			"crew/2015015526": {
+				"current_run_ticks": 57.0,
+				"deepest_piece": "Roof",
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.533205970455902,
+				"max_run_ticks": 144.0,
+				"penetrating_ticks": 1062.0,
+				"samples": 2700.0
+			}
+		},
+		"excluded": "seated crew and HELD cargo (collision disabled)",
+		"max_depth_m": 0.533205970455902,
+		"max_run_ticks": 936.0,
+		"method": "finite authored hull boxes; capsule distance / oriented box SAT",
+		"noise_epsilon_m": 0.000001
+	},
+	"remote_crew_simulation_ticks": 0.0,
+	"requested_seconds": 45.0,
+	"role": "host",
+	"run_id": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/04_raw/preflight_04",
+	"sampling_phase": "after_all_node_physics",
+	"sampling_process_physics_priority": 1000.0,
+	"sampling_process_priority": 1000.0,
+	"simulation_counter_semantics": "integration_callback_ticks includes frozen callbacks; physics_simulation_ticks counts dynamic integration only",
+	"simulation_entities": {
+		"cargo/Package_0": {
+			"integration_callback_ticks": 0.0,
+			"physics_simulation_ticks": 0.0,
+			"unauthorized_simulation_ticks": 0.0
+		},
+		"cargo/Package_1": {
+			"integration_callback_ticks": 0.0,
+			"physics_simulation_ticks": 0.0,
+			"unauthorized_simulation_ticks": 0.0
+		},
+		"cargo/Package_2": {
+			"integration_callback_ticks": 494.0,
+			"physics_simulation_ticks": 494.0,
+			"unauthorized_simulation_ticks": 0.0
+		},
+		"cargo/Package_3": {
+			"integration_callback_ticks": 1252.0,
+			"physics_simulation_ticks": 1245.0,
+			"unauthorized_simulation_ticks": 0.0
+		},
+		"crew/1": {
+			"physics_simulation_ticks": 2700.0
+		},
+		"crew/2015015526": {
+			"physics_simulation_ticks": 0.0
+		}
+	},
+	"slip": {
+		"max_m": 0.290448069572449,
+		"p95_m": 0.0337384454905987,
+		"p999_m": 0.255063414573669,
+		"p99_m": 0.148113489151001,
+		"samples": 2699.0
+	},
+	"start_utc_us": 1789596591984000.0,
+	"ticks": 2700.0,
+	"trace_clock": "system UTC microseconds, same machine",
+	"trace_hz": 10.0,
+	"trace_samples": 3157.0,
+	"unauthorized_cargo_simulation_ticks": 0.0
+}

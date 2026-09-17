@@ -64,6 +64,12 @@ func _on_tick() -> void:
 
 
 func _start() -> void:
+	if OS.get_cmdline_user_args().has("mode=gate"):
+		var gate_script: GDScript = load("res://src/tooling/gate_session.gd")
+		var gate: Node = gate_script.new()
+		gate.name = "GateSession"
+		root.add_child(gate)
+		return
 	match _role:
 		"launcher":
 			_run_launcher()
@@ -112,6 +118,8 @@ func _instantiate_scene(role: String) -> Node:
 	var packed_scene: PackedScene = packed
 	var scene: Node = packed_scene.instantiate()
 	scene.set("network_role", role)
+	# The marker regression predates cargo; the gate owns the physical cargo run.
+	scene.set("cargo_spawn", false)
 	# The authored default is demo_mode=false (M1-T1.1: F5 is the owner's
 	# seat); the host of the net scenario drives the demo (D55).
 	if role == "host":

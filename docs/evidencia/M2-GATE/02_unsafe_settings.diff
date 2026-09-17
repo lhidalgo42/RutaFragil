@@ -1,0 +1,19 @@
+﻿diff --git a/project.godot b/project.godot
+index c9ce2c2..fe688cd 100644
+--- a/project.godot
++++ b/project.godot
+@@ -24,10 +24,10 @@ NetworkBackend="*res://src/net/network_backend.gd"
+ 
+ gdscript/warnings/untyped_declaration=2
+ gdscript/warnings/inferred_declaration=2
+-gdscript/warnings/unsafe_property_access=1
+-gdscript/warnings/unsafe_method_access=1
+-gdscript/warnings/unsafe_cast=1
+-gdscript/warnings/unsafe_call_argument=1
++gdscript/warnings/unsafe_property_access=2
++gdscript/warnings/unsafe_method_access=2
++gdscript/warnings/unsafe_cast=2
++gdscript/warnings/unsafe_call_argument=2
+ 
+ [display]
+ 

@@ -1,0 +1,20 @@
+﻿[
+    {
+        "run":  1,
+        "exit":  0,
+        "expected_tests":  224,
+        "log":  "docs/evidencia/M2-GATE/02_final_run_1.log"
+    },
+    {
+        "run":  2,
+        "exit":  0,
+        "expected_tests":  224,
+        "log":  "docs/evidencia/M2-GATE/02_final_run_2.log"
+    },
+    {
+        "run":  3,
+        "exit":  0,
+        "expected_tests":  224,
+        "log":  "docs/evidencia/M2-GATE/02_final_run_3.log"
+    }
+]

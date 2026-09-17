@@ -1,0 +1,1723 @@
+[
+	{
+		"lost": {
+			"bus_linear_velocity": [
+				-0.000101494762930088,
+				0.000000441449003574235,
+				16.4837226867676
+			],
+			"bus_position": [
+				29.999547958374,
+				0.977494776248932,
+				-32.3391799926758
+			],
+			"bus_support": false,
+			"bus_write_m": 0.27496337890625,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00130484416149557,
+					"normal": [
+						-0.210526779294014,
+						0.0,
+						-0.977588057518005
+					],
+					"position": [
+						29.8373832702637,
+						0.685583531856537,
+						-33.3069496154785
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.255687355995178,
+						0.00465279957279563,
+						14.992094039917
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00130484416149557,
+					"normal": [
+						-0.210526779294014,
+						0.0,
+						-0.977588057518005
+					],
+					"position": [
+						29.8372802734375,
+						0.779754638671875,
+						-33.3074188232422
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.256325393915176,
+						0.00463594403117895,
+						14.9888515472412
+					]
+				}
+			],
+			"crew_real_velocity": [
+				0.841941773891449,
+				0.276002883911133,
+				15.2993764877319
+			],
+			"crew_velocity": [
+				0.0,
+				-0.5,
+				0.0
+			],
+			"floor_bodies": [],
+			"local_position": [
+				0.223686218261719,
+				-0.595979332923889,
+				1.2515869140625
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 0.770417869091034,
+				"package_count": 4,
+				"position": [
+					30.0342769622803,
+					0.581091821193695,
+					-32.893741607666
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": false,
+			"physics_frame": 584,
+			"platform_velocity": [
+				-0.256325393915176,
+				0.00463594403117895,
+				14.9888515472412
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.0500000000000025,
+				"last_arrival_utc_us": 1789602409522000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 9.40000000000005,
+				"playback_used_s": 9.38333333333338,
+				"received_this_tick": 0,
+				"received_total": 283,
+				"source_s": 9.43333333333338
+			},
+			"tick": 415
+		},
+		"previous": {
+			"bus_linear_velocity": [
+				-0.000101372133940458,
+				0.000000431325617000766,
+				16.4556159973145
+			],
+			"bus_position": [
+				29.9995498657227,
+				0.977494776248932,
+				-32.614143371582
+			],
+			"bus_support": true,
+			"bus_write_m": 0.274024963378906,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00173911568708718,
+					"normal": [
+						-0.211635544896126,
+						0.0,
+						-0.977348625659943
+					],
+					"position": [
+						29.825174331665,
+						0.763736069202423,
+						-33.5536155700684
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.256596833467484,
+						0.00464717065915465,
+						14.9884977340698
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00129084312357008,
+					"normal": [
+						-0.211635485291481,
+						0.0,
+						-0.977348744869232
+					],
+					"position": [
+						29.8252925872803,
+						0.681298792362213,
+						-33.5532569885254
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.256034731864929,
+						0.00466033350676298,
+						14.9913387298584
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00129084312357008,
+					"normal": [
+						-0.211635485291481,
+						0.0,
+						-0.977348744869232
+					],
+					"position": [
+						29.8251972198486,
+						0.779663443565369,
+						-33.5536918640137
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.256704956293106,
+						0.00464471150189638,
+						14.9879522323608
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00129084312357008,
+					"normal": [
+						-0.000000721988101304305,
+						0.99999463558197,
+						0.00327348872087896
+					],
+					"position": [
+						29.7617835998535,
+						0.380631923675537,
+						-33.847526550293
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-0.00011444088886492,
+						0.0000000000000886958285680264,
+						16.4417266845703
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00129084312357008,
+					"normal": [
+						-0.000000700563020927802,
+						0.999994695186615,
+						0.00327349198050797
+					],
+					"position": [
+						29.7617835998535,
+						0.380631864070892,
+						-33.847526550293
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-0.00011444088886492,
+						0.0000000000000886958285680264,
+						16.4417266845703
+					]
+				}
+			],
+			"crew_real_velocity": [
+				-0.000114440910692792,
+				0.0,
+				14.9324789047241
+			],
+			"crew_velocity": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"floor_bodies": [
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00129084312357008,
+					"normal": [
+						-0.000000721988101304305,
+						0.99999463558197,
+						0.00327348872087896
+					],
+					"position": [
+						29.7617835998535,
+						0.380631923675537,
+						-33.847526550293
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-0.00011444088886492,
+						0.0000000000000886958285680264,
+						16.4417266845703
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00129084312357008,
+					"normal": [
+						-0.000000700563020927802,
+						0.999994695186615,
+						0.00327349198050797
+					],
+					"position": [
+						29.7617835998535,
+						0.380631864070892,
+						-33.847526550293
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-0.00011444088886492,
+						0.0000000000000886958285680264,
+						16.4417266845703
+					]
+				}
+			],
+			"local_position": [
+				0.237720489501953,
+				-0.600513935089111,
+				1.23159790039063
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 0.781096816062927,
+				"package_count": 4,
+				"position": [
+					30.0384902954102,
+					0.580913782119751,
+					-33.1451225280762
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": true,
+			"physics_frame": 583,
+			"platform_velocity": [
+				-0.256704956293106,
+				0.00464471150189638,
+				14.9879522323608
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.06666666666667,
+				"last_arrival_utc_us": 1789602409522000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 9.38333333333338,
+				"playback_used_s": 9.36666666666671,
+				"received_this_tick": 1,
+				"received_total": 283,
+				"source_s": 9.43333333333338
+			},
+			"tick": 414
+		}
+	},
+	{
+		"lost": {
+			"bus_linear_velocity": [
+				-0.000824523391202092,
+				1.18967318534851,
+				18.2556343078613
+			],
+			"bus_position": [
+				29.996753692627,
+				2.5832576751709,
+				14.5341520309448
+			],
+			"bus_support": false,
+			"bus_write_m": 0.309678256511688,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00121599691919982,
+					"normal": [
+						-0.354282975196838,
+						0.0,
+						-0.935138344764709
+					],
+					"position": [
+						29.8844032287598,
+						2.29950594902039,
+						13.2628374099731
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						0.000000950770697727421,
+						-0.0000000754178017814411,
+						-0.000000698749204275373
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00132890068925917,
+					"normal": [
+						-0.354282945394516,
+						0.0,
+						-0.935138285160065
+					],
+					"position": [
+						29.8926525115967,
+						2.31477332115173,
+						13.259087562561
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						0.000000968331733020023,
+						-0.0000000746216386460219,
+						-0.000000656875158711046
+					]
+				}
+			],
+			"crew_real_velocity": [
+				0.0,
+				0.482668846845627,
+				0.097904197871685
+			],
+			"crew_velocity": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"floor_bodies": [],
+			"local_position": [
+				0.218406677246094,
+				-0.607490658760071,
+				1.59458923339844
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 1.02944576740265,
+				"package_count": 4,
+				"position": [
+					30.0004081726074,
+					2.1608030796051,
+					13.9455213546753
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": false,
+			"physics_frame": 740,
+			"platform_velocity": [
+				0.000000968331733020023,
+				-0.0000000746216386460219,
+				-0.000000656875158711046
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.0500000000000025,
+				"last_arrival_utc_us": 1789602412122000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 12.0000000000002,
+				"playback_used_s": 11.9833333333335,
+				"received_this_tick": 0,
+				"received_total": 361,
+				"source_s": 12.0333333333335
+			},
+			"tick": 571
+		},
+		"previous": {
+			"bus_linear_velocity": [
+				-0.00106986192986369,
+				1.29909694194794,
+				18.2658863067627
+			],
+			"bus_position": [
+				29.9967651367188,
+				2.56403517723084,
+				14.2250709533691
+			],
+			"bus_support": true,
+			"bus_write_m": 0.309688806533813,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00107985886279494,
+					"normal": [
+						-0.354282796382904,
+						0.0,
+						-0.935138344764709
+					],
+					"position": [
+						29.8984203338623,
+						2.31468605995178,
+						13.2569026947021
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						0.000000980571599029645,
+						-0.000000073942871381405,
+						-0.000000624590370534861
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00107985886279494,
+					"normal": [
+						0.000373774440959096,
+						0.996804296970367,
+						-0.0798815339803696
+					],
+					"position": [
+						29.79225730896,
+						1.86590123176575,
+						13.0009880065918
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-0.00207640137523413,
+						1.77239048480988,
+						18.2376327514648
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00107985886279494,
+					"normal": [
+						0.000373790855519474,
+						0.996804296970367,
+						-0.0798815339803696
+					],
+					"position": [
+						29.79225730896,
+						1.86590123176575,
+						13.0009889602661
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-0.00207640044391155,
+						1.77239012718201,
+						18.2376327514648
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00141547899693251,
+					"normal": [
+						0.000373780174413696,
+						0.996804296970367,
+						-0.0798815414309502
+					],
+					"position": [
+						29.7901706695557,
+						1.8658607006073,
+						13.0004730224609
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-0.00207683932967484,
+						1.77261161804199,
+						18.2376174926758
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00141547899693251,
+					"normal": [
+						0.000373793503968045,
+						0.996804356575012,
+						-0.0798815339803696
+					],
+					"position": [
+						29.7901706695557,
+						1.8658607006073,
+						13.0004730224609
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-0.00207683932967484,
+						1.77261161804199,
+						18.2376174926758
+					]
+				}
+			],
+			"crew_real_velocity": [
+				-0.861740052700043,
+				0.196974262595177,
+				0.264358520507813
+			],
+			"crew_velocity": [
+				-0.859899461269379,
+				0.0,
+				0.325778126716614
+			],
+			"floor_bodies": [
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00107985886279494,
+					"normal": [
+						0.000373774440959096,
+						0.996804296970367,
+						-0.0798815339803696
+					],
+					"position": [
+						29.79225730896,
+						1.86590123176575,
+						13.0009880065918
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-0.00207640137523413,
+						1.77239048480988,
+						18.2376327514648
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00107985886279494,
+					"normal": [
+						0.000373790855519474,
+						0.996804296970367,
+						-0.0798815339803696
+					],
+					"position": [
+						29.79225730896,
+						1.86590123176575,
+						13.0009889602661
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-0.00207640044391155,
+						1.77239012718201,
+						18.2376327514648
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00141547899693251,
+					"normal": [
+						0.000373780174413696,
+						0.996804296970367,
+						-0.0798815414309502
+					],
+					"position": [
+						29.7901706695557,
+						1.8658607006073,
+						13.0004730224609
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-0.00207683932967484,
+						1.77261161804199,
+						18.2376174926758
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00141547899693251,
+					"normal": [
+						0.000373793503968045,
+						0.996804356575012,
+						-0.0798815339803696
+					],
+					"position": [
+						29.7901706695557,
+						1.8658607006073,
+						13.0004730224609
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-0.00207683932967484,
+						1.77261161804199,
+						18.2376174926758
+					]
+				}
+			],
+			"local_position": [
+				0.218425750732422,
+				-0.605602741241455,
+				1.29205894470215
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 0.570855915546417,
+				"package_count": 4,
+				"position": [
+					30.0004558563232,
+					2.12181353569031,
+					13.4399261474609
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": true,
+			"physics_frame": 739,
+			"platform_velocity": [
+				-0.00207683932967484,
+				1.77261161804199,
+				18.2376174926758
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.06666666666667,
+				"last_arrival_utc_us": 1789602412122000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 11.9833333333335,
+				"playback_used_s": 11.9666666666668,
+				"received_this_tick": 1,
+				"received_total": 361,
+				"source_s": 12.0333333333335
+			},
+			"tick": 570
+		}
+	},
+	{
+		"lost": {
+			"bus_linear_velocity": [
+				-19.852087020874,
+				-0.000256365368841216,
+				-3.34725427627563
+			],
+			"bus_position": [
+				-37.2725791931152,
+				0.977188050746918,
+				86.9548950195313
+			],
+			"bus_support": false,
+			"bus_write_m": 0.335361808538437,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00154911377467215,
+					"normal": [
+						0.996092617511749,
+						0.0,
+						-0.0883144214749336
+					],
+					"position": [
+						-36.2686233520508,
+						0.684706687927246,
+						86.9740676879883
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-18.2287216186523,
+						0.00102981156669557,
+						-3.26829242706299
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00154911377467215,
+					"normal": [
+						0.996092617511749,
+						0.0,
+						-0.0883144214749336
+					],
+					"position": [
+						-36.2685317993164,
+						0.777349710464478,
+						86.9740600585938
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-18.2291088104248,
+						0.00103015569038689,
+						-3.26877117156982
+					]
+				}
+			],
+			"crew_real_velocity": [
+				-18.7712841033936,
+				0.395173400640488,
+				-1.72759997844696
+			],
+			"crew_velocity": [
+				0.0,
+				-0.5,
+				0.0
+			],
+			"floor_bodies": [],
+			"local_position": [
+				0.222747802734375,
+				-0.594010055065155,
+				1.27285957336426
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 0.813132345676422,
+				"package_count": 4,
+				"position": [
+					-36.761531829834,
+					0.579069852828979,
+					87.0585861206055
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": false,
+			"physics_frame": 2665,
+			"platform_velocity": [
+				-18.2291088104248,
+				0.00103015569038689,
+				-3.26877117156982
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.0666666666666629,
+				"last_arrival_utc_us": 1789602444224000,
+				"last_transport_s": 0.005,
+				"playback_next_s": 44.0833333333321,
+				"playback_used_s": 44.0666666666654,
+				"received_this_tick": 1,
+				"received_total": 1324,
+				"source_s": 44.1333333333321
+			},
+			"tick": 2496
+		},
+		"previous": {
+			"bus_linear_velocity": [
+				-19.8383712768555,
+				-0.000227274969802238,
+				-3.31011486053467
+			],
+			"bus_position": [
+				-36.9418487548828,
+				0.977192759513855,
+				87.0104370117188
+			],
+			"bus_support": true,
+			"bus_write_m": 0.335364282131195,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00151261722203344,
+					"normal": [
+						0.995698690414429,
+						0.0,
+						-0.0926507487893105
+					],
+					"position": [
+						-35.9669494628906,
+						0.761051654815674,
+						87.0047225952148
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-18.1951217651367,
+						0.00124733592383564,
+						-3.20188331604004
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00162610446568578,
+					"normal": [
+						0.995698690414429,
+						0.0,
+						-0.0926507785916328
+					],
+					"position": [
+						-35.967041015625,
+						0.677957713603973,
+						87.0046768188477
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-18.1947422027588,
+						0.00124674069229513,
+						-3.20156407356262
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00162610446568578,
+					"normal": [
+						0.995698690414429,
+						0.0,
+						-0.0926507785916328
+					],
+					"position": [
+						-35.9669380187988,
+						0.777035892009735,
+						87.0046615600586
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-18.1951770782471,
+						0.0012471346417442,
+						-3.2019464969635
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00162610446568578,
+					"normal": [
+						-0.00137315748725086,
+						0.999935984611511,
+						-0.0112280156463385
+					],
+					"position": [
+						-35.6684608459473,
+						0.377491772174835,
+						86.9803009033203
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-19.8087997436523,
+						-0.00149654457345605,
+						-3.16367411613464
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00162610446568578,
+					"normal": [
+						-0.0013731624931097,
+						0.999936044216156,
+						-0.0112280044704676
+					],
+					"position": [
+						-35.6684608459473,
+						0.377491652965546,
+						86.9803009033203
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-19.8087997436523,
+						-0.00149654457345605,
+						-3.16367411613464
+					]
+				}
+			],
+			"crew_real_velocity": [
+				-18.1105041503906,
+				-0.0209319572895765,
+				-2.86514258384705
+			],
+			"crew_velocity": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"floor_bodies": [
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00162610446568578,
+					"normal": [
+						-0.00137315748725086,
+						0.999935984611511,
+						-0.0112280156463385
+					],
+					"position": [
+						-35.6684608459473,
+						0.377491772174835,
+						86.9803009033203
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-19.8087997436523,
+						-0.00149654457345605,
+						-3.16367411613464
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00162610446568578,
+					"normal": [
+						-0.0013731624931097,
+						0.999936044216156,
+						-0.0112280044704676
+					],
+					"position": [
+						-35.6684608459473,
+						0.377491652965546,
+						86.9803009033203
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-19.8087997436523,
+						-0.00149654457345605,
+						-3.16367411613464
+					]
+				}
+			],
+			"local_position": [
+				0.244186401367188,
+				-0.600323379039764,
+				1.25125122070313
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 0.826783359050751,
+				"package_count": 4,
+				"position": [
+					-36.4571228027344,
+					0.579053997993469,
+					87.1137847900391
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": true,
+			"physics_frame": 2664,
+			"platform_velocity": [
+				-18.1951770782471,
+				0.0012471346417442,
+				-3.2019464969635
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.0499999999999972,
+				"last_arrival_utc_us": 1789602444189000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 44.0666666666654,
+				"playback_used_s": 44.0499999999988,
+				"received_this_tick": 0,
+				"received_total": 1323,
+				"source_s": 44.0999999999988
+			},
+			"tick": 2495
+		}
+	},
+	{
+		"lost": {
+			"bus_linear_velocity": [
+				-2.02608633041382,
+				-1.31854236125946,
+				21.9119033813477
+			],
+			"bus_position": [
+				35.0878372192383,
+				2.80536317825317,
+				22.9540348052979
+			],
+			"bus_support": false,
+			"bus_write_m": 0.372111111879349,
+			"contacts": [
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00249449885450304,
+					"normal": [
+						0.972870290279388,
+						0.206341192126274,
+						0.104627050459385
+					],
+					"position": [
+						34.7580718994141,
+						2.57029938697815,
+						21.1071395874023
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Stretcher",
+					"shape_index": 15,
+					"velocity": [
+						-2.02783274650574,
+						-0.598748326301575,
+						22.0829181671143
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00249449885450304,
+					"normal": [
+						-0.761861741542816,
+						0.0,
+						-0.647739708423615
+					],
+					"position": [
+						35.2737731933594,
+						2.63188195228577,
+						21.3323764801025
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.0000000448631105598452,
+						0.0000000243325342097478,
+						0.0000000516425657792752
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00249449885450304,
+					"normal": [
+						-0.761861741542816,
+						0.0,
+						-0.647739708423615
+					],
+					"position": [
+						35.2738151550293,
+						2.69446849822998,
+						21.3299560546875
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.0000000453618511642162,
+						0.0000000246030378292517,
+						0.0000000586285082704308
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00141215091571212,
+					"normal": [
+						-0.760893225669861,
+						0.0,
+						-0.648877024650574
+					],
+					"position": [
+						35.2737884521484,
+						2.63299560546875,
+						21.3322200775146
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.0000000448953372256256,
+						0.0000000243500135610475,
+						0.0000000517638838459789
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00141215091571212,
+					"normal": [
+						-0.760893225669861,
+						0.0,
+						-0.648877024650574
+					],
+					"position": [
+						35.2738189697266,
+						2.69446730613709,
+						21.3299217224121
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.0000000453689246171507,
+						0.0000000246068747600248,
+						0.0000000586275916703016
+					]
+				}
+			],
+			"crew_real_velocity": [
+				0.0,
+				0.998096406459808,
+				0.0
+			],
+			"crew_velocity": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"floor_bodies": [],
+			"local_position": [
+				0.212265014648438,
+				-0.61699366569519,
+				1.7581901550293
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 0.602894186973572,
+				"package_count": 4,
+				"position": [
+					35.4542045593262,
+					2.50246238708496,
+					21.5501003265381
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": false,
+			"physics_frame": 3655,
+			"platform_velocity": [
+				-0.0000000453689246171507,
+				0.0000000246068747600248,
+				0.0000000586275916703016
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.0666666666666629,
+				"last_arrival_utc_us": 1789602460722000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 60.5833333333312,
+				"playback_used_s": 60.5666666666645,
+				"received_this_tick": 1,
+				"received_total": 1819,
+				"source_s": 60.6333333333312
+			},
+			"tick": 3486
+		},
+		"previous": {
+			"bus_linear_velocity": [
+				-2.02947163581848,
+				-1.1570029258728,
+				21.9485149383545
+			],
+			"bus_position": [
+				35.121696472168,
+				2.82632446289063,
+				22.5840606689453
+			],
+			"bus_support": true,
+			"bus_write_m": 0.37210887670517,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.00121197709813714,
+					"normal": [
+						-0.767369151115417,
+						0.0,
+						-0.641205608844757
+					],
+					"position": [
+						35.2764434814453,
+						2.67892336845398,
+						21.3323707580566
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.0000000448642900607865,
+						0.00000002433317369821,
+						0.0000000563496271865915
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.0012709922157228,
+					"normal": [
+						-0.771995067596436,
+						0.0,
+						-0.635628461837769
+					],
+					"position": [
+						35.2738227844238,
+						2.61616659164429,
+						21.3323669433594
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.0000000448650752105095,
+						0.0000000243336000238514,
+						0.0000000498760215350558
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_2",
+					"depth_m": 0.0012709922157228,
+					"normal": [
+						-0.771995067596436,
+						0.0,
+						-0.635628461837769
+					],
+					"position": [
+						35.2737770080566,
+						2.69448232650757,
+						21.3303279876709
+					],
+					"rid": "RID(6889127542795)",
+					"shape": "/root/Playground/Cargo/Package_2/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-0.0000000452852120247371,
+						0.0000000245614710792097,
+						0.0000000586379158562522
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.0012709922157228,
+					"normal": [
+						-0.016053169965744,
+						0.997685372829437,
+						0.0660780593752861
+					],
+					"position": [
+						35.0498046875,
+						2.31651592254639,
+						21.1221008300781
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-2.03355622291565,
+						-0.440854609012604,
+						22.0339164733887
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.0012709922157228,
+					"normal": [
+						-0.016053156927228,
+						0.997685313224792,
+						0.0660780444741249
+					],
+					"position": [
+						35.0498046875,
+						2.31651592254639,
+						21.1220989227295
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-2.03355622291565,
+						-0.440853744745255,
+						22.0339164733887
+					]
+				}
+			],
+			"crew_real_velocity": [
+				-0.0336456298828125,
+				0.884070336818695,
+				0.0644302368164063
+			],
+			"crew_velocity": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"floor_bodies": [
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.0012709922157228,
+					"normal": [
+						-0.016053169965744,
+						0.997685372829437,
+						0.0660780593752861
+					],
+					"position": [
+						35.0498046875,
+						2.31651592254639,
+						21.1221008300781
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-2.03355622291565,
+						-0.440854609012604,
+						22.0339164733887
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.0012709922157228,
+					"normal": [
+						-0.016053156927228,
+						0.997685313224792,
+						0.0660780444741249
+					],
+					"position": [
+						35.0498046875,
+						2.31651592254639,
+						21.1220989227295
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-2.03355622291565,
+						-0.440853744745255,
+						22.0339164733887
+					]
+				}
+			],
+			"local_position": [
+				0.212444305419922,
+				-0.613495826721191,
+				1.38947296142578
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 0.607779324054718,
+				"package_count": 4,
+				"position": [
+					35.4542045593262,
+					2.50246238708496,
+					21.5501003265381
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": true,
+			"physics_frame": 3654,
+			"platform_velocity": [
+				-0.0000000452852120247371,
+				0.0000000245614710792097,
+				0.0000000586379158562522
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.0499999999999972,
+				"last_arrival_utc_us": 1789602460687000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 60.5666666666645,
+				"playback_used_s": 60.5499999999978,
+				"received_this_tick": 0,
+				"received_total": 1818,
+				"source_s": 60.5999999999978
+			},
+			"tick": 3485
+		}
+	},
+	{
+		"lost": {
+			"bus_linear_velocity": [
+				-1.80657041072845,
+				-1.14575409889221,
+				17.7622947692871
+			],
+			"bus_position": [
+				34.561954498291,
+				2.24304676055908,
+				28.5576839447021
+			],
+			"bus_support": false,
+			"bus_write_m": 0.287198603153229,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_3",
+					"depth_m": 0.00193250284064561,
+					"normal": [
+						0.433964043855667,
+						0.0,
+						-0.900930225849152
+					],
+					"position": [
+						34.5041465759277,
+						3.18791532516479,
+						26.1382026672363
+					],
+					"rid": "RID(6897717477388)",
+					"shape": "/root/Playground/Cargo/Package_3/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-1.07612097263336,
+						-1.79478693008423,
+						10.7115774154663
+					]
+				}
+			],
+			"crew_real_velocity": [
+				-1.02676391601563,
+				-2.13430881500244,
+				11.607741355896
+			],
+			"crew_velocity": [
+				0.0,
+				-0.5,
+				0.0
+			],
+			"floor_bodies": [],
+			"local_position": [
+				0.201274871826172,
+				-0.570157051086426,
+				2.62047958374023
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_3",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 1.53740644454956,
+				"package_count": 4,
+				"position": [
+					34.3152389526367,
+					3.3122546672821,
+					26.5912933349609
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": false,
+			"physics_frame": 3671,
+			"platform_velocity": [
+				-1.07612097263336,
+				-1.79478693008423,
+				10.7115774154663
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.0666666666666629,
+				"last_arrival_utc_us": 1789602460988000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 60.8499999999978,
+				"playback_used_s": 60.8333333333312,
+				"received_this_tick": 1,
+				"received_total": 1827,
+				"source_s": 60.8999999999978
+			},
+			"tick": 3502
+		},
+		"previous": {
+			"bus_linear_velocity": [
+				-1.81217789649963,
+				-1.02564573287964,
+				17.8472709655762
+			],
+			"bus_position": [
+				34.5922775268555,
+				2.25583362579346,
+				28.2723770141602
+			],
+			"bus_support": true,
+			"bus_write_m": 0.287200897932053,
+			"contacts": [
+				{
+					"body": "/root/Playground/Cargo/Package_3",
+					"depth_m": 0.00186360476072878,
+					"normal": [
+						0.432698488235474,
+						0.0,
+						-0.901538670063019
+					],
+					"position": [
+						34.5152816772461,
+						3.23103165626526,
+						25.959077835083
+					],
+					"rid": "RID(6897717477388)",
+					"shape": "/root/Playground/Cargo/Package_3/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-1.31045711040497,
+						-1.36235976219177,
+						13.5468997955322
+					]
+				},
+				{
+					"body": "/root/Playground/Cargo/Package_3",
+					"depth_m": 0.00139935070183128,
+					"normal": [
+						0.432698518037796,
+						0.0,
+						-0.901538729667664
+					],
+					"position": [
+						34.5163040161133,
+						3.2178475856781,
+						25.9569187164307
+					],
+					"rid": "RID(6897717477388)",
+					"shape": "/root/Playground/Cargo/Package_3/Shape",
+					"shape_index": 0,
+					"velocity": [
+						-1.31020545959473,
+						-1.36263740062714,
+						13.5487146377563
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00139935070183128,
+					"normal": [
+						-0.0179880056530237,
+						0.988044440746307,
+						0.153116434812546
+					],
+					"position": [
+						34.6503143310547,
+						2.0251362323761,
+						25.6429195404053
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-1.74781847000122,
+						-2.86497640609741,
+						19.4713497161865
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00139935070183128,
+					"normal": [
+						-0.0179879926145077,
+						0.988044381141663,
+						0.153116419911385
+					],
+					"position": [
+						34.6503143310547,
+						2.0251362323761,
+						25.6429195404053
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-1.74781847000122,
+						-2.86497640609741,
+						19.4713497161865
+					]
+				}
+			],
+			"crew_real_velocity": [
+				-1.21353137493134,
+				-2.06377029418945,
+				13.6055364608765
+			],
+			"crew_velocity": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"floor_bodies": [
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00139935070183128,
+					"normal": [
+						-0.0179880056530237,
+						0.988044440746307,
+						0.153116434812546
+					],
+					"position": [
+						34.6503143310547,
+						2.0251362323761,
+						25.6429195404053
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/Floor",
+					"shape_index": 1,
+					"velocity": [
+						-1.74781847000122,
+						-2.86497640609741,
+						19.4713497161865
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00139935070183128,
+					"normal": [
+						-0.0179879926145077,
+						0.988044381141663,
+						0.153116419911385
+					],
+					"position": [
+						34.6503143310547,
+						2.0251362323761,
+						25.6429195404053
+					],
+					"rid": "RID(4780298600454)",
+					"shape": "/root/Playground/Bus/CollisionShape3D",
+					"shape_index": 0,
+					"velocity": [
+						-1.74781847000122,
+						-2.86497640609741,
+						19.4713497161865
+					]
+				}
+			],
+			"local_position": [
+				0.199554443359375,
+				-0.583054542541504,
+				2.52126502990723
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_3",
+				"freeze": true,
+				"freeze_mode": 1,
+				"origin_distance_m": 1.50455272197723,
+				"package_count": 4,
+				"position": [
+					34.3427810668945,
+					3.35496711730957,
+					26.3135375976563
+				],
+				"restraint": 0
+			},
+			"on_ceiling": false,
+			"on_floor": true,
+			"physics_frame": 3670,
+			"platform_velocity": [
+				-1.31020545959473,
+				-1.36263740062714,
+				13.5487146377563
+			],
+			"snapshots": {
+				"buffer_ahead_s": 0.0499999999999972,
+				"last_arrival_utc_us": 1789602460955000,
+				"last_transport_s": 0.0,
+				"playback_next_s": 60.8333333333312,
+				"playback_used_s": 60.8166666666645,
+				"received_this_tick": 0,
+				"received_total": 1826,
+				"source_s": 60.8666666666645
+			},
+			"tick": 3501
+		}
+	}
+]

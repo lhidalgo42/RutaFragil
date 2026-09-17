@@ -9,7 +9,7 @@
       2. Clean reports\ and ensure reports\.gdignore exists BEFORE the import:
          gdUnit4 exits 0 and writes NO report when it discovers zero tests
          ("No test cases found, abort test run!"), so a stale results.xml from a
-         previous run would fool the >=3 test guard into accepting a no-op run;
+         previous run would fool the exact-count guard into accepting a no-op run;
          and without .gdignore Godot imports the report HTML PNGs on every
          --import pass.
       3. Run a headless import TWICE and strongly verify the global script
@@ -28,8 +28,9 @@
          exit code 105 without them.
       5. Map the gdUnit4 exit code to a human-readable meaning.
       6. Fail if the runner output contains "No test cases found", and parse the
-         (fresh) JUnit results.xml under reports\ requiring at least 3
-         discovered tests (gdUnit4 returns 0 even when it discovers nothing).
+         (fresh) JUnit results.xml under reports\ requiring EXACTLY
+         EXPECTED_TESTS discovered tests (r2.1: gdUnit4 returns 0 even when it
+         discovers nothing, and fresh clones have silently dropped tests).
       7. Exit 0 only if every step passed.
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File tools\run_tests.ps1
@@ -59,6 +60,12 @@ if ([Console]::IsOutputRedirected) {
 }
 
 $exit_infra_failure = 1
+
+# r2.1 (M2-GATE): the harness asserts the EXACT discovered test count, never
+# a floor — gdUnit in fresh clones has silently dropped a suite's last test
+# three times (T2.2 reviews 04/05, T2.3 review 02), and a ">= N" guard cannot
+# see that. Bump this constant in the SAME commit that adds or removes a test.
+$expected_tests = 255
 
 function write_step([string]$message) {
     Write-Host ""
@@ -194,12 +201,14 @@ if (-not $version_output.StartsWith("4.7.2.stable")) {
 # --- Step 2: clean reports\ and ensure reports\.gdignore ------------------------
 write_step "Step 2/7: Clean reports directory"
 # gdUnit4 exits 0 and writes NO report when it discovers zero tests; without a
-# clean slate the >=3 guard below would read a stale results.xml from a
-# previous run and approve a silent no-op.
+# clean slate the exact-count guard below would read a stale results.xml from a
+# previous run and approve a silent no-op (with an exact count a stale report
+# from a bounded run would instead FAIL the run: keeping reports\ clean matters
+# even more now).
 if (Test-Path $reports_dir) {
     Remove-Item -Recurse -Force $reports_dir
     Write-Host "Deleted previous reports: $reports_dir"
-    # Remove-Item does not stop on a locked file; the >=3 test guard below
+    # Remove-Item does not stop on a locked file; the exact-count guard below
     # needs a guaranteed fresh report, so a surviving directory is fatal.
     if (Test-Path $reports_dir) {
         fail "Could not delete reports directory: $reports_dir (a locked file?). Delete it manually and re-run."
@@ -304,7 +313,7 @@ if (-not [string]::IsNullOrWhiteSpace($results_xml)) {
 else {
     Write-Host "WARNING: no results.xml found under $reports_dir"
 }
-Write-Host "Discovered tests: $discovered_tests (minimum required: 3)"
+Write-Host "Discovered tests: $discovered_tests (expected exactly: $expected_tests)"
 
 # --- Step 7: final verdict ------------------------------------------------------
 write_step "Step 7/7: Final verdict"
@@ -317,8 +326,8 @@ if ($runner_output -match 'No test cases found') {
     Write-Host "FAILURE: gdUnit4 reported 'No test cases found, abort test run!' (exit 0, no report written). Refusing to accept a silent no-op run."
     exit $exit_infra_failure
 }
-if ($discovered_tests -lt 3) {
-    Write-Host "FAILURE: only $discovered_tests tests discovered (< 3). gdUnit4 exits 0 even when it discovers nothing; refusing to accept a silent no-op run."
+if ($discovered_tests -ne $expected_tests) {
+    Write-Host "FAILURE: $discovered_tests tests discovered, expected exactly $expected_tests (EXPECTED_TESTS in this file). gdUnit in fresh clones has silently dropped a suite's last test three times (r2.1); if the suites were edited on purpose, bump EXPECTED_TESTS in the same commit."
     exit $exit_infra_failure
 }
 Write-Host "SUCCESS: all tests passed and $discovered_tests tests were discovered."

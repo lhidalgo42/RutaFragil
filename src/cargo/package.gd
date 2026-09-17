@@ -37,6 +37,12 @@ const RELEASE_GRACE_TICKS: int = 30
 var restraint: Restraint = Restraint.FREE
 var held_by: CrewMember = null
 var strapped_to: RestraintAnchor = null
+var holder_peer_id: int = 0
+var network_enabled: bool = false
+var replica_only: bool = false
+var physics_simulation_ticks: int = 0
+var integration_callback_ticks: int = 0
+var unauthorized_simulation_ticks: int = 0
 var _original_parent: Node = null
 
 var _shape: CollisionShape3D = null
@@ -46,7 +52,11 @@ var _grace_ticks: int = 0
 
 
 func _ready() -> void:
-	freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+	add_to_group("package")
+	freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC if replica_only else RigidBody3D.FREEZE_MODE_STATIC
+	if network_enabled and replica_only:
+		freeze = true
+	_original_parent = get_parent()
 	# get_contact_count() — what ends the release grace early — never
 	# reports without this.
 	max_contacts_reported = maxi(max_contacts_reported, 1)
@@ -179,6 +189,15 @@ func unstrap() -> void:
 
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
+	integration_callback_ticks += 1
+	var mode: PhysicsServer3D.BodyMode = PhysicsServer3D.body_get_mode(get_rid())
+	if mode != PhysicsServer3D.BODY_MODE_RIGID and mode != PhysicsServer3D.BODY_MODE_RIGID_LINEAR:
+		return
+	physics_simulation_ticks += 1
+	if network_enabled and (replica_only or not is_multiplayer_authority()):
+		unauthorized_simulation_ticks += 1
+		freeze = true
+		return
 	if restraint != Restraint.FREE or _damping_k <= 0.0:
 		return
 	if _grace_ticks > 0:
@@ -199,6 +218,83 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 		bus.linear_velocity, bus.angular_velocity, origin - bus.global_position)
 	var force: Vector3 = vertical_damping_force(state.linear_velocity, reference, up, _damping_k)
 	state.apply_central_force(force)
+
+
+## Configure BEFORE add_child on replicas: no solver tick may see a dynamic
+## client box. Single-player physics and restraint methods stay unchanged.
+func configure_replication(bus: Bus, only_replica: bool) -> void:
+	network_enabled = true
+	replica_only = only_replica
+	_bus = bus
+	freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC if only_replica else RigidBody3D.FREEZE_MODE_STATIC
+	if only_replica:
+		freeze = true
+	if is_inside_tree() and restraint != Restraint.STRAPPED:
+		_original_parent = get_parent()
+
+
+## State delivery is independent of the old state, including STRAPPED ->
+## FREE. Authority and holder travel with it; snapshots cannot grant either.
+func apply_replicated_state(state: Restraint, at_bus_local: Transform3D,
+		velocity_bus_local: Vector3, anchor_name: StringName, peer_id: int) -> void:
+	var bus: Bus = _find_bus()
+	if bus == null or _shape == null:
+		return
+	var anchor: RestraintAnchor = _replicated_anchor(anchor_name) if state == Restraint.STRAPPED else null
+	if state == Restraint.STRAPPED and anchor == null:
+		return
+	var from: Restraint = restraint
+	var next_holder: int = peer_id if state == Restraint.HELD else 0
+	var changed: bool = from != state or holder_peer_id != next_holder or strapped_to != anchor
+	if is_instance_valid(strapped_to) and strapped_to != anchor and strapped_to.occupant == self:
+		strapped_to.occupant = null
+	freeze = true
+	_shape.disabled = true
+	# State transitions are teleports, not one-tick platform motion from the
+	# hand to the floor. STATIC places the physical body immediately in Jolt;
+	# continuous replica snapshots resume KINEMATIC movement afterwards.
+	if replica_only:
+		freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+	if state != Restraint.STRAPPED and is_instance_valid(_original_parent) and get_parent() != _original_parent:
+		reparent(_original_parent)
+	restraint = state
+	holder_peer_id = next_holder
+	held_by = NetAuthority.crew_for_peer(get_tree(), next_holder) if next_holder > 0 else null
+	strapped_to = anchor
+	set_multiplayer_authority(next_holder if next_holder > 0 else 1)
+	global_transform = bus.global_transform * at_bus_local
+	if state == Restraint.STRAPPED:
+		anchor.occupant = self
+		global_transform = anchor.global_transform
+		if get_parent() != bus:
+			reparent(bus)
+	elif state == Restraint.FREE:
+		if changed:
+			_grace_ticks = RELEASE_GRACE_TICKS
+		freeze = replica_only or not is_multiplayer_authority()
+		if not freeze:
+			linear_velocity = bus.global_basis * velocity_bus_local + rigid_point_velocity(
+				bus.linear_velocity, bus.angular_velocity, global_position - bus.global_position)
+			angular_velocity = Vector3.ZERO
+	if replica_only:
+		force_update_transform()
+		freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+	# Last deferred write wins over an earlier transition in the same frame.
+	_shape.set_deferred("disabled", state == Restraint.HELD)
+	if changed:
+		restraint_changed.emit(from, state)
+
+
+func refresh_replicated_holder() -> void:
+	if restraint == Restraint.HELD and holder_peer_id > 0 and not is_instance_valid(held_by):
+		held_by = NetAuthority.crew_for_peer(get_tree(), holder_peer_id)
+
+
+func _replicated_anchor(anchor_name: StringName) -> RestraintAnchor:
+	for node: Node in get_tree().get_nodes_in_group("restraint_anchor"):
+		if node is RestraintAnchor and node.name == anchor_name and _bus.is_ancestor_of(node):
+			return node
+	return null
 
 
 ## The bus by GROUP, never by name (D59); no bus in the scene turns the

@@ -1,0 +1,464 @@
+[
+  {
+    "name": "r4_cargo_cycles_01",
+    "kind": "experiment",
+    "d96_consumed": false,
+    "exit_codes": {
+      "client": 0,
+      "host": 0
+    },
+    "logs": {
+      "client": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "host": {
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "host": {
+      "bus_support": {
+        "percent": 99.4166666666667,
+        "supported_ticks": 3579.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 2.0,
+      "activity": {
+        "authority_transfers": 0.0,
+        "complete_cycles": 26.0,
+        "hold_denied": 0.0,
+        "hold_granted": 27.0,
+        "hold_requested": 27.0,
+        "release": 26.0,
+        "strap_denied": 0.0,
+        "strap_ok": 26.0,
+        "unstrap": 26.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "cargo_cycles"
+    },
+    "client": {
+      "bus_support": {
+        "percent": 12.1666666666667,
+        "supported_ticks": 438.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 2.0,
+      "activity": {
+        "authority_transfers": 16.0,
+        "complete_cycles": 4.0,
+        "hold_denied": 101.0,
+        "hold_granted": 4.0,
+        "hold_requested": 105.0,
+        "release": 4.0,
+        "strap_denied": 0.0,
+        "strap_ok": 4.0,
+        "unstrap": 4.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "cargo_cycles"
+    }
+  },
+  {
+    "name": "r4_cargo_walk_01",
+    "kind": "experiment",
+    "d96_consumed": false,
+    "exit_codes": {
+      "client": 0,
+      "host": 0
+    },
+    "logs": {
+      "client": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "host": {
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "host": {
+      "bus_support": {
+        "percent": 100.0,
+        "supported_ticks": 3600.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 0.0,
+      "activity": {
+        "authority_transfers": 0.0,
+        "complete_cycles": 0.0,
+        "hold_denied": 0.0,
+        "hold_granted": 0.0,
+        "hold_requested": 0.0,
+        "release": 0.0,
+        "strap_denied": 0.0,
+        "strap_ok": 0.0,
+        "unstrap": 0.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "walk_only"
+    },
+    "client": {
+      "bus_support": {
+        "percent": 99.8888888888889,
+        "supported_ticks": 3596.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 1.0,
+      "activity": {
+        "authority_transfers": 0.0,
+        "complete_cycles": 0.0,
+        "hold_denied": 0.0,
+        "hold_granted": 0.0,
+        "hold_requested": 0.0,
+        "release": 0.0,
+        "strap_denied": 0.0,
+        "strap_ok": 0.0,
+        "unstrap": 0.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "walk_only"
+    }
+  },
+  {
+    "name": "r4_free_wait_fix_01",
+    "kind": "experiment",
+    "d96_consumed": false,
+    "exit_codes": {
+      "client": 0,
+      "host": 0
+    },
+    "logs": {
+      "client": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "host": {
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "host": {
+      "bus_support": {
+        "percent": 99.4583333333333,
+        "supported_ticks": 7161.0,
+        "total_ticks": 7200.0
+      },
+      "support_loss_count": 6.0,
+      "activity": {
+        "authority_transfers": 0.0,
+        "complete_cycles": 46.0,
+        "hold_denied": 3.0,
+        "hold_granted": 47.0,
+        "hold_requested": 50.0,
+        "release": 46.0,
+        "strap_denied": 0.0,
+        "strap_ok": 46.0,
+        "unstrap": 46.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "cargo_cycles"
+    },
+    "client": {
+      "bus_support": {
+        "percent": 87.6527777777778,
+        "supported_ticks": 6311.0,
+        "total_ticks": 7200.0
+      },
+      "support_loss_count": 15.0,
+      "activity": {
+        "authority_transfers": 177.0,
+        "complete_cycles": 44.0,
+        "hold_denied": 1.0,
+        "hold_granted": 45.0,
+        "hold_requested": 46.0,
+        "release": 44.0,
+        "strap_denied": 0.0,
+        "strap_ok": 44.0,
+        "unstrap": 44.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "cargo_cycles"
+    }
+  },
+  {
+    "name": "r4_no_cargo_01",
+    "kind": "experiment",
+    "d96_consumed": false,
+    "exit_codes": {
+      "client": 0,
+      "host": 0
+    },
+    "logs": {
+      "client": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "host": {
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "host": {
+      "bus_support": {
+        "percent": 100.0,
+        "supported_ticks": 3600.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 0.0,
+      "activity": {
+        "authority_transfers": 0.0,
+        "complete_cycles": 0.0,
+        "hold_denied": 0.0,
+        "hold_granted": 0.0,
+        "hold_requested": 0.0,
+        "release": 0.0,
+        "strap_denied": 0.0,
+        "strap_ok": 0.0,
+        "unstrap": 0.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 0.0,
+      "actor_mode": "walk_only"
+    },
+    "client": {
+      "bus_support": {
+        "percent": 100.0,
+        "supported_ticks": 3600.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 0.0,
+      "activity": {
+        "authority_transfers": 0.0,
+        "complete_cycles": 0.0,
+        "hold_denied": 0.0,
+        "hold_granted": 0.0,
+        "hold_requested": 0.0,
+        "release": 0.0,
+        "strap_denied": 0.0,
+        "strap_ok": 0.0,
+        "unstrap": 0.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 0.0,
+      "actor_mode": "walk_only"
+    }
+  },
+  {
+    "name": "r4_release_fix_01",
+    "kind": "experiment",
+    "d96_consumed": false,
+    "exit_codes": {
+      "client": 0,
+      "host": 0
+    },
+    "logs": {
+      "client": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "host": {
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "host": {
+      "bus_support": {
+        "percent": 100.0,
+        "supported_ticks": 3600.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 0.0,
+      "activity": {
+        "authority_transfers": 0.0,
+        "complete_cycles": 24.0,
+        "hold_denied": 0.0,
+        "hold_granted": 25.0,
+        "hold_requested": 25.0,
+        "release": 24.0,
+        "strap_denied": 0.0,
+        "strap_ok": 24.0,
+        "unstrap": 24.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "cargo_cycles"
+    },
+    "client": {
+      "bus_support": {
+        "percent": 16.6388888888889,
+        "supported_ticks": 599.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 5.0,
+      "activity": {
+        "authority_transfers": 20.0,
+        "complete_cycles": 5.0,
+        "hold_denied": 96.0,
+        "hold_granted": 5.0,
+        "hold_requested": 101.0,
+        "release": 5.0,
+        "strap_denied": 0.0,
+        "strap_ok": 5.0,
+        "unstrap": 5.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "cargo_cycles"
+    }
+  },
+  {
+    "name": "r4_transition_fix_01",
+    "kind": "experiment",
+    "d96_consumed": false,
+    "exit_codes": {
+      "client": 0,
+      "host": 0
+    },
+    "logs": {
+      "client": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "host": {
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "host": {
+      "bus_support": {
+        "percent": 100.0,
+        "supported_ticks": 3600.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 0.0,
+      "activity": {
+        "authority_transfers": 0.0,
+        "complete_cycles": 24.0,
+        "hold_denied": 0.0,
+        "hold_granted": 24.0,
+        "hold_requested": 24.0,
+        "release": 24.0,
+        "strap_denied": 0.0,
+        "strap_ok": 24.0,
+        "unstrap": 24.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "cargo_cycles"
+    },
+    "client": {
+      "bus_support": {
+        "percent": 97.0555555555556,
+        "supported_ticks": 3494.0,
+        "total_ticks": 3600.0
+      },
+      "support_loss_count": 5.0,
+      "activity": {
+        "authority_transfers": 101.0,
+        "complete_cycles": 25.0,
+        "hold_denied": 0.0,
+        "hold_granted": 26.0,
+        "hold_requested": 26.0,
+        "release": 25.0,
+        "strap_denied": 0.0,
+        "strap_ok": 25.0,
+        "unstrap": 25.0
+      },
+      "render_configuration": {
+        "max_fps": 0.0,
+        "viewport_size": [
+          1152.0,
+          648.0
+        ],
+        "vsync_mode": 0.0
+      },
+      "cargo_count": 4.0,
+      "actor_mode": "cargo_cycles"
+    }
+  }
+]

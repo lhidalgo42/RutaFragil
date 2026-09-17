@@ -1,0 +1,295 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[2J[H[38;2;233;150;122m
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------[0m
+[38;2;0;191;255mDisabled fail fast![0m
+[38;2;0;191;255mSet write reports to C:/Users/Leo/Documents/RutaFragil/reports[0m
+[38;2;218;165;32m
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+[0m
+Scanning for test suites in: res://tests/net
+[38;2;100;149;237mInstalling GdUnit4 session system hooks.[0m
+[38;2;100;149;237mSession hook 'GdUnitHtmlTestReporter' installed.[0m
+[38;2;100;149;237mSession hook 'GdUnitXMLTestReporter' installed.[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_local_lookup_skips_remote_first_and_resolves_each_peer_eye[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_local_lookup_skips_remote_first_and_resolves_each_peer_eye[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 6ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_input_created_before_spawn_moves_only_the_late_local_crew[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_input_created_before_spawn_moves_only_the_late_local_crew[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 414ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_null_network_peer_keeps_local_input_and_door_working[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_null_network_peer_keeps_local_input_and_door_working[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 380ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_mouse_look_and_hands_belong_to_local_crew_when_remote_is_first[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_mouse_look_and_hands_belong_to_local_crew_when_remote_is_first[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 44ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_door_transit_created_before_spawn_boards_only_late_local_crew[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_door_transit_created_before_spawn_boards_only_late_local_crew[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 195ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_package_joins_stable_identity_group_on_ready[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/authority_lookup_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_package_joins_stable_identity_group_on_ready[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 1s 88ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_irregular_delivery_preserves_uniform_motion_after_buffer_warmup[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+BUS_DELIVERY alternating_1_3 min_step=0.308331 max_step=0.308334 expected=0.308333
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_irregular_delivery_preserves_uniform_motion_after_buffer_warmup[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_batched_snapshots_follow_the_source_clock_without_skipping_history[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_batched_snapshots_follow_the_source_clock_without_skipping_history[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_stale_packets_are_rejected_and_loss_holds_the_last_known_pose[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_stale_packets_are_rejected_and_loss_holds_the_last_known_pose[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 7ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_point_velocity_uses_interpolated_snapshot_without_simulating_the_bus[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_point_velocity_uses_interpolated_snapshot_without_simulating_the_bus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 7ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 61ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_blocked_hand_drop_does_not_place_kinematic_cargo_inside_crew[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+RELEASE_REPLICA rise_m=0.000000 package=(-0.622843, 0.22, 0.0)
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_blocked_hand_drop_does_not_place_kinematic_cargo_inside_crew[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 768ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_drop_without_free_space_retains_holder_and_sends_no_release[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_drop_without_free_space_retains_holder_and_sends_no_release[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 559ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_throw_from_blocked_hand_retains_holder_and_sends_no_release[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_throw_from_blocked_hand_retains_holder_and_sends_no_release[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 583ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_confirmed_release_does_not_turn_teleport_into_platform_velocity[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+RELEASE_PLATFORM peak_mps=0.000000
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_confirmed_release_does_not_turn_teleport_into_platform_velocity[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 656ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_drop_does_not_choose_free_space_across_a_thin_wall[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_geometry_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_drop_does_not_choose_free_space_across_a_thin_wall[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 575ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 5 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 3s 176ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/cargo_release_phase_test.gd[0m
+  [38;2;250;235;215mres://tests/net/cargo_release_phase_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_release_received_in_idle_keeps_confirmed_bus_local_pose_after_physics[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+IDLE_RELEASE bus_server_gap_m=0.308333 free_local_error_m=0.000000
+  [38;2;250;235;215mres://tests/net/cargo_release_phase_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_release_received_in_idle_keeps_confirmed_bus_local_pose_after_physics[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 487ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 501ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/cargo_replica_motion_test.gd[0m
+  [38;2;250;235;215mres://tests/net/cargo_replica_motion_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_client_strapped_collider_follows_bus_after_a_completed_physics_step[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+STRAPPED_CLIENT node_error=0.000004 physical_error=0.000004 angle=0.000691
+  [38;2;250;235;215mres://tests/net/cargo_replica_motion_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_client_strapped_collider_follows_bus_after_a_completed_physics_step[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 1s 4ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_replica_motion_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_free_state_follows_bus_before_first_unreliable_pose_arrives[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+FREE_WAIT node_error=0.000000 physical_error=0.000000
+  [38;2;250;235;215mres://tests/net/cargo_replica_motion_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_free_state_follows_bus_before_first_unreliable_pose_arrives[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 116ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_replica_motion_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_outside_free_state_waits_in_world_before_first_pose[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_replica_motion_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_outside_free_state_waits_in_world_before_first_pose[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 1s 157ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_client_impulse_never_simulates_but_host_free_box_does[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_client_impulse_never_simulates_but_host_free_box_does[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 247ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_host_grant_and_release_transfer_authority_to_holder_and_back[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_host_grant_and_release_transfer_authority_to_holder_and_back[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_unknown_peer_distance_and_occupied_hand_deny_hold[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_unknown_peer_distance_and_occupied_hand_deny_hold[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 12ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_reach_validation_uses_remote_hand_in_the_same_bus_frame[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_reach_validation_uses_remote_hand_in_the_same_bus_frame[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_nonholder_and_occupied_anchor_cannot_change_restraint[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_nonholder_and_occupied_anchor_cannot_change_restraint[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 13ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_only_full_confirmed_sequence_counts_a_cycle[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_only_full_confirmed_sequence_counts_a_cycle[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_replicated_strapped_to_free_clears_anchor_and_restores_cargo_parent[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_replicated_strapped_to_free_clears_anchor_and_restores_cargo_parent[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_late_holder_resolves_exact_peer_and_updates_only_local_hands[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_late_holder_resolves_exact_peer_and_updates_only_local_hands[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_repeated_state_is_idempotent_and_holder_change_is_observable[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_repeated_state_is_idempotent_and_holder_change_is_observable[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_interpolation_rejects_pose_from_previous_state_revision[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_interpolation_rejects_pose_from_previous_state_revision[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_release_uses_current_bus_frame_and_point_velocity_after_bus_moves[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_release_uses_current_bus_frame_and_point_velocity_after_bus_moves[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_held_snapshots_reject_other_peer_and_obsolete_revision[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_held_snapshots_reject_other_peer_and_obsolete_revision[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_host_rejects_release_inside_real_crew_capsule_before_authority_transfer[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_host_rejects_release_inside_real_crew_capsule_before_authority_transfer[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_host_strapped_box_follows_a_dynamic_bus[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_host_strapped_box_follows_a_dynamic_bus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 473ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_outside_drop_accepts_zero_world_velocity_beside_moving_bus[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_outside_drop_accepts_zero_world_velocity_beside_moving_bus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 11ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_malformed_held_pose_is_rejected_without_changing_package[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_malformed_held_pose_is_rejected_without_changing_package[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 11ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_release_with_frozen_client_and_moving_host_preserves_velocity_frame[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/cargo_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_release_with_frozen_client_and_moving_host_preserves_velocity_frame[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 17 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 980ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_network_remote_does_not_simulate_while_local_falls[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_network_remote_does_not_simulate_while_local_falls[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 200ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_spawner_builds_named_crews_with_distinct_authorities_and_one_local_camera[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_spawner_builds_named_crews_with_distinct_authorities_and_one_local_camera[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 32ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_remote_snapshots_interpolate_without_advancing_physics[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_remote_snapshots_interpolate_without_advancing_physics[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 72ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_remote_hands_cannot_grab_and_bind_to_their_own_eye[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_remote_hands_cannot_grab_and_bind_to_their_own_eye[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 24ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_client_replaces_authored_crew_and_activates_local_view_after_spawn[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_client_replaces_authored_crew_and_activates_local_view_after_spawn[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 52ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_interaction_hand_uses_source_bus_frame_while_ground_hand_stays_in_world[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/crew_sync_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_interaction_hand_uses_source_bus_frame_while_ground_hand_stays_in_world[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 23ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 448ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/gate_config_test.gd[0m
+  [38;2;250;235;215mres://tests/net/gate_config_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_reduction_propagates_no_cargo_and_does_not_enable_a_gate[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_config_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_reduction_propagates_no_cargo_and_does_not_enable_a_gate[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_config_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_gate_deadline_covers_300_seconds_independently_of_waypoints[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_config_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_gate_deadline_covers_300_seconds_independently_of_waypoints[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_config_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_human_client_is_windowed_while_host_is_headless[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_config_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_human_client_is_windowed_while_host_is_headless[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 48ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_percentiles_and_fps_report_tails_not_average[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_percentiles_and_fps_report_tails_not_average[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_capsule_height_and_rotated_cargo_measure_real_shape_extents[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_capsule_height_and_rotated_cargo_measure_real_shape_extents[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_authored_door_hole_excludes_air_but_keeps_floor_and_jamb[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_authored_door_hole_excludes_air_but_keeps_floor_and_jamb[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_penetration_run_resets_without_losing_peak_or_total[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_penetration_run_resets_without_losing_peak_or_total[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_resting_penetration_does_not_extend_a_run_or_pollute_excluded_histogram[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_resting_penetration_does_not_extend_a_run_or_pollute_excluded_histogram[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_judge_uses_same_run_p99_not_outlier_maximum[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_judge_uses_same_run_p99_not_outlier_maximum[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_short_or_idle_iterations_are_invalid_and_headless_is_unverified[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_short_or_idle_iterations_are_invalid_and_headless_is_unverified[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_support_threshold_precedes_slip_judgment[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_support_threshold_precedes_slip_judgment[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 6ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_capped_or_vsynced_fps_is_unverified_instead_of_failure[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_capped_or_vsynced_fps_is_unverified_instead_of_failure[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_trace_interpolates_position_and_quaternion_at_observation_utc[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_trace_interpolates_position_and_quaternion_at_observation_utc[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_trace_does_not_interpolate_handover_or_fake_zero_without_matches[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_trace_does_not_interpolate_handover_or_fake_zero_without_matches[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_observer_filters_remote_penetration_and_preserves_simulation_counters[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_observer_filters_remote_penetration_and_preserves_simulation_counters[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 28ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 12 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 202ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/gate_readiness_test.gd[0m
+  [38;2;250;235;215mres://tests/net/gate_readiness_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_percentage_cannot_hide_an_open_final_loss[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_readiness_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_percentage_cannot_hide_an_open_final_loss[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_readiness_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_thirty_ticks_is_allowed_but_thirty_one_and_short_duration_are_not[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_readiness_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_thirty_ticks_is_allowed_but_thirty_one_and_short_duration_are_not[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_readiness_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_gate_requires_same_clean_commit_and_configuration_as_completed_experiment[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_readiness_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_gate_requires_same_clean_commit_and_configuration_as_completed_experiment[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 50ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/gate_support_probe_test.gd[0m
+  [38;2;250;235;215mres://tests/net/gate_support_probe_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_loss_preserves_previous_contact_and_does_not_repeat_airborne_ticks[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+SUPPORT_LOST {"lost":{"bus_support":false,"tick":94},"off_ticks":1,"previous":{"bus_support":true,"bus_write_m":0.073,"crew_velocity":[0.0,-0.5,0.0],"floor_bodies":[{"body":"Bus/Floor","velocity":[0.0,0.0,4.4]}],"nearest_package":{"origin_distance_m":1.5},"snapshots":{"last_transport_s":0.033,"received_this_tick":1},"tick":93},"previous_three":[{"bus_support":true,"bus_write_m":0.073,"crew_velocity":[0.0,-0.5,0.0],"floor_bodies":[{"body":"Bus/Floor","velocity":[0.0,0.0,4.4]}],"nearest_package":{"origin_distance_m":1.5},"snapshots":{"last_transport_s":0.033,"received_this_tick":1},"tick":93}],"recovered":false,"recovered_tick":null}
+SUPPORT_LOST {"lost":{"bus_support":false,"tick":98},"off_ticks":1,"previous":{"bus_support":true,"tick":97},"previous_three":[{"bus_support":false,"tick":95},{"bus_support":true,"tick":96},{"bus_support":true,"tick":97}],"recovered":false,"recovered_tick":null}
+  [38;2;250;235;215mres://tests/net/gate_support_probe_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_loss_preserves_previous_contact_and_does_not_repeat_airborne_ticks[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 24ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/network_backend_test.gd[0m
+  [38;2;250;235;215mres://tests/net/network_backend_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_initial_state_is_idle[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/network_backend_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_initial_state_is_idle[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 8ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/network_backend_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_host_game_makes_us_host_and_emits_hosted[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/network_backend_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_host_game_makes_us_host_and_emits_hosted[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/network_backend_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_leave_returns_to_idle_and_frees_the_port[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/network_backend_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_leave_returns_to_idle_and_frees_the_port[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/network_backend_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_join_without_server_fails_without_hanging[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/network_backend_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_join_without_server_fails_without_hanging[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 7s 514ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 7s 571ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/net_marker_test.gd[0m
+  [38;2;250;235;215mres://tests/net/net_marker_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_owner_peer_id_is_stored[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/net_marker_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_owner_peer_id_is_stored[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 7ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 19ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/playground_client_mode_test.gd[0m
+  [38;2;250;235;215mres://tests/net/playground_client_mode_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_client_role_disables_demo_and_freezes_bus[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/playground_client_mode_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_client_role_disables_demo_and_freezes_bus[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 10ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/playground_client_mode_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_single_role_keeps_demo_running[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/playground_client_mode_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_single_role_keeps_demo_running[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 9ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 38ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mOverall Summary:[0m[38;2;255;255;255m 68 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m
+[38;2;233;150;122mExecuted test suites: (14/14)[0m
+[38;2;233;150;122mExecuted test cases : (68/68)[0m
+[38;2;233;150;122mTotal execution time: 15s 363ms[0m
+[38;2;255;255;255m [0m[38;2;100;149;237mOpen XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_3/results.xml[0m
+[38;2;100;149;237mOpen HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_3/index.html[0m
+[38;2;233;150;122mExit code: 0[0m
+Run dispose test resources

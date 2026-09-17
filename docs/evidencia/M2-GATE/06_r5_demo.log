@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+DEMO waypoint 0 t=2.3s
+DEMO waypoint 1 t=4.5s
+DEMO waypoint 2 t=6.7s
+DEMO waypoint 3 t=7.3s
+DEMO waypoint 4 t=7.8s
+DEMO waypoint 5 t=8.5s
+DEMO water_entered t=8.8s
+DEMO waypoint 6 t=9.4s
+DEMO waypoint 7 t=10.6s
+DEMO waypoint 8 t=11.3s
+DEMO waypoint 9 t=11.8s
+DEMO waypoint 10 t=12.7s
+DEMO waypoint 11 t=17.1s
+DEMO waypoint 12 t=23.4s
+DEMO waypoint 13 t=24.5s
+DEMO waypoint 14 t=25.6s
+DEMO waypoint 15 t=26.6s
+DEMO waypoint 16 t=27.3s
+DEMO result=lap_completed t=27.3s waypoints=17 max_speed_kmh=64.6 min_upright=0.97

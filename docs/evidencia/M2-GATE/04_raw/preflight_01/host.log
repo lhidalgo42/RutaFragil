@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+GATE begin role=host peer=1 seconds=20.0 sample=after_all_node_physics priority=1000
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+GATE complete role=host ticks=1200 activity={ "hold_requested": 2, "hold_granted": 2, "hold_denied": 0, "release": 1, "strap_ok": 2, "strap_denied": 0, "unstrap": 1, "authority_transfers": 0, "complete_cycles": 1 }

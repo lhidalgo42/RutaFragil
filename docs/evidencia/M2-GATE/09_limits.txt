@@ -1,0 +1,61 @@
+R8 — ronda5, fuentes25c7a72,241 tests
+
+docs/evidencia/M2-GATE/run_r5_experiment.ps1: 40
+docs/evidencia/M2-GATE/run_r5_probe.py: 31
+docs/evidencia/M2-GATE/run_r5_verification.ps1: 71
+src/net/net_cargo_replica.gd: 191
+src/net/net_cargo_sync.gd: 213
+src/tooling/cargo_release_phase_probe.gd: 120
+src/tooling/gate_config.gd: 91
+src/tooling/gate_launcher.gd: 162
+src/tooling/gate_metrics.gd: 335
+src/tooling/gate_metrics_util.gd: 180
+src/tooling/gate_readiness.gd: 38
+src/tooling/gate_support_probe.gd: 149
+src/tooling/platform_adoption_probe.gd: 197
+src/tooling/platform_probe_crew.gd: 17
+src/tooling/platform_probe_driver.gd: 55
+src/tooling/run_platform_adoption_probe.gd: 14
+tests/net/cargo_release_phase_test.gd: 94
+tests/net/gate_metrics_test.gd: 311
+tests/net/gate_readiness_test.gd: 49
+tests/net/gate_support_probe_test.gd: 32
+tools/run_gate.ps1: 45
+tools/run_tests.ps1: 354
+tools/run_tests.sh: 270
+
+Scripts modificados >400 líneas: []
+Escenas modificadas: ninguna. src/vehicle, data, scenes y project.godot:
+diff vacío respecto5ea5b56. main sigue2b16e99ce9a485dc5342d55774d7d33f6d2a9f2c.
+
+
+REGISTRO HISTÓRICO ANTERIOR (no sustituye el estado de ronda5)
+
+R8 — ronda4, fuentes finales 1eeb635, 236 tests
+
+src/cargo/package.gd: 308
+src/crew/crew_hands.gd: 332
+src/net/net_bus_sync.gd: 134
+src/net/net_cargo_placement.gd: 66
+src/net/net_cargo_replica.gd: 179
+src/net/net_cargo_rules.gd: 179
+src/tooling/gate_actor.gd: 102
+src/tooling/gate_config.gd: 81
+src/tooling/gate_launcher.gd: 141
+src/tooling/gate_metrics.gd: 330
+src/tooling/gate_metrics_util.gd: 160
+src/tooling/gate_session.gd: 310
+src/tooling/gate_support_probe.gd: 84
+tests/crew/crew_hands_test.gd: 398
+tests/net/cargo_release_geometry_test.gd: 139
+tests/net/cargo_replica_motion_test.gd: 138
+tests/net/cargo_sync_test.gd: 392
+tests/net/gate_config_test.gd: 35
+tests/net/gate_metrics_test.gd: 292
+tests/net/gate_support_probe_test.gd: 21
+
+Scripts modificados >400 líneas: []
+Escenas modificadas desde fefc4d8: ninguna.
+Rutas protegidas src/vehicle, data/tuning.json, project.godot, scenes: diff vacío.
+main: 2b16e99ce9a485dc5342d55774d7d33f6d2a9f2c
+Revisión04 blob intacto: cf4921b7e686c109538f2bf90e68f0860e93ab18

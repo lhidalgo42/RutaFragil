@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: The argument 1 of the function "assign()" requires the subtype "Array" but the supertype "Variant" was provided. (Warning treated as error.)
+   at: GDScript::reload (res://src/tooling/gate_launcher.gd:79)
+SCRIPT ERROR: Parse Error: The argument 1 of the function "assign()" requires the subtype "Array" but the supertype "Variant" was provided. (Warning treated as error.)
+   at: GDScript::reload (res://src/tooling/gate_launcher.gd:81)
+ERROR: Failed to load script "res://src/tooling/gate_launcher.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)

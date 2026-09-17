@@ -1,0 +1,86 @@
+RONDA 5 — cierre por límite E, fuentes25c7a72
+
+NO APROBADO: gate M2, jugabilidad, jitter perceptible ni sensación.
+D96: dos fallos válidos anteriores; tercero sin gastar. No hay otro gate.
+Experimento final300s: host99,983333 % / cliente27,333333 %, cliente fuera
+al terminar y pérdida abierta13078ticks. Se detiene experimentación.
+El revisor redactará planB; no se escribe ni implementa aquí. La acotación E
+permanece pendiente del dueño y se aplica como firme por su instrucción.
+
+ABIERTOS / NO PROBADOS:
+- Banco sin red: reproduce expulsión por obstáculo lento, pero no aísla la
+  selección errónea de plataforma; ratio1 de pie elimina también el contacto.
+- Acarreo explícito rechazado:16/5ticks en aire, sin carga y presión−0,5.
+  El control entra a85,515km/h pero baja hasta53,709; no acredita80 sostenidos.
+  Los controles motor con presión0 también tienen0aire: no revalidan la
+  necesidad causal de−0,5 de T2.2, aunque preservan su configuración aprobada.
+- Histograma observado: carga host sin forma activa en algunas transiciones;
+  ceros ambiguos cortan rachas. No certifica cobertura ni máximos/rachas reales.
+  Históricos2/4 no permiten reconstruir rachas >3cm completas. La racha4391
+  dePackage_3 en corrida4 era asentamiento≤2,55cm y se retira como fallo.
+- Sin prueba manual nueva ni aprobación humana en esta ronda; capturas
+  automáticas del experimento, cliente con geometría próxima/oclusiva.
+- Sin pruebas internet/Steam, reconexión, autoridad del bus al conductor,
+  cuatro peers en gameplay del gate ni plataformas macOS/Linux.
+- Error remoto incluye retraso de interpolación y movimiento propio;
+  no se separa todo el residuo ni se inventa un umbral de aceptación.
+- drop/throw y respuesta al jugador, validación con pose cliente, ruido
+  CameraArbiter del fixture seat_test quedan en BACKLOG, sin trabajo extra.
+
+CAMBIOS VERIFICADOS con rojo/verde: fase de liberación0,308333m→0,
+orden fiable hold→release→hold, asentamiento3cm excluido de duración,
+guardia del tercer intento por datos completos/commit/configuración.
+El alcance permanece en rama m2/gate-two-instances; main y física del bus intactos.
+
+REGISTRO HISTÓRICO ANTERIOR (no sustituye el estado de ronda5)
+
+RONDA 4 — estado actual y límites honestos
+
+NO APROBADO:
+- Gate M2/jugabilidad. Dos fallos válidos D96: corridas 2 y4. Corridas1/3
+  inválidas. No se gasta el tercero, no se activa ni implementa opción B.
+- Acarreo del cliente: corrida 4 apoyo19,411111 %, aunque 120/25 ciclos.
+  El posterior arreglo de espera FREE se prueba en banco y experimento 120 s:
+  cliente 87,652778 % y44 ciclos, todavía bajo 95 %. No hay gate300 s posterior.
+- Contactos laterales con carga cinemática: la plataforma recibida puede
+  corresponder a la caja y diferir del suelo del bus; falta banco aislado.
+- Penetración local: corrida 4 mantiene una racha de carga dinámica de 4391
+  ticks en anfitrión y otra de la tripulante local de 216 ticks en cliente. No se cambian tolerancias ni se ocultan.
+- Gate humano, sensación y jitter perceptible: pendientes del dueño.
+
+CORRECCIÓN DEL REGISTRO:
+- Corrida2 falla por apoyo cliente 6,633333 % y penetraciones locales. Su p99
+  no es jitter; FPS sin juicio por VSync 1 y max_fps=120. Corrida3 tampoco
+  acredita FPS sin límite, aunque su VSync estaba desactivado.
+- La carga histórica no registra profundidad/estado/autoridad por tick:
+  no se reconstruye falsamente un agregado dinámico de corrida 2.
+
+VENTANA:
+- Se operó la ventana cliente120 s, host headless, código 19836c7. Apoyo100 %,
+  interior/remota/cajas visibles, logs limpios. TapsW/E/clic y arrastre no
+  produjeron solicitudes de agarre verificadas. No acredita un ciclo manual,
+  control sostenido ni jugabilidad. La API disponible no expone key-down/up
+  sostenidos. El arreglo 1eeb635 es posterior a esa inspección.
+
+LÍMITES DE MEDICIÓN:
+- Desplazamiento por tick incluye caminar y salir del casco; solo se juzga
+  p99 si ambas instancias tienen>=95 % de apoyo. Máximo solo informativo.
+- Observador independiente postnodos, prioridades1000 en ambas instancias.
+- Errores remotos al mismo UTC local, trazas 10 Hz, sin extrapolar ni cruzar
+  autoridad. No corrigen retraso del receptor. No se inventan umbrales.
+- Velocidad de baches cubre x=[24,36],z=[2,46]; primera entrada alrededor
+  de 66,5 km/h, sin acreditar80 km/h durante todo el cruce exigido por maestro.
+- Los ensayos60/300 s no comparten exactamente todas las poses y contactos.
+- Ensayo sin carga usa caminar explícito; actor original sin paquete no
+  caminaba. Las dos ramas walk_only sí son comparables entre sí.
+
+NO EJECUTADO / FUERA DE ALCANCE:
+- Internet real, Steam, pérdida/latencia artificial en corrida completa,
+  reconexión, cuatro tripulantes, cambio de autoridad del bus.
+- Gate en macOS/Linux; Bash no se ejecutó con Godot en esos SO.
+- Recuperación garantizada de todo el árbol de procesos ante bloqueo duro.
+- No hay nuevo ADR, dependencias, merge, publicación ni cambios en main.
+- No se tocó bus/suspensión, tuning, escenas ni project.godot persistente.
+
+g2.1 sigue RETIRADO. Las sondas y sus logs históricos no prueban superioridad
+universal de un punto de escritura. Véanse revisión03 y evidencia12.

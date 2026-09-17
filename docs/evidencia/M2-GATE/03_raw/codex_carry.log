@@ -1,0 +1,61 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Identifier "NetAuthority" not declared in the current scope.
+   at: GDScript::reload (res://src/crew/crew_input.gd:84)
+   GDScript backtrace (most recent call first):
+       [0] _load_scene (res://src/tooling/run_carry_probe.gd:106)
+       [1] _record_pass (res://src/tooling/run_carry_probe.gd:255)
+       [2] _run_table (res://src/tooling/run_carry_probe.gd:290)
+       [3] _start (res://src/tooling/run_carry_probe.gd:94)
+SCRIPT ERROR: Parse Error: Identifier "NetAuthority" not declared in the current scope.
+   at: GDScript::reload (res://src/crew/crew_input.gd:139)
+   GDScript backtrace (most recent call first):
+       [0] _load_scene (res://src/tooling/run_carry_probe.gd:106)
+       [1] _record_pass (res://src/tooling/run_carry_probe.gd:255)
+       [2] _run_table (res://src/tooling/run_carry_probe.gd:290)
+       [3] _start (res://src/tooling/run_carry_probe.gd:94)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/vehicle/bus_input.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _load_scene (res://src/tooling/run_carry_probe.gd:106)
+       [1] _record_pass (res://src/tooling/run_carry_probe.gd:255)
+       [2] _run_table (res://src/tooling/run_carry_probe.gd:290)
+       [3] _start (res://src/tooling/run_carry_probe.gd:94)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/biomes/playground/playground.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _load_scene (res://src/tooling/run_carry_probe.gd:106)
+       [1] _record_pass (res://src/tooling/run_carry_probe.gd:255)
+       [2] _run_table (res://src/tooling/run_carry_probe.gd:290)
+       [3] _start (res://src/tooling/run_carry_probe.gd:94)
+ERROR: Failed to load script "res://src/biomes/playground/playground.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _load_scene (res://src/tooling/run_carry_probe.gd:106)
+       [1] _record_pass (res://src/tooling/run_carry_probe.gd:255)
+       [2] _run_table (res://src/tooling/run_carry_probe.gd:290)
+       [3] _start (res://src/tooling/run_carry_probe.gd:94)
+SCRIPT ERROR: Parse Error: Identifier "NetAuthority" not declared in the current scope.
+   at: GDScript::reload (res://src/crew/door_transit.gd:30)
+   GDScript backtrace (most recent call first):
+       [0] _load_scene (res://src/tooling/run_carry_probe.gd:106)
+       [1] _record_pass (res://src/tooling/run_carry_probe.gd:255)
+       [2] _run_table (res://src/tooling/run_carry_probe.gd:290)
+       [3] _start (res://src/tooling/run_carry_probe.gd:94)
+ERROR: Failed to load script "res://src/crew/door_transit.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _load_scene (res://src/tooling/run_carry_probe.gd:106)
+       [1] _record_pass (res://src/tooling/run_carry_probe.gd:255)
+       [2] _run_table (res://src/tooling/run_carry_probe.gd:290)
+       [3] _start (res://src/tooling/run_carry_probe.gd:94)
+CARRY pass=host_real_standing window=60s drift_max=0.387 drift_p95=0.334 slip_max=0.0782 slip_p95=0.0040 slip_p99=0.0072 slip_p999=0.0217 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+CARRY pass=host_real_walking window=60s drift_max=3.147 drift_p95=2.863 slip_max=0.1432 slip_p95=0.0675 slip_p99=0.0700 slip_p999=0.0780 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+CARRY trajectory_distance: {"max_m":3.84059858322144,"p95_m":3.5358579158783,"samples":3600}
+CARRY pass=static_standing window=60s drift_max=90.243 drift_p95=88.695 slip_max=2.3896 slip_p95=1.5500 slip_p99=2.3037 slip_p999=2.3726 off_bus_support=3510/3600 below=1961(depth=8.04,run=326) outside=3516
+CARRY pass=static_walking window=60s drift_max=60.831 drift_p95=56.715 slip_max=1.4844 slip_p95=0.8212 slip_p99=1.1488 slip_p999=1.4471 off_bus_support=3442/3600 below=1520(depth=6.94,run=260) outside=3449
+CARRY pass=kinematic_standing window=60s drift_max=0.627 drift_p95=0.532 slip_max=0.6191 slip_p95=0.5919 slip_p99=0.6129 slip_p999=0.6189 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+CARRY pass=kinematic_walking window=60s drift_max=3.200 drift_p95=2.707 slip_max=0.6873 slip_p95=0.6321 slip_p99=0.6798 slip_p999=0.6870 off_bus_support=18/3600 below=0(depth=0.00,run=0) outside=0
+CARRY pass=interp_standing window=60s drift_max=0.387 drift_p95=0.335 slip_max=0.0401 slip_p95=0.0061 slip_p99=0.0100 slip_p999=0.0333 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+CARRY pass=interp_walking window=60s drift_max=3.131 drift_p95=2.845 slip_max=0.1057 slip_p95=0.0679 slip_p99=0.0712 slip_p999=0.0775 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+SPEED lap_peak_kmh=66.7 bumps_avg_kmh=47.6 bumps_max_kmh=62.8 bumps_min_kmh=34.6 bumps_ticks=402

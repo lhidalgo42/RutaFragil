@@ -8,7 +8,7 @@
 #   2. Clean reports/ and ensure reports/.gdignore exists BEFORE the import:
 #      gdUnit4 exits 0 and writes NO report when it discovers zero tests
 #      ("No test cases found, abort test run!"), so a stale results.xml from a
-#      previous run would fool the >=3 test guard into accepting a no-op run;
+#      previous run would fool the exact-count guard into accepting a no-op run;
 #      and without .gdignore Godot imports the report HTML PNGs on every
 #      --import pass.
 #   3. Run a headless import TWICE and strongly verify the global script
@@ -27,8 +27,9 @@
 #      exit code 105 without them.
 #   5. Map the gdUnit4 exit code to a human-readable meaning.
 #   6. Fail if the runner output contains "No test cases found", and parse the
-#      (fresh) JUnit results.xml under reports/ requiring at least 3
-#      discovered tests (gdUnit4 returns 0 even when it discovers nothing).
+#      (fresh) JUnit results.xml under reports/ requiring EXACTLY EXPECTED_TESTS
+#      discovered tests (r2.1: gdUnit4 returns 0 even when it discovers nothing,
+#      and fresh clones have silently dropped tests).
 #   7. Exit 0 only if every step passed.
 #
 # Exit codes: 0 = success. All other codes are propagated as delivered by the
@@ -37,6 +38,12 @@
 # reserved for the harness itself.
 
 exit_infra_failure=1
+
+# r2.1 (M2-GATE): the harness asserts the EXACT discovered test count, never
+# a floor: gdUnit in fresh clones has silently dropped a suite's last test
+# three times (T2.2 reviews 04/05, T2.3 review 02), and a ">= N" guard cannot
+# see that. Bump this constant in the SAME commit that adds or removes a test.
+expected_tests=255
 
 # M0-T0.4 (D57): the network multi-instance scenario runs as a final step;
 # --skip-net skips it to iterate over the unit tests only.
@@ -125,12 +132,14 @@ esac
 # --- Step 2: clean reports/ and ensure reports/.gdignore -----------------------
 log_step "Step 2/7: Clean reports directory"
 # gdUnit4 exits 0 and writes NO report when it discovers zero tests; without a
-# clean slate the >=3 guard below would read a stale results.xml from a
-# previous run and approve a silent no-op.
+# clean slate the exact-count guard below would read a stale results.xml from a
+# previous run and approve a silent no-op (with an exact count a stale report
+# from a bounded run would instead FAIL the run: keeping reports/ clean matters
+# even more now).
 if [ -d "$reports_dir" ]; then
     rm -rf "$reports_dir"
     printf 'Deleted previous reports: %s\n' "$reports_dir"
-    # rm -rf does not stop on a locked file; the >=3 test guard below needs a
+    # rm -rf does not stop on a locked file; the exact-count guard below needs a
     # guaranteed fresh report, so a surviving directory is fatal.
     if [ -d "$reports_dir" ]; then
         fail "Could not delete reports directory: $reports_dir (a locked file?). Delete it manually and re-run."
@@ -221,7 +230,7 @@ if [ -n "$results_xml" ] && [ -f "$results_xml" ]; then
 else
     printf 'WARNING: no results.xml found under %s\n' "$reports_dir"
 fi
-printf 'Discovered tests: %s (minimum required: 3)\n' "$discovered_tests"
+printf 'Discovered tests: %s (expected exactly: %s)\n' "$discovered_tests" "$expected_tests"
 
 # --- Step 7: final verdict -----------------------------------------------------
 log_step "Step 7/7: Final verdict"
@@ -234,8 +243,8 @@ if printf '%s' "$runner_output" | grep -qF 'No test cases found'; then
     printf "FAILURE: gdUnit4 reported 'No test cases found, abort test run!' (exit 0, no report written). Refusing to accept a silent no-op run.\n"
     exit "$exit_infra_failure"
 fi
-if [ "$discovered_tests" -lt 3 ]; then
-    printf 'FAILURE: only %s tests discovered (< 3). gdUnit4 exits 0 even when it discovers nothing; refusing to accept a silent no-op run.\n' "$discovered_tests"
+if [ "$discovered_tests" -ne "$expected_tests" ]; then
+    printf 'FAILURE: %s tests discovered, expected exactly %s (EXPECTED_TESTS in this file). gdUnit in fresh clones has silently dropped a suite'"'"'s last test three times (r2.1); if the suites were edited on purpose, bump EXPECTED_TESTS in the same commit.\n' "$discovered_tests" "$expected_tests"
     exit "$exit_infra_failure"
 fi
 printf 'SUCCESS: all tests passed and %s tests were discovered.\n' "$discovered_tests"

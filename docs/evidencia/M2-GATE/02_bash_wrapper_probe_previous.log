@@ -1,0 +1,15 @@
+﻿stub arguments: <--headless> <--path> </c/Users/Leo/Documents/RutaFragil> <--log-file> <user://gate_launcher.log> <-s> <res://src/tooling/run_net_scenario.gd> <++> <mode=gate> <role=launcher> <seconds=300> <human=client> <output=user://gate/run_20260916_195234> <seconds=2> <human=none> <windowed=none>
+normal exit requested=0 observed=0
+stub arguments: <--headless> <--path> </c/Users/Leo/Documents/RutaFragil> <--log-file> <user://gate_launcher.log> <-s> <res://src/tooling/run_net_scenario.gd> <++> <mode=gate> <role=launcher> <seconds=300> <human=client> <output=user://gate/run_20260916_195234> <seconds=2> <human=none> <windowed=none>
+normal exit requested=7 observed=7
+stub arguments: <--headless> <--path> </c/Users/Leo/Documents/RutaFragil> <--log-file> <user://gate_launcher.log> <-s> <res://src/tooling/run_net_scenario.gd> <++> <mode=gate> <role=launcher> <seconds=300> <human=client> <output=user://gate/run_20260916_195234> <seconds=2> <human=none> <windowed=none>
+watchdog requested seconds=142
+bash.exe : Gate launcher exceeded the external deadline; see its log.
+En línea: 4 Carácter: 1
++ & 'C:/Program Files/Git/bin/bash.exe' reports/gate_wrapper_probe/chec ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Gate launcher e...e; see its log.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+timeout exit expected=124 observed=124
+WRAPPER_PROBE_PASS: Git Bash, stub executable, accelerated watchdog only; no Godot gate run.

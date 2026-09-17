@@ -11,6 +11,7 @@ func _instantiate(role: String) -> Node:
 		var packed_scene: PackedScene = packed
 		var scene: Node = packed_scene.instantiate()
 		scene.set("network_role", role)
+		scene.set("cargo_spawn", false)
 		get_tree().root.add_child(scene)
 		return scene
 	assert_bool(false).override_failure_message("playground.tscn did not load").is_true()
@@ -37,7 +38,9 @@ func test_client_role_disables_demo_and_freezes_bus() -> void:
 	if bus_node is RigidBody3D:
 		var bus: RigidBody3D = bus_node
 		assert_bool(bus.freeze).is_true()
+		assert_int(bus.freeze_mode).is_equal(RigidBody3D.FREEZE_MODE_KINEMATIC)
 	scene.queue_free()
+	await get_tree().physics_frame
 
 
 func test_single_role_keeps_demo_running() -> void:
@@ -61,3 +64,4 @@ func test_single_role_keeps_demo_running() -> void:
 		var bus: RigidBody3D = bus_node
 		assert_bool(bus.freeze).is_false()
 	scene.queue_free()
+	await get_tree().physics_frame

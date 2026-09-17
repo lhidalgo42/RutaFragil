@@ -1,0 +1,77 @@
+Ronda 4 — comprobación posterior al commit de verificación
+2026-09-16T21:23:54.628182
+
+Se captura el estado limpio antes de crear este registro documental.
+El commit que añade este archivo no cambia fuentes ni resultados.
+
+C:\Users\Leo\Documents\RutaFragil
+git branch --show-current
+m2/gate-two-instances
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil
+git rev-parse HEAD
+a0b6bd3c43890566fbdde5ce61dbf0fb809b14cd
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil
+git status --porcelain
+(vacío)
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil
+git rev-parse main
+2b16e99ce9a485dc5342d55774d7d33f6d2a9f2c
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil
+git rev-parse HEAD:docs/revisiones/M2-GATE_revision_04.md
+cf4921b7e686c109538f2bf90e68f0860e93ab18
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil
+git diff --name-only 1eeb635 HEAD -- src tests tools
+(vacío)
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil
+git diff --name-only fefc4d8 HEAD -- src/vehicle data/tuning.json project.godot scenes
+(vacío)
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil
+git ls-files --others --exclude-standard -- *.uid
+(vacío)
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil
+git log --oneline fefc4d8..HEAD
+a0b6bd3 docs(gate): record three 236-test passes, regressions and clean fresh imports
+266f459 docs(gate): preserve reductions, corrected verdicts and remaining cargo contact failure
+1eeb635 fix(cargo): carry confirmed free replicas while awaiting their first pose
+19836c7 fix(cargo): teleport confirmed state before resuming kinematic replication
+f362783 fix(cargo): reject overlapping releases and apply corrected gate criteria
+c23e751 test(gate): capture support-loss edges and isolate cargo-free experiments
+632fafa docs: preserve reviewer correction of M2 gate failure criteria
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil_r4_verify_20260916
+git rev-parse HEAD
+266f459f104fd22a23deed77451630528434390f
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil_r4_verify_20260916
+git status --porcelain
+(vacío)
+exit=0
+
+C:\Users\Leo\Documents\RutaFragil_r4_verify_20260916
+git ls-files --others --exclude-standard -- *.uid
+(vacío)
+exit=0
+
+Import fresco: 0 / 0, caché de clases presente; 07_r4_fresh_import.json.
+git diff --check sin logs crudos: código 0.
+El diff de logs crudos conserva cuatro espacios finales emitidos por Godot
+en las líneas update_scripts_classes de 02_r4_run_1.log; no se altera su salida.
+Los SHA256 distinguen bytes capturados y normalización LF de Git.

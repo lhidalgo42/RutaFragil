@@ -1,0 +1,1177 @@
+﻿
+=== Step 1/7: Resolve Godot binary and verify version ===
+GODOT_BIN resolved to OS default
+Godot binary: C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe
+godot --version: 4.7.2.stable.official.ed1daf0bf
+
+=== Step 2/7: Clean reports directory ===
+Deleted previous reports: C:\Users\Leo\Documents\RutaFragil\reports
+Reports directory ready: C:\Users\Leo\Documents\RutaFragil\reports (with .gdignore)
+
+=== Step 3/7: Headless import (two passes) ===
+--- import pass 1/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando diseño del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[  33% ] loading_editor_layout | Reabriendo escenas...
+[  50% ] loading_editor_layout | Cargando el diseño del editor central...
+[  66% ] loading_editor_layout | Cargando Layout de la ventana del plugin...
+[  83% ] loading_editor_layout | Diseño del editor listo.
+[ DONE ] loading_editor_layout
+
+
+import pass 1 exit code: 0
+--- import pass 2/2 ---
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] first_scan_filesystem | Started Inicialización del proyecto (5 steps)
+[   0% ] first_scan_filesystem | Escaneando la estructura del archivo...
+[  16% ] first_scan_filesystem | Cargando nombres de clases globales...
+[  33% ] first_scan_filesystem | Verificando GDExtensions...
+[  50% ] first_scan_filesystem | Creando scripts de carga automática...
+[  66% ] first_scan_filesystem | Inicializando plugins...
+It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!
+[  83% ] first_scan_filesystem | Iniciando escaneo de archivos...
+[ DONE ] first_scan_filesystem
+
+[   0% ] loading_editor_layout | Started Cargando editor (5 steps)
+[   0% ] loading_editor_layout | Cargando diseño del editor...
+[  16% ] loading_editor_layout | Cargando docks...
+[  33% ] loading_editor_layout | Reabriendo escenas...
+[  50% ] loading_editor_layout | Cargando el diseño del editor central...
+[  66% ] loading_editor_layout | Cargando Layout de la ventana del plugin...
+[  83% ] loading_editor_layout | Diseño del editor listo.
+[ DONE ] loading_editor_layout
+
+
+import pass 2 exit code: 0
+Class cache verified: C:\Users\Leo\Documents\RutaFragil\.godot\global_script_class_cache.cfg
+
+=== Step 4/7: Run gdUnit4 test suites ===
+Running: "C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe" --headless --path C:\Users\Leo\Documents\RutaFragil -s res://addons/gdUnit4/bin/GdUnitCmdTool.gd --ignoreHeadlessMode -c -a res://tests -rd res://reports
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Scanning for test suites in: res://tests
+Installing GdUnit4 session system hooks.
+Session hook 'GdUnitHtmlTestReporter' installed.
+Session hook 'GdUnitXMLTestReporter' installed.
+Run Test Suite: res://tests/autoloads/game_config_autoload_test.gd
+  res://tests/autoloads/game_config_autoload_test.gd > test_autoload_exists_in_runner STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_autoload_exists_in_runner PASSED 4ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_data_and_tuning_are_present STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_data_and_tuning_are_present PASSED 4ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_max_players_comes_from_the_data STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_max_players_comes_from_the_data PASSED 3ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_emits_reloaded STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_emits_reloaded PASSED 8ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_push_warning_on_rejected_mod STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_push_warning_on_rejected_mod PASSED 20ms
+
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_push_error_on_empty_dirs STARTED
+  res://tests/autoloads/game_config_autoload_test.gd > test_reload_push_error_on_empty_dirs PASSED 9ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 79ms
+
+
+Run Test Suite: res://tests/biomes/playground/circuit_test.gd
+  res://tests/biomes/playground/circuit_test.gd > test_counts_only_marker3d_children STARTED
+  res://tests/biomes/playground/circuit_test.gd > test_counts_only_marker3d_children PASSED 6ms
+
+  res://tests/biomes/playground/circuit_test.gd > test_positions_follow_tree_order STARTED
+  res://tests/biomes/playground/circuit_test.gd > test_positions_follow_tree_order PASSED 6ms
+
+  res://tests/biomes/playground/circuit_test.gd > test_empty_circuit_has_zero_waypoints STARTED
+  res://tests/biomes/playground/circuit_test.gd > test_empty_circuit_has_zero_waypoints PASSED 4ms
+
+  res://tests/biomes/playground/circuit_test.gd > test_out_of_range_index_push_error STARTED
+  res://tests/biomes/playground/circuit_test.gd > test_out_of_range_index_push_error PASSED 7ms
+
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 46ms
+
+
+Run Test Suite: res://tests/biomes/playground/playground_scene_test.gd
+  res://tests/biomes/playground/playground_scene_test.gd > test_scene_structure STARTED
+  res://tests/biomes/playground/playground_scene_test.gd > test_scene_structure PASSED 2s 32ms
+
+  res://tests/biomes/playground/playground_scene_test.gd > test_demo_reaches_three_waypoints_without_rolling_over STARTED
+  res://tests/biomes/playground/playground_scene_test.gd > test_demo_reaches_three_waypoints_without_rolling_over PASSED 1s 677ms
+
+  res://tests/biomes/playground/playground_scene_test.gd > test_leaving_the_demo_follows_the_crew_state STARTED
+  res://tests/biomes/playground/playground_scene_test.gd > test_leaving_the_demo_follows_the_crew_state PASSED 507ms
+
+  res://tests/biomes/playground/playground_scene_test.gd > test_circuit_waypoints_match_the_authored_positions STARTED
+  res://tests/biomes/playground/playground_scene_test.gd > test_circuit_waypoints_match_the_authored_positions PASSED 16ms
+
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 4s 264ms
+
+
+Run Test Suite: res://tests/biomes/playground/seat_physics_test.gd
+  res://tests/biomes/playground/seat_physics_test.gd > test_sitting_does_not_move_the_bus_and_standing_is_clean STARTED
+SEATSIT max_omega=0.0000 rad/s min_upright=1.00000 y_range=0.0000 m
+SEATDRIVE min_upright=0.99999 forward=6.30 m lateral=0.000 m
+SEATSTAND back_local=(0.0, -0.598959, -0.000002) (saved (0.0, -0.598959, 0.0)) push_after_enable=0.0364 m bus_omega=0.0000 on_floor=true
+  res://tests/biomes/playground/seat_physics_test.gd > test_sitting_does_not_move_the_bus_and_standing_is_clean PASSED 11s 367ms
+
+  res://tests/biomes/playground/seat_physics_test.gd > test_standing_up_while_driving_keeps_the_crew_aboard STARTED
+SEATDRIVE-STAND ejected=false floor_ok=true speed_kmh=38.3
+  res://tests/biomes/playground/seat_physics_test.gd > test_standing_up_while_driving_keeps_the_crew_aboard PASSED 8s 641ms
+
+  res://tests/biomes/playground/seat_physics_test.gd > test_neutral_when_the_driver_stands STARTED
+NEUTRAL throttle_after=0.00 steer_after=0.00 speed_at_stand_kmh=21.6
+NEUTRAL speed_120_ticks_later_kmh=17.7 (was 21.6)
+  res://tests/biomes/playground/seat_physics_test.gd > test_neutral_when_the_driver_stands PASSED 6s 786ms
+
+  res://tests/biomes/playground/seat_physics_test.gd > test_standing_restores_to_the_corridor_when_the_saved_point_is_invalid STARTED
+FALLBACK landed_local=(0.0, -0.55, -2.0)
+FALLBACK max_omega=0.0000 on_floor=true
+  res://tests/biomes/playground/seat_physics_test.gd > test_standing_restores_to_the_corridor_when_the_saved_point_is_invalid PASSED 3s 259ms
+
+  res://tests/biomes/playground/seat_physics_test.gd > test_seated_body_is_dragged_to_the_marker_while_driving STARTED
+R41 driving drift=0.192 m (one tick at speed)
+R41 at-rest drift=0.0008 m after 57 stop ticks
+  res://tests/biomes/playground/seat_physics_test.gd > test_seated_body_is_dragged_to_the_marker_while_driving PASSED 8s 717ms
+
+  res://tests/biomes/playground/seat_physics_test.gd > test_occupying_the_seat_while_driving_keeps_the_bus_calm STARTED
+R45 occupy_at=43.7 km/h before(omega=0.3723 upright=0.98674) after(omega=0.0871 upright=0.99989)
+  res://tests/biomes/playground/seat_physics_test.gd > test_occupying_the_seat_while_driving_keeps_the_bus_calm PASSED 9s 393ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 48s 200ms
+
+
+Run Test Suite: res://tests/biomes/playground/water_zone_test.gd
+  res://tests/biomes/playground/water_zone_test.gd > test_bus_body_triggers_bus_entered STARTED
+  res://tests/biomes/playground/water_zone_test.gd > test_bus_body_triggers_bus_entered PASSED 580ms
+
+  res://tests/biomes/playground/water_zone_test.gd > test_plain_body_does_not_trigger_bus_entered STARTED
+  res://tests/biomes/playground/water_zone_test.gd > test_plain_body_does_not_trigger_bus_entered PASSED 1s 70ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 671ms
+
+
+Run Test Suite: res://tests/camera/camera_arbiter_test.gd
+  res://tests/camera/camera_arbiter_test.gd > test_apply_on_foot_activates_only_the_eye_camera STARTED
+  res://tests/camera/camera_arbiter_test.gd > test_apply_on_foot_activates_only_the_eye_camera PASSED 6ms
+
+  res://tests/camera/camera_arbiter_test.gd > test_apply_seated_prefers_the_cabin_camera STARTED
+  res://tests/camera/camera_arbiter_test.gd > test_apply_seated_prefers_the_cabin_camera PASSED 7ms
+
+  res://tests/camera/camera_arbiter_test.gd > test_apply_demo_activates_only_the_chase_camera STARTED
+  res://tests/camera/camera_arbiter_test.gd > test_apply_demo_activates_only_the_chase_camera PASSED 7ms
+
+  res://tests/camera/camera_arbiter_test.gd > test_toggle_bus_view_switches_the_seated_camera_to_chase STARTED
+  res://tests/camera/camera_arbiter_test.gd > test_toggle_bus_view_switches_the_seated_camera_to_chase PASSED 6ms
+
+  res://tests/camera/camera_arbiter_test.gd > test_seat_occupy_and_vacate_switch_the_camera STARTED
+  res://tests/camera/camera_arbiter_test.gd > test_seat_occupy_and_vacate_switch_the_camera PASSED 7ms
+
+Statistics: 5 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 59ms
+
+
+Run Test Suite: res://tests/cargo/cargo_ride_test.gd
+  res://tests/cargo/cargo_ride_test.gd > test_lap_with_strapped_free_and_a_walking_crew STARTED
+CRITERION ticks=1590 lap_done=true below_floor=0 hard_exits=0 door_exits=0 strap_drift=0.000000 crew_off_floor=0
+  res://tests/cargo/cargo_ride_test.gd > test_lap_with_strapped_free_and_a_walking_crew PASSED 14s 382ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 14s 393ms
+
+
+Run Test Suite: res://tests/cargo/free_cargo_ride_test.gd
+  res://tests/cargo/free_cargo_ride_test.gd > test_free_packages_ride_the_lap_contained STARTED
+free cargo lap: ticks=1636 below_floor=0 hard_exits=0 door_exits=0 max_lift=0.083 m max_rel_vy=3.50 m/s
+  box0 final bus-local (-0.91946, 0.99934, -0.788458)
+  box1 final bus-local (-0.365734, -0.400013, -0.617878)
+  box2 final bus-local (-0.399616, -0.4003, -0.179634)
+  box3 final bus-local (-0.865982, -0.401919, -3.530611)
+  res://tests/cargo/free_cargo_ride_test.gd > test_free_packages_ride_the_lap_contained PASSED 6s 822ms
+
+  res://tests/cargo/free_cargo_ride_test.gd > test_wheel_ray_ignores_cargo_and_crew_in_its_column STARTED
+RAY-TEST max_omega=0.0000 y_range=0.0001 end_y=0.977 (rest 0.977)
+  res://tests/cargo/free_cargo_ride_test.gd > test_wheel_ray_ignores_cargo_and_crew_in_its_column PASSED 4s 5ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 10s 845ms
+
+
+Run Test Suite: res://tests/cargo/package_test.gd
+  res://tests/cargo/package_test.gd > test_spawn_reads_mass_from_tuning STARTED
+  res://tests/cargo/package_test.gd > test_spawn_reads_mass_from_tuning PASSED 6ms
+
+  res://tests/cargo/package_test.gd > test_hold_only_from_free STARTED
+  res://tests/cargo/package_test.gd > test_hold_only_from_free PASSED 6ms
+
+  res://tests/cargo/package_test.gd > test_release_only_from_held STARTED
+  res://tests/cargo/package_test.gd > test_release_only_from_held PASSED 8ms
+
+  res://tests/cargo/package_test.gd > test_release_runs_the_full_pair_in_order STARTED
+  res://tests/cargo/package_test.gd > test_release_runs_the_full_pair_in_order PASSED 6ms
+
+  res://tests/cargo/package_test.gd > test_strap_requires_held_and_a_free_anchor STARTED
+  res://tests/cargo/package_test.gd > test_strap_requires_held_and_a_free_anchor PASSED 7ms
+
+  res://tests/cargo/package_test.gd > test_unstrap_returns_to_held_and_frees_the_anchor STARTED
+  res://tests/cargo/package_test.gd > test_unstrap_returns_to_held_and_frees_the_anchor PASSED 7ms
+
+  res://tests/cargo/package_test.gd > test_restraint_changed_covers_every_transition STARTED
+  res://tests/cargo/package_test.gd > test_restraint_changed_covers_every_transition PASSED 6ms
+
+  res://tests/cargo/package_test.gd > test_rigid_point_velocity_is_v_plus_w_cross_r STARTED
+  res://tests/cargo/package_test.gd > test_rigid_point_velocity_is_v_plus_w_cross_r PASSED 4ms
+
+  res://tests/cargo/package_test.gd > test_vertical_damping_force_is_pure_vertical STARTED
+  res://tests/cargo/package_test.gd > test_vertical_damping_force_is_pure_vertical PASSED 6ms
+
+  res://tests/cargo/package_test.gd > test_a_free_box_falls_like_a_box STARTED
+DROP contact_tick=27 (<36 required) max_y_after=-0.414 (floor rest -0.414, bounce < 0.1)
+  res://tests/cargo/package_test.gd > test_a_free_box_falls_like_a_box PASSED 2s 410ms
+
+  res://tests/cargo/package_test.gd > test_damper_brakes_vertical_motion_inside_the_hull STARTED
+  res://tests/cargo/package_test.gd > test_damper_brakes_vertical_motion_inside_the_hull PASSED 499ms
+
+  res://tests/cargo/package_test.gd > test_no_bus_means_no_damper STARTED
+  res://tests/cargo/package_test.gd > test_no_bus_means_no_damper PASSED 490ms
+
+Statistics: 12 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 3s 518ms
+
+
+Run Test Suite: res://tests/cargo/restraint_anchor_test.gd
+  res://tests/cargo/restraint_anchor_test.gd > test_twelve_anchors_carry_script_and_group_and_start_free STARTED
+  res://tests/cargo/restraint_anchor_test.gd > test_twelve_anchors_carry_script_and_group_and_start_free PASSED 15ms
+
+  res://tests/cargo/restraint_anchor_test.gd > test_strap_occupies_the_anchor_and_rejects_a_second_package STARTED
+  res://tests/cargo/restraint_anchor_test.gd > test_strap_occupies_the_anchor_and_rejects_a_second_package PASSED 10ms
+
+  res://tests/cargo/restraint_anchor_test.gd > test_strap_requires_held_state STARTED
+  res://tests/cargo/restraint_anchor_test.gd > test_strap_requires_held_state PASSED 18ms
+
+  res://tests/cargo/restraint_anchor_test.gd > test_strap_parents_freezes_and_enables_collision_at_the_anchor STARTED
+  res://tests/cargo/restraint_anchor_test.gd > test_strap_parents_freezes_and_enables_collision_at_the_anchor PASSED 43ms
+
+  res://tests/cargo/restraint_anchor_test.gd > test_unstrap_returns_to_held_and_frees_the_anchor STARTED
+  res://tests/cargo/restraint_anchor_test.gd > test_unstrap_returns_to_held_and_frees_the_anchor PASSED 44ms
+
+Statistics: 5 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 159ms
+
+
+Run Test Suite: res://tests/cargo/restraint_lap_test.gd
+  res://tests/cargo/restraint_lap_test.gd > test_strapped_packages_have_zero_drift_for_a_full_lap STARTED
+strap drift: max=0.000004 m over 1636 ticks (one lap)
+  res://tests/cargo/restraint_lap_test.gd > test_strapped_packages_have_zero_drift_for_a_full_lap PASSED 6s 819ms
+
+  res://tests/cargo/restraint_lap_test.gd > test_crew_bumps_into_a_strapped_package_like_a_shelf STARTED
+bump(top): min_clearance=0.384 m, max_box_move=0.000000 m, crew_axis_x=0.291
+  res://tests/cargo/restraint_lap_test.gd > test_crew_bumps_into_a_strapped_package_like_a_shelf PASSED 1s 679ms
+
+  res://tests/cargo/restraint_lap_test.gd > test_corridor_stays_clear_between_two_strapped_boxes STARTED
+corridor: min_center_distance=0.654 m, max_box_move=0.000000 m, out_of_hull=false
+  res://tests/cargo/restraint_lap_test.gd > test_corridor_stays_clear_between_two_strapped_boxes PASSED 1s 349ms
+
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 9s 877ms
+
+
+Run Test Suite: res://tests/core/data/data_load_report_test.gd
+  res://tests/core/data/data_load_report_test.gd > test_fresh_report_is_ok_and_empty STARTED
+  res://tests/core/data/data_load_report_test.gd > test_fresh_report_is_ok_and_empty PASSED 7ms
+
+  res://tests/core/data/data_load_report_test.gd > test_errors_make_is_ok_false STARTED
+  res://tests/core/data/data_load_report_test.gd > test_errors_make_is_ok_false PASSED 7ms
+
+  res://tests/core/data/data_load_report_test.gd > test_warnings_alone_keep_is_ok_true STARTED
+  res://tests/core/data/data_load_report_test.gd > test_warnings_alone_keep_is_ok_true PASSED 5ms
+
+  res://tests/core/data/data_load_report_test.gd > test_add_error_and_warning_format_source_then_message STARTED
+  res://tests/core/data/data_load_report_test.gd > test_add_error_and_warning_format_source_then_message PASSED 7ms
+
+  res://tests/core/data/data_load_report_test.gd > test_summary_has_header_and_one_tagged_line_per_entry STARTED
+  res://tests/core/data/data_load_report_test.gd > test_summary_has_header_and_one_tagged_line_per_entry PASSED 7ms
+
+  res://tests/core/data/data_load_report_test.gd > test_summary_of_empty_report_is_only_the_header STARTED
+  res://tests/core/data/data_load_report_test.gd > test_summary_of_empty_report_is_only_the_header PASSED 6ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 70ms
+
+
+Run Test Suite: res://tests/core/data/data_mirror_test.gd
+  res://tests/core/data/data_mirror_test.gd > test_real_data_mirror_is_in_sync STARTED
+  res://tests/core/data/data_mirror_test.gd > test_real_data_mirror_is_in_sync PASSED 11ms
+
+  res://tests/core/data/data_mirror_test.gd > test_write_and_check_round_trip_in_temp_dir STARTED
+  res://tests/core/data/data_mirror_test.gd > test_write_and_check_round_trip_in_temp_dir PASSED 11ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 41ms
+
+
+Run Test Suite: res://tests/core/data/game_data_loader_test.gd
+  res://tests/core/data/game_data_loader_test.gd > test_base_only_loads_values STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_base_only_loads_values PASSED 11ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_reload_picks_up_json_rewrite_in_same_process STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_reload_picks_up_json_rewrite_in_same_process PASSED 13ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mod_overrides_base STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mod_overrides_base PASSED 11ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_two_mods_apply_in_byte_order STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_two_mods_apply_in_byte_order PASSED 13ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_partial_mod_preserves_untouched_siblings STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_partial_mod_preserves_untouched_siblings PASSED 17ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_error_is_rejected_entirely STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_error_is_rejected_entirely PASSED 16ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_failing_section_is_rejected_entirely STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_failing_section_is_rejected_entirely PASSED 11ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_tres_layer_only_loads_values STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_tres_layer_only_loads_values PASSED 12ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_base_json_wins_over_tres_layer STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_base_json_wins_over_tres_layer PASSED 17ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_invalid_base_json_error_points_at_the_truncated_file STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_invalid_base_json_error_points_at_the_truncated_file PASSED 12ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_tres_layer_reload_rereads_the_file STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_tres_layer_reload_rereads_the_file PASSED 12ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_empty_dirs_fail_with_one_error_per_document STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_empty_dirs_fail_with_one_error_per_document PASSED 9ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mc1a_empty_object_base_json_is_an_error STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mc1a_empty_object_base_json_is_an_error PASSED 8ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mc1b_empty_object_mod_applies_with_a_warning STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mc1b_empty_object_mod_applies_with_a_warning PASSED 12ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_only_unknown_sections_applies_with_warning STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mod_with_only_unknown_sections_applies_with_warning PASSED 15ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_mc3_tres_of_wrong_class_is_an_error STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_mc3_tres_of_wrong_class_is_an_error PASSED 12ms
+
+  res://tests/core/data/game_data_loader_test.gd > test_real_res_data_loads_without_errors STARTED
+  res://tests/core/data/game_data_loader_test.gd > test_real_res_data_loads_without_errors PASSED 12ms
+
+Statistics: 17 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 306ms
+
+
+Run Test Suite: res://tests/core/data/json_file_test.gd
+  res://tests/core/data/json_file_test.gd > test_read_valid_file_returns_object STARTED
+  res://tests/core/data/json_file_test.gd > test_read_valid_file_returns_object PASSED 7ms
+
+  res://tests/core/data/json_file_test.gd > test_missing_file_records_error_and_returns_empty STARTED
+  res://tests/core/data/json_file_test.gd > test_missing_file_records_error_and_returns_empty PASSED 7ms
+
+  res://tests/core/data/json_file_test.gd > test_malformed_json_reports_line_and_message STARTED
+  res://tests/core/data/json_file_test.gd > test_malformed_json_reports_line_and_message PASSED 8ms
+
+  res://tests/core/data/json_file_test.gd > test_root_array_is_rejected STARTED
+  res://tests/core/data/json_file_test.gd > test_root_array_is_rejected PASSED 7ms
+
+  res://tests/core/data/json_file_test.gd > test_list_json_files_is_sorted_and_filtered STARTED
+  res://tests/core/data/json_file_test.gd > test_list_json_files_is_sorted_and_filtered PASSED 8ms
+
+  res://tests/core/data/json_file_test.gd > test_list_json_files_on_missing_dir_is_empty_without_engine_error STARTED
+  res://tests/core/data/json_file_test.gd > test_list_json_files_on_missing_dir_is_empty_without_engine_error PASSED 6ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 75ms
+
+
+Run Test Suite: res://tests/core/data/json_merge_test.gd
+  res://tests/core/data/json_merge_test.gd > test_scalar_override_replaces_value STARTED
+  res://tests/core/data/json_merge_test.gd > test_scalar_override_replaces_value PASSED 7ms
+
+  res://tests/core/data/json_merge_test.gd > test_nested_dictionaries_keep_sibling_keys STARTED
+  res://tests/core/data/json_merge_test.gd > test_nested_dictionaries_keep_sibling_keys PASSED 6ms
+
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_base_is_kept STARTED
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_base_is_kept PASSED 5ms
+
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_override_is_added STARTED
+  res://tests/core/data/json_merge_test.gd > test_key_only_in_override_is_added PASSED 6ms
+
+  res://tests/core/data/json_merge_test.gd > test_arrays_are_replaced_not_concatenated STARTED
+  res://tests/core/data/json_merge_test.gd > test_arrays_are_replaced_not_concatenated PASSED 5ms
+
+  res://tests/core/data/json_merge_test.gd > test_scalar_over_dictionary_replaces_it STARTED
+  res://tests/core/data/json_merge_test.gd > test_scalar_over_dictionary_replaces_it PASSED 6ms
+
+  res://tests/core/data/json_merge_test.gd > test_inputs_are_never_mutated STARTED
+  res://tests/core/data/json_merge_test.gd > test_inputs_are_never_mutated PASSED 6ms
+
+Statistics: 7 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 80ms
+
+
+Run Test Suite: res://tests/core/data/resource_json_codec_test.gd
+  res://tests/core/data/resource_json_codec_test.gd > test_schema_contains_only_exported_fields STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_schema_contains_only_exported_fields PASSED 5ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_neutral_defaults_are_zero_and_empty STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_neutral_defaults_are_zero_and_empty PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_accepts_integral_float STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_accepts_integral_float PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_fractional_float_and_keeps_previous_value STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_fractional_float_and_keeps_previous_value PASSED 5ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_string STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_int_field_rejects_string PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_bool_field_accepts_bool_and_rejects_number_and_string STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_bool_field_accepts_bool_and_rejects_number_and_string PASSED 5ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_a_warning_in_mod_mode STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_a_warning_in_mod_mode PASSED 5ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_an_error_in_base_mode STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_unknown_key_is_an_error_in_base_mode PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_typed_dictionary_is_validated_and_applied_with_assign STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_typed_dictionary_is_validated_and_applied_with_assign PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_to_dictionary_round_trip_through_apply STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_to_dictionary_round_trip_through_apply PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_lenient_mode_with_type_error_voids_the_whole_file STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_lenient_mode_with_type_error_voids_the_whole_file PASSED 5ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_string_field_accepts_a_string STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_string_field_accepts_a_string PASSED 6ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_string_field_rejects_non_string_and_keeps_previous_value STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_string_field_rejects_non_string_and_keeps_previous_value PASSED 5ms
+
+  res://tests/core/data/resource_json_codec_test.gd > test_mc2_int_field_rejects_non_finite_float STARTED
+  res://tests/core/data/resource_json_codec_test.gd > test_mc2_int_field_rejects_non_finite_float PASSED 5ms
+
+Statistics: 14 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 148ms
+
+
+Run Test Suite: res://tests/core/mouse_look_test.gd
+  res://tests/core/mouse_look_test.gd > test_yaw_decreases_when_mouse_moves_right STARTED
+  res://tests/core/mouse_look_test.gd > test_yaw_decreases_when_mouse_moves_right PASSED 8ms
+
+  res://tests/core/mouse_look_test.gd > test_pitch_increases_when_mouse_moves_up STARTED
+  res://tests/core/mouse_look_test.gd > test_pitch_increases_when_mouse_moves_up PASSED 5ms
+
+  res://tests/core/mouse_look_test.gd > test_pitch_is_clamped_at_both_ends STARTED
+  res://tests/core/mouse_look_test.gd > test_pitch_is_clamped_at_both_ends PASSED 5ms
+
+  res://tests/core/mouse_look_test.gd > test_unbounded_yaw_accumulates_past_pi_without_normalizing STARTED
+  res://tests/core/mouse_look_test.gd > test_unbounded_yaw_accumulates_past_pi_without_normalizing PASSED 5ms
+
+  res://tests/core/mouse_look_test.gd > test_yaw_cone_clamps_to_cabin_limits STARTED
+  res://tests/core/mouse_look_test.gd > test_yaw_cone_clamps_to_cabin_limits PASSED 7ms
+
+  res://tests/core/mouse_look_test.gd > test_sensitivity_is_linear STARTED
+  res://tests/core/mouse_look_test.gd > test_sensitivity_is_linear PASSED 6ms
+
+  res://tests/core/mouse_look_test.gd > test_zero_delta_keeps_yaw_and_pitch STARTED
+  res://tests/core/mouse_look_test.gd > test_zero_delta_keeps_yaw_and_pitch PASSED 5ms
+
+Statistics: 7 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 75ms
+
+
+Run Test Suite: res://tests/crew/crew_hands_test.gd
+  res://tests/crew/crew_hands_test.gd > test_closest_to_ray_prefers_ray_then_reach STARTED
+  res://tests/crew/crew_hands_test.gd > test_closest_to_ray_prefers_ray_then_reach PASSED 7ms
+
+  res://tests/crew/crew_hands_test.gd > test_throw_velocity_sign_and_magnitude STARTED
+  res://tests/crew/crew_hands_test.gd > test_throw_velocity_sign_and_magnitude PASSED 5ms
+
+  res://tests/crew/crew_hands_test.gd > test_tap_grabs_the_ray_box_which_follows_the_hand_and_seat_is_rejected STARTED
+CrewInput: seat refused while carrying a package
+  res://tests/crew/crew_hands_test.gd > test_tap_grabs_the_ray_box_which_follows_the_hand_and_seat_is_rejected PASSED 1s 654ms
+
+  res://tests/crew/crew_hands_test.gd > test_hold_straps_with_progress_and_tap_unstraps STARTED
+  res://tests/crew/crew_hands_test.gd > test_hold_straps_with_progress_and_tap_unstraps PASSED 3s 492ms
+
+  res://tests/crew/crew_hands_test.gd > test_release_before_the_hold_cancels_the_strap STARTED
+  res://tests/crew/crew_hands_test.gd > test_release_before_the_hold_cancels_the_strap PASSED 1s 795ms
+
+  res://tests/crew/crew_hands_test.gd > test_click_with_free_pointer_recaptures_and_never_throws STARTED
+  res://tests/crew/crew_hands_test.gd > test_click_with_free_pointer_recaptures_and_never_throws PASSED 1s 692ms
+
+  res://tests/crew/crew_hands_test.gd > test_drop_click_lands_at_the_hand_or_at_the_feet_when_walled STARTED
+  res://tests/crew/crew_hands_test.gd > test_drop_click_lands_at_the_hand_or_at_the_feet_when_walled PASSED 1s 714ms
+
+  res://tests/crew/crew_hands_test.gd > test_held_package_inside_the_bus_at_speed_does_not_kick_it STARTED
+HELDRIDE max_omega=0.0190 y_range=0.0000 speed_kmh=32.8
+  res://tests/crew/crew_hands_test.gd > test_held_package_inside_the_bus_at_speed_does_not_kick_it PASSED 9s 96ms
+
+Statistics: 8 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 19s 506ms
+
+
+Run Test Suite: res://tests/crew/crew_input_test.gd
+  res://tests/crew/crew_input_test.gd > test_walk_forward_action_moves_the_crew_forward STARTED
+  res://tests/crew/crew_input_test.gd > test_walk_forward_action_moves_the_crew_forward PASSED 2s 34ms
+
+  res://tests/crew/crew_input_test.gd > test_walk_left_and_right_actions_give_the_right_sign STARTED
+  res://tests/crew/crew_input_test.gd > test_walk_left_and_right_actions_give_the_right_sign PASSED 2s 527ms
+
+  res://tests/crew/crew_input_test.gd > test_interact_action_seats_and_lifts_the_crew STARTED
+  res://tests/crew/crew_input_test.gd > test_interact_action_seats_and_lifts_the_crew PASSED 1s 631ms
+
+  res://tests/crew/crew_input_test.gd > test_toggle_nearest_seat_callable_without_input STARTED
+  res://tests/crew/crew_input_test.gd > test_toggle_nearest_seat_callable_without_input PASSED 1s 528ms
+
+  res://tests/crew/crew_input_test.gd > test_toggle_nearest_seat_out_of_reach_does_nothing STARTED
+  res://tests/crew/crew_input_test.gd > test_toggle_nearest_seat_out_of_reach_does_nothing PASSED 1s 531ms
+
+  res://tests/crew/crew_input_test.gd > test_captured_mouse_motion_turns_the_crew STARTED
+  res://tests/crew/crew_input_test.gd > test_captured_mouse_motion_turns_the_crew PASSED 1s 555ms
+
+  res://tests/crew/crew_input_test.gd > test_escape_frees_the_pointer_and_parks_the_look STARTED
+  res://tests/crew/crew_input_test.gd > test_escape_frees_the_pointer_and_parks_the_look PASSED 1s 595ms
+
+  res://tests/crew/crew_input_test.gd > test_left_click_recaptures_the_mouse_when_allowed STARTED
+  res://tests/crew/crew_input_test.gd > test_left_click_recaptures_the_mouse_when_allowed PASSED 1s 597ms
+
+  res://tests/crew/crew_input_test.gd > test_walking_follows_the_new_heading STARTED
+  res://tests/crew/crew_input_test.gd > test_walking_follows_the_new_heading PASSED 2s 31ms
+
+Statistics: 9 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 16s 80ms
+
+
+Run Test Suite: res://tests/crew/crew_member_test.gd
+  res://tests/crew/crew_member_test.gd > test_jump_velocity_for_height STARTED
+  res://tests/crew/crew_member_test.gd > test_jump_velocity_for_height PASSED 5ms
+
+  res://tests/crew/crew_member_test.gd > test_horizontal_speed_selects_sprint STARTED
+  res://tests/crew/crew_member_test.gd > test_horizontal_speed_selects_sprint PASSED 5ms
+
+  res://tests/crew/crew_member_test.gd > test_wish_direction_forward_and_normalized STARTED
+  res://tests/crew/crew_member_test.gd > test_wish_direction_forward_and_normalized PASSED 5ms
+
+  res://tests/crew/crew_member_test.gd > test_crew_settles_and_walks_with_drive_move STARTED
+  res://tests/crew/crew_member_test.gd > test_crew_settles_and_walks_with_drive_move PASSED 2s 476ms
+
+  res://tests/crew/crew_member_test.gd > test_crew_rides_the_bus_without_drifting STARTED
+  res://tests/crew/crew_member_test.gd > test_crew_rides_the_bus_without_drifting PASSED 7s 4ms
+
+Statistics: 5 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 9s 526ms
+
+
+Run Test Suite: res://tests/crew/crew_ride_test.gd
+  res://tests/crew/crew_ride_test.gd > test_one_minute_ride_at_speed_over_the_bumps STARTED
+ride: max_drift=(0.298979, 0.173569, 0.300765) penetrations=0 ejected=false
+  res://tests/crew/crew_ride_test.gd > test_one_minute_ride_at_speed_over_the_bumps PASSED 16s 299ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 16s 310ms
+
+
+Run Test Suite: res://tests/crew/door_transit_test.gd
+  res://tests/crew/door_transit_test.gd > test_crossing_the_door_plane_boards_and_exits STARTED
+  res://tests/crew/door_transit_test.gd > test_crossing_the_door_plane_boards_and_exits PASSED 1s 360ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 371ms
+
+
+Run Test Suite: res://tests/crew/seat_test.gd
+  res://tests/crew/seat_test.gd > test_occupy_hides_and_vacate_restores STARTED
+  res://tests/crew/seat_test.gd > test_occupy_hides_and_vacate_restores PASSED 8ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 18ms
+
+
+Run Test Suite: res://tests/net/authority_lookup_test.gd
+  res://tests/net/authority_lookup_test.gd > test_local_lookup_skips_remote_first_and_resolves_each_peer_eye STARTED
+  res://tests/net/authority_lookup_test.gd > test_local_lookup_skips_remote_first_and_resolves_each_peer_eye PASSED 7ms
+
+  res://tests/net/authority_lookup_test.gd > test_input_created_before_spawn_moves_only_the_late_local_crew STARTED
+  res://tests/net/authority_lookup_test.gd > test_input_created_before_spawn_moves_only_the_late_local_crew PASSED 427ms
+
+  res://tests/net/authority_lookup_test.gd > test_null_network_peer_keeps_local_input_and_door_working STARTED
+  res://tests/net/authority_lookup_test.gd > test_null_network_peer_keeps_local_input_and_door_working PASSED 374ms
+
+  res://tests/net/authority_lookup_test.gd > test_mouse_look_and_hands_belong_to_local_crew_when_remote_is_first STARTED
+  res://tests/net/authority_lookup_test.gd > test_mouse_look_and_hands_belong_to_local_crew_when_remote_is_first PASSED 44ms
+
+  res://tests/net/authority_lookup_test.gd > test_door_transit_created_before_spawn_boards_only_late_local_crew STARTED
+  res://tests/net/authority_lookup_test.gd > test_door_transit_created_before_spawn_boards_only_late_local_crew PASSED 195ms
+
+  res://tests/net/authority_lookup_test.gd > test_package_joins_stable_identity_group_on_ready STARTED
+  res://tests/net/authority_lookup_test.gd > test_package_joins_stable_identity_group_on_ready PASSED 7ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 89ms
+
+
+Run Test Suite: res://tests/net/bus_snapshot_timing_test.gd
+  res://tests/net/bus_snapshot_timing_test.gd > test_irregular_delivery_preserves_uniform_motion_after_buffer_warmup STARTED
+BUS_DELIVERY alternating_1_3 min_step=0.308331 max_step=0.308334 expected=0.308333
+  res://tests/net/bus_snapshot_timing_test.gd > test_irregular_delivery_preserves_uniform_motion_after_buffer_warmup PASSED 6ms
+
+  res://tests/net/bus_snapshot_timing_test.gd > test_batched_snapshots_follow_the_source_clock_without_skipping_history STARTED
+  res://tests/net/bus_snapshot_timing_test.gd > test_batched_snapshots_follow_the_source_clock_without_skipping_history PASSED 7ms
+
+  res://tests/net/bus_snapshot_timing_test.gd > test_stale_packets_are_rejected_and_loss_holds_the_last_known_pose STARTED
+  res://tests/net/bus_snapshot_timing_test.gd > test_stale_packets_are_rejected_and_loss_holds_the_last_known_pose PASSED 6ms
+
+  res://tests/net/bus_snapshot_timing_test.gd > test_point_velocity_uses_interpolated_snapshot_without_simulating_the_bus STARTED
+  res://tests/net/bus_snapshot_timing_test.gd > test_point_velocity_uses_interpolated_snapshot_without_simulating_the_bus PASSED 4ms
+
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 49ms
+
+
+Run Test Suite: res://tests/net/cargo_replica_motion_test.gd
+  res://tests/net/cargo_replica_motion_test.gd > test_client_strapped_collider_follows_bus_after_a_completed_physics_step STARTED
+STRAPPED_CLIENT node_error=0.000004 physical_error=0.000004 angle=0.000691
+  res://tests/net/cargo_replica_motion_test.gd > test_client_strapped_collider_follows_bus_after_a_completed_physics_step PASSED 1s 10ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 20ms
+
+
+Run Test Suite: res://tests/net/cargo_sync_test.gd
+  res://tests/net/cargo_sync_test.gd > test_client_impulse_never_simulates_but_host_free_box_does STARTED
+  res://tests/net/cargo_sync_test.gd > test_client_impulse_never_simulates_but_host_free_box_does PASSED 230ms
+
+  res://tests/net/cargo_sync_test.gd > test_host_grant_and_release_transfer_authority_to_holder_and_back STARTED
+  res://tests/net/cargo_sync_test.gd > test_host_grant_and_release_transfer_authority_to_holder_and_back PASSED 7ms
+
+  res://tests/net/cargo_sync_test.gd > test_unknown_peer_distance_and_occupied_hand_deny_hold STARTED
+  res://tests/net/cargo_sync_test.gd > test_unknown_peer_distance_and_occupied_hand_deny_hold PASSED 7ms
+
+  res://tests/net/cargo_sync_test.gd > test_reach_validation_uses_remote_hand_in_the_same_bus_frame STARTED
+  res://tests/net/cargo_sync_test.gd > test_reach_validation_uses_remote_hand_in_the_same_bus_frame PASSED 7ms
+
+  res://tests/net/cargo_sync_test.gd > test_nonholder_and_occupied_anchor_cannot_change_restraint STARTED
+  res://tests/net/cargo_sync_test.gd > test_nonholder_and_occupied_anchor_cannot_change_restraint PASSED 7ms
+
+  res://tests/net/cargo_sync_test.gd > test_only_full_confirmed_sequence_counts_a_cycle STARTED
+  res://tests/net/cargo_sync_test.gd > test_only_full_confirmed_sequence_counts_a_cycle PASSED 8ms
+
+  res://tests/net/cargo_sync_test.gd > test_replicated_strapped_to_free_clears_anchor_and_restores_cargo_parent STARTED
+  res://tests/net/cargo_sync_test.gd > test_replicated_strapped_to_free_clears_anchor_and_restores_cargo_parent PASSED 7ms
+
+  res://tests/net/cargo_sync_test.gd > test_late_holder_resolves_exact_peer_and_updates_only_local_hands STARTED
+  res://tests/net/cargo_sync_test.gd > test_late_holder_resolves_exact_peer_and_updates_only_local_hands PASSED 6ms
+
+  res://tests/net/cargo_sync_test.gd > test_repeated_state_is_idempotent_and_holder_change_is_observable STARTED
+  res://tests/net/cargo_sync_test.gd > test_repeated_state_is_idempotent_and_holder_change_is_observable PASSED 6ms
+
+  res://tests/net/cargo_sync_test.gd > test_interpolation_rejects_pose_from_previous_state_revision STARTED
+  res://tests/net/cargo_sync_test.gd > test_interpolation_rejects_pose_from_previous_state_revision PASSED 6ms
+
+  res://tests/net/cargo_sync_test.gd > test_release_uses_current_bus_frame_and_point_velocity_after_bus_moves STARTED
+  res://tests/net/cargo_sync_test.gd > test_release_uses_current_bus_frame_and_point_velocity_after_bus_moves PASSED 6ms
+
+  res://tests/net/cargo_sync_test.gd > test_held_snapshots_reject_other_peer_and_obsolete_revision STARTED
+  res://tests/net/cargo_sync_test.gd > test_held_snapshots_reject_other_peer_and_obsolete_revision PASSED 5ms
+
+  res://tests/net/cargo_sync_test.gd > test_host_strapped_box_follows_a_dynamic_bus STARTED
+  res://tests/net/cargo_sync_test.gd > test_host_strapped_box_follows_a_dynamic_bus PASSED 478ms
+
+  res://tests/net/cargo_sync_test.gd > test_outside_drop_accepts_zero_world_velocity_beside_moving_bus STARTED
+  res://tests/net/cargo_sync_test.gd > test_outside_drop_accepts_zero_world_velocity_beside_moving_bus PASSED 7ms
+
+  res://tests/net/cargo_sync_test.gd > test_malformed_held_pose_is_rejected_without_changing_package STARTED
+  res://tests/net/cargo_sync_test.gd > test_malformed_held_pose_is_rejected_without_changing_package PASSED 7ms
+
+  res://tests/net/cargo_sync_test.gd > test_release_with_frozen_client_and_moving_host_preserves_velocity_frame STARTED
+  res://tests/net/cargo_sync_test.gd > test_release_with_frozen_client_and_moving_host_preserves_velocity_frame PASSED 6ms
+
+Statistics: 16 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 890ms
+
+
+Run Test Suite: res://tests/net/crew_sync_test.gd
+  res://tests/net/crew_sync_test.gd > test_network_remote_does_not_simulate_while_local_falls STARTED
+  res://tests/net/crew_sync_test.gd > test_network_remote_does_not_simulate_while_local_falls PASSED 186ms
+
+  res://tests/net/crew_sync_test.gd > test_spawner_builds_named_crews_with_distinct_authorities_and_one_local_camera STARTED
+  res://tests/net/crew_sync_test.gd > test_spawner_builds_named_crews_with_distinct_authorities_and_one_local_camera PASSED 31ms
+
+  res://tests/net/crew_sync_test.gd > test_remote_snapshots_interpolate_without_advancing_physics STARTED
+  res://tests/net/crew_sync_test.gd > test_remote_snapshots_interpolate_without_advancing_physics PASSED 78ms
+
+  res://tests/net/crew_sync_test.gd > test_remote_hands_cannot_grab_and_bind_to_their_own_eye STARTED
+  res://tests/net/crew_sync_test.gd > test_remote_hands_cannot_grab_and_bind_to_their_own_eye PASSED 30ms
+
+  res://tests/net/crew_sync_test.gd > test_client_replaces_authored_crew_and_activates_local_view_after_spawn STARTED
+  res://tests/net/crew_sync_test.gd > test_client_replaces_authored_crew_and_activates_local_view_after_spawn PASSED 44ms
+
+  res://tests/net/crew_sync_test.gd > test_interaction_hand_uses_source_bus_frame_while_ground_hand_stays_in_world STARTED
+  res://tests/net/crew_sync_test.gd > test_interaction_hand_uses_source_bus_frame_while_ground_hand_stays_in_world PASSED 7ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 811ms
+
+
+Run Test Suite: res://tests/net/gate_config_test.gd
+  res://tests/net/gate_config_test.gd > test_gate_deadline_covers_300_seconds_independently_of_waypoints STARTED
+  res://tests/net/gate_config_test.gd > test_gate_deadline_covers_300_seconds_independently_of_waypoints PASSED 5ms
+
+  res://tests/net/gate_config_test.gd > test_human_client_is_windowed_while_host_is_headless STARTED
+  res://tests/net/gate_config_test.gd > test_human_client_is_windowed_while_host_is_headless PASSED 402ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 420ms
+
+
+Run Test Suite: res://tests/net/gate_metrics_test.gd
+  res://tests/net/gate_metrics_test.gd > test_percentiles_and_fps_report_tails_not_average STARTED
+  res://tests/net/gate_metrics_test.gd > test_percentiles_and_fps_report_tails_not_average PASSED 7ms
+
+  res://tests/net/gate_metrics_test.gd > test_capsule_height_and_rotated_cargo_measure_real_shape_extents STARTED
+  res://tests/net/gate_metrics_test.gd > test_capsule_height_and_rotated_cargo_measure_real_shape_extents PASSED 406ms
+
+  res://tests/net/gate_metrics_test.gd > test_authored_door_hole_excludes_air_but_keeps_floor_and_jamb STARTED
+  res://tests/net/gate_metrics_test.gd > test_authored_door_hole_excludes_air_but_keeps_floor_and_jamb PASSED 7ms
+
+  res://tests/net/gate_metrics_test.gd > test_penetration_run_resets_without_losing_peak_or_total STARTED
+  res://tests/net/gate_metrics_test.gd > test_penetration_run_resets_without_losing_peak_or_total PASSED 7ms
+
+  res://tests/net/gate_metrics_test.gd > test_judge_uses_same_run_p99_not_outlier_maximum STARTED
+  res://tests/net/gate_metrics_test.gd > test_judge_uses_same_run_p99_not_outlier_maximum PASSED 6ms
+
+  res://tests/net/gate_metrics_test.gd > test_short_or_idle_iterations_are_invalid_and_headless_is_unverified STARTED
+  res://tests/net/gate_metrics_test.gd > test_short_or_idle_iterations_are_invalid_and_headless_is_unverified PASSED 6ms
+
+  res://tests/net/gate_metrics_test.gd > test_trace_interpolates_position_and_quaternion_at_observation_utc STARTED
+  res://tests/net/gate_metrics_test.gd > test_trace_interpolates_position_and_quaternion_at_observation_utc PASSED 5ms
+
+  res://tests/net/gate_metrics_test.gd > test_trace_does_not_interpolate_handover_or_fake_zero_without_matches STARTED
+  res://tests/net/gate_metrics_test.gd > test_trace_does_not_interpolate_handover_or_fake_zero_without_matches PASSED 6ms
+
+  res://tests/net/gate_metrics_test.gd > test_observer_reads_local_slip_remote_penetration_and_simulation_counters STARTED
+  res://tests/net/gate_metrics_test.gd > test_observer_reads_local_slip_remote_penetration_and_simulation_counters PASSED 14ms
+
+Statistics: 9 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 422ms
+
+
+Run Test Suite: res://tests/net/network_backend_test.gd
+  res://tests/net/network_backend_test.gd > test_initial_state_is_idle STARTED
+  res://tests/net/network_backend_test.gd > test_initial_state_is_idle PASSED 5ms
+
+  res://tests/net/network_backend_test.gd > test_host_game_makes_us_host_and_emits_hosted STARTED
+  res://tests/net/network_backend_test.gd > test_host_game_makes_us_host_and_emits_hosted PASSED 353ms
+
+  res://tests/net/network_backend_test.gd > test_leave_returns_to_idle_and_frees_the_port STARTED
+  res://tests/net/network_backend_test.gd > test_leave_returns_to_idle_and_frees_the_port PASSED 4ms
+
+  res://tests/net/network_backend_test.gd > test_join_without_server_fails_without_hanging STARTED
+  res://tests/net/network_backend_test.gd > test_join_without_server_fails_without_hanging PASSED 7s 516ms
+
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 7s 908ms
+
+
+Run Test Suite: res://tests/net/net_marker_test.gd
+  res://tests/net/net_marker_test.gd > test_owner_peer_id_is_stored STARTED
+  res://tests/net/net_marker_test.gd > test_owner_peer_id_is_stored PASSED 7ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 15ms
+
+
+Run Test Suite: res://tests/net/playground_client_mode_test.gd
+  res://tests/net/playground_client_mode_test.gd > test_client_role_disables_demo_and_freezes_bus STARTED
+  res://tests/net/playground_client_mode_test.gd > test_client_role_disables_demo_and_freezes_bus PASSED 23ms
+
+  res://tests/net/playground_client_mode_test.gd > test_single_role_keeps_demo_running STARTED
+  res://tests/net/playground_client_mode_test.gd > test_single_role_keeps_demo_running PASSED 10ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 51ms
+
+
+Run Test Suite: res://tests/smoke_test.gd
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 STARTED
+  res://tests/smoke_test.gd > test_engine_is_pinned_to_4_7_2 PASSED 6ms
+
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt STARTED
+  res://tests/smoke_test.gd > test_physics_engine_is_jolt PASSED 6ms
+
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus STARTED
+  res://tests/smoke_test.gd > test_rendering_method_is_forward_plus PASSED 5ms
+
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 35ms
+
+
+Run Test Suite: res://tests/static/input_actions_test.gd
+  res://tests/static/input_actions_test.gd > test_every_action_read_in_src_is_registered STARTED
+  res://tests/static/input_actions_test.gd > test_every_action_read_in_src_is_registered PASSED 18ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 32ms
+
+
+Run Test Suite: res://tests/vehicle/bus_interior_test.gd
+  res://tests/vehicle/bus_interior_test.gd > test_interior_loads_on_the_bus_and_shapes_attach_to_the_body STARTED
+  res://tests/vehicle/bus_interior_test.gd > test_interior_loads_on_the_bus_and_shapes_attach_to_the_body PASSED 2s 519ms
+
+  res://tests/vehicle/bus_interior_test.gd > test_six_positions_exist_with_exact_names STARTED
+  res://tests/vehicle/bus_interior_test.gd > test_six_positions_exist_with_exact_names PASSED 2s 513ms
+
+  res://tests/vehicle/bus_interior_test.gd > test_restraints_exist_six_per_wall STARTED
+  res://tests/vehicle/bus_interior_test.gd > test_restraints_exist_six_per_wall PASSED 2s 511ms
+
+  res://tests/vehicle/bus_interior_test.gd > test_corridor_width_and_free_height_measured_on_the_shapes STARTED
+  res://tests/vehicle/bus_interior_test.gd > test_corridor_width_and_free_height_measured_on_the_shapes PASSED 2s 498ms
+
+  res://tests/vehicle/bus_interior_test.gd > test_bus_with_interior_settles_at_rest_height STARTED
+  res://tests/vehicle/bus_interior_test.gd > test_bus_with_interior_settles_at_rest_height PASSED 2s 505ms
+
+Statistics: 5 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 12s 605ms
+
+
+Run Test Suite: res://tests/vehicle/bus_test.gd
+  res://tests/vehicle/bus_test.gd > test_suspension_force_spring_plus_damper STARTED
+  res://tests/vehicle/bus_test.gd > test_suspension_force_spring_plus_damper PASSED 7ms
+
+  res://tests/vehicle/bus_test.gd > test_compression_rate_sign_and_zero_delta STARTED
+  res://tests/vehicle/bus_test.gd > test_compression_rate_sign_and_zero_delta PASSED 6ms
+
+  res://tests/vehicle/bus_test.gd > test_lateral_grip_force_opposes_slide STARTED
+  res://tests/vehicle/bus_test.gd > test_lateral_grip_force_opposes_slide PASSED 6ms
+
+  res://tests/vehicle/bus_test.gd > test_steer_angle_deg_for_falloff_and_sign STARTED
+  res://tests/vehicle/bus_test.gd > test_steer_angle_deg_for_falloff_and_sign PASSED 6ms
+
+  res://tests/vehicle/bus_test.gd > test_traction_force_per_wheel STARTED
+  res://tests/vehicle/bus_test.gd > test_traction_force_per_wheel PASSED 8ms
+
+  res://tests/vehicle/bus_test.gd > test_set_drive_clamps_inputs STARTED
+  res://tests/vehicle/bus_test.gd > test_set_drive_clamps_inputs PASSED 16ms
+
+  res://tests/vehicle/bus_test.gd > test_upright_dot_reference_orientations STARTED
+  res://tests/vehicle/bus_test.gd > test_upright_dot_reference_orientations PASSED 7ms
+
+  res://tests/vehicle/bus_test.gd > test_bus_settles_at_rest_height_and_stays_still STARTED
+  res://tests/vehicle/bus_test.gd > test_bus_settles_at_rest_height_and_stays_still PASSED 1s 988ms
+
+  res://tests/vehicle/bus_test.gd > test_bus_accelerates_straight STARTED
+  res://tests/vehicle/bus_test.gd > test_bus_accelerates_straight PASSED 4s 17ms
+
+  res://tests/vehicle/bus_test.gd > test_bus_brakes_and_loses_most_of_its_speed STARTED
+  res://tests/vehicle/bus_test.gd > test_bus_brakes_and_loses_most_of_its_speed PASSED 6s 24ms
+
+  res://tests/vehicle/bus_test.gd > test_bus_steer_turns_left_with_positive_steer STARTED
+  res://tests/vehicle/bus_test.gd > test_bus_steer_turns_left_with_positive_steer PASSED 3s 15ms
+
+  res://tests/vehicle/bus_test.gd > test_handbrake_increases_lateral_slip STARTED
+  res://tests/vehicle/bus_test.gd > test_handbrake_increases_lateral_slip PASSED 10s 6ms
+
+  res://tests/vehicle/bus_test.gd > test_rolled_over_emitted_once_when_flipped STARTED
+  res://tests/vehicle/bus_test.gd > test_rolled_over_emitted_once_when_flipped PASSED 1s 982ms
+
+  res://tests/vehicle/bus_test.gd > test_one_wheel_off_the_edge_tilts_the_bus STARTED
+  res://tests/vehicle/bus_test.gd > test_one_wheel_off_the_edge_tilts_the_bus PASSED 3s 17ms
+
+Statistics: 14 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 30s 244ms
+
+
+Run Test Suite: res://tests/vehicle/cabin_look_test.gd
+  res://tests/vehicle/cabin_look_test.gd > test_cabin_camera_turns_with_the_mouse_in_cabin_view STARTED
+  res://tests/vehicle/cabin_look_test.gd > test_cabin_camera_turns_with_the_mouse_in_cabin_view PASSED 28ms
+
+  res://tests/vehicle/cabin_look_test.gd > test_chase_view_parks_the_cabin_look STARTED
+  res://tests/vehicle/cabin_look_test.gd > test_chase_view_parks_the_cabin_look PASSED 24ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 67ms
+
+
+Run Test Suite: res://tests/vehicle/chase_camera_test.gd
+  res://tests/vehicle/chase_camera_test.gd > test_camera_sits_behind_target_and_aims_at_it STARTED
+  res://tests/vehicle/chase_camera_test.gd > test_camera_sits_behind_target_and_aims_at_it PASSED 62ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 73ms
+
+
+Run Test Suite: res://tests/vehicle/demo_driver_test.gd
+  res://tests/vehicle/demo_driver_test.gd > test_waypoint_reached_when_driving_to_it STARTED
+  res://tests/vehicle/demo_driver_test.gd > test_waypoint_reached_when_driving_to_it PASSED 1s 589ms
+
+  res://tests/vehicle/demo_driver_test.gd > test_stuck_emitted_when_bus_cannot_move STARTED
+  res://tests/vehicle/demo_driver_test.gd > test_stuck_emitted_when_bus_cannot_move PASSED 1s 10ms
+
+  res://tests/vehicle/demo_driver_test.gd > test_stuck_emitted_against_unclimbable_wall STARTED
+  res://tests/vehicle/demo_driver_test.gd > test_stuck_emitted_against_unclimbable_wall PASSED 1s 582ms
+
+Statistics: 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 4s 207ms
+
+
+Run Test Suite: res://tests/vehicle/demo_steering_test.gd
+  res://tests/vehicle/demo_steering_test.gd > test_steer_straight_ahead_is_zero STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_steer_straight_ahead_is_zero PASSED 5ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_steer_left_is_positive_under_one STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_steer_left_is_positive_under_one PASSED 5ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_steer_right_is_negative STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_steer_right_is_negative PASSED 5ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_steer_90_left_saturates STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_steer_90_left_saturates PASSED 5ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_steer_90_right_saturates STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_steer_90_right_saturates PASSED 5ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_target_behind_saturates_throttles_low_and_brakes STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_target_behind_saturates_throttles_low_and_brakes PASSED 5ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_throttle_fades_from_full_to_minimum STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_throttle_fades_from_full_to_minimum PASSED 5ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_brake_only_when_turn_is_sharp_and_moving STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_brake_only_when_turn_is_sharp_and_moving PASSED 5ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_has_reached_inside_outside_border_and_ignores_height STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_has_reached_inside_outside_border_and_ignores_height PASSED 6ms
+
+  res://tests/vehicle/demo_steering_test.gd > test_next_index_wraps STARTED
+  res://tests/vehicle/demo_steering_test.gd > test_next_index_wraps PASSED 5ms
+
+Statistics: 10 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 100ms
+
+
+Overall Summary: 224 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (42/42)
+Executed test cases : (224/224)
+Total execution time: 3min 37s 755ms
+ Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/results.xml
+Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_1/index.html
+Exit code: 0
+Run dispose test resources
+WARNING: REJECTED mod:bad.json: key 'starting_money': expected an int, got String
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] reload (res://src/autoloads/game_config.gd:35)
+       [1] <anonymous lambda> (res://tests/autoloads/game_config_autoload_test.gd:72)
+       [2] _execute (res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd:17)
+       [3] is_push_warning (res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd:115)
+       [4] test_reload_push_warning_on_rejected_mod (res://tests/autoloads/game_config_autoload_test.gd:72)
+       [5] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [6] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [18] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [19] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [20] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [21] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+ERROR: data load: 0 applied, 0 warning(s), 2 error(s)
+  [error] doc:game_config: no .tres or base .json layer applied
+  [error] doc:tuning: no .tres or base .json layer applied
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] reload (res://src/autoloads/game_config.gd:37)
+       [1] <anonymous lambda> (res://tests/autoloads/game_config_autoload_test.gd:89)
+       [2] _execute (res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd:17)
+       [3] is_push_error (res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd:132)
+       [4] test_reload_push_error_on_empty_dirs (res://tests/autoloads/game_config_autoload_test.gd:89)
+       [5] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [6] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [18] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [19] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [20] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [21] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+ERROR: Circuit: waypoint index 4 out of range (count 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] waypoint_position (res://src/biomes/playground/circuit.gd:25)
+       [1] <anonymous lambda> (res://tests/biomes/playground/circuit_test.gd:40)
+       [2] _execute (res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd:17)
+       [3] is_push_error (res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd:132)
+       [4] test_out_of_range_index_push_error (res://tests/biomes/playground/circuit_test.gd:40)
+       [5] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [6] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [18] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [19] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [20] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [21] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+ERROR: Package.release: precondition violated (restraint 0)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] release (res://src/cargo/package.gd:125)
+       [1] test_release_only_from_held (res://tests/cargo/package_test.gd:79)
+       [2] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [3] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [4] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [5] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [6] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [7] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [8] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [9] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [10] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [11] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [12] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [13] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [14] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [15] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [16] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [17] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [18] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+ERROR: Package.unstrap: precondition violated (restraint 1)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] unstrap (res://src/cargo/package.gd:175)
+       [1] test_unstrap_returns_to_held_and_frees_the_anchor (res://tests/cargo/package_test.gd:150)
+       [2] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [3] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [4] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [5] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [6] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [7] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [8] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [9] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [10] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [11] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [12] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [13] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [14] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [15] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [16] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [17] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [18] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+ERROR: CameraArbiter: no Camera3D in group 'cabin_camera'
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] apply (res://src/core/camera_arbiter.gd:49)
+       [1] _set_driving_ui (res://src/crew/seat.gd:127)
+       [2] occupy (res://src/crew/seat.gd:73)
+       [3] toggle_nearest_seat (res://src/crew/crew_input.gd:303)
+       [4] _interact_tap (res://src/crew/crew_input.gd:246)
+       [5] _on_interact_released (res://src/crew/crew_input.gd:192)
+       [6] _physics_process (res://src/crew/crew_input.gd:161)
+ERROR: CameraArbiter: no Camera3D in group 'cabin_camera'
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] apply (res://src/core/camera_arbiter.gd:49)
+       [1] _set_driving_ui (res://src/crew/seat.gd:127)
+       [2] occupy (res://src/crew/seat.gd:73)
+       [3] toggle_nearest_seat (res://src/crew/crew_input.gd:303)
+       [4] _interact_tap (res://src/crew/crew_input.gd:246)
+       [5] _on_interact_released (res://src/crew/crew_input.gd:192)
+       [6] _physics_process (res://src/crew/crew_input.gd:161)
+ERROR: CameraArbiter: no Camera3D in group 'cabin_camera'
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] apply (res://src/core/camera_arbiter.gd:49)
+       [1] _set_driving_ui (res://src/crew/seat.gd:127)
+       [2] occupy (res://src/crew/seat.gd:73)
+       [3] toggle_nearest_seat (res://src/crew/crew_input.gd:303)
+       [4] test_toggle_nearest_seat_callable_without_input (res://tests/crew/crew_input_test.gd:80)
+       [5] _spawn_input (res://tests/crew/crew_input_test.gd:263)
+       [6] _wait_ticks (res://tests/crew/crew_input_test.gd:268)
+WARNING: [Physics interpolation] Interpolated Camera3D triggered from outside physics process: "/root/Playground/ChaseCamera" (possibly benign).
+   at: _notification (scene/3d/camera_3d.cpp:218)
+ERROR: CameraArbiter: no Camera3D in group 'cabin_camera'
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] apply (res://src/core/camera_arbiter.gd:49)
+       [1] _set_driving_ui (res://src/crew/seat.gd:127)
+       [2] occupy (res://src/crew/seat.gd:73)
+       [3] test_occupy_hides_and_vacate_restores (res://tests/crew/seat_test.gd:18)
+       [4] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [5] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [6] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [7] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [8] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [9] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [10] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [11] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [12] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+ERROR: CameraArbiter: no Camera3D in group 'eye_camera'
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] apply (res://src/core/camera_arbiter.gd:49)
+       [1] _set_driving_ui (res://src/crew/seat.gd:129)
+       [2] vacate (res://src/crew/seat.gd:102)
+       [3] test_occupy_hides_and_vacate_restores (res://tests/crew/seat_test.gd:23)
+       [4] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [5] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [6] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [7] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [8] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [9] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [10] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [11] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [12] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+
+
+=== Step 5/7: gdUnit4 exit code ===
+gdUnit4 exit code 0: OK: all discovered tests passed
+
+=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
+JUnit report: C:\Users\Leo\Documents\RutaFragil\reports\report_1\results.xml
+Discovered tests: 224 (expected exactly: 224)
+
+=== Step 7/7: Final verdict ===
+SUCCESS: all tests passed and 224 tests were discovered.
+
+=== Step 8/8: Network multi-instance scenario (1 host + 3 clients) ===
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[32220, 42672, 38036, 12904]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+net scenario exit code: 0
+SUCCESS: network scenario passed (1 host + 3 clients).

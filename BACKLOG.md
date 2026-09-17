@@ -2,6 +2,97 @@
 
 Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código).
 
+## M2-GATE — pendientes y antecedentes hasta ronda 6
+
+- **M4, interacción física de tripulantes con el bus:** caminar perturba la
+  trayectoria del bus de forma reproducible. Comparación por índice de 3600
+  poses en las grabaciones de pie/caminando: distancia p95 **3,533801 m** y
+  máxima **3,840599 m** (`03_raw/r3b_physics_frame_summary.json`, observador
+  postnodos prioridad física 1000; p95 previo 3,535858 con otra fase). No son
+  «0,25 m por vuelta»; esa lectura del checksum con signo se retira. Al diseñar
+  M4 considerar que distinta colocación/marcha de tripulantes puede hacer
+  divergir dos simulaciones aun con motor determinista. No se implementa aquí
+  autoridad de bus al conductor ni reconciliación de M4.
+
+- **g2.1 retirado (revisión 03, 2026-09-16):** la comparación mezclaba puntos
+  de muestreo. Test eliminado por instrucción del dueño, sin ajustar umbral;
+  186 tests en fase 0. Se conserva evidencia 12 y las fuentes de ambas sondas.
+  D95 exige ahora observador independiente después de los nodos, prioridad
+  física 1000, idéntico en ambas instancias y declarado en todas las tablas.
+- **Fase 0 cerrada:** 186/186 tests, código0; sondas postnodos 0/0.
+- **M2-GATE, dos fallos válidos; tercer intento intacto:** corridas 2 y 4
+  conservan el fallo bajo D95 v5: `hull_exit_ticks` anfitrión/cliente
+  **0/16.784** y **0/14.494**, con los límites exactos de
+  `BusInterior.is_inside_local`. El apoyo ya no tiene umbral. El p99
+  histórico sin filtrar es descriptivo: falta contacto de carga por tick
+  para reconstruir el filtro v5. Persisten máximos locales de penetración
+  >5 cm; las rachas >3 cm no se reconstruyen con precisión en esos históricos.
+  Los FPS de corrida 2 no se juzgan por VSync/cap; corrida 4 conserva
+  FPS p1 146,714/175,778 sin límite. Véanse sus tablas reemitidas.
+- **Carga, defectos corregidos con regresión roja/verde:** colocación de
+  release dentro de cápsula, velocidad cinemática ficticia mano→suelo y caja
+  FREE inmóvil en mundo hasta su primera foto. Evidencia13/14, Godot4.7.2.
+  No equivalen a haber aprobado D95 v5: el experimento posterior de 120 s
+  dio apoyo cliente 87,652778 % y 44 ciclos, cifras descriptivas; no es la
+  precondición de 300 s y el apoyo ya no tiene umbral.
+- **Ronda 5 detenida; continuación acotada autorizada por D98:** experimento
+  de 300 s sobre `25c7a72`: apoyo anfitrión 99,983333 %/cliente 27,333333 %,
+  `hull_exit_ticks` **0/13.066**, cliente fuera desde 4935 y empujón desde
+  4923 sin recuperar durante al menos 13.078 ticks. No consumió el tercer
+  gate. Evidencia 16–18. La liberación en fase física corrige 0,308333 m
+  artificiales; el acarreo explícito ensayado se rechazó por introducir
+  aire en baches. D98 autoriza una sola ronda adicional: corregir inercia
+  aérea y medir la precondición v5 de 300 s. Si no pasa, parar; el revisor
+  redacta el plan B con D98. No implementar B ni inmunidad frente a carga.
+- **D98, inercia aérea pendiente de verificación:** medir antes/después
+  salto a 80 km/h de pie y caminando (residuo respecto al paseo ≤0,30 m),
+  salto sobre baches y empujón de caja lenta: cero salidas; recuperación
+  del empujón ≤45 ticks; controles sin carga de pie/caminando sobre baches
+  conservan cero aire con presión −0,5. Documentar `platform_on_leave`.
+  Afecta también a single; no darlo por resuelto con datos solo de red.
+- **M3, empujón simétrico (D98):** impulso a la tripulante por contacto con
+  carga rígida también en anfitrión y single. La asimetría actual con las
+  réplicas cinemáticas se acepta y se reporta por instancia; no se corrige
+  dentro de este gate.
+- **Tope de corrección de réplica, condicionado al gate humano (D98):**
+  si el dueño considera injustos los empujones por artefactos, medir y fijar
+  un límite de velocidad de corrección relativo al bus. No hay valor
+  autorizado ni se elimina la colisión. Mientras tanto, estos empujones
+  se cuentan junto con los físicos.
+- **Cobertura de penetración en transiciones:** al aplicar solicitudes en
+  física, Package_2/3 pueden estar FREE con CollisionShape3D aún disabled
+  hasta su set_deferred. El observador marca instrumentación ausente, pero
+  registra profundidad0 y corta la racha; no guarda tick/shape de esa falta.
+  Histograma y rachas de18 son observados con cobertura incompleta, no
+  certifican ausencia de penetración. Registrar muestras desconocidas y
+  su tick en una tarea futura. La ronda 6 deja esta deuda registrada sin
+  trabajarla; no presentar cobertura incompleta como ausencia de penetración.
+- **Penetración dinámica pendiente:** en corrida4, Package_3 del anfitrión
+  alcanza racha4391 ticks y profundidad máxima0,025533 m. Revisión 05 retira esa racha de asentamiento: con umbral >3 cm
+  queda exactamente en cero. Falta reconstrucción fina histórica para
+  Package_2; las nuevas corridas conservan profundidades por tick.
+- **Jugabilidad humana pendiente:** inspección nativa120 s conserva apoyo y
+  muestra cajas/remota, pero los taps no verifican un ciclo manual ni input
+  sostenido. No aprobar gate ni avanzar aM3 por resultados headless.
+- **Red futura:** fuera de alcance internet/Steam, reconexión y cambio de
+  autoridad del bus; error de carga histórico de corrida2 conservado, sin
+  atribución causal completa. Conversión de velocidad exterior puede retener
+  residuo si el bus acelera entre foto y recepción. No se implementa M4.
+
+- **M3, respuesta y validación de liberaciones:** `drop()`/`throw()` fallan
+  silenciosamente cuando no hay volumen libre. Añadir respuesta al jugador.
+  El anfitrión comprueba `fits` contra su réplica de tripulante, que puede
+  estar desplazada ~1 m; validar geometría en el marco del bus con la pose
+  enviada por el cliente. Deuda registrada por revisión 05; no se implementa.
+- **Interpretación de error remoto (corrida4):** a 22 m/s, el p95 de bus de 1,87 m
+  equivale aproximadamente a 85 ms de retardo de interpolación. Tripulante
+  p95 ~1 m incluye su propia interpolación (a esa velocidad serían ~45 ms).
+  Es comparación al mismo UTC sin compensar retardo, no error residual tras
+  compensarlo; no se ha separado cuantitativamente todo el residuo.
+- **Fixture anterior a M2-GATE:** `seat_test.gd` emite
+  `ERROR: CameraArbiter: no Camera3D in group 'eye_camera'` en cada arnés.
+  Limpiar el fixture en otra tarea; no se oculta aquí ni cambia el código 0.
+
 ## Milestones (Parte 3 del maestro)
 
 - **M0 — Fundaciones**
@@ -17,7 +108,7 @@ Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código
   - **T2.1** Interior grey-box según §4.3 (6 posiciones, pasillo de doble ancho).
   - **T2.2** Personaje primera persona (`CharacterBody3D`) sobre plataforma móvil; entrar/salir por puertas con el bus andando.
   - **T2.3** Agarrar/soltar/lanzar + amarrar (`restraint`) + los tres estados físicos de ADR-003.
-  - ✅ **GATE M2 (duro, §0.7):** criterio de ADR-003 con 2 instancias locales. Si falla 3 veces → Opción B. Nada de M3+ sin este gate.
+  - **GATE M2 PENDIENTE (duro, §0.7):** criterio de ADR-003 con 2 instancias locales. D96: dos fallos válidos registrados; tres fallos válidos activan el plan de Opción B. Nada de M3+ sin este gate.
 - **M3 — Paquetes y acciones cooperativas**
   - **T3.1** `PackageDefinition` + estados + 4 tipos MVP con FX placeholder + tests de decaimiento.
   - **T3.2** Herramientas de cuidado (rociador, cojines) y `CoopInteractable` con los tres modos (§3.4), con tests de ventana de sincronía.
@@ -47,12 +138,16 @@ Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código
 
 Post-M8: Playtest → Next Fest → Early Access con B0–B2. Roadmap público: Submarino, luego Volcán, con tipos de paquete nuevos intercalados.
 
+## Pendientes propios de la ejecución de M2-GATE (paso 0)
+
+- **Descubrimiento de gdUnit en clones frescos:** gdUnit ha omitido tres veces el último test de una suite al correr en un clon fresco (revisiones 04/05 de M2-T2.2 y 02 de M2-T2.3); causa desconocida. Desde el paso 0 (r2.1) el arnés afirma el conteo exacto de tests (`EXPECTED_TESTS` en `tools/run_tests.ps1` y `tools/run_tests.sh`, actualizada en el mismo commit que añada o quite tests), así que una omisión silenciosa rompe la corrida en vez de pasar. Investigar la causa raíz cuando vuelva a aparecer (¿import incompleto en la primera pasada?, ¿caché de clases?).
+
 ## Pendientes propios de la ejecución de M2-T2.2 (rondas 2–3)
 
 - **`player_mouse_sensitivity` es una preferencia del jugador, no balance de juego** (nota del dueño, r3): en `TuningTable` está bien hoy, pero un mod podría cambiársela al jugador; cuando exista un menú de ajustes, ese campo se muda fuera del alcance de mods.
-- **F1 al salir de demo deja `bus_input.enabled = true` aunque la tripulante esté a pie** (semántica heredada de T1.1/D71, cuando F5 era el asiento): tras F1×2, andar con W también acelera el bus aparcado. Candidato a paso 0 de T2.3: `bus_input.enabled` debe seguir a `crew.seated`.
+- **Resuelto: F1 al salir de demo habilitaba el bus estando a pie** (semántica heredada de T1.1/D71): `set_demo_mode` condiciona el input a `_crew_seated()` y lo cubre `test_leaving_the_demo_follows_the_crew_state` en `tests/biomes/playground/playground_scene_test.gd`.
 - **El DisplayServer headless no retiene `Input.mouse_mode`** (medido 2026-09-14): en tests, la verdad de la captura la posee la app (`CrewInput.is_pointer_captured()`), nunca el flag del motor.
-- **Re-guardados de escena fuera de banda (editor) pueden corromper silenciosamente** (2026-09-14): una reescritura de `playground.tscn` dejó el bus spawneando a y=14,08 y borró `seat_marker` del Seat; pasó desapercibida porque la demo aterriza y corre igual. Pines añadidos en `playground_scene_test` (spawn del bus < 3 m, `seat_marker` no nulo). Candidato: fijar también los transforms de los waypoints del circuito.
+- **Re-guardados de escena fuera de banda (editor) pueden corromper silenciosamente** (2026-09-14): una reescritura de `playground.tscn` dejó el bus spawneando a y=14,08 y borró `seat_marker` del Seat; pasó desapercibida porque la demo aterriza y corre igual. Pines añadidos en `playground_scene_test` (spawn del bus < 3 m, `seat_marker` no nulo). El pendiente de waypoints también está resuelto: `test_circuit_waypoints_match_the_authored_positions` comprueba los 17 marcadores.
 - **`seat_marker` hand-escrito sin `../` no resolvía en runtime** (mismo incidente): `NodePath("Bus/...")` se resuelve relativo al propio `Seat`, no a la raíz; corregido a `../Bus/BusInterior/Positions/driver` y pineado por el test anterior. En T2.2 r1 ocupar el asiento nunca teletransportó al volante y nadie lo notó (el dueño se sentó estando ya junto a él).
 
 ## Pendientes propios de la ejecución de M2-T2.3 (paso 1)
