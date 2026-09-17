@@ -91,6 +91,8 @@ func flush(parent: Node, colours: Dictionary) -> void:
 	for kind: String in _surfaces.keys():
 		var st: SurfaceTool = _surfaces[kind]
 		st.generate_normals()
+		# sin tangentes el mapa de normales de la textura no tiene marco y la luz sale mal
+		st.generate_tangents()
 		var mesh: ArrayMesh = st.commit()
 		mesh.surface_set_material(0, MeshBatcher.ribbon_material(colours.get(kind, Color.MAGENTA), kind))
 		var inst: MeshInstance3D = MeshInstance3D.new()
@@ -111,13 +113,17 @@ func _surface(kind: String) -> SurfaceTool:
 	return _surfaces[kind]
 
 
+## Godot toma como cara FRONTAL la que se recorre en sentido HORARIO vista de frente (al
+## revés que OpenGL). Los vértices a→b→c→d vienen en sentido antihorario vistos desde la
+## cara que queremos ver, así que se emiten al revés: a,c,b y a,d,c. Con el orden natural
+## las calles existían y no se dibujaban — la cara de arriba era la trasera (D75).
 func _quad(kind: String, st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, d: Vector3, u0: float, u1: float) -> void:
 	_vertex(st, a, Vector2(u0, 0.0))
+	_vertex(st, c, Vector2(u1, 1.0))
 	_vertex(st, b, Vector2(u1, 0.0))
-	_vertex(st, c, Vector2(u1, 1.0))
 	_vertex(st, a, Vector2(u0, 0.0))
-	_vertex(st, c, Vector2(u1, 1.0))
 	_vertex(st, d, Vector2(u0, 1.0))
+	_vertex(st, c, Vector2(u1, 1.0))
 	_counts[kind] = int(_counts[kind]) + 6
 
 

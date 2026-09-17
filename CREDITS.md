@@ -32,14 +32,15 @@
   - `Terrain001` — https://ambientcg.com/view?id=Terrain001 (escaneo de terreno; se usan
     `Color`, `Soil` y `Protrusion` del paquete 2K-JPG, estirados a 900 m como mapa de la
     zona, no como baldosa, D74)
-  - `DayEnvironmentHDRI108` — https://ambientcg.com/view?id=DayEnvironmentHDRI108 (cielo,
-    `_1K_HDR.exr` tal cual, 1,8 MB, D74)
+  - `DayEnvironmentHDRI108` — se probó como cielo en D74 y se **retiró** en D75: es un parque
+    fotografiado a nivel del suelo y sus árboles quedaban de horizonte del pueblo. No queda
+    ningún archivo suyo en el repo.
   - Descargados el 2026-09-17 en 1K-JPG (Terrain001 en 2K-JPG, el único que ofrece). De
     cada material se usan solo **Color, NormalGL y Roughness**; no se versionan
     AmbientOcclusion, Displacement, `.blend`, `.usdc` ni `.mtlx`. Todo se **reduce** con
     `src/tooling/shrink_texture.gd` antes de entrar al repo —512 px los materiales,
     1024 px los tres mapas del terreno—: los objetos de Git LFS en GitHub son permanentes
-    (nota de D36). Viven en `assets/textures/{ground,road,sky}/` y los usan
+    (nota de D36). Viven en `assets/textures/{ground,road}/` y los usan
     `assets/shaders/ground.gdshader` (D73, D74) y `assets/shaders/ribbon.gdshader` (D74).
 
 ## Modelos generativos

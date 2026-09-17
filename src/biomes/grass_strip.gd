@@ -83,8 +83,11 @@ func _apply(transforms: Array[Transform3D]) -> void:
 	multimesh = mm
 	_material = ShaderMaterial.new()
 	_material.shader = SHADER
-	_material.set_shader_parameter("base_colour", Vector3(base_colour.r, base_colour.g, base_colour.b))
-	_material.set_shader_parameter("tip_colour", Vector3(tip_colour.r, tip_colour.g, tip_colour.b))
+	# Como Color, no como Vector3: el uniform es `source_color` y solo con un Color Godot lo
+	# pasa de sRGB a lineal. Con Vector3 el verde llegaba crudo y las matas salían menta
+	# pálido, casi blancas (D75).
+	_material.set_shader_parameter("base_colour", base_colour)
+	_material.set_shader_parameter("tip_colour", tip_colour)
 	material_override = _material
 	cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 

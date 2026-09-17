@@ -35,7 +35,9 @@ uniform sampler2D over_normal : hint_normal, filter_linear_mipmap_anisotropic, r
 uniform sampler2D over_rough : hint_default_white, filter_linear_mipmap_anisotropic, repeat_enable;
 
 group_uniforms terreno;
-uniform sampler2D terrain_color : source_color, filter_linear_mipmap, repeat_enable;
+// Sin `source_color` a propósito: este mapa solo MODULA el color, no se ve tal cual, y así
+// los valores que llegan son los mismos 0..1 del archivo, que es donde se midió su promedio.
+uniform sampler2D terrain_color : filter_linear_mipmap, repeat_enable;
 uniform sampler2D terrain_soil : hint_default_white, filter_linear_mipmap, repeat_enable;
 uniform sampler2D terrain_protrusion : hint_default_black, filter_linear_mipmap, repeat_enable;
 uniform sampler2D blend_noise : hint_default_white, filter_linear_mipmap, repeat_enable;
@@ -43,11 +45,12 @@ uniform sampler2D blend_noise : hint_default_white, filter_linear_mipmap, repeat
 group_uniforms escalas;
 // Metros que mide una baldosa de pasto y una de piedra.
 uniform float tile_m = 3.0;
-uniform float rock_tile_m = 2.2;
+uniform float rock_tile_m = 3.2;
 // Metros que abarca el escaneo de terreno completo. Grande a propósito.
 uniform float macro_m = 900.0;
-// Tamaño de las manchas del ruido que ensucia los bordes.
-uniform float patch_m = 85.0;
+// Metros por repetición del ruido de mezcla. Grande a propósito: a 85 m salía una mancha
+// de nieve de 5 m cada 17 m en todo el mapa, y desde arriba se leía como punteado (D75).
+uniform float patch_m = 420.0;
 
 group_uniforms mezcla;
 // Cuánta piedra asoma por el mapa de tierra del terreno.
@@ -59,7 +62,7 @@ uniform float over_amount : hint_range(0.0, 1.0) = 0.0;
 // Qué tan cortado es el borde de la nieve.
 uniform float blend_sharpness : hint_range(1.0, 24.0) = 7.0;
 // Cuánto manda el color del terreno sobre el resultado.
-uniform float macro_strength : hint_range(0.0, 1.0) = 0.38;
+uniform float macro_strength : hint_range(0.0, 1.0) = 0.3;
 uniform vec3 tint : source_color = vec3(1.0, 1.0, 1.0);
 
 // Promedio de luz medido en terrain_color al reducirla (src/tooling/shrink_texture.gd).
@@ -81,8 +84,11 @@ void fragment() {
 	// Dónde el terreno dice que no hay pasto: tierra desnuda o roca asomada.
 	float soil = texture(terrain_soil, macro_uv).r;
 	float prot = texture(terrain_protrusion, macro_uv).r;
+	// Umbral alto a propósito: con el borde bajo en 0,1 quedaba una pizca de piedra en todo
+	// el mapa, y desde arriba las piedras claras repetidas cada baldosa se leían como un
+	// punteado regular (D75). La roca aparece solo donde el terreno de verdad la pide.
 	float bare = (soil - 0.5) * 2.0 * soil_amount + (prot - 0.15) * 3.0 * rock_amount;
-	bare = smoothstep(0.1, 0.75, bare + (noise - 0.5) * 0.45);
+	bare = smoothstep(0.32, 0.8, bare + (noise - 0.5) * 0.3);
 
 	vec3 albedo = mix(texture(base_albedo, uv).rgb, texture(rock_albedo, uv_rock).rgb, bare);
 	float rough = mix(texture(base_rough, uv).r, texture(rock_rough, uv_rock).r, bare);
@@ -95,7 +101,8 @@ void fragment() {
 	normal = mix(normal, texture(over_normal, uv).rgb, snow);
 
 	// El terreno manda el color a gran escala: es lo que mata la sensación de baldosa.
-	vec3 macro = texture(terrain_color, macro_uv).rgb / TERRAIN_MEAN;
+	// Acotado: las quebradas del escaneo son casi negras y sin tope pintan vetas negras.
+	vec3 macro = clamp(texture(terrain_color, macro_uv).rgb / TERRAIN_MEAN, 0.65, 1.35);
 	albedo *= mix(vec3(1.0), macro, macro_strength);
 
 	ALBEDO = albedo * tint * COLOR.rgb;

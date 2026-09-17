@@ -66,9 +66,17 @@ func test_the_carriageway_has_no_seam_at_a_corner() -> void:
 	var mesh_node: MeshInstance3D = node
 	var faces: PackedVector3Array = mesh_node.mesh.get_faces()
 	assert_int(faces.size()).is_equal(12)
-	# la cara mira hacia arriba: una calzada emitida al revés se ve negra desde el bus
-	var normal: Vector3 = (faces[1] - faces[0]).cross(faces[2] - faces[0]).normalized()
-	assert_float(normal.y).is_greater(0.9)
+	# La cara mira hacia arriba SEGÚN GODOT, no según nuestro producto cruz. Godot toma como
+	# frontal la cara horaria; con la cara emitida al revés las calles existían y no se
+	# dibujaban (D75), y la versión anterior de esta prueba lo dio por bueno porque
+	# comprobaba nuestra propia suposición. Aquí se le pregunta al motor.
+	var arrays: Array = mesh_node.mesh.surface_get_arrays(0)
+	var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+	assert_int(normals.size()).is_equal(12)
+	for n: Vector3 in normals:
+		assert_float(n.y).override_failure_message("la calzada mira hacia abajo: Godot la descarta desde arriba").is_greater(0.9)
+	# y trae tangentes, que el mapa de normales de la textura necesita
+	assert_bool(arrays[Mesh.ARRAY_TANGENT] is PackedFloat32Array).is_true()
 	# los dos cuadros del codo usan exactamente los mismos dos puntos del borde
 	for edge: float in [-5.0, 5.0]:
 		var corner: Vector3 = points[1] + lefts[1] * edge

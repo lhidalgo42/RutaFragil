@@ -60,6 +60,7 @@ const RIBBON_MATERIALS: Dictionary = {
 }
 
 static var _grain: NoiseTexture2D
+static var _blend: NoiseTexture2D
 static var _ground: ShaderMaterial
 static var _ribbons: Dictionary = {}
 
@@ -199,7 +200,7 @@ static func ground_material() -> ShaderMaterial:
 		material.shader = GROUND_SHADER
 		for key: String in GROUND_TEXTURES:
 			material.set_shader_parameter(key, load(GROUND_TEXTURES[key]))
-		material.set_shader_parameter("blend_noise", grain_texture())
+		material.set_shader_parameter("blend_noise", blend_texture())
 		_ground = material
 	return _ground
 
@@ -285,6 +286,25 @@ static func _tri(st: SurfaceTool, a: Vector3, b: Vector3, c: Vector3) -> void:
 	st.add_vertex(a)
 	st.add_vertex(b)
 	st.add_vertex(c)
+
+
+## Ruido de MEZCLA, de 0 a 1 de verdad. No confundir con `grain_texture()`, que va de
+## 0,74 a 1,06 porque es un multiplicador de color: usado como máscara, cualquier umbral
+## bajo 0,74 lo pasa entero — así salió el pueblo nevado con el dial en 0,3 (D75).
+static func blend_texture() -> NoiseTexture2D:
+	if _blend == null:
+		var noise: FastNoiseLite = FastNoiseLite.new()
+		noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		noise.frequency = 0.02
+		noise.fractal_octaves = 3
+		var texture: NoiseTexture2D = NoiseTexture2D.new()
+		texture.noise = noise
+		texture.width = 256
+		texture.height = 256
+		texture.seamless = true
+		texture.normalize = true
+		_blend = texture
+	return _blend
 
 
 ## Cuña: caja partida por la diagonal, con la cara inclinada mirando a +X.

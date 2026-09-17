@@ -25,7 +25,7 @@ position = Vector3(71.0, 1.2, -3.2)
 [node name="Road" type="Node3D" parent="."]
 script = ExtResource("3_road")
 data_path = "res://data/b0_requinoa.json"
-ground_snow = 0.3
+ground_snow = 0.12
 
 [node name="Gravel" type="Node3D" parent="."]
 script = ExtResource("8_gravel")
