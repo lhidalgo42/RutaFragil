@@ -1,0 +1,12 @@
+{
+	"file": "bus_exterior_v2a_furgon.png",
+	"model": "flux1-schnell.safetensors",
+	"licence": "Apache-2.0",
+	"prompt": "flat-shaded low-poly 3D game asset, orthographic side view of a long box-body delivery truck, solid windowless cargo body panels along the whole side, windows only at the front cab, one small sliding side door with steps near the cab, double doors at the rear, bright yellow panels with a single red stripe, cream white roof, boxy rugged proportions, visible polygon facets, flat colour blocks, plain light grey background, no text, no logos, no brand names",
+	"seed": 41,
+	"steps": 4,
+	"width": 1152,
+	"height": 648,
+	"server": "http://192.168.50.200:8188",
+	"generated_utc": "2026-09-17T19:04:08Z"
+}

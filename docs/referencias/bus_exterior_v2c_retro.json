@@ -1,0 +1,12 @@
+{
+	"file": "bus_exterior_v2c_retro.png",
+	"model": "flux1-schnell.safetensors",
+	"licence": "Apache-2.0",
+	"prompt": "flat-shaded low-poly 3D game asset, orthographic side view of a retro rounded delivery van, corrugated ribbed side panels with no passenger windows, rounded nose, small cab windows only, sliding side door, rear double doors, yellow body with red stripe and cream roof, charming stylised proportions, visible polygon facets, flat colour blocks, plain light grey background, no text, no logos",
+	"seed": 43,
+	"steps": 4,
+	"width": 1152,
+	"height": 648,
+	"server": "http://192.168.50.200:8188",
+	"generated_utc": "2026-09-17T19:04:29Z"
+}
