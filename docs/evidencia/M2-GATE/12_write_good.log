@@ -1,0 +1,39 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports/order_good
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Installing GdUnit4 session system hooks.
+Session hook 'GdUnitHtmlTestReporter' installed.
+Session hook 'GdUnitXMLTestReporter' installed.
+Run Test Suite: res://tests/net/bus_write_order_test.gd
+  res://tests/net/bus_write_order_test.gd > test_stepped_bus_delivers_platform_velocity STARTED
+WRITE_ORDER peak_platform_speed=37.0001 moving_ticks=58 zero_velocity_ticks=58
+  res://tests/net/bus_write_order_test.gd > test_stepped_bus_delivers_platform_velocity FAILED 2s 496ms
+  Report:
+  Expecting:
+ 0
+ but was
+ 58	at 'test_stepped_bus_delivers_platform_velocity' in res://tests/net/bus_write_order_test.gd:82
+
+Statistics: 1 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 2s 503ms
+
+
+Overall Summary: 1 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (1/1)
+Executed test cases : (1/1)
+Total execution time: 2s 503ms
+ Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/order_good/report_1/results.xml
+Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/order_good/report_1/index.html
+Exit code: 100
+Run dispose test resources

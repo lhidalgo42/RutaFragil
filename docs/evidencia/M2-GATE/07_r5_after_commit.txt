@@ -1,0 +1,44 @@
+RONDA5 — después del commit de evidencia3094021
+2026-09-17T01:48:27.621993
+Se captura el estado limpio antes de crear este registro. El commit que lo
+añade es exclusivamente documental y no cambia fuentes ni resultados.
+
+git branch --show-current
+m2/gate-two-instances
+exit=0
+
+git rev-parse HEAD
+309402108e8a05213fc4c433f8932008049e116b
+exit=0
+
+git status --porcelain=v1
+(vacío)
+exit=0
+
+git rev-parse main
+2b16e99ce9a485dc5342d55774d7d33f6d2a9f2c
+exit=0
+
+git diff 25c7a72 HEAD --name-only -- src tests tools data scenes project.godot
+(vacío)
+exit=0
+
+git diff 5ea5b56 HEAD --name-only -- src/vehicle data scenes project.godot docs/evidencia/M2-GATE/04_iteration_ledger.json
+(vacío)
+exit=0
+
+git -C C:\Users\Leo\Documents\RutaFragil_r5_verify_20260917 status --porcelain=v1 --untracked-files=all
+(vacío)
+exit=0
+
+git -C C:\Users\Leo\Documents\RutaFragil_r5_verify_20260917 ls-files --others --exclude-standard -- *.uid
+(vacío)
+exit=0
+
+run1: SHA256 del blob Git verificado=57ceae6b40caf7c86424f6e354d0fee295ca1be116c155aa8a8b8a71813da96f
+run2: SHA256 del blob Git verificado=e6521d814ff5b7960481501598ec9ac34914d737448a82949711315e55830772
+run3: SHA256 del blob Git verificado=45898ff7f05b2de5d4472bf3af09f9fc02e6f9904d888914bda0a5d4f8046f86
+docs/revisiones/M2-GATE_revision_05.md: blob intacto=a444617689ea2a85899c4a38dc0f764fe77ac2c9
+docs/planes/M2-GATE_ronda5_prompt_codex.md: blob intacto=beed479c9675cd4eeece8986f65d0444ea4d023a
+
+D96 fallos válidos=2; ledger sin cambios.

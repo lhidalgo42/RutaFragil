@@ -1,0 +1,23 @@
+[
+    {
+        "name":  "06_r5_demo",
+        "exit":  0,
+        "timeout_s":  120,
+        "timed_out":  false,
+        "source_commit":  "25c7a72206666cccfd748ee67c1a3de94068373b"
+    },
+    {
+        "name":  "06_r5_handling",
+        "exit":  0,
+        "timeout_s":  120,
+        "timed_out":  false,
+        "source_commit":  "25c7a72206666cccfd748ee67c1a3de94068373b"
+    },
+    {
+        "name":  "06_r5_net_long",
+        "exit":  0,
+        "timeout_s":  350,
+        "timed_out":  false,
+        "source_commit":  "25c7a72206666cccfd748ee67c1a3de94068373b"
+    }
+]

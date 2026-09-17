@@ -1,0 +1,3 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PLATFORM_RESULT {"airborne_ticks":0,"arguments":{"box_x":"0.3","box_z":"1.5","candidate":"engine","label":"exact_encounter","output":"res://docs/evidencia/M2-GATE/16_bank","ratio":"1","walking":"0"},"candidate":"engine","dual_contact_ticks":0,"last_supported":true,"losses":0,"max_off_run_ticks":0,"sampling":"independent post-node observer, both priorities 1000","slip":{"max_m":0.115920417010784,"p95_m":0.00354713923297822,"p999_m":0.0254445113241673,"p99_m":0.0100516080856323,"samples":1064},"support_percent":100.0,"supported_ticks":1064,"ticks":1064,"walking":false}

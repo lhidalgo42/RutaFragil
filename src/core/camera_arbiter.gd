@@ -38,18 +38,23 @@ static func apply(tree: SceneTree, mode: Mode) -> void:
 		Mode.DEMO:
 			target_group = GROUP_CHASE
 	var target_node: Node = tree.get_first_node_in_group(target_group)
+	if target_group == GROUP_EYE:
+		var member: CrewMember = NetAuthority.local_crew(tree)
+		if member != null:
+			target_node = NetAuthority.scoped_eye(member)
+		elif not tree.get_nodes_in_group("crew").is_empty():
+			# A client can receive remote crews before its own spawn.
+			target_node = tree.get_first_node_in_group(GROUP_CHASE)
 	if not (target_node is Camera3D):
 		push_error("CameraArbiter: no Camera3D in group '%s'" % target_group)
 		return
 	var target: Camera3D = target_node
-	target.current = true
 	for group: String in [GROUP_EYE, GROUP_CABIN, GROUP_CHASE]:
-		if group == target_group:
-			continue
-		var node: Node = tree.get_first_node_in_group(group)
-		if node is Camera3D:
-			var cam: Camera3D = node
-			cam.current = false
+		for node: Node in tree.get_nodes_in_group(group):
+			if node is Camera3D and node != target:
+				var cam: Camera3D = node
+				cam.current = false
+	target.current = true
 
 
 ## Flips the seated-camera preference and reapplies it. Callers invoke it

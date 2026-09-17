@@ -81,11 +81,12 @@ func _set_captured(captured: bool) -> void:
 
 
 func _find_crew() -> void:
-	var node: Node = get_tree().get_first_node_in_group("crew")
-	if node is CrewMember:
-		_crew = node
-	if _crew == null:
-		push_error("CrewInput: no node in group 'crew'")
+	var member: CrewMember = NetAuthority.local_crew(get_tree())
+	if member != _crew:
+		_crew = member
+		_eye = null
+		_hands = null
+		_eye_missing_reported = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -110,7 +111,7 @@ func _unhandled_input(event: InputEvent) -> void:
 ## On-foot mouse look (§9.2): yaw goes on the body, pitch on the eye camera.
 ## With the pointer free the look does NOT move (acceptance criterion).
 func _apply_look(motion: InputEventMouseMotion) -> void:
-	if not enabled or _crew == null or _crew.seated:
+	if not enabled or not is_instance_valid(_crew) or _crew.seated:
 		return
 	if not _captured:
 		return
@@ -132,24 +133,26 @@ func _apply_look(motion: InputEventMouseMotion) -> void:
 	eye.rotation.x = next.y
 
 
-## The eye camera is found by GROUP (D59), never by node path; crew_member.gd
-## registers it in _ready. Missing camera: one error, no crash, no look.
+## Scope the group lookup to this input's crew: remote eyes join it too.
 func _eye_camera() -> Camera3D:
-	if _eye == null:
-		var node: Node = get_tree().get_first_node_in_group("eye_camera")
-		if node is Camera3D:
-			_eye = node
-		elif not _eye_missing_reported:
+	if not is_instance_valid(_eye):
+		_eye = NetAuthority.scoped_eye(_crew)
+		if _eye == null and is_instance_valid(_crew) and not _eye_missing_reported:
 			_eye_missing_reported = true
-			push_error("CrewInput: no Camera3D in group 'eye_camera'")
+			push_error("CrewInput: local crew has no Camera3D in group 'eye_camera'")
 	return _eye
 
 
 func _physics_process(_delta: float) -> void:
+	# MultiplayerSpawner can deliver the local crew after this node is ready.
+	if not NetAuthority.is_local(_crew):
+		_find_crew()
 	if _crew == null:
 		return
+	if _crew.network_member and not _crew.network_ready:
+		return
 	if not enabled and not _crew.seated:
-		# Demo or network client: nobody is driving the crew, ignore input.
+		# The scripted run owns movement while player input is disabled.
 		return
 	var interact_held: bool = Input.is_action_pressed("interact")
 	if interact_held and not _interact_was_held:
@@ -204,7 +207,7 @@ func _interact_tap(hands: CrewHands) -> void:
 		# interactable best aligned with the look ray within reach wins — point
 		# at the wheel to drive, at a free box to grab, at a strapped one to
 		# unstrap. Nothing in the reticle: the seat as before.
-		var eye_node: Node = get_tree().get_first_node_in_group("eye_camera")
+		var eye_node: Camera3D = _eye_camera()
 		if eye_node is Camera3D:
 			var eye: Camera3D = eye_node
 			# No absolute radial cutoff: floor packages sit ~1.4 m below the eye
@@ -273,10 +276,13 @@ func _poll_clicks() -> void:
 ## The hands are found by GROUP (D59): the node lives inside crew_member.tscn
 ## (one pair of hands per crew member).
 func _hands_node() -> CrewHands:
-	if _hands == null:
-		var node: Node = get_tree().get_first_node_in_group("crew_hands")
-		if node is CrewHands:
-			_hands = node
+	if not is_instance_valid(_crew):
+		return null
+	if not is_instance_valid(_hands):
+		for node: Node in get_tree().get_nodes_in_group("crew_hands"):
+			if node is CrewHands and _crew.is_ancestor_of(node):
+				_hands = node
+				break
 	return _hands
 
 
@@ -284,6 +290,9 @@ func _hands_node() -> CrewHands:
 ## seated → leave the seat that holds the member; on foot → occupy the
 ## nearest free seat whose marker is within interaction_reach_m.
 func toggle_nearest_seat(crew: CrewMember) -> void:
+	# Driver authority and replicated seats belong to M4, not this gate.
+	if crew.network_member:
+		return
 	if crew.seated:
 		var current: Seat = occupied_seat_of(crew)
 		if current != null:

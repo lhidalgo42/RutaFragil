@@ -1,0 +1,165 @@
+{
+	"activity": {
+		"authority_transfers": 0,
+		"complete_cycles": 52,
+		"hold_denied": 0,
+		"hold_granted": 53,
+		"hold_requested": 53,
+		"release": 52,
+		"strap_denied": 0,
+		"strap_ok": 53,
+		"unstrap": 53
+	},
+	"cameras": {
+		"max": 1,
+		"min": 1
+	},
+	"display_server": "headless",
+	"drift_final_m": [
+		-0.159875869750977,
+		0.0000012516975402832,
+		0.343864440917969
+	],
+	"drift_max_abs_m": [
+		0.291631698608398,
+		0.223850220441818,
+		3.615478515625
+	],
+	"drive": {
+		"bump_ticks": 617,
+		"bumps_max_kmh": 82.6839775085449,
+		"bumps_mean_kmh": 61.6551115917039,
+		"bumps_min_kmh": 42.2814743041992,
+		"entry_speeds_kmh": [
+			66.4168785095215,
+			80.9707077026367,
+			82.6710754394531,
+			82.4042037963867,
+			82.6839775085449
+		],
+		"laps": 4,
+		"route": "straight_x30_with_outer_return"
+	},
+	"duration_s": 119.999999999994,
+	"exit": 0,
+	"finish_utc_us": 1789594792277000,
+	"fps": {
+		"frames": 14397,
+		"p1": 103.777501037775,
+		"percent_below_60": 0.0,
+		"render_no_verificado": true,
+		"windowed": false
+	},
+	"human": false,
+	"instrumentation_missing": [],
+	"iteration": 1,
+	"off_bus_support_ticks": 23,
+	"peer_id": 1,
+	"penetration": {
+		"entities": {
+			"cargo/Package_0": {
+				"current_run_ticks": 0,
+				"deepest_piece": "WallRearLeft",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.229476193348373,
+				"max_run_ticks": 6,
+				"penetrating_ticks": 6,
+				"samples": 7200
+			},
+			"cargo/Package_1": {
+				"current_run_ticks": 0,
+				"deepest_piece": "WallRearRight",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.230697141803959,
+				"max_run_ticks": 6,
+				"penetrating_ticks": 6,
+				"samples": 7200
+			},
+			"cargo/Package_2": {
+				"current_run_ticks": 0,
+				"deepest_piece": "Floor",
+				"excluded_ticks": 4469,
+				"max_depth_m": 0.106835836215376,
+				"max_run_ticks": 26,
+				"penetrating_ticks": 916,
+				"samples": 7200
+			},
+			"cargo/Package_3": {
+				"current_run_ticks": 0,
+				"deepest_piece": "Floor",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.0200108712415317,
+				"max_run_ticks": 133,
+				"penetrating_ticks": 133,
+				"samples": 7200
+			},
+			"crew/1": {
+				"current_run_ticks": 0,
+				"deepest_piece": "Roof",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.0748339745761288,
+				"max_run_ticks": 5,
+				"penetrating_ticks": 35,
+				"samples": 7200
+			},
+			"crew/1594924885": {
+				"current_run_ticks": 0,
+				"deepest_piece": "Roof",
+				"excluded_ticks": 0,
+				"max_depth_m": 0.645451990697396,
+				"max_run_ticks": 552,
+				"penetrating_ticks": 2230,
+				"samples": 7200
+			}
+		},
+		"excluded": "seated crew and HELD cargo (collision disabled)",
+		"max_depth_m": 0.645451990697396,
+		"max_run_ticks": 552,
+		"method": "finite authored hull boxes; capsule distance / oriented box SAT",
+		"noise_epsilon_m": 0.000001
+	},
+	"remote_crew_simulation_ticks": 0,
+	"requested_seconds": 120.0,
+	"role": "host",
+	"run_id": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/05_raw/manual_01",
+	"sampling_phase": "after_all_node_physics",
+	"sampling_process_physics_priority": 1000,
+	"sampling_process_priority": 1000,
+	"simulation_entities": {
+		"cargo/Package_0": {
+			"physics_simulation_ticks": 7199,
+			"unauthorized_simulation_ticks": 0
+		},
+		"cargo/Package_1": {
+			"physics_simulation_ticks": 7199,
+			"unauthorized_simulation_ticks": 0
+		},
+		"cargo/Package_2": {
+			"physics_simulation_ticks": 7199,
+			"unauthorized_simulation_ticks": 0
+		},
+		"cargo/Package_3": {
+			"physics_simulation_ticks": 198,
+			"unauthorized_simulation_ticks": 0
+		},
+		"crew/1": {
+			"physics_simulation_ticks": 7200
+		},
+		"crew/1594924885": {
+			"physics_simulation_ticks": 0
+		}
+	},
+	"slip": {
+		"max_m": 0.525364935398102,
+		"p95_m": 0.0337291844189167,
+		"p999_m": 0.249067187309265,
+		"p99_m": 0.0644413456320763,
+		"samples": 7199
+	},
+	"start_utc_us": 1789594672320000,
+	"ticks": 7200,
+	"trace_clock": "system UTC microseconds, same machine",
+	"trace_hz": 10,
+	"trace_samples": 16807,
+	"unauthorized_cargo_simulation_ticks": 0
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "log": "docs\\evidencia\\M2-GATE\\04_raw\\iteration_4\\host.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\04_raw\\iteration_4\\client.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\05_raw\\r4_manual_01\\host.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\05_raw\\r4_manual_01\\client.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_cargo_cycles_01\\host.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_cargo_cycles_01\\client.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_cargo_walk_01\\host.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_cargo_walk_01\\client.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_free_wait_fix_01\\host.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_free_wait_fix_01\\client.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_no_cargo_01\\host.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_no_cargo_01\\client.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_release_fix_01\\host.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_release_fix_01\\client.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_transition_fix_01\\host.log",
+    "errors": 0,
+    "warnings": 0
+  },
+  {
+    "log": "docs\\evidencia\\M2-GATE\\13_raw\\r4_transition_fix_01\\client.log",
+    "errors": 0,
+    "warnings": 0
+  }
+]

@@ -1,0 +1,49 @@
+M2-GATE ronda 3b — DESPUÉS del commit de entrega
+
+Commit de evidencia: 37b0acc8bd20e386ca0a1e2fa96fcfc100d92399
+Rama de trabajo: m2/gate-two-instances.
+Tras ese commit, git status --porcelain=v1 del árbol original imprimió cero
+líneas. Los siguientes archivos añadidos son exclusivamente esta comprobación
+07 y sus logs, que se guardan en un commit documental posterior.
+
+WORKTREE NUEVO
+Comando: git worktree add --detach "C:\Users\Leo\Documents\RutaFragil_gate_verify_20260916" HEAD
+La ruta no existía: no se reutilizó una importación anterior.
+HEAD del worktree: 37b0acc8bd20e386ca0a1e2fa96fcfc100d92399
+Comando repetido dos veces:
+  C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe --headless --path <worktree> --import
+Códigos: 0 / 0. Ambos logs: 0 ERROR / 0 WARNING.
+.godot/global_script_class_cache.cfg existe.
+git -C <worktree> status --porcelain=v1 --untracked-files=all: cero líneas.
+.uid sin seguimiento: ninguno.
+Logs: 07_fresh_import_1.log, 07_fresh_import_2.log.
+Resultado mecanizado: 07_fresh_import_result.json.
+
+ALCANCE
+main sigue en 2b16e99ce9a485dc5342d55774d7d33f6d2a9f2c; no se hizo merge.
+Desde 000c52f no cambió src/, tests/, project.godot ni data/.
+Los únicos cambios ejecutables posteriores fueron los envoltorios Bash y
+PowerShell, comprobados con sus probes independientes. Por eso no se repite
+la suite de GDScript tras escribir documentación: las tres corridas 224/224
+son del mismo código GDScript entregado.
+Los documentos del revisor son idénticos a 6002a11. Bus/suspensión, tuning,
+project.godot y escenas: sin cambios respecto de bc2323f (evidencia 09).
+
+HISTORIAL HASTA EL COMMIT DE ENTREGA
+6002a11e061e868b7cd11e1b96b173f0c9757899 docs: preserve reviewer withdrawal of g2.1 and phase-zero handoff
+61c8c5d8e9a1c9b5adb4d1935a6366c4e08f70fb fix: close M2 gate phase zero with declared sampling and authority lookups
+3f1d17ecd216b72cf3da37e36bc26900d1fb4866 feat(net): spawn and interpolate one local-authority crew per peer
+53901a455c03555c8a0a6fb9be1a8cfdf32f7c93 feat(net): replicate cargo states and validate host authority transfers
+469e28c372eebbb51a469c463dcf72019d3bd0f9 fix(net): validate held snapshots and allow ground drops beside a moving bus
+cd76dc51a83e4962f9a7fcd6c11f3654a177f5f3 feat(tooling): run the two-instance gate with declared observation and metrics
+ff1e96ed04b8432f5f4933750731826fe66795e8 fix(net): preserve crew interaction frame alongside world snapshots
+078e36c80c69eb053c701434ac84bc0a2f7ee8a0 fix(net): validate cargo reach in the sender bus frame
+dabd154fa741c3471a4066e5154622a3699753e1 fix(net): interpolate bus snapshots on a continuous source timeline
+9a4be92341ab1cd0ebcdc6a7c3adb24237e5ea61 fix(net): replicate bus velocity as interpolation reference data
+7762949caa18271b10f23da965d490a75e3d1a44 fix(crew): use the replicated bus reference when releasing aboard
+d237f8fed09fff979ac0862b859f8c755b69c91d fix(cargo): preserve world drop velocity with a frozen client bus
+000c52f9604edf3c0f8681e369f53b39ca719b25 test(gate): record first valid D95 failure and expose render configuration
+47c3b410eb3295d9201b60917117bf5fc21d990d fix(tooling): bound the Bash gate launcher independently of Godot ticks
+95455f573e2eddc6a7ce08035fd8c7199c2a49dc fix(tooling): retain the gate process exit code for short runs
+37b0acc8bd20e386ca0a1e2fa96fcfc100d92399 docs: deliver M2 gate measurements, final regressions and unresolved limits
+

@@ -1,0 +1,68 @@
+RONDA5 — antes del commit de evidencia
+Fuentes finales25c7a72; todas las diferencias pendientes son documentales.
+
+git branch --show-current
+m2/gate-two-instances
+exit=0
+
+git rev-parse HEAD
+25c7a72206666cccfd748ee67c1a3de94068373b
+exit=0
+
+git status --short
+ M BACKLOG.md
+ M DECISIONS.md
+ M docs/evidencia/M2-GATE/01_versions.txt
+ M docs/evidencia/M2-GATE/02_run_tests.txt
+ M docs/evidencia/M2-GATE/06_regression.md
+ M docs/evidencia/M2-GATE/08_no_verificado.txt
+ M docs/evidencia/M2-GATE/09_limits.txt
+ M docs/evidencia/M2-GATE/10_windowed_clean_log.md
+ M docs/evidencia/M2-GATE/16_platform_adoption.md
+ M docs/evidencia/M2-GATE/17_penetration_revision_05.md
+?? docs/evidencia/M2-GATE/02_r5_run_1.log
+?? docs/evidencia/M2-GATE/02_r5_run_1_stderr.log
+?? docs/evidencia/M2-GATE/02_r5_run_2.log
+?? docs/evidencia/M2-GATE/02_r5_run_2_stderr.log
+?? docs/evidencia/M2-GATE/02_r5_run_3.log
+?? docs/evidencia/M2-GATE/02_r5_run_3_stderr.log
+?? docs/evidencia/M2-GATE/02_r5_runs.json
+?? docs/evidencia/M2-GATE/02_r5_unsafe.log
+?? docs/evidencia/M2-GATE/02_r5_unsafe_result.json
+?? docs/evidencia/M2-GATE/02_r5_unsafe_stderr.log
+?? docs/evidencia/M2-GATE/02_r5_verified_runs.json
+?? docs/evidencia/M2-GATE/06_r5_demo.log
+?? docs/evidencia/M2-GATE/06_r5_demo_stderr.log
+?? docs/evidencia/M2-GATE/06_r5_handling.log
+?? docs/evidencia/M2-GATE/06_r5_handling_stderr.log
+?? docs/evidencia/M2-GATE/06_r5_net_long.log
+?? docs/evidencia/M2-GATE/06_r5_net_long_stderr.log
+?? docs/evidencia/M2-GATE/06_r5_results.json
+?? docs/evidencia/M2-GATE/07_r5_fresh_import.json
+?? docs/evidencia/M2-GATE/07_r5_fresh_import_1.log
+?? docs/evidencia/M2-GATE/07_r5_fresh_import_1_stderr.log
+?? docs/evidencia/M2-GATE/07_r5_fresh_import_2.log
+?? docs/evidencia/M2-GATE/07_r5_fresh_import_2_stderr.log
+?? docs/evidencia/M2-GATE/18_experiment_300.md
+?? docs/evidencia/M2-GATE/18_raw/
+?? docs/evidencia/M2-GATE/r5_final_300_context.json
+?? docs/evidencia/M2-GATE/r5_final_300_launcher.log
+?? docs/evidencia/M2-GATE/r5_final_300_stderr.log
+exit=0
+
+git diff 25c7a72 --name-only -- src tests tools data scenes project.godot
+(vacío)
+exit=0
+
+git diff 5ea5b56 HEAD --name-only -- src/vehicle data scenes project.godot
+(vacío)
+exit=0
+
+git rev-parse main
+2b16e99ce9a485dc5342d55774d7d33f6d2a9f2c
+exit=0
+
+git diff e2f69ac --name-only -- docs/revisiones/M2-GATE_revision_05.md docs/planes/M2-GATE_ronda5_prompt_codex.md
+(vacío)
+exit=0
+

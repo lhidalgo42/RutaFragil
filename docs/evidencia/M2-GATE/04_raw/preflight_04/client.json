@@ -1,0 +1,189 @@
+{
+	"activity": {
+		"authority_transfers": 26.0,
+		"complete_cycles": 6.0,
+		"hold_denied": 35.0,
+		"hold_granted": 7.0,
+		"hold_requested": 42.0,
+		"release": 6.0,
+		"strap_denied": 3.0,
+		"strap_ok": 7.0,
+		"unstrap": 6.0
+	},
+	"bus_interpolation_delay_s": 0.0666666666666667,
+	"bus_remote_error": {
+		"applicable": true,
+		"local_samples": 0,
+		"matched": 450,
+		"max_deg": 6.81189621586816,
+		"max_m": 2.54344415664673,
+		"p95_deg": 4.2009513914723,
+		"p95_m": 2.46457481384277,
+		"status": "measured",
+		"unmatched": 1
+	},
+	"cameras": {
+		"max": 1.0,
+		"min": 1.0
+	},
+	"cargo_remote_error": {
+		"applicable": true,
+		"local_samples": 153,
+		"matched": 1634,
+		"max_deg": 153.942041023414,
+		"max_m": 4.53814792633057,
+		"p95_deg": 20.4777711506282,
+		"p95_m": 2.96125483512878,
+		"status": "measured",
+		"unmatched": 17
+	},
+	"crew_remote_error": {
+		"applicable": true,
+		"local_samples": 451,
+		"matched": 450,
+		"max_deg": 163.172099120581,
+		"max_m": 2.16979765892029,
+		"p95_deg": 25.250683436971,
+		"p95_m": 1.43862748146057,
+		"status": "measured",
+		"unmatched": 1
+	},
+	"display_server": "Windows",
+	"drift_final_m": [
+		0.163969039916992,
+		-0.00178992748260498,
+		-0.878959655761719
+	],
+	"drift_max_abs_m": [
+		0.423309326171875,
+		0.149605423212051,
+		2.20548248291016
+	],
+	"duration_s": 44.9999999999987,
+	"exit": 0.0,
+	"finish_utc_us": 1789596636912000.0,
+	"fps": {
+		"frames": 2696.0,
+		"p1": 53.1377862798236,
+		"percent_below_60": 74.6661721068249,
+		"render_no_verificado": false,
+		"windowed": true
+	},
+	"human": false,
+	"instrumentation_missing": [],
+	"iteration": 1.0,
+	"off_bus_support_ticks": 24.0,
+	"peer_id": 2015015526.0,
+	"penetration": {
+		"entities": {
+			"cargo/Package_0": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "",
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"samples": 2700.0
+			},
+			"cargo/Package_1": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "",
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"samples": 2700.0
+			},
+			"cargo/Package_2": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "WallLeft",
+				"excluded_ticks": 1686.0,
+				"max_depth_m": 0.123747980874168,
+				"max_run_ticks": 26.0,
+				"penetrating_ticks": 322.0,
+				"samples": 2700.0
+			},
+			"cargo/Package_3": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"excluded_ticks": 900.0,
+				"max_depth_m": 0.030237861754001,
+				"max_run_ticks": 432.0,
+				"penetrating_ticks": 1074.0,
+				"samples": 2700.0
+			},
+			"crew/1": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.135239047175845,
+				"max_run_ticks": 44.0,
+				"penetrating_ticks": 264.0,
+				"samples": 2700.0
+			},
+			"crew/2015015526": {
+				"current_run_ticks": 74.0,
+				"deepest_piece": "WallRearRight",
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0305436011914554,
+				"max_run_ticks": 267.0,
+				"penetrating_ticks": 1184.0,
+				"samples": 2700.0
+			}
+		},
+		"excluded": "seated crew and HELD cargo (collision disabled)",
+		"max_depth_m": 0.135239047175845,
+		"max_run_ticks": 432.0,
+		"method": "finite authored hull boxes; capsule distance / oriented box SAT",
+		"noise_epsilon_m": 0.000001
+	},
+	"remote_crew_simulation_ticks": 0.0,
+	"requested_seconds": 45.0,
+	"role": "client",
+	"run_id": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/04_raw/preflight_04",
+	"sampling_phase": "after_all_node_physics",
+	"sampling_process_physics_priority": 1000.0,
+	"sampling_process_priority": 1000.0,
+	"simulation_counter_semantics": "integration_callback_ticks includes frozen callbacks; physics_simulation_ticks counts dynamic integration only",
+	"simulation_entities": {
+		"cargo/Package_0": {
+			"integration_callback_ticks": 2699.0,
+			"physics_simulation_ticks": 0.0,
+			"unauthorized_simulation_ticks": 0.0
+		},
+		"cargo/Package_1": {
+			"integration_callback_ticks": 2699.0,
+			"physics_simulation_ticks": 0.0,
+			"unauthorized_simulation_ticks": 0.0
+		},
+		"cargo/Package_2": {
+			"integration_callback_ticks": 2659.0,
+			"physics_simulation_ticks": 0.0,
+			"unauthorized_simulation_ticks": 0.0
+		},
+		"cargo/Package_3": {
+			"integration_callback_ticks": 2686.0,
+			"physics_simulation_ticks": 0.0,
+			"unauthorized_simulation_ticks": 0.0
+		},
+		"crew/1": {
+			"physics_simulation_ticks": 0.0
+		},
+		"crew/2015015526": {
+			"physics_simulation_ticks": 2700.0
+		}
+	},
+	"slip": {
+		"max_m": 0.417555779218674,
+		"p95_m": 0.0348884277045727,
+		"p999_m": 0.331278949975967,
+		"p99_m": 0.235076814889908,
+		"samples": 2699.0
+	},
+	"start_utc_us": 1789596592002000.0,
+	"ticks": 2700.0,
+	"trace_clock": "system UTC microseconds, same machine",
+	"trace_hz": 10.0,
+	"trace_samples": 3157.0,
+	"unauthorized_cargo_simulation_ticks": 0.0
+}

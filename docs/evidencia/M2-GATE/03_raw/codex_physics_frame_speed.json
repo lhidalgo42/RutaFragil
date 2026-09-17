@@ -1,0 +1,9 @@
+{
+	"valid_for_this_run": false,
+	"provenance": "Pre-existing user://carryprobe/speed.json copied accidentally; not produced by codex_physics_frame. Use its log SPEED line instead.",
+	"bumps_avg_kmh": 47.6475116131911,
+	"bumps_max_kmh": 62.8113784790039,
+	"bumps_min_kmh": 34.5519092559815,
+	"bumps_ticks": 402,
+	"lap_peak_kmh": 66.6592712402344
+}

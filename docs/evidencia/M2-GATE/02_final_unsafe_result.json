@@ -1,0 +1,6 @@
+﻿{
+    "exit":  0,
+    "expected_tests":  224,
+    "settings":  "unsafe_property_access, unsafe_method_access, unsafe_cast, unsafe_call_argument = 2",
+    "restored_project_bytes":  true
+}

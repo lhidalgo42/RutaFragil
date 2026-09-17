@@ -1,0 +1,1754 @@
+﻿Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[2J[H[38;2;233;150;122m
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------[0m
+[38;2;0;191;255mDisabled fail fast![0m
+[38;2;0;191;255mSet write reports to C:/Users/Leo/Documents/RutaFragil/reports[0m
+[38;2;218;165;32m
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+[0m
+[38;2;100;149;237mInstalling GdUnit4 session system hooks.[0m
+[38;2;100;149;237mSession hook 'GdUnitHtmlTestReporter' installed.[0m
+[38;2;100;149;237mSession hook 'GdUnitXMLTestReporter' installed.[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_irregular_delivery_preserves_uniform_motion_after_buffer_warmup[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+BUS_DELIVERY alternating_1_3 min_step=0.308331 max_step=0.308334 expected=0.308333
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_irregular_delivery_preserves_uniform_motion_after_buffer_warmup[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 3ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_batched_snapshots_follow_the_source_clock_without_skipping_history[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_batched_snapshots_follow_the_source_clock_without_skipping_history[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 3ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_stale_packets_are_rejected_and_loss_holds_the_last_known_pose[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/bus_snapshot_timing_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_stale_packets_are_rejected_and_loss_holds_the_last_known_pose[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 3ms[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 3 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 20ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;0;206;209mRun Test Suite: [0m[38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_percentiles_and_fps_report_tails_not_average[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_percentiles_and_fps_report_tails_not_average[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 3ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_capsule_height_and_rotated_cargo_measure_real_shape_extents[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_capsule_height_and_rotated_cargo_measure_real_shape_extents[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 2ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_authored_door_hole_excludes_air_but_keeps_floor_and_jamb[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_authored_door_hole_excludes_air_but_keeps_floor_and_jamb[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 7ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_penetration_run_resets_without_losing_peak_or_total[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_penetration_run_resets_without_losing_peak_or_total[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 3ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_judge_uses_same_run_p99_not_outlier_maximum[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_judge_uses_same_run_p99_not_outlier_maximum[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 3ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_short_or_idle_iterations_are_invalid_and_headless_is_unverified[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_short_or_idle_iterations_are_invalid_and_headless_is_unverified[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 2ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_trace_interpolates_position_and_quaternion_at_observation_utc[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_trace_interpolates_position_and_quaternion_at_observation_utc[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 3ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_trace_does_not_interpolate_handover_or_fake_zero_without_matches[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_trace_does_not_interpolate_handover_or_fake_zero_without_matches[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 2ms[0m
+[38;2;128;128;128m[0m
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_observer_reads_local_slip_remote_penetration_and_simulation_counters[0m[38;2;34;139;34m STARTED[0m[38;2;128;128;128m[0m
+Godot_v4.7.2-stable_win64_console.exe : SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type 
+"Array[float]".
+En línea: 2 Carácter: 469
++ ... n_tests.sh; & 'C:\Godot\4.7.2\Godot_v4.7.2-stable_win64_console.exe'  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (SCRIPT ERROR: T..."Array[float]".:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:191)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:195)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+SCRIPT ERROR: Trying to assign an array of type "Array" to a variable of type "Array[float]".
+   at: GateMetrics._read_local (res://src/tooling/gate_metrics.gd:178)
+   GDScript backtrace (most recent call first):
+       [0] _read_local (res://src/tooling/gate_metrics.gd:178)
+       [1] _physics_process (res://src/tooling/gate_metrics.gd:103)
+       [2] test_observer_reads_local_slip_remote_penetration_and_simulation_counters 
+(res://tests/net/gate_metrics_test.gd:213)
+       [3] _execute_test_case (res://addons/gdUnit4/src/core/_TestCase.gd:79)
+       [4] execute (res://addons/gdUnit4/src/core/_TestCase.gd:40)
+       [5] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [6] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [7] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:17)
+       [8] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [9] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:26)
+       [10] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [11] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteExecutionStage.gd:36)
+       [12] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [13] _execute (res://addons/gdUnit4/src/core/execution/stages/GdUnitTestCaseExecutionStage.gd:35)
+       [14] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [15] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleExecutionStage.gd:28)
+       [16] execute (res://addons/gdUnit4/src/core/execution/stages/IGdUnitExecutionStage.gd:19)
+       [17] _execute (res://addons/gdUnit4/src/core/execution/stages/single/GdUnitTestCaseSingleTestStage.gd:10)
+       [18] execute (res://addons/gdUnit4/src/core/_TestCase.gd:41)
+       [19] test_completed (res://addons/gdUnit4/src/core/_TestCase.gd:86)
+  [38;2;250;235;215mres://tests/net/gate_metrics_test.gd[0m[38;2;128;128;128m > [0m[38;2;250;235;215mtest_observer_reads_local_slip_remote_penetration_and_simulation_counters[0m[38;2;178;34;34m[1m FAILED[0m[38;2;100;149;237m 136ms[0m
+  [38;2;0;206;209m[1m[4mReport:[0m
+  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:191[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:195[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m  [38;2;128;128;128m[38;2;255;69;0mGodot Runtime Error ![0m
+  '[38;2;30;144;255mTrying to assign an array of type "Array" to a variable of type "Array[float]".[0m'[0m[38;2;173;216;230m	at '_read_local' in res://src/tooling/gate_metrics.gd:178
+	at '_physics_process' in res://src/tooling/gate_metrics.gd:103
+	at 'test_observer_reads_local_slip_remote_penetration_and_simulation_counters' in res://tests/net/gate_metrics_test.gd:213[0m[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mStatistics:[0m[38;2;128;128;128m 9 test cases | 62 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m[38;2;34;139;34m PASSED[0m[38;2;100;149;237m 193ms[0m
+[38;2;128;128;128m[0m
+[38;2;128;128;128m[0m
+[38;2;30;144;255mOverall Summary:[0m[38;2;255;255;255m 12 test cases | 62 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |[0m
+[38;2;233;150;122mExecuted test suites: (2/2)[0m
+[38;2;233;150;122mExecuted test cases : (12/12)[0m
+[38;2;233;150;122mTotal execution time: 213ms[0m
+[38;2;255;255;255m [0m[38;2;100;149;237mOpen XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_6/results.xml[0m
+[38;2;100;149;237mOpen HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_6/index.html[0m
+[38;2;178;34;34mExit code: 100[0m
+Run dispose test resources

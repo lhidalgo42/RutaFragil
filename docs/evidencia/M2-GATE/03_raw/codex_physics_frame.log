@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+CARRY pass=host_real_standing window=60s drift_max=0.312 drift_p95=0.302 slip_max=0.0085 slip_p95=0.0031 slip_p99=0.0062 slip_p999=0.0084 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+CARRY pass=host_real_walking window=60s drift_max=3.140 drift_p95=2.844 slip_max=0.0687 slip_p95=0.0669 slip_p99=0.0673 slip_p999=0.0674 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+CARRY trajectory_distance: {"max_m":3.84059858322144,"p95_m":3.53380084037781,"samples":3600}
+CARRY pass=static_standing window=60s drift_max=90.272 drift_p95=88.683 slip_max=2.3908 slip_p95=1.5578 slip_p99=2.3028 slip_p999=2.3700 off_bus_support=3508/3600 below=1963(depth=8.05,run=328) outside=3514
+CARRY pass=static_walking window=60s drift_max=60.791 drift_p95=56.694 slip_max=1.4848 slip_p95=0.8162 slip_p99=1.1435 slip_p999=1.4438 off_bus_support=3440/3600 below=1518(depth=6.95,run=258) outside=3447
+CARRY pass=kinematic_standing window=60s drift_max=0.627 drift_p95=0.532 slip_max=0.6194 slip_p95=0.5921 slip_p99=0.6129 slip_p999=0.6183 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+CARRY pass=kinematic_walking window=60s drift_max=3.205 drift_p95=2.715 slip_max=0.6869 slip_p95=0.6323 slip_p99=0.6772 slip_p999=0.6865 off_bus_support=18/3600 below=0(depth=0.00,run=0) outside=0
+CARRY pass=interp_standing window=60s drift_max=0.388 drift_p95=0.335 slip_max=0.0778 slip_p95=0.0061 slip_p99=0.0099 slip_p999=0.0213 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+CARRY pass=interp_walking window=60s drift_max=3.132 drift_p95=2.846 slip_max=0.1427 slip_p95=0.0679 slip_p99=0.0711 slip_p999=0.0767 off_bus_support=0/3600 below=0(depth=0.00,run=0) outside=0
+SPEED lap_peak_kmh=66.7 bumps_avg_kmh=47.6 bumps_max_kmh=62.8 bumps_min_kmh=34.6 bumps_ticks=402

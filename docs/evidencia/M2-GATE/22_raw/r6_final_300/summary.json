@@ -1,0 +1,870 @@
+{
+	"client": {
+		"activity": {
+			"authority_transfers": 500.0,
+			"complete_cycles": 125.0,
+			"hold_denied": 0.0,
+			"hold_granted": 125.0,
+			"hold_requested": 125.0,
+			"release": 125.0,
+			"strap_denied": 0.0,
+			"strap_ok": 125.0,
+			"unstrap": 125.0
+		},
+		"actor_mode": "cargo_cycles",
+		"bus_buffer_underrun_ticks": 3.0,
+		"bus_interpolation_delay_s": 0.0666666666666667,
+		"bus_remote_error": {
+			"applicable": true,
+			"local_samples": 0,
+			"matched": 2999,
+			"max_deg": 5.82712551775125,
+			"max_m": 1.83208918571472,
+			"p95_deg": 3.04015006985806,
+			"p95_m": 1.74276721477509,
+			"status": "measured",
+			"unmatched": 2
+		},
+		"bus_support": {
+			"last_tick_supported": true,
+			"max_off_run_ticks": 14.0,
+			"percent": 99.4555555555555,
+			"supported_ticks": 17902.0,
+			"total_ticks": 18000.0
+		},
+		"bus_write_phase": "node_physics_priority_minus_100",
+		"cameras": {
+			"max": 1.0,
+			"min": 1.0
+		},
+		"cargo_contact_samples": 18000.0,
+		"cargo_count": 4.0,
+		"cargo_remote_error": {
+			"applicable": true,
+			"local_samples": 1902,
+			"matched": 9822,
+			"max_deg": 149.221424080451,
+			"max_m": 3.15961718559265,
+			"p95_deg": 9.65062272644207,
+			"p95_m": 2.12623262405396,
+			"status": "measured",
+			"unmatched": 280
+		},
+		"cargo_spawn": true,
+		"crew_remote_error": {
+			"applicable": true,
+			"local_samples": 3001,
+			"matched": 2999,
+			"max_deg": 132.772880558957,
+			"max_m": 1.42982804775238,
+			"p95_deg": 28.6091881971566,
+			"p95_m": 0.986945271492004,
+			"status": "measured",
+			"unmatched": 2
+		},
+		"display_server": "Windows",
+		"drift_final_m": [
+			0.0500392913818359,
+			-0.0014338493347168,
+			-0.751381874084473
+		],
+		"drift_max_abs_m": [
+			0.31303596496582,
+			0.146555542945862,
+			1.27638053894043
+		],
+		"duration_s": 300.000000000056,
+		"exit": 0.0,
+		"experiment": true,
+		"finish_utc_us": 1789624397206000.0,
+		"fps": {
+			"frames": 275459.0,
+			"p1": 288.600288600289,
+			"percent_below_60": 0.00217818259704711,
+			"render_no_verificado": false,
+			"windowed": true
+		},
+		"hull_exit_ticks": 0.0,
+		"human": false,
+		"instrumentation_missing": [],
+		"iteration": 1.0,
+		"metrics_version": 5.0,
+		"off_bus_support_ticks": 98.0,
+		"peer_id": 1568422984.0,
+		"penetration": {
+			"entities": {
+				"cargo/Package_0": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "",
+					"depth_histogram": {},
+					"eligible_samples": 0.0,
+					"excluded_ticks": 18000.0,
+					"max_depth_m": 0.0,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"cargo/Package_1": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "",
+					"depth_histogram": {},
+					"eligible_samples": 0.0,
+					"excluded_ticks": 18000.0,
+					"max_depth_m": 0.0,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"cargo/Package_2": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "",
+					"depth_histogram": {},
+					"eligible_samples": 0.0,
+					"excluded_ticks": 18000.0,
+					"max_depth_m": 0.0,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"cargo/Package_3": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "",
+					"depth_histogram": {},
+					"eligible_samples": 0.0,
+					"excluded_ticks": 18000.0,
+					"max_depth_m": 0.0,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"crew/1": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "",
+					"depth_histogram": {},
+					"eligible_samples": 0.0,
+					"excluded_ticks": 18000.0,
+					"max_depth_m": 0.0,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"crew/1568422984": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "Floor",
+					"depth_histogram": {
+						"1_to_2cm": 552.0,
+						"1um_to_1cm": 10599.0,
+						"2_to_3cm": 143.0,
+						"le_1um": 6706.0
+					},
+					"eligible_samples": 18000.0,
+					"excluded_ticks": 0.0,
+					"max_depth_m": 0.0293462887307586,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				}
+			},
+			"excluded": "remote crew; seated crew; frozen, replica, HELD or STRAPPED cargo",
+			"max_depth_m": 0.0293462887307586,
+			"max_run_ticks": 0.0,
+			"method": "finite authored hull boxes; capsule distance / oriented box SAT",
+			"noise_epsilon_m": 1e-06,
+			"run_threshold_m": 0.03
+		},
+		"penetration_diagnostic": {
+			"cargo/Package_0": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "",
+				"depth_histogram": {
+					"le_1um": 18000.0
+				},
+				"eligible_samples": 18000.0,
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"cargo/Package_1": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "",
+				"depth_histogram": {
+					"le_1um": 18000.0
+				},
+				"eligible_samples": 18000.0,
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"cargo/Package_2": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"depth_histogram": {
+					"1_to_2cm": 25.0,
+					"1um_to_1cm": 1039.0,
+					"2_to_3cm": 17.0,
+					"3_to_4cm": 1.0,
+					"le_1um": 5116.0
+				},
+				"eligible_samples": 6198.0,
+				"excluded_ticks": 11802.0,
+				"max_depth_m": 0.0362008326984493,
+				"max_run_ticks": 1.0,
+				"penetrating_ticks": 1.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"cargo/Package_3": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"depth_histogram": {
+					"1_to_2cm": 12.0,
+					"1um_to_1cm": 931.0,
+					"2_to_3cm": 7.0,
+					"le_1um": 5567.0
+				},
+				"eligible_samples": 6517.0,
+				"excluded_ticks": 11483.0,
+				"max_depth_m": 0.0200005124908235,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"crew/1": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"depth_histogram": {
+					"1_to_2cm": 390.0,
+					"1um_to_1cm": 609.0,
+					"2_to_3cm": 268.0,
+					"3_to_4cm": 47.0,
+					"4_to_5cm": 22.0,
+					"gt_5cm": 78.0,
+					"le_1um": 16586.0
+				},
+				"eligible_samples": 18000.0,
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.123187411155777,
+				"max_run_ticks": 11.0,
+				"penetrating_ticks": 147.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"crew/1568422984": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"depth_histogram": {
+					"1_to_2cm": 552.0,
+					"1um_to_1cm": 10599.0,
+					"2_to_3cm": 143.0,
+					"le_1um": 6706.0
+				},
+				"eligible_samples": 18000.0,
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0293462887307586,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			}
+		},
+		"push_classification_complete": true,
+		"pushes": {
+			"count": 19.0,
+			"max_airborne_run_ticks": 14.0,
+			"max_airborne_ticks": 14.0,
+			"max_duration_ticks": 14.0,
+			"max_local_displacement_m": 0.55753618478775,
+			"open_count": 0.0
+		},
+		"remote_crew_simulation_ticks": 0.0,
+		"render_configuration": {
+			"max_fps": 0.0,
+			"viewport_size": [
+				1152.0,
+				648.0
+			],
+			"vsync_mode": 0.0
+		},
+		"requested_seconds": 300.0,
+		"role": "client",
+		"run_id": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/22_raw/r6_final_300",
+		"sampling_phase": "after_all_node_physics",
+		"sampling_process_physics_priority": 1000.0,
+		"sampling_process_priority": 1000.0,
+		"simulation_counter_semantics": "integration_callback_ticks includes frozen callbacks; physics_simulation_ticks counts dynamic integration only",
+		"simulation_entities": {
+			"cargo/Package_0": {
+				"integration_callback_ticks": 17999.0,
+				"physics_simulation_ticks": 0.0,
+				"unauthorized_simulation_ticks": 0.0
+			},
+			"cargo/Package_1": {
+				"integration_callback_ticks": 17999.0,
+				"physics_simulation_ticks": 0.0,
+				"unauthorized_simulation_ticks": 0.0
+			},
+			"cargo/Package_2": {
+				"integration_callback_ticks": 17769.0,
+				"physics_simulation_ticks": 0.0,
+				"unauthorized_simulation_ticks": 0.0
+			},
+			"cargo/Package_3": {
+				"integration_callback_ticks": 17749.0,
+				"physics_simulation_ticks": 0.0,
+				"unauthorized_simulation_ticks": 0.0
+			},
+			"crew/1": {
+				"physics_simulation_ticks": 0.0
+			},
+			"crew/1568422984": {
+				"physics_simulation_ticks": 18000.0
+			}
+		},
+		"slip": {
+			"max_m": 0.51030445098877,
+			"p95_m": 0.0341205820441246,
+			"p999_m": 0.287282556295395,
+			"p99_m": 0.0754057839512825,
+			"samples": 14040.0
+		},
+		"slip_filter": "supported_and_no_cargo_contact_previous_three",
+		"slip_raw": {
+			"max_m": 0.51030445098877,
+			"p95_m": 0.0344471670687199,
+			"p999_m": 0.376347929239273,
+			"p99_m": 0.266246944665909,
+			"samples": 17999.0
+		},
+		"start_utc_us": 1789624097316000.0,
+		"support_loss_count": 19.0,
+		"ticks": 18000.0,
+		"trace_clock": "system UTC microseconds, same machine",
+		"trace_hz": 10.0,
+		"trace_samples": 21007.0,
+		"travel_observation_complete": true,
+		"travel_samples": 18000.0,
+		"unauthorized_cargo_simulation_ticks": 0.0
+	},
+	"configuration": {
+		"cargo": true,
+		"effective_game_config": {
+			"max_players": 4,
+			"max_players_hard_limit": 8,
+			"schema_version": 1
+		},
+		"effective_tuning": {
+			"barrel_liters_max": 30,
+			"barrel_liters_min": 10,
+			"base_pay": {
+				"aquatic": 140,
+				"floating": 100,
+				"fragile": 120,
+				"normal": 60
+			},
+			"bus_brake_force_n": 40000.0,
+			"bus_center_of_mass_y_m": -0.6,
+			"bus_grip_lateral": 10.0,
+			"bus_grip_lateral_handbrake": 1.5,
+			"bus_integrity_max": 100,
+			"bus_integrity_max_loss_per_contract": 5,
+			"bus_mass_kg": 3000,
+			"bus_max_speed_kmh": 90.0,
+			"bus_steer_max_deg": 30.0,
+			"bus_steer_speed_falloff": 0.6,
+			"bus_suspension_damping_ns_per_m": 6000.0,
+			"bus_suspension_rest_m": 0.6,
+			"bus_suspension_stiffness_n_per_m": 60000.0,
+			"bus_track_width_m": 2.2,
+			"bus_traction_force_n": 10000.0,
+			"bus_wheel_radius_m": 0.5,
+			"bus_wheelbase_m": 5.5,
+			"contract_destinations_max": 3,
+			"contract_destinations_min": 1,
+			"contract_packages_max": 5,
+			"contract_packages_min": 3,
+			"defeat_keep_fraction": 0.25,
+			"empty_jerrycans_per_route_max": 3,
+			"empty_jerrycans_per_route_min": 1,
+			"fuel_consumption_l_per_km": 4.0,
+			"fuel_mud_multiplier": 2.0,
+			"fuel_price_per_liter": 3,
+			"fuel_slope_multiplier": 1.5,
+			"fuel_tank_liters": 40,
+			"fuel_zones_per_route_max": 2,
+			"fuel_zones_per_route_min": 1,
+			"interaction_reach_m": 2.5,
+			"jerrycan_fill_seconds": 20.0,
+			"jerrycan_fill_seconds_two_players": 10.0,
+			"jerrycan_liters": 10,
+			"jerrycan_pour_seconds": 8.0,
+			"maintenance_cost": 150,
+			"package_hold_distance_m": 0.7,
+			"package_mass_kg": 8.0,
+			"package_relative_damping_ns_per_m": 160.0,
+			"package_throw_speed_mps": 6.0,
+			"player_jump_height_m": 1.0,
+			"player_mouse_sensitivity": 0.0025,
+			"player_sprint_speed_mps": 6.0,
+			"player_walk_speed_mps": 4.0,
+			"rent_every_contracts": 3,
+			"rent_increase_per_cycle": 0.15,
+			"rent_quota": 900,
+			"repair_cost_per_integrity_point": 3,
+			"route_km_max": 10,
+			"route_km_min": 6,
+			"shop_prices": {
+				"armor": 250,
+				"cushion": 30,
+				"float": 80,
+				"jerrycan": 40,
+				"kit": 100,
+				"medkit": 120
+			},
+			"starting_money": 500,
+			"strap_hold_seconds": 1.5,
+			"target_minutes_max": 25,
+			"target_minutes_min": 15
+		},
+		"engine": "4.7.2-stable (official)",
+		"human": "none",
+		"physics_hz": 60,
+		"seconds": 300.0,
+		"vsync": false,
+		"walk_only": false,
+		"windowed": "both"
+	},
+	"d96_consumed": false,
+	"exit_codes": {
+		"client": 0,
+		"host": 0
+	},
+	"failures": [],
+	"gate_precondition": {
+		"ready": true,
+		"reasons": []
+	},
+	"host": {
+		"activity": {
+			"authority_transfers": 0.0,
+			"complete_cycles": 114.0,
+			"hold_denied": 0.0,
+			"hold_granted": 115.0,
+			"hold_requested": 115.0,
+			"release": 114.0,
+			"strap_denied": 0.0,
+			"strap_ok": 115.0,
+			"unstrap": 115.0
+		},
+		"actor_mode": "cargo_cycles",
+		"bus_buffer_underrun_ticks": 0.0,
+		"bus_interpolation_delay_s": 0.0666666666666667,
+		"bus_remote_error": {
+			"applicable": false,
+			"local_samples": 3001,
+			"matched": 0,
+			"max_deg": null,
+			"max_m": null,
+			"p95_deg": null,
+			"p95_m": null,
+			"status": "not_applicable",
+			"unmatched": 0
+		},
+		"bus_support": {
+			"last_tick_supported": true,
+			"max_off_run_ticks": 0.0,
+			"percent": 100.0,
+			"supported_ticks": 18000.0,
+			"total_ticks": 18000.0
+		},
+		"bus_write_phase": "node_physics_priority_minus_100",
+		"cameras": {
+			"max": 1.0,
+			"min": 1.0
+		},
+		"cargo_contact_samples": 18000.0,
+		"cargo_count": 4.0,
+		"cargo_remote_error": {
+			"applicable": true,
+			"local_samples": 10079,
+			"matched": 1652,
+			"max_deg": 98.2876925716691,
+			"max_m": 2.13908982276917,
+			"p95_deg": 19.1574238670785,
+			"p95_m": 1.39473342895508,
+			"status": "measured",
+			"unmatched": 273
+		},
+		"cargo_spawn": true,
+		"crew_remote_error": {
+			"applicable": true,
+			"local_samples": 3001,
+			"matched": 3000,
+			"max_deg": 159.2166272892,
+			"max_m": 1.33309292793274,
+			"p95_deg": 15.6159229711027,
+			"p95_m": 1.19076526165009,
+			"status": "measured",
+			"unmatched": 1
+		},
+		"display_server": "Windows",
+		"drift_final_m": [
+			-0.225349426269531,
+			0.00020962953567504,
+			0.774476051330566
+		],
+		"drift_max_abs_m": [
+			0.254608154296875,
+			0.00854665040969849,
+			1.99600982666016
+		],
+		"drive": {
+			"bump_ticks": 1509.0,
+			"bumps_max_kmh": 82.6990081787109,
+			"bumps_mean_kmh": 62.9953328354458,
+			"bumps_min_kmh": 42.2814743041992,
+			"entry_speeds_kmh": [
+				66.4168785095215,
+				80.9707077026367,
+				82.6710754394531,
+				82.4042037963867,
+				82.6839775085449,
+				80.9212280273438,
+				82.5053604125977,
+				80.9296943664551,
+				82.6990081787109,
+				81.1575439453125,
+				80.9206237792969,
+				81.1539665222168,
+				81.0046691894531
+			],
+			"laps": 12.0,
+			"route": "straight_x30_with_outer_return"
+		},
+		"duration_s": 300.000000000056,
+		"exit": 0.0,
+		"experiment": true,
+		"finish_utc_us": 1789624397219000.0,
+		"fps": {
+			"frames": 296267.0,
+			"p1": 277.315585135885,
+			"percent_below_60": 0.0020252002416739,
+			"render_no_verificado": false,
+			"windowed": true
+		},
+		"hull_exit_ticks": 0.0,
+		"human": false,
+		"instrumentation_missing": [
+			"cargo/Package_3: no supported active collision shape",
+			"cargo/Package_2: no supported active collision shape"
+		],
+		"iteration": 1.0,
+		"metrics_version": 5.0,
+		"off_bus_support_ticks": 0.0,
+		"peer_id": 1.0,
+		"penetration": {
+			"entities": {
+				"cargo/Package_0": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "",
+					"depth_histogram": {},
+					"eligible_samples": 0.0,
+					"excluded_ticks": 18000.0,
+					"max_depth_m": 0.0,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"cargo/Package_1": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "",
+					"depth_histogram": {},
+					"eligible_samples": 0.0,
+					"excluded_ticks": 18000.0,
+					"max_depth_m": 0.0,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"cargo/Package_2": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "Floor",
+					"depth_histogram": {
+						"1_to_2cm": 19.0,
+						"1um_to_1cm": 1140.0,
+						"2_to_3cm": 23.0,
+						"3_to_4cm": 1.0,
+						"le_1um": 1896.0
+					},
+					"eligible_samples": 3079.0,
+					"excluded_ticks": 14921.0,
+					"max_depth_m": 0.036200880382165,
+					"max_run_ticks": 1.0,
+					"penetrating_ticks": 1.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"cargo/Package_3": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "Floor",
+					"depth_histogram": {
+						"1_to_2cm": 21.0,
+						"1um_to_1cm": 890.0,
+						"2_to_3cm": 1.0,
+						"le_1um": 2342.0
+					},
+					"eligible_samples": 3254.0,
+					"excluded_ticks": 14746.0,
+					"max_depth_m": 0.020000631700113,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"crew/1": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "Floor",
+					"depth_histogram": {
+						"1um_to_1cm": 175.0,
+						"le_1um": 17825.0
+					},
+					"eligible_samples": 18000.0,
+					"excluded_ticks": 0.0,
+					"max_depth_m": 0.00066394164579791,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				},
+				"crew/1568422984": {
+					"current_run_ticks": 0.0,
+					"deepest_piece": "",
+					"depth_histogram": {},
+					"eligible_samples": 0.0,
+					"excluded_ticks": 18000.0,
+					"max_depth_m": 0.0,
+					"max_run_ticks": 0.0,
+					"penetrating_ticks": 0.0,
+					"run_threshold_m": 0.03,
+					"samples": 18000.0
+				}
+			},
+			"excluded": "remote crew; seated crew; frozen, replica, HELD or STRAPPED cargo",
+			"max_depth_m": 0.036200880382165,
+			"max_run_ticks": 1.0,
+			"method": "finite authored hull boxes; capsule distance / oriented box SAT",
+			"noise_epsilon_m": 1e-06,
+			"run_threshold_m": 0.03
+		},
+		"penetration_diagnostic": {
+			"cargo/Package_0": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "",
+				"depth_histogram": {
+					"le_1um": 18000.0
+				},
+				"eligible_samples": 18000.0,
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"cargo/Package_1": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "",
+				"depth_histogram": {
+					"le_1um": 18000.0
+				},
+				"eligible_samples": 18000.0,
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.0,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"cargo/Package_2": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"depth_histogram": {
+					"1_to_2cm": 19.0,
+					"1um_to_1cm": 1140.0,
+					"2_to_3cm": 23.0,
+					"3_to_4cm": 1.0,
+					"le_1um": 5001.0
+				},
+				"eligible_samples": 6184.0,
+				"excluded_ticks": 11816.0,
+				"max_depth_m": 0.036200880382165,
+				"max_run_ticks": 1.0,
+				"penetrating_ticks": 1.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"cargo/Package_3": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"depth_histogram": {
+					"1_to_2cm": 21.0,
+					"1um_to_1cm": 890.0,
+					"2_to_3cm": 1.0,
+					"le_1um": 5596.0
+				},
+				"eligible_samples": 6508.0,
+				"excluded_ticks": 11492.0,
+				"max_depth_m": 0.020000631700113,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"crew/1": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Floor",
+				"depth_histogram": {
+					"1um_to_1cm": 175.0,
+					"le_1um": 17825.0
+				},
+				"eligible_samples": 18000.0,
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.00066394164579791,
+				"max_run_ticks": 0.0,
+				"penetrating_ticks": 0.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			},
+			"crew/1568422984": {
+				"current_run_ticks": 0.0,
+				"deepest_piece": "Roof",
+				"depth_histogram": {
+					"1_to_2cm": 215.0,
+					"1um_to_1cm": 8524.0,
+					"2_to_3cm": 107.0,
+					"3_to_4cm": 90.0,
+					"4_to_5cm": 142.0,
+					"gt_5cm": 1517.0,
+					"le_1um": 7405.0
+				},
+				"eligible_samples": 18000.0,
+				"excluded_ticks": 0.0,
+				"max_depth_m": 0.637006838054518,
+				"max_run_ticks": 53.0,
+				"penetrating_ticks": 1749.0,
+				"run_threshold_m": 0.03,
+				"samples": 18000.0
+			}
+		},
+		"push_classification_complete": true,
+		"pushes": {
+			"count": 0.0,
+			"max_airborne_run_ticks": 0.0,
+			"max_airborne_ticks": 0.0,
+			"max_duration_ticks": 0.0,
+			"max_local_displacement_m": 0.0,
+			"open_count": 0.0
+		},
+		"remote_crew_simulation_ticks": 0.0,
+		"render_configuration": {
+			"max_fps": 0.0,
+			"viewport_size": [
+				1152.0,
+				648.0
+			],
+			"vsync_mode": 0.0
+		},
+		"requested_seconds": 300.0,
+		"role": "host",
+		"run_id": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/22_raw/r6_final_300",
+		"sampling_phase": "after_all_node_physics",
+		"sampling_process_physics_priority": 1000.0,
+		"sampling_process_priority": 1000.0,
+		"simulation_counter_semantics": "integration_callback_ticks includes frozen callbacks; physics_simulation_ticks counts dynamic integration only",
+		"simulation_entities": {
+			"cargo/Package_0": {
+				"integration_callback_ticks": 0.0,
+				"physics_simulation_ticks": 0.0,
+				"unauthorized_simulation_ticks": 0.0
+			},
+			"cargo/Package_1": {
+				"integration_callback_ticks": 0.0,
+				"physics_simulation_ticks": 0.0,
+				"unauthorized_simulation_ticks": 0.0
+			},
+			"cargo/Package_2": {
+				"integration_callback_ticks": 3079.0,
+				"physics_simulation_ticks": 3079.0,
+				"unauthorized_simulation_ticks": 0.0
+			},
+			"cargo/Package_3": {
+				"integration_callback_ticks": 3253.0,
+				"physics_simulation_ticks": 3253.0,
+				"unauthorized_simulation_ticks": 0.0
+			},
+			"crew/1": {
+				"physics_simulation_ticks": 18000.0
+			},
+			"crew/1568422984": {
+				"physics_simulation_ticks": 0.0
+			}
+		},
+		"slip": {
+			"max_m": 0.0381426066160202,
+			"p95_m": 0.0336104407906532,
+			"p999_m": 0.0349562056362629,
+			"p99_m": 0.0338720567524433,
+			"samples": 17997.0
+		},
+		"slip_filter": "supported_and_no_cargo_contact_previous_three",
+		"slip_raw": {
+			"max_m": 0.0381426066160202,
+			"p95_m": 0.0336104407906532,
+			"p999_m": 0.0349562056362629,
+			"p99_m": 0.0338720567524433,
+			"samples": 17999.0
+		},
+		"start_utc_us": 1789624097330000.0,
+		"support_loss_count": 0.0,
+		"ticks": 18000.0,
+		"trace_clock": "system UTC microseconds, same machine",
+		"trace_hz": 10.0,
+		"trace_samples": 21007.0,
+		"travel_observation_complete": true,
+		"travel_samples": 18000.0,
+		"unauthorized_cargo_simulation_ticks": 0.0
+	},
+	"human_gate_approval": "not_a_gate",
+	"invalid_reasons": [],
+	"iteration": 1,
+	"kind": "experiment",
+	"logs": {
+		"client": {
+			"errors": 0,
+			"warnings": 0
+		},
+		"host": {
+			"errors": 0,
+			"warnings": 0
+		}
+	},
+	"output": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/22_raw/r6_final_300",
+	"source_clean": false,
+	"source_commit": "7d82b3f73b07d69f605e74d42eb5bff0e97a107a",
+	"status": "completed",
+	"valid": false
+}

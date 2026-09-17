@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+MEASURE rest_height_m=0.977
+MEASURE time_0_60_s=6.93
+MEASURE max_speed_kmh=90.0
+MEASURE turn_radius_m=12.4 (mean_speed_kmh=23.4)
+MEASURE brake_50kmh_distance_m=6.7 stop_time_s=0.98

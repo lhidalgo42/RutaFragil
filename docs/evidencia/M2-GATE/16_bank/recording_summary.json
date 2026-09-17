@@ -1,0 +1,12 @@
+{
+	"bump_max_kmh": 85.5546089172363,
+	"bump_min_kmh": 53.7091953277588,
+	"bump_ticks": 136,
+	"fixture_ground_m": [
+		400,
+		1,
+		800
+	],
+	"physics_hz": 60,
+	"samples": 1064
+}

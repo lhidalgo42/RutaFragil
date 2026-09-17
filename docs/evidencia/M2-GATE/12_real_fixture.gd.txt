@@ -1,0 +1,76 @@
+extends GdUnitTestSuite
+
+## g2.1 reproducer with the real bus and crew scenes at 30 Hz without interpolation.
+## It remains RED: physics_frame delivers carry one tick after the bus pose jumps.
+## The review requires same-tick platform velocity; evidence 12 records the mismatch.
+class Feed:
+	extends Node
+	var receiver: NetBusSync = null
+	var tick: int = 0
+	var rider: CrewMember = null
+	var last_bus_x: float = 0.0
+	var moving_ticks: int = 0
+	var zero_velocity_ticks: int = 0
+	var peak_platform_speed: float = 0.0
+	var max_slip: float = 0.0
+	var previous_local: Vector3 = Vector3.ZERO
+
+	func _ready() -> void:
+		get_tree().physics_frame.connect(_feed)
+
+	func _feed() -> void:
+		if tick % 2 == 0:
+			receiver.accept_snapshot(Transform3D(Basis.IDENTITY, Vector3(0.0, 1.0, tick * 18.5 / 60.0)))
+		tick += 1
+
+	func _physics_process(_delta: float) -> void:
+		var bus_x: float = receiver.bus.global_position.z
+		var platform_speed: float = rider.get_platform_velocity().length()
+		var local: Vector3 = receiver.bus.to_local(rider.global_position)
+		if tick > 4:
+			max_slip = maxf(max_slip, local.distance_to(previous_local))
+		previous_local = local
+		peak_platform_speed = maxf(peak_platform_speed, platform_speed)
+		if tick < 15:
+			print("TRACE node tick=%d bus=%.4f crew=%.4f platform=%.4f on_floor=%s" % [tick, bus_x, rider.global_position.z, platform_speed, rider.is_on_floor()])
+		if tick > 4 and absf(bus_x - last_bus_x) > 0.1:
+			moving_ticks += 1
+			if platform_speed < 1.0:
+				zero_velocity_ticks += 1
+		last_bus_x = bus_x
+
+
+func test_stepped_bus_delivers_platform_velocity() -> void:
+	var world: Node3D = Node3D.new()
+	get_tree().root.add_child(world)
+	var bus_scene: PackedScene = preload("res://src/vehicle/bus.tscn")
+	var bus: RigidBody3D = bus_scene.instantiate()
+	bus.freeze = true
+	bus.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+	bus.position.y = 1.0
+	world.add_child(bus)
+	var crew_scene: PackedScene = preload("res://src/crew/crew_member.tscn")
+	var rider: CrewMember = crew_scene.instantiate()
+	rider.position = Vector3(0.0, 0.4, 0.5)
+	world.add_child(rider)
+	for tick: int in range(30):
+		await get_tree().physics_frame
+	var receiver: NetBusSync = NetBusSync.new()
+	receiver.bus = bus
+	receiver.interpolate = false
+	receiver.process_priority = -100
+	var feed: Feed = Feed.new()
+	feed.receiver = receiver
+	feed.rider = rider
+	feed.process_physics_priority = 100
+	world.add_child(feed)
+	world.add_child(receiver)
+	for tick: int in range(120):
+		await get_tree().physics_frame
+	print("WRITE_ORDER peak_platform_speed=%.4f moving_ticks=%d zero_velocity_ticks=%d max_slip=%.4f" % [
+		feed.peak_platform_speed, feed.moving_ticks, feed.zero_velocity_ticks, feed.max_slip])
+	assert_float(feed.peak_platform_speed).is_greater(18.0)
+	assert_int(feed.moving_ticks).is_greater(40)
+	assert_int(feed.zero_velocity_ticks).is_equal(0)
+	world.queue_free()
+	await get_tree().process_frame

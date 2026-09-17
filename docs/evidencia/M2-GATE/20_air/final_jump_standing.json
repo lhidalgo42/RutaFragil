@@ -1,0 +1,37 @@
+{
+	"airborne_ticks": 12,
+	"bus_support_percent": 98.8721804511278,
+	"case": "jump_standing",
+	"flights": [
+		{
+			"air_ticks": 12,
+			"expected_walk": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"landed_on_bus": true,
+			"landing_error_m": 0.0317001715302467,
+			"landing_raw_m": 0.0317001715302467,
+			"landing_tick": 672,
+			"recovered": true,
+			"start": [
+				0.0,
+				-0.600770235061646,
+				2.87020111083984
+			],
+			"start_tick": 660
+		}
+	],
+	"hull_exit_ticks": 0,
+	"jump_bus_speed_kmh": 80.0252449035645,
+	"jump_command_tick": 660,
+	"last_supported": true,
+	"max_off_run_ticks": 12,
+	"platform_on_leave": 2,
+	"recording": "res://docs/evidencia/M2-GATE/16_bank/recording.json",
+	"residual_definition": "landing - (last supported local position + last supported local walking velocity * airborne ticks / 60)",
+	"sampling": "independent post-node observer, both priorities 1000",
+	"support_losses": 1,
+	"ticks": 1064
+}

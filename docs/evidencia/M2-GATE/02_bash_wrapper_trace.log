@@ -1,0 +1,53 @@
+﻿bash.exe : + set -euo pipefail
+En línea: 4 Carácter: 1
++ & 'C:/Program Files/Git/bin/bash.exe' -c 'export GODOT_BIN="$PWD/repo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (+ set -euo pipefail:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
++++ dirname tools/run_gate.sh
+++ cd tools/..
+++ pwd
++ project_path=/c/Users/Leo/Documents/RutaFragil
++ godot_path=/c/Users/Leo/Documents/RutaFragil/reports/gate_wrapper_probe/godot_stub
++ [[ -z /c/Users/Leo/Documents/RutaFragil/reports/gate_wrapper_probe/godot_stub ]]
++ [[ -z /c/Users/Leo/Documents/RutaFragil/reports/gate_wrapper_probe/godot_stub ]]
++ seconds=300
+++ date +%Y%m%d_%H%M%S
++ output=user://gate/run_20260916_195147
++ deadline_seconds=300
++ for argument in "$@"
++ case "$argument" in
++ deadline_seconds=2
++ for argument in "$@"
++ case "$argument" in
++ for argument in "$@"
++ case "$argument" in
+++ awk -v seconds=2 'BEGIN { if (seconds < 1) seconds=1; print int(seconds+140.999) }'
++ deadline=142
++ gate_pid=553
++ timed_out=0
++ trap 'timed_out=1; kill -TERM "$gate_pid" 2>/dev/null || true' ALRM
++ trap 'kill -TERM "$gate_pid" 2>/dev/null || true; exit 130' INT
++ trap 'kill -TERM "$gate_pid" 2>/dev/null || true; exit 143' TERM
++ /c/Users/Leo/Documents/RutaFragil/reports/gate_wrapper_probe/godot_stub --headless --path 
+/c/Users/Leo/Documents/RutaFragil --log-file user://gate_launcher.log -s res://src/tooling/run_net_scenario.gd ++ 
+mode=gate role=launcher seconds=300 human=client output=user://gate/run_20260916_195147 seconds=2 human=none 
+windowed=none
++ watchdog_pid=554
++ trap 'kill "$watchdog_pid" 2>/dev/null || true; wait "$watchdog_pid" 2>/dev/null || true' EXIT
++ result=0
++ wait 553
++ timer_pid=555
++ sleep 142
++ trap 'kill "$timer_pid" 2>/dev/null || true; wait "$timer_pid" 2>/dev/null || true; exit 0' TERM INT
++ wait 555
+stub arguments: <--headless> <--path> </c/Users/Leo/Documents/RutaFragil> <--log-file> <user://gate_launcher.log> <-s> <res://src/tooling/run_net_scenario.gd> <++> <mode=gate> <role=launcher> <seconds=300> <human=client> <output=user://gate/run_20260916_195147> <seconds=2> <human=none> <windowed=none>
++ ((  timed_out  ))
++ exit 0
++ kill 554
++ wait 554
+++ kill 555
+++ wait 555
+watchdog requested seconds=142
+++ exit 0

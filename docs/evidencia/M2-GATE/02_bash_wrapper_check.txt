@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -uo pipefail
+mock_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+chmod +x "$mock_path/godot_stub"
+export GODOT_BIN="$mock_path/godot_stub"
+for code in 0 7; do
+    export FAKE_EXIT="$code"
+    bash tools/run_gate.sh seconds=2 human=none windowed=none
+    result=$?
+    printf 'normal exit requested=%s observed=%s\n' "$code" "$result"
+    [[ "$result" == "$code" ]] || exit 1
+done
+export PATH="$mock_path:$PATH"
+chmod +x "$mock_path/awk"
+export FAKE_HANG=1
+bash tools/run_gate.sh seconds=2 human=none windowed=none
+result=$?
+printf 'timeout exit expected=124 observed=%s\n' "$result"
+[[ "$result" == 124 ]] || exit 1
+printf 'WRAPPER_PROBE_PASS: Git Bash, stub executable, accelerated watchdog only; no Godot gate run.\n'

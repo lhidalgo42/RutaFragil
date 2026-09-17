@@ -1,0 +1,22 @@
+﻿{
+    "source_commit":  "25c7a72206666cccfd748ee67c1a3de94068373b",
+    "arguments":  [
+                      "--headless",
+                      "--path",
+                      "C:\\Users\\Leo\\Documents\\RutaFragil",
+                      "-s",
+                      "res://src/tooling/run_net_scenario.gd",
+                      "++",
+                      "mode=gate",
+                      "role=launcher",
+                      "experiment=1",
+                      "seconds=300",
+                      "cargo=on",
+                      "walk_only=0",
+                      "vsync=off",
+                      "human=none",
+                      "windowed=both",
+                      "output=res://docs/evidencia/M2-GATE/18_raw/r5_final_300"
+                  ],
+    "exit":  0
+}

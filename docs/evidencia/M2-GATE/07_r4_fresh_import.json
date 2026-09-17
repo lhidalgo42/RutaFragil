@@ -1,0 +1,31 @@
+{
+  "worktree": "C:\\Users\\Leo\\Documents\\RutaFragil_r4_verify_20260916",
+  "head": "266f459f104fd22a23deed77451630528434390f",
+  "before_status": "",
+  "before_godot_exists": false,
+  "imports": [
+    {
+      "command": [
+        "C:\\Godot\\4.7.2\\Godot_v4.7.2-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\Leo\\Documents\\RutaFragil_r4_verify_20260916",
+        "--import"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "C:\\Godot\\4.7.2\\Godot_v4.7.2-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\Leo\\Documents\\RutaFragil_r4_verify_20260916",
+        "--import"
+      ],
+      "exit": 0
+    }
+  ],
+  "class_cache_exists": true,
+  "after_status": "",
+  "untracked_uid": []
+}

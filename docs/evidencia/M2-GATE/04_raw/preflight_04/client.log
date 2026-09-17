@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060 Laptop GPU
+
+GATE begin role=client peer=2015015526 seconds=45.0 sample=after_all_node_physics priority=1000
+GATE complete role=client ticks=2700 activity={ "hold_requested": 42, "hold_granted": 7, "hold_denied": 35, "release": 6, "strap_ok": 7, "strap_denied": 3, "unstrap": 6, "authority_transfers": 26, "complete_cycles": 6 }

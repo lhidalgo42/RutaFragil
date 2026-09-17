@@ -1,0 +1,182 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+--------------------------------------------------------------------------------------------------
+GdUnit4 Comandline Tool
+--------------------------------------------------------------------------------------------------
+Disabled fail fast!
+Set write reports to C:/Users/Leo/Documents/RutaFragil/reports
+
+Headless mode is ignored by option '--ignoreHeadlessMode'"
+
+Please note that tests that use UI interaction do not work correctly in headless mode.
+Godot 'InputEvents' are not transported by the Godot engine in headless mode and therefore
+have no effect in the test!
+
+Scanning for test suites in: res://tests/net
+Installing GdUnit4 session system hooks.
+Session hook 'GdUnitHtmlTestReporter' installed.
+Session hook 'GdUnitXMLTestReporter' installed.
+Run Test Suite: res://tests/net/authority_lookup_test.gd
+  res://tests/net/authority_lookup_test.gd > test_local_lookup_skips_remote_first_and_resolves_each_peer_eye STARTED
+  res://tests/net/authority_lookup_test.gd > test_local_lookup_skips_remote_first_and_resolves_each_peer_eye PASSED 5ms
+
+  res://tests/net/authority_lookup_test.gd > test_input_created_before_spawn_moves_only_the_late_local_crew STARTED
+  res://tests/net/authority_lookup_test.gd > test_input_created_before_spawn_moves_only_the_late_local_crew PASSED 423ms
+
+  res://tests/net/authority_lookup_test.gd > test_null_network_peer_keeps_local_input_and_door_working STARTED
+  res://tests/net/authority_lookup_test.gd > test_null_network_peer_keeps_local_input_and_door_working PASSED 378ms
+
+  res://tests/net/authority_lookup_test.gd > test_mouse_look_and_hands_belong_to_local_crew_when_remote_is_first STARTED
+  res://tests/net/authority_lookup_test.gd > test_mouse_look_and_hands_belong_to_local_crew_when_remote_is_first PASSED 48ms
+
+  res://tests/net/authority_lookup_test.gd > test_door_transit_created_before_spawn_boards_only_late_local_crew STARTED
+  res://tests/net/authority_lookup_test.gd > test_door_transit_created_before_spawn_boards_only_late_local_crew PASSED 199ms
+
+  res://tests/net/authority_lookup_test.gd > test_package_joins_stable_identity_group_on_ready STARTED
+  res://tests/net/authority_lookup_test.gd > test_package_joins_stable_identity_group_on_ready PASSED 5ms
+
+Statistics: 6 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 1s 72ms
+
+
+Run Test Suite: res://tests/net/cargo_sync_test.gd
+  res://tests/net/cargo_sync_test.gd > test_client_impulse_never_simulates_but_host_free_box_does STARTED
+  res://tests/net/cargo_sync_test.gd > test_client_impulse_never_simulates_but_host_free_box_does PASSED 240ms
+
+  res://tests/net/cargo_sync_test.gd > test_host_grant_and_release_transfer_authority_to_holder_and_back STARTED
+  res://tests/net/cargo_sync_test.gd > test_host_grant_and_release_transfer_authority_to_holder_and_back PASSED 4ms
+
+  res://tests/net/cargo_sync_test.gd > test_unknown_peer_distance_and_occupied_hand_deny_hold STARTED
+  res://tests/net/cargo_sync_test.gd > test_unknown_peer_distance_and_occupied_hand_deny_hold PASSED 5ms
+
+  res://tests/net/cargo_sync_test.gd > test_nonholder_and_occupied_anchor_cannot_change_restraint STARTED
+  res://tests/net/cargo_sync_test.gd > test_nonholder_and_occupied_anchor_cannot_change_restraint PASSED 5ms
+
+  res://tests/net/cargo_sync_test.gd > test_only_full_confirmed_sequence_counts_a_cycle STARTED
+  res://tests/net/cargo_sync_test.gd > test_only_full_confirmed_sequence_counts_a_cycle PASSED 4ms
+
+  res://tests/net/cargo_sync_test.gd > test_replicated_strapped_to_free_clears_anchor_and_restores_cargo_parent STARTED
+  res://tests/net/cargo_sync_test.gd > test_replicated_strapped_to_free_clears_anchor_and_restores_cargo_parent PASSED 12ms
+
+  res://tests/net/cargo_sync_test.gd > test_late_holder_resolves_exact_peer_and_updates_only_local_hands STARTED
+  res://tests/net/cargo_sync_test.gd > test_late_holder_resolves_exact_peer_and_updates_only_local_hands PASSED 4ms
+
+  res://tests/net/cargo_sync_test.gd > test_repeated_state_is_idempotent_and_holder_change_is_observable STARTED
+  res://tests/net/cargo_sync_test.gd > test_repeated_state_is_idempotent_and_holder_change_is_observable PASSED 5ms
+
+  res://tests/net/cargo_sync_test.gd > test_interpolation_rejects_pose_from_previous_state_revision STARTED
+  res://tests/net/cargo_sync_test.gd > test_interpolation_rejects_pose_from_previous_state_revision PASSED 4ms
+
+  res://tests/net/cargo_sync_test.gd > test_release_uses_current_bus_frame_and_point_velocity_after_bus_moves STARTED
+  res://tests/net/cargo_sync_test.gd > test_release_uses_current_bus_frame_and_point_velocity_after_bus_moves PASSED 4ms
+
+  res://tests/net/cargo_sync_test.gd > test_held_snapshots_reject_other_peer_and_obsolete_revision STARTED
+  res://tests/net/cargo_sync_test.gd > test_held_snapshots_reject_other_peer_and_obsolete_revision PASSED 4ms
+
+  res://tests/net/cargo_sync_test.gd > test_host_strapped_box_follows_a_dynamic_bus STARTED
+  res://tests/net/cargo_sync_test.gd > test_host_strapped_box_follows_a_dynamic_bus PASSED 488ms
+
+Statistics: 12 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 812ms
+
+
+Run Test Suite: res://tests/net/crew_sync_test.gd
+  res://tests/net/crew_sync_test.gd > test_network_remote_does_not_simulate_while_local_falls STARTED
+  res://tests/net/crew_sync_test.gd > test_network_remote_does_not_simulate_while_local_falls PASSED 198ms
+
+  res://tests/net/crew_sync_test.gd > test_spawner_builds_named_crews_with_distinct_authorities_and_one_local_camera STARTED
+  res://tests/net/crew_sync_test.gd > test_spawner_builds_named_crews_with_distinct_authorities_and_one_local_camera PASSED 33ms
+
+  res://tests/net/crew_sync_test.gd > test_remote_snapshots_interpolate_without_advancing_physics STARTED
+  res://tests/net/crew_sync_test.gd > test_remote_snapshots_interpolate_without_advancing_physics PASSED 80ms
+
+  res://tests/net/crew_sync_test.gd > test_remote_hands_cannot_grab_and_bind_to_their_own_eye STARTED
+  res://tests/net/crew_sync_test.gd > test_remote_hands_cannot_grab_and_bind_to_their_own_eye PASSED 33ms
+
+  res://tests/net/crew_sync_test.gd > test_client_replaces_authored_crew_and_activates_local_view_after_spawn STARTED
+  res://tests/net/crew_sync_test.gd > test_client_replaces_authored_crew_and_activates_local_view_after_spawn PASSED 47ms
+
+Statistics: 5 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 410ms
+
+
+Run Test Suite: res://tests/net/gate_config_test.gd
+  res://tests/net/gate_config_test.gd > test_gate_deadline_covers_300_seconds_independently_of_waypoints STARTED
+  res://tests/net/gate_config_test.gd > test_gate_deadline_covers_300_seconds_independently_of_waypoints PASSED 3ms
+
+  res://tests/net/gate_config_test.gd > test_human_client_is_windowed_while_host_is_headless STARTED
+  res://tests/net/gate_config_test.gd > test_human_client_is_windowed_while_host_is_headless PASSED 2ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 17ms
+
+
+Run Test Suite: res://tests/net/gate_metrics_test.gd
+  res://tests/net/gate_metrics_test.gd > test_percentiles_and_fps_report_tails_not_average STARTED
+  res://tests/net/gate_metrics_test.gd > test_percentiles_and_fps_report_tails_not_average PASSED 4ms
+
+  res://tests/net/gate_metrics_test.gd > test_capsule_height_and_rotated_cargo_measure_real_shape_extents STARTED
+  res://tests/net/gate_metrics_test.gd > test_capsule_height_and_rotated_cargo_measure_real_shape_extents PASSED 2ms
+
+  res://tests/net/gate_metrics_test.gd > test_authored_door_hole_excludes_air_but_keeps_floor_and_jamb STARTED
+  res://tests/net/gate_metrics_test.gd > test_authored_door_hole_excludes_air_but_keeps_floor_and_jamb PASSED 3ms
+
+  res://tests/net/gate_metrics_test.gd > test_penetration_run_resets_without_losing_peak_or_total STARTED
+  res://tests/net/gate_metrics_test.gd > test_penetration_run_resets_without_losing_peak_or_total PASSED 3ms
+
+  res://tests/net/gate_metrics_test.gd > test_judge_uses_same_run_p99_not_outlier_maximum STARTED
+  res://tests/net/gate_metrics_test.gd > test_judge_uses_same_run_p99_not_outlier_maximum PASSED 2ms
+
+  res://tests/net/gate_metrics_test.gd > test_short_or_idle_iterations_are_invalid_and_headless_is_unverified STARTED
+  res://tests/net/gate_metrics_test.gd > test_short_or_idle_iterations_are_invalid_and_headless_is_unverified PASSED 3ms
+
+  res://tests/net/gate_metrics_test.gd > test_trace_interpolates_position_and_quaternion_at_observation_utc STARTED
+  res://tests/net/gate_metrics_test.gd > test_trace_interpolates_position_and_quaternion_at_observation_utc PASSED 4ms
+
+  res://tests/net/gate_metrics_test.gd > test_trace_does_not_interpolate_handover_or_fake_zero_without_matches STARTED
+  res://tests/net/gate_metrics_test.gd > test_trace_does_not_interpolate_handover_or_fake_zero_without_matches PASSED 2ms
+
+  res://tests/net/gate_metrics_test.gd > test_observer_reads_local_slip_remote_penetration_and_simulation_counters STARTED
+  res://tests/net/gate_metrics_test.gd > test_observer_reads_local_slip_remote_penetration_and_simulation_counters PASSED 5ms
+
+Statistics: 9 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 53ms
+
+
+Run Test Suite: res://tests/net/network_backend_test.gd
+  res://tests/net/network_backend_test.gd > test_initial_state_is_idle STARTED
+  res://tests/net/network_backend_test.gd > test_initial_state_is_idle PASSED 3ms
+
+  res://tests/net/network_backend_test.gd > test_host_game_makes_us_host_and_emits_hosted STARTED
+  res://tests/net/network_backend_test.gd > test_host_game_makes_us_host_and_emits_hosted PASSED 4ms
+
+  res://tests/net/network_backend_test.gd > test_leave_returns_to_idle_and_frees_the_port STARTED
+  res://tests/net/network_backend_test.gd > test_leave_returns_to_idle_and_frees_the_port PASSED 5ms
+
+  res://tests/net/network_backend_test.gd > test_join_without_server_fails_without_hanging STARTED
+  res://tests/net/network_backend_test.gd > test_join_without_server_fails_without_hanging PASSED 7s 510ms
+
+Statistics: 4 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 7s 535ms
+
+
+Run Test Suite: res://tests/net/net_marker_test.gd
+  res://tests/net/net_marker_test.gd > test_owner_peer_id_is_stored STARTED
+  res://tests/net/net_marker_test.gd > test_owner_peer_id_is_stored PASSED 4ms
+
+Statistics: 1 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 15ms
+
+
+Run Test Suite: res://tests/net/playground_client_mode_test.gd
+  res://tests/net/playground_client_mode_test.gd > test_client_role_disables_demo_and_freezes_bus STARTED
+  res://tests/net/playground_client_mode_test.gd > test_client_role_disables_demo_and_freezes_bus PASSED 6ms
+
+  res://tests/net/playground_client_mode_test.gd > test_single_role_keeps_demo_running STARTED
+  res://tests/net/playground_client_mode_test.gd > test_single_role_keeps_demo_running PASSED 18ms
+
+Statistics: 2 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans | PASSED 33ms
+
+
+Overall Summary: 41 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (8/8)
+Executed test cases : (41/41)
+Total execution time: 9s 947ms
+ Open XML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_6/results.xml
+Open HTML Report at: file://C:/Users/Leo/Documents/RutaFragil/reports/report_6/index.html
+Exit code: 0
+Run dispose test resources

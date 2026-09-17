@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ORDER_AUDIT {"after_nodes":{"max_m":0.600858509540558,"mean_ratio":0.000000119369792409114,"p95_m":0.575080990791321,"p999_m":0.599694490432739,"p99_m":0.594772160053253,"ratio_samples":866,"samples":1800,"zero_platform_ticks":900},"legacy":{"max_m":0.158623680472374,"mean_ratio":1.00598252648068,"p95_m":0.00848170276731253,"p999_m":0.0265166126191616,"p99_m":0.0164559558033943,"ratio_samples":866,"samples":1800,"zero_platform_ticks":900},"order":"frame","path":"step"}
+ORDER path=step   order=frame    | slip p95=0.0085 p99=0.0165 p99.9=0.0265 max=0.1586 | platform velocity received/true: mean=1.01 | zero-platform ticks 900/1800

@@ -1,0 +1,200 @@
+[
+	{
+		"lost": {
+			"bus_linear_velocity": [
+				6.24321842193604,
+				-0.0770205706357956,
+				-23.7655639648438
+			],
+			"bus_position": [
+				-64.1572952270508,
+				0.964369833469391,
+				-66.946533203125
+			],
+			"bus_support": false,
+			"bus_write_m": 0.0,
+			"contacts": [
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00144417048431933,
+					"normal": [
+						0.994137108325958,
+						-0.000000370740423250027,
+						0.108127415180206
+					],
+					"position": [
+						-64.3721084594727,
+						1.81579160690308,
+						-68.2210006713867
+					],
+					"rid": "RID(4638564679686)",
+					"shape": "/root/Playground/Bus/RackLeft",
+					"shape_index": 12,
+					"velocity": [
+						7.52093887329102,
+						0.0312499850988388,
+						-23.799654006958
+					]
+				},
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00141384964808822,
+					"normal": [
+						0.994138121604919,
+						0.000000370705492969137,
+						0.10811723023653
+					],
+					"position": [
+						-64.3721084594727,
+						1.81579160690308,
+						-68.2210006713867
+					],
+					"rid": "RID(4638564679686)",
+					"shape": "/root/Playground/Bus/RackLeft",
+					"shape_index": 12,
+					"velocity": [
+						7.52093887329102,
+						0.0312499850988388,
+						-23.799654006958
+					]
+				}
+			],
+			"crew_real_velocity": [
+				6.83212232589722,
+				-0.0194156151264906,
+				-23.753812789917
+			],
+			"crew_velocity": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"floor_bodies": [],
+			"local_position": [
+				-0.173843383789063,
+				-0.597558975219727,
+				-1.22573852539063
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 0,
+				"origin_distance_m": 1.62148225307465,
+				"package_count": 4,
+				"position": [
+					-64.6605911254883,
+					1.84375703334808,
+					-67.7848205566406
+				],
+				"restraint": 1
+			},
+			"on_ceiling": false,
+			"on_floor": false,
+			"physics_frame": 5981,
+			"platform_velocity": [
+				7.52093887329102,
+				0.0312499850988388,
+				-23.799654006958
+			],
+			"snapshots": {
+				"buffer_ahead_s": 99.133333333329,
+				"last_arrival_utc_us": 0,
+				"last_transport_s": 0.0,
+				"playback_next_s": 0.0,
+				"playback_used_s": 0.0,
+				"received_this_tick": 0,
+				"received_total": 0,
+				"source_s": 99.133333333329
+			},
+			"tick": 5795
+		},
+		"previous": {
+			"bus_linear_velocity": [
+				5.98827075958252,
+				-0.075288362801075,
+				-23.8476829528809
+			],
+			"bus_position": [
+				-64.2639236450195,
+				0.965922832489014,
+				-66.5516204833984
+			],
+			"bus_support": true,
+			"bus_write_m": 0.0,
+			"contacts": [
+				{
+					"body": "/root/Playground/Bus",
+					"depth_m": 0.00126697064843029,
+					"normal": [
+						0.999996960163116,
+						0.0,
+						0.00249157822690904
+					],
+					"position": [
+						-64.4969177246094,
+						1.81521487236023,
+						-67.8264770507813
+					],
+					"rid": "RID(4638564679686)",
+					"shape": "/root/Playground/Bus/RackLeft",
+					"shape_index": 12,
+					"velocity": [
+						7.31006145477295,
+						0.0469730272889137,
+						-23.8930358886719
+					]
+				}
+			],
+			"crew_real_velocity": [
+				7.09030103683472,
+				-0.122281901538372,
+				-21.9392375946045
+			],
+			"crew_velocity": [
+				-0.00474667549133301,
+				0.0,
+				1.90512108802795
+			],
+			"floor_bodies": [],
+			"local_position": [
+				-0.169029235839844,
+				-0.597548961639404,
+				-1.2255973815918
+			],
+			"nearest_package": {
+				"authority": 1,
+				"body": "/root/Playground/Cargo/Package_2",
+				"freeze": true,
+				"freeze_mode": 0,
+				"origin_distance_m": 1.61772692203522,
+				"package_count": 4,
+				"position": [
+					-64.7579345703125,
+					1.84039187431335,
+					-67.3680877685547
+				],
+				"restraint": 1
+			},
+			"on_ceiling": false,
+			"on_floor": true,
+			"physics_frame": 5980,
+			"platform_velocity": [
+				6.86080455780029,
+				-0.0353910326957703,
+				-23.7823333740234
+			],
+			"snapshots": {
+				"buffer_ahead_s": 99.1166666666623,
+				"last_arrival_utc_us": 0,
+				"last_transport_s": 0.0,
+				"playback_next_s": 0.0,
+				"playback_used_s": 0.0,
+				"received_this_tick": 0,
+				"received_total": 0,
+				"source_s": 99.1166666666623
+			},
+			"tick": 5794
+		}
+	}
+]

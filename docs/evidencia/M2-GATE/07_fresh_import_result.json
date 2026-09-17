@@ -1,0 +1,21 @@
+﻿{
+    "path":  "C:\\Users\\Leo\\Documents\\RutaFragil_gate_verify_20260916",
+    "commit":  "37b0acc8bd20e386ca0a1e2fa96fcfc100d92399",
+    "imports":  [
+                    {
+                        "pass":  1,
+                        "exit":  0
+                    },
+                    {
+                        "pass":  2,
+                        "exit":  0
+                    }
+                ],
+    "class_cache_exists":  true,
+    "status":  [
+
+               ],
+    "untracked_uids":  [
+
+                       ]
+}

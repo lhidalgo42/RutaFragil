@@ -113,6 +113,13 @@ El **código de salida es 0 solo con `result=lap_completed`**; `rolled_over`, `s
 
 ## Pruebas de red (M0-T0.4)
 
+Sonda de acarreo M2-GATE: `timeout 120 "$GODOT_BIN" --headless --fixed-fps 60 --path . -s res://src/tooling/run_carry_probe.gd ++ window_s=60 save_raw=1 write=physics_frame` guarda CSV/JSON en `user://carryprobe/`; `write=physics_process` compara el orden de escritura.
+
+Banco de adopción de plataforma (ronda 5): `python docs/evidencia/M2-GATE/run_r5_probe.py recording mode=rec` graba una recta real a 60 Hz; después `python docs/evidencia/M2-GATE/run_r5_probe.py slow_encounter candidate=engine ratio=0.665 walking=0 box_z=1.5 box_x=0.3` reproduce sin red. El helper tiene plazo externo y guarda todos los argumentos; variantes y límites en evidencia 16.
+
+El tercer intento D96 exige `-Precondition <summary.json del experimento de 300 s>` en PowerShell, o `precondition=<ruta>` en Bash: mismo commit limpio y configuración, ambos peers con ≥95 % de apoyo, último tick apoyado y pérdida máxima de 30 ticks.
+
+
 Arnés multi-instancia sobre ENet: 1 host + 3 clientes headless en la misma máquina que conectan, reciben marcadores replicados y afirman convergencia del bus (≤ 0,5 m / ≤ 5° tras frenar y asentar). Vive en `src/net/` (`NetworkBackend`, `NetMarker`, utilidades) y `src/tooling/run_net_scenario.gd` (roles `launcher | host | client`). Detalles y decisiones: D53–D58 en `DECISIONS.md`.
 
 El arnés completo (`tools/run_tests.ps1` / `run_tests.sh`) corre la red como paso final; para iterar solo las unitarias usa `-SkipNet` / `--skip-net`. Solo la parte de red:
@@ -173,6 +180,41 @@ tests/      suites gdUnit4 ([gdunit4] test_lookup_folder="tests", D33)
 tools/      scripts del repo (con .gdignore: el editor no los ve)
 docs/       documentación del proyecto (con .gdignore)
 ```
+
+## Gate de dos instancias (M2-GATE)
+
+Cliente con ventana e input humano; anfitrión sin ventana conduciendo:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/run_gate.ps1
+```
+
+```bash
+bash tools/run_gate.sh
+```
+
+Equivale a `run_net_scenario.gd ++ mode=gate seconds=300 human=client`.
+En Windows, `-Human none -Windowed both` ejecuta ambas tripulantes guionizadas
+con render; en Bash, `human=none windowed=both`. Los resultados, trazas, logs
+y capturas quedan en `user://gate/run_<fecha>/`; `-Output` o `output=` fija la ruta.
+El presupuesto sigue `seconds + 90`, independientemente de los waypoints.
+El gate desactiva VSync por defecto y usa `max_fps=0`. Para dejarlo explícito:
+`-VSync off` en PowerShell, `vsync=off` en Bash. Con VSync o límite de FPS,
+el rendimiento queda sin verificar.
+Cada JSON declara VSync, límite de FPS y tamaño del viewport; se informan
+percentil 1 y porcentaje de frames bajo 60, también si el resultado falla.
+
+El observador de deslizamiento es un nodo separado, al final de la física
+(`process_physics_priority=1000`, también `process_priority=1000`) en ambas
+instancias. Primero se exige apoyo local en el bus en al menos el 95 % de los
+ticks; por debajo falla por no poder viajar y no se cita el deslizamiento como
+jitter. Con apoyo suficiente se comparan los p99 de la misma corrida; el máximo
+solo se informa. Penetración se juzga solo en cuerpos simulados localmente.
+Menos de diez ciclos agarrar → amarrar → desamarrar → soltar por instancia
+invalida la medición. Las corridas de menos de 300 s son comprobaciones previas.
+El registro `docs/evidencia/M2-GATE/04_iteration_ledger.json` impide una cuarta
+corrida tras tres iteraciones válidas fallidas. El resultado automático no
+sustituye la aprobación humana del gate.
 
 ## Notas de configuración
 

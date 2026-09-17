@@ -161,7 +161,7 @@ func test_click_with_free_pointer_recaptures_and_never_throws() -> void:
 	assert_float(package.linear_velocity.z).is_less(-3.0)
 
 
-func test_drop_click_lands_at_the_hand_or_at_the_feet_when_walled() -> void:
+func test_drop_click_lands_at_the_hand_or_clear_floor_beside_the_feet() -> void:
 	var crew: CrewMember = await _grabbed_setup()
 	if crew == null:
 		return
@@ -196,7 +196,7 @@ func test_drop_click_lands_at_the_hand_or_at_the_feet_when_walled() -> void:
 	assert_float(package.global_position.y).is_less(0.6)
 	var flat: Vector2 = Vector2(package.global_position.x, package.global_position.z)
 	var crew_flat: Vector2 = Vector2(crew.global_position.x, crew.global_position.z)
-	assert_float(flat.distance_to(crew_flat)).is_less(0.35)
+	assert_float(flat.distance_to(crew_flat)).is_greater(0.5)
 
 
 func test_held_package_inside_the_bus_at_speed_does_not_kick_it() -> void:

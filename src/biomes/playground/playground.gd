@@ -19,13 +19,22 @@ extends Node3D
 @export var demo_driver: DemoDriver
 @export var bus_input: BusInput
 @export var network_role: String = "single"
-## Spawn the four greybox packages at load (T2.3). Skipped in demo_mode so
-## run_demo's regression numbers stay intact; tests that spawn their own
-## cargo can also set this false after load (the spawn is deferred).
+## Spawn the four greybox packages at load (T2.3). Only the host spawns in
+## network roles; the single-player demo skips cargo to preserve run_demo.
+## Tests may disable this after load because the spawn is deferred.
 @export var cargo_spawn: bool = true
+
+var _network_player_mode: bool = false
+var _network_view_ready: bool = false
 
 
 func _ready() -> void:
+	if network_role != "single":
+		var authored: Node = get_node_or_null("CrewMember")
+		if authored != null:
+			remove_child(authored)
+			authored.queue_free()
+		_network_player_mode = network_role == "client"
 	if network_role == "client":
 		demo_mode = false
 		_freeze_bus_for_client()
@@ -41,20 +50,24 @@ func _ready() -> void:
 	bus_input.enabled = false
 	var crew_input: Node = get_node_or_null("CrewInput")
 	if crew_input != null:
-		crew_input.set("enabled", not demo_mode and network_role != "client")
+		crew_input.set("enabled", not demo_mode and network_role == "single")
 	# The arbiter owns the one active camera (M2-T2.2 r3): the demo and the
 	# network client watch the bus; the owner walks in on her own eyes.
-	var player_mode: bool = not demo_mode and network_role != "client"
+	var player_mode: bool = not demo_mode and network_role == "single"
 	if player_mode:
 		CameraArbiter.apply(get_tree(), CameraArbiter.Mode.ON_FOOT)
 	else:
 		CameraArbiter.apply(get_tree(), CameraArbiter.Mode.DEMO)
 	_set_mouse_captured(crew_input, player_mode)
-	if cargo_spawn and not demo_mode:
+	if _should_spawn_cargo():
 		_spawn_cargo.call_deferred()
 
 
 func _process(_delta: float) -> void:
+	if network_role != "single":
+		if not _network_view_ready:
+			_refresh_network_view()
+		return
 	# F1 hands the bus to the DemoDriver and back at runtime (T1.1 r1.2, D71):
 	# F5 stays the owner's seat and the demo needs no console. Headless
 	# delivers no InputEvent, so this is inert in tests and tools.
@@ -82,9 +95,29 @@ func set_demo_mode(on: bool) -> void:
 		_set_mouse_captured(get_node_or_null("CrewInput"), true)
 
 
+func set_network_player_mode(on: bool) -> void:
+	_network_player_mode = on
+	_refresh_network_view()
+
+
+func _refresh_network_view() -> void:
+	var member: CrewMember = NetAuthority.local_crew(get_tree())
+	if member == null or not member.network_ready:
+		return
+	_network_view_ready = true
+	var input: Node = get_node_or_null("CrewInput")
+	if input != null:
+		input.set("enabled", _network_player_mode)
+	_set_mouse_captured(input, _network_player_mode)
+	var mode: CameraArbiter.Mode = CameraArbiter.Mode.ON_FOOT
+	if network_role == "host" and demo_mode:
+		mode = CameraArbiter.Mode.DEMO
+	CameraArbiter.apply(get_tree(), mode)
+
+
 ## Whether the crew member is seated at the wheel right now.
 func _crew_seated() -> bool:
-	var crew_node: Node = get_tree().get_first_node_in_group("crew")
+	var crew_node: Node = NetAuthority.local_crew(get_tree())
 	if crew_node is CrewMember:
 		var member: CrewMember = crew_node
 		return member.seated
@@ -94,7 +127,7 @@ func _crew_seated() -> bool:
 ## The camera the crew returns to when the demo hands control back: the
 ## seat's bus view if she is seated, her own eyes otherwise.
 func _crew_camera_mode() -> CameraArbiter.Mode:
-	var crew_node: Node = get_tree().get_first_node_in_group("crew")
+	var crew_node: Node = NetAuthority.local_crew(get_tree())
 	if crew_node is CrewMember:
 		var member: CrewMember = crew_node
 		if member.seated:
@@ -110,14 +143,18 @@ func _set_mouse_captured(crew_input: Node, captured: bool) -> void:
 		input.set_mouse_captured(captured)
 
 
+func _should_spawn_cargo() -> bool:
+	return cargo_spawn and network_role != "client" \
+		and not (demo_mode and network_role == "single")
+
+
 ## The four greybox packages of T2.3: two resting on the rack tops, two on
 ## the aisle floor, positioned BEFORE add_child (the measured rule). The
 ## scene stays at 60 authored nodes (R8): the Cargo node and its packages
 ## are runtime instances, not authored ones.
 func _spawn_cargo() -> void:
-	# Re-checked at fire time: deferred, so demo_mode set right after load
-	# (demo, run_demo) and tests setting cargo_spawn=false both skip it.
-	if not cargo_spawn or demo_mode:
+	# A deferred spawn must apply the same authority/mode rule as _ready.
+	if not _should_spawn_cargo():
 		return
 	var packed: Resource = load("res://src/cargo/package.tscn")
 	if not (packed is PackedScene):
@@ -143,9 +180,10 @@ func _spawn_cargo() -> void:
 		Vector3(-0.4, -0.4, 0.5),
 		Vector3(0.2, -0.4, 2.5),
 	]
-	for point: Vector3 in local_points:
+	for index: int in range(local_points.size()):
 		var package: RigidBody3D = scene.instantiate()
-		package.position = bus.global_transform * point
+		package.name = "Package_%d" % index
+		package.position = bus.global_transform * local_points[index]
 		cargo_node.add_child(package)
 
 
@@ -154,4 +192,5 @@ func _freeze_bus_for_client() -> void:
 	var bus_node: Node = get_tree().get_first_node_in_group("bus")
 	if bus_node is RigidBody3D:
 		var rigid: RigidBody3D = bus_node
+		rigid.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
 		rigid.freeze = true

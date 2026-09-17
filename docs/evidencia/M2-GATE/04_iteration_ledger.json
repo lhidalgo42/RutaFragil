@@ -1,0 +1,38 @@
+[
+	{
+		"iteration": 1.0,
+		"output": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/04_raw/iteration_1",
+		"status": "invalid",
+		"valid": false
+	},
+	{
+		"iteration": 2.0,
+		"output": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/04_raw/iteration_2",
+		"status": "failed",
+		"valid": true
+	},
+	{
+		"iteration": 3.0,
+		"output": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/04_raw/iteration_3",
+		"status": "invalid",
+		"valid": false
+	},
+	{
+		"iteration": 4.0,
+		"output": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/04_raw/iteration_4",
+		"status": "failed",
+		"valid": true
+	},
+	{
+		"iteration": 5.0,
+		"output": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/04_raw/iteration_5",
+		"status": "invalid",
+		"valid": false
+	},
+	{
+		"iteration": 6,
+		"output": "C:/Users/Leo/Documents/RutaFragil/docs/evidencia/M2-GATE/04_raw/iteration_6",
+		"status": "passed",
+		"valid": true
+	}
+]

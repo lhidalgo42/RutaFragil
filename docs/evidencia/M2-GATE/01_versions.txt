@@ -1,0 +1,41 @@
+M2-GATE ronda5 — 2026-09-17
+Rama:m2/gate-two-instances
+HEAD recibido:5ea5b56f5487d5f73e46a62e55cb50d580d30d3c
+Revisión05 y prompt05 preservados primero:e2f69ac
+Instrumentación previa:6454cea
+Fuentes del experimento final y verificaciones:25c7a72206666cccfd748ee67c1a3de94068373b
+Motor4.7.2.stable.official.ed1daf0bf; Jolt; física60Hz.
+Experimento final: D3D12 Forward+, NVIDIA GeForce RTX5060 Laptop GPU,
+VSync0, max_fps0, dos ventanas. Son datos de logs, no aprobación visual.
+Windows-11-10.0.26200-SP0
+git version 2.51.0.windows.1
+git-lfs/3.7.0 (GitHub; windows amd64; go 1.24.4; git 92dddf56)
+
+REGISTRO HISTÓRICO
+
+M2-GATE ronda 3 — sesión 2026-09-16
+
+Rama: m2/gate-two-instances
+HEAD inicial: 98dccc1e30a3bdd6fc79a4df009453b8ab128f5e
+Godot --version: 4.7.2.stable.official.ed1daf0bf
+Git: 2.51.0.windows.1
+Git LFS: 3.7.0 windows amd64
+Motor físico: Jolt, según project.godot sin modificar.
+
+La primera importación dentro del sandbox imprimió errores de acceso a caché,
+certificados y ajustes en AppData, aunque terminó con código 0. No se considera
+una apertura limpia. Se repitió con permiso fuera del sandbox: código 0.
+Las dos importaciones del diagnóstico se conservan en 12_import_1.log y
+12_import_2.log. No se instaló ninguna dependencia ni se tocó main.
+
+CIERRE RONDA 3b — 2026-09-16 (America/Santiago)
+Simulación final: 000c52f9604edf3c0f8681e369f53b39ca719b25.
+Envoltorios: 47c3b41 (Bash, plazo externo) y 95455f5 (PowerShell, ExitCode).
+Godot confirmado otra vez: 4.7.2.stable.official.ed1daf0bf.
+Git 2.51.0.windows.1; Git LFS 3.7.0 windows amd64.
+Windows, Forward+ D3D12, NVIDIA GeForce RTX 5060 Laptop GPU (logs del gate).
+Física Jolt, 60 Hz; snapshots bus/crew 30 Hz, cargo 20 Hz.
+Gate con dos ventanas: 1152x648, max_fps=120; VSync on en 1/2, off en 3.
+Sin cambios permanentes en project.godot, tuning, bus, suspensión o escenas.
+Los fallos de acceso del párrafo inicial son históricos, anteriores a esta
+verificación; no describen los imports finales del arnés.

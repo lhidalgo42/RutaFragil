@@ -1,0 +1,53 @@
+[
+  {
+    "name": "02_r4_run_1",
+    "exit": 0,
+    "timeout_s": 700,
+    "timed_out": false,
+    "source_commit": "1eeb635e72c61b2f232f1fb67d8ae4809f103274",
+    "discovered_tests": 236,
+    "expected_tests": 236,
+    "net_pass": true,
+    "import_exit_codes": [
+      0,
+      0
+    ],
+    "log_sha256": "c71cf66a2c2413135c4911a9f0400e95709b24047f75c833753c0c5387c45746",
+    "captured_log_sha256": "371b7c541bad692587c67456494221f8147842ff995fed773c2abe95508ed0b3",
+    "log_sha256_encoding": "UTF-8, LF normalized as stored by Git attributes"
+  },
+  {
+    "name": "02_r4_run_2",
+    "exit": 0,
+    "timeout_s": 700,
+    "timed_out": false,
+    "source_commit": "1eeb635e72c61b2f232f1fb67d8ae4809f103274",
+    "discovered_tests": 236,
+    "expected_tests": 236,
+    "net_pass": true,
+    "import_exit_codes": [
+      0,
+      0
+    ],
+    "log_sha256": "0123042c714dda624fb6e8332e0bff6e73a93a19a75f35476ad5537b173da899",
+    "captured_log_sha256": "1eecd6713188c6a52534b26b0c5b57537562619ef032f31c275e50bbd4a6f41f",
+    "log_sha256_encoding": "UTF-8, LF normalized as stored by Git attributes"
+  },
+  {
+    "name": "02_r4_run_3",
+    "exit": 0,
+    "timeout_s": 700,
+    "timed_out": false,
+    "source_commit": "1eeb635e72c61b2f232f1fb67d8ae4809f103274",
+    "discovered_tests": 236,
+    "expected_tests": 236,
+    "net_pass": true,
+    "import_exit_codes": [
+      0,
+      0
+    ],
+    "log_sha256": "efe36faa050e3245351494a9d78f5141b795113b7a102ab3eddcdbc826232de9",
+    "captured_log_sha256": "8bf04fb6bf264134f5b72f023a63c2a6a19f4b5f547b18aef65ea1e201a5e821",
+    "log_sha256_encoding": "UTF-8, LF normalized as stored by Git attributes"
+  }
+]

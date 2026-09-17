@@ -1,0 +1,109 @@
+{
+	"passes": [
+		{
+			"below_depth_max_m": 0.0,
+			"below_floor_ticks": 0,
+			"below_run_max_ticks": 0,
+			"config": "host_real",
+			"drift_max_m": 0.387224465608597,
+			"drift_p95_m": 0.333749741315842,
+			"off_floor_ticks": 0,
+			"outside_hull_ticks": 0,
+			"regime": "standing",
+			"slip_max_m": 0.0781824067234993,
+			"slip_p95_m": 0.00399288162589073
+		},
+		{
+			"below_depth_max_m": 0.0,
+			"below_floor_ticks": 0,
+			"below_run_max_ticks": 0,
+			"config": "host_real",
+			"drift_max_m": 3.14724707603455,
+			"drift_p95_m": 2.86265182495117,
+			"off_floor_ticks": 0,
+			"outside_hull_ticks": 0,
+			"regime": "walking",
+			"slip_max_m": 0.143229886889458,
+			"slip_p95_m": 0.0674848631024361
+		},
+		{
+			"below_depth_max_m": 8.04104652404785,
+			"below_floor_ticks": 1961,
+			"below_run_max_ticks": 326,
+			"config": "static",
+			"drift_max_m": 90.2433547973633,
+			"drift_p95_m": 88.6954727172852,
+			"off_floor_ticks": 14,
+			"outside_hull_ticks": 3517,
+			"regime": "standing",
+			"slip_max_m": 2.38962697982788,
+			"slip_p95_m": 1.54995703697205
+		},
+		{
+			"below_depth_max_m": 6.99583806991577,
+			"below_floor_ticks": 1489,
+			"below_run_max_ticks": 260,
+			"config": "static",
+			"drift_max_m": 60.8840827941895,
+			"drift_p95_m": 56.6735420227051,
+			"off_floor_ticks": 39,
+			"outside_hull_ticks": 3451,
+			"regime": "walking",
+			"slip_max_m": 1.48613131046295,
+			"slip_p95_m": 0.828960657119751
+		},
+		{
+			"below_depth_max_m": 0.0,
+			"below_floor_ticks": 0,
+			"below_run_max_ticks": 0,
+			"config": "kinematic",
+			"drift_max_m": 0.6266028881073,
+			"drift_p95_m": 0.531970858573914,
+			"off_floor_ticks": 0,
+			"outside_hull_ticks": 0,
+			"regime": "standing",
+			"slip_max_m": 0.619097054004669,
+			"slip_p95_m": 0.591918170452118
+		},
+		{
+			"below_depth_max_m": 0.0,
+			"below_floor_ticks": 0,
+			"below_run_max_ticks": 0,
+			"config": "kinematic",
+			"drift_max_m": 3.2155134677887,
+			"drift_p95_m": 2.71149325370789,
+			"off_floor_ticks": 16,
+			"outside_hull_ticks": 0,
+			"regime": "walking",
+			"slip_max_m": 0.687329053878784,
+			"slip_p95_m": 0.632346093654633
+		},
+		{
+			"below_depth_max_m": 0.0,
+			"below_floor_ticks": 0,
+			"below_run_max_ticks": 0,
+			"config": "interp",
+			"drift_max_m": 0.387330651283264,
+			"drift_p95_m": 0.334655523300171,
+			"off_floor_ticks": 0,
+			"outside_hull_ticks": 0,
+			"regime": "standing",
+			"slip_max_m": 0.040140938013792,
+			"slip_p95_m": 0.0060484167188406
+		},
+		{
+			"below_depth_max_m": 0.0,
+			"below_floor_ticks": 0,
+			"below_run_max_ticks": 0,
+			"config": "interp",
+			"drift_max_m": 3.14483833312988,
+			"drift_p95_m": 2.85160517692566,
+			"off_floor_ticks": 0,
+			"outside_hull_ticks": 0,
+			"regime": "walking",
+			"slip_max_m": 0.106093592941761,
+			"slip_p95_m": 0.0678844600915909
+		}
+	],
+	"window_s": 60
+}

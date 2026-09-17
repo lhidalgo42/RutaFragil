@@ -1,0 +1,91 @@
+Ronda4 — antes del commit de evidencia
+2026-09-16T21:05:21.735503
+
+git branch --show-current
+m2/gate-two-instances
+
+exit=0
+
+git rev-parse HEAD
+1eeb635e72c61b2f232f1fb67d8ae4809f103274
+
+exit=0
+
+git status --short
+ M BACKLOG.md
+ M README.md
+ M docs/evidencia/M2-GATE/00_phase0_contract.md
+ M docs/evidencia/M2-GATE/04_gate_iteration_1.md
+ M docs/evidencia/M2-GATE/04_gate_iteration_2.md
+ M docs/evidencia/M2-GATE/04_gate_iteration_3.md
+ M docs/evidencia/M2-GATE/04_iteration_2_revision_04.json
+ M docs/evidencia/M2-GATE/04_iteration_ledger.json
+ M docs/evidencia/M2-GATE/04_verdict.md
+ M docs/evidencia/M2-GATE/05_windowed.md
+ M docs/evidencia/M2-GATE/06_regression.md
+ M docs/evidencia/M2-GATE/08_no_verificado.txt
+ M docs/evidencia/M2-GATE/09_limits.txt
+ M docs/evidencia/M2-GATE/10_windowed_clean_log.md
+?? docs/evidencia/M2-GATE/02_r4_run_1.log
+?? docs/evidencia/M2-GATE/02_r4_run_1_stderr.log
+?? docs/evidencia/M2-GATE/02_r4_runs.json
+?? docs/evidencia/M2-GATE/04_gate_iteration_4.md
+?? docs/evidencia/M2-GATE/04_iteration_4_wrapper.log
+?? docs/evidencia/M2-GATE/04_raw/iteration_4/
+?? docs/evidencia/M2-GATE/05_r4_manual_wrapper.log
+?? docs/evidencia/M2-GATE/05_raw/r4_manual_01/
+?? docs/evidencia/M2-GATE/10_r4_log_counts.json
+?? docs/evidencia/M2-GATE/13_experiments_summary.json
+?? docs/evidencia/M2-GATE/13_raw/
+?? docs/evidencia/M2-GATE/13_support_loss_reduction.md
+?? docs/evidencia/M2-GATE/14_remaining_cargo_contact.md
+?? docs/evidencia/M2-GATE/emit_gate_table.py
+?? docs/evidencia/M2-GATE/r4_cargo_cycles_01_context.json
+?? docs/evidencia/M2-GATE/r4_cargo_cycles_01_launcher.log
+?? docs/evidencia/M2-GATE/r4_cargo_cycles_01_stderr.log
+?? docs/evidencia/M2-GATE/r4_cargo_walk_01_context.json
+?? docs/evidencia/M2-GATE/r4_cargo_walk_01_launcher.log
+?? docs/evidencia/M2-GATE/r4_cargo_walk_01_stderr.log
+?? docs/evidencia/M2-GATE/r4_free_wait_fix_01_context.json
+?? docs/evidencia/M2-GATE/r4_free_wait_fix_01_launcher.log
+?? docs/evidencia/M2-GATE/r4_free_wait_fix_01_stderr.log
+?? docs/evidencia/M2-GATE/r4_no_cargo_01_context.json
+?? docs/evidencia/M2-GATE/r4_no_cargo_01_launcher.log
+?? docs/evidencia/M2-GATE/r4_no_cargo_01_stderr.log
+?? docs/evidencia/M2-GATE/r4_release_fix_01_context.json
+?? docs/evidencia/M2-GATE/r4_release_fix_01_launcher.log
+?? docs/evidencia/M2-GATE/r4_release_fix_01_stderr.log
+?? docs/evidencia/M2-GATE/r4_transition_fix_01_context.json
+?? docs/evidencia/M2-GATE/r4_transition_fix_01_launcher.log
+?? docs/evidencia/M2-GATE/r4_transition_fix_01_stderr.log
+?? docs/evidencia/M2-GATE/run_r4_verification.ps1
+
+exit=0
+
+git diff --stat
+ BACKLOG.md                                         | 43 ++++++-----
+ README.md                                          | 10 ++-
+ docs/evidencia/M2-GATE/00_phase0_contract.md       |  6 +-
+ docs/evidencia/M2-GATE/04_gate_iteration_1.md      |  4 ++
+ docs/evidencia/M2-GATE/04_gate_iteration_2.md      |  2 +-
+ docs/evidencia/M2-GATE/04_gate_iteration_3.md      |  4 ++
+ .../M2-GATE/04_iteration_2_revision_04.json        |  4 +-
+ docs/evidencia/M2-GATE/04_iteration_ledger.json    |  8 ++-
+ docs/evidencia/M2-GATE/04_verdict.md               | 51 ++++++-------
+ docs/evidencia/M2-GATE/05_windowed.md              | 25 ++++++-
+ docs/evidencia/M2-GATE/06_regression.md            |  4 +-
+ docs/evidencia/M2-GATE/08_no_verificado.txt        | 83 ++++++++++++----------
+ docs/evidencia/M2-GATE/09_limits.txt               | 66 +++++++----------
+ docs/evidencia/M2-GATE/10_windowed_clean_log.md    | 22 ++++++
+ 14 files changed, 195 insertions(+), 137 deletions(-)
+
+exit=0
+
+git log --oneline fefc4d8..HEAD
+1eeb635 fix(cargo): carry confirmed free replicas while awaiting their first pose
+19836c7 fix(cargo): teleport confirmed state before resuming kinematic replication
+f362783 fix(cargo): reject overlapping releases and apply corrected gate criteria
+c23e751 test(gate): capture support-loss edges and isolate cargo-free experiments
+632fafa docs: preserve reviewer correction of M2 gate failure criteria
+
+exit=0

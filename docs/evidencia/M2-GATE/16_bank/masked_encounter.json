@@ -1,0 +1,29 @@
+{
+	"airborne_ticks": 13,
+	"arguments": {
+		"box_x": "0.3",
+		"box_z": "1.5",
+		"candidate": "masked",
+		"label": "masked_encounter",
+		"output": "res://docs/evidencia/M2-GATE/16_bank",
+		"ratio": "0.665",
+		"walking": "0"
+	},
+	"candidate": "masked",
+	"dual_contact_ticks": 18,
+	"last_supported": false,
+	"losses": 1,
+	"max_off_run_ticks": 689,
+	"sampling": "independent post-node observer, both priorities 1000",
+	"slip": {
+		"max_m": 4.96334743499756,
+		"p95_m": 1.96387469768524,
+		"p999_m": 4.66215419769287,
+		"p99_m": 3.55816888809204,
+		"samples": 1064
+	},
+	"support_percent": 35.2443609022556,
+	"supported_ticks": 375,
+	"ticks": 1064,
+	"walking": false
+}

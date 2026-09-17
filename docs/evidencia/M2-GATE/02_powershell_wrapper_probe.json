@@ -1,0 +1,12 @@
+﻿[
+    {
+        "requested":  0,
+        "observed":  0,
+        "output":  "Gate output: user://gate/run_20260916_200015\nGate exit: 0 (0 passed, 1 failed/unverified, 2 invalid, 3 D96 stop)"
+    },
+    {
+        "requested":  7,
+        "observed":  7,
+        "output":  "Gate output: user://gate/run_20260916_200016\nGate exit: 7 (0 passed, 1 failed/unverified, 2 invalid, 3 D96 stop)"
+    }
+]

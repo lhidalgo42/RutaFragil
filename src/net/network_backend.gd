@@ -64,6 +64,8 @@ func is_host() -> bool:
 
 
 func peer_ids() -> PackedInt32Array:
+	if not multiplayer.has_multiplayer_peer():
+		return PackedInt32Array()
 	return multiplayer.get_peers()
 
 

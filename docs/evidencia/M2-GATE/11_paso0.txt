@@ -1,0 +1,17 @@
+11_paso0.txt — M2-GATE (cierres del paso 0)
+Fecha UTC: 2026-09-15 ~18:30
+
+(a) docs/planes/M2-GATE_plan.md y M2-GATE_ronda1_prompt.md, cometidos tal cual (25cef0e).
+
+(b) r2.1 — el arnés afirma el conteo EXACTO de tests. EXPECTED_TESTS=180 en tools/run_tests.ps1 y tools/run_tests.sh; el paso 7 falla si el descubrimiento difiere (antes exigía ">= 3", que no ve una omisión silenciosa).
+Demostración (falla primero, restaura después): renombrado un test (test_spawn_reads_mass_from_tuning -> notest_... en tests/cargo/package_test.gd, un test menos en el descubrimiento), el arnés cae en el paso 7:
+  exit 1 · "FAILURE: 179 tests discovered, expected exactly 180 (EXPECTED_TESTS in this file). gdUnit in fresh clones has silently dropped a suite's last test three times (r2.1)..."
+Restaurado el nombre (git diff vacío), la suite vuelve a 180.
+El verde final queda probado por las tres corridas de la evidencia 02 (180 = EXPECTED_TESTS tras la división r2.2, que conserva el conteo).
+
+(c) r2.2 — tests/cargo/restraint_test.gd (400 líneas, en el límite R8) partida en dos suites por tema, mismo conteo (8 tests -> 5 + 3):
+  tests/cargo/restraint_anchor_test.gd (196 líneas, 5 tests): mecánica del anclaje — pin de escena, ocupación y rechazo del segundo, precondición HELD, parentesco/congelado/colisión, unstrap al padre original (r1.4).
+  tests/cargo/restraint_lap_test.gd (nueva, 3 tests): integración en el Playground — deriva cero en una vuelta, choque de la tripulante como estante, pasillo libre entre dos amarradas.
+Verificado: res://tests/cargo -> 23/23 verde en 5 suites (antes 4), exit 0.
+
+(d) BACKLOG.md: nueva sección "Pendientes propios de la ejecución de M2-GATE (paso 0)" con la nota del descubrimiento de gdUnit en clones frescos (tres omisiones del último test de una suite: revisiones 04/05 de T2.2 y 02 de T2.3; causa desconocida; el conteo exacto la caza).

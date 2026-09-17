@@ -1,0 +1,23 @@
+[
+    {
+        "name":  "06_r4_demo",
+        "exit":  0,
+        "timeout_s":  120,
+        "timed_out":  false,
+        "source_commit":  "266f459f104fd22a23deed77451630528434390f"
+    },
+    {
+        "name":  "06_r4_handling",
+        "exit":  0,
+        "timeout_s":  120,
+        "timed_out":  false,
+        "source_commit":  "266f459f104fd22a23deed77451630528434390f"
+    },
+    {
+        "name":  "06_r4_net_long",
+        "exit":  0,
+        "timeout_s":  350,
+        "timed_out":  false,
+        "source_commit":  "266f459f104fd22a23deed77451630528434390f"
+    }
+]
