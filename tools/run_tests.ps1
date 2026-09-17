@@ -65,7 +65,7 @@ $exit_infra_failure = 1
 # a floor — gdUnit in fresh clones has silently dropped a suite's last test
 # three times (T2.2 reviews 04/05, T2.3 review 02), and a ">= N" guard cannot
 # see that. Bump this constant in the SAME commit that adds or removes a test.
-$expected_tests = 254
+$expected_tests = 255
 
 function write_step([string]$message) {
     Write-Host ""

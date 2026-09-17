@@ -29,11 +29,11 @@ func _run() -> void:
 	for entry: Dictionary in _ledger:
 		if entry.get("valid", false) and entry.get("status", "") == "failed":
 			failures += 1
-	if failures >= 3 and config.seconds >= 300.0 and not config.experiment:
+	if failures >= 3 and config.counts_for_d96():
 		printerr("GATE D96: three failed iterations; stop and plan option B")
 		get_tree().quit(3)
 		return
-	if failures == 2 and config.seconds >= 300.0 and not config.experiment:
+	if failures == 2 and config.counts_for_d96():
 		var previous: Variant = JSON.parse_string(FileAccess.get_file_as_string(config.precondition)) \
 			if FileAccess.file_exists(config.precondition) else null
 		if not previous is Dictionary or not _source_clean \
@@ -46,7 +46,7 @@ func _run() -> void:
 		get_tree().quit(1)
 		return
 	DirAccess.make_dir_recursive_absolute(config.output)
-	if config.seconds >= 300.0 and not config.experiment:
+	if config.counts_for_d96():
 		config.iteration = _ledger.size() + 1
 	var exe: String = OS.get_executable_path()
 	_pids["host"] = OS.create_process(exe, config.child_args("host"))
@@ -104,6 +104,12 @@ func _aggregate(killed: Array[String]) -> void:
 	if config.experiment:
 		verdict = {"status": "completed", "valid": false, "d96_consumed": false,
 			"invalid_reasons": [], "failures": [], "human_gate_approval": "not_a_gate"}
+	elif config.human != "none":
+		# D97: the owner is playing. The verdict is theirs, not this script's,
+		# so the metrics are recorded and nothing is passed or failed here.
+		verdict = {"status": "played", "valid": false, "d96_consumed": false,
+			"invalid_reasons": [], "failures": [], "human_gate_approval": "pending_owner",
+			"automatic_reference": GateMetricsUtil.judge(host, client)}
 	var logs: Dictionary = {"host": _log_counts("host"), "client": _log_counts("client")}
 	for role: String in logs:
 		var counts: Dictionary = logs[role]
@@ -114,7 +120,7 @@ func _aggregate(killed: Array[String]) -> void:
 			var invalid: Array = verdict["invalid_reasons"]
 			invalid.append(role + ": missing log or engine errors")
 	verdict["iteration"] = config.iteration
-	verdict["kind"] = "experiment" if config.experiment else ("gate" if config.seconds >= 300.0 else "preflight")
+	verdict["kind"] = config.kind()
 	verdict["source_commit"] = _source_commit
 	verdict["source_clean"] = _source_clean
 	verdict["configuration"] = config.signature()
@@ -134,18 +140,20 @@ func _aggregate(killed: Array[String]) -> void:
 		code = 2
 	if config.experiment and verdict.get("status") == "completed":
 		code = 0
+	if config.human != "none" and verdict.get("status") == "played":
+		code = 0
 	get_tree().quit(code)
 
 
 func _invalid(details: Dictionary) -> void:
 	details.merge({"status": "invalid", "valid": false, "iteration": config.iteration,
-		"kind": "experiment" if config.experiment else ("gate" if config.seconds >= 300.0 else "preflight"), "output": config.output})
+		"kind": config.kind(), "output": config.output})
 	config.write_json("summary.json", details)
 	_record_iteration(details)
 
 
 func _record_iteration(verdict: Dictionary) -> void:
-	if config.seconds >= 300.0 and not config.experiment:
+	if config.counts_for_d96():
 		_ledger.append({"iteration": config.iteration, "valid": verdict.get("valid", false),
 			"status": verdict.get("status", "invalid"), "output": config.output})
 		var ledger_file: FileAccess = FileAccess.open(LEDGER_PATH, FileAccess.WRITE)

@@ -41,6 +41,23 @@ func parse(args: PackedStringArray) -> void:
 		windowed = human
 
 
+## D97's human gate is a play session, not a D96 attempt: it must not demand a
+## precondition, must not be numbered as an iteration and must not be judged
+## automatically. Only a scripted 300 s run counts against the three.
+func counts_for_d96() -> bool:
+	return seconds >= 300.0 and not experiment and human == "none"
+
+
+## What this run is for, in the evidence: a D96 iteration, the owner's human
+## gate, a reduction experiment, or a short preflight.
+func kind() -> String:
+	if experiment:
+		return "experiment"
+	if human != "none":
+		return "human"
+	return "gate" if seconds >= 300.0 else "preflight"
+
+
 func budget_s() -> float:
 	return seconds + 90.0
 
