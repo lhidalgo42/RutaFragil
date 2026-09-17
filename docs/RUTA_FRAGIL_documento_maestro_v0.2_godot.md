@@ -193,7 +193,7 @@ Componente `CoopInteractable` con N puestos (2–4). Tres modos:
 
 Reglas: el peer con autoridad del objeto resuelve el progreso; la ocupación de puestos y el progreso se replican; cada uso muestra quién está en cada puesto (legible para el clip). Toda tarea "épica" del juego se construye sobre este componente, no como código especial.
 
-## 4. El bus (style board D16: bus largo, livrea amarillo/rojo, techo crema, ventanas corridas)
+## 4. El bus (style board D16, **enmendado por D100 el 2026-09-17**: furgón largo de reparto de carrocería única sin cabina separada, morro cab-over, **lateral ciego** con ventanas pequeñas altas, puerta lateral corredera con estribo, puertas traseras dobles de carga, librea amarillo/rojo, techo crema. Las «ventanas corridas» de la v0.2 quedan RETIRADAS: hacían que el vehículo leyera como autobús escolar. Láminas: `docs/referencias/bus_exterior_canonico_v2.png`, `bus_exterior_trasera_v2.png`, `bus_interior_canonico_v1.png`)
 
 ### 4.1 Recursos (tres relojes)
 
@@ -401,7 +401,7 @@ Subtítulos de eventos sonoros, modo daltonismo en etiquetas, remapeo completo, 
 
 ## 10. Arte
 
-Low-poly estilizado según style board D16 (`Referencias/bus_interior_canonico_v1.png`, `bus_exterior_canonico_v1.png`). Legibilidad de estado > detalle. Assets externos con licencia comercial verificada en `CREDITS.md`; nada que imite marcas reales.
+Low-poly estilizado según style board D16 enmendado por D100. Las láminas viven en **`docs/referencias/`** (la ruta `Referencias/` que citaba la v0.2 nunca existió): `bus_exterior_canonico_v2.png`, `bus_exterior_trasera_v2.png`, `bus_interior_canonico_v1.png`, `bioma_b0_ciudad_v1.png`, `bioma_b1_cerro_v1.png`, `bioma_b2_pantano_v1.png`. Legibilidad de estado > detalle. Assets externos con licencia comercial verificada en `CREDITS.md`; nada que imite marcas reales.
 
 ### 10.1 Pipeline de assets generados con ComfyUI (D27)
 

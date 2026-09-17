@@ -1,0 +1,12 @@
+{
+	"file": "bus_exterior_canonico_v2.png",
+	"model": "flux1-schnell.safetensors",
+	"licence": "Apache-2.0",
+	"prompt": "flat-shaded low-poly 3D game asset, orthographic side view of a long high-roof panel delivery van, ONE continuous body with no separate cab, flat cab-over front, tall solid windowless side panels, a single row of small high windows just under the roofline, large sliding side door with fold-down steps in the middle, bright yellow body panels, a single bold RED horizontal stripe along the side, CREAM WHITE ROOF clearly lighter than the yellow body, sturdy dark wheels, long wheelbase, visible polygon facets, flat colour blocks, plain light grey background, no text, no logos, no brand names",
+	"seed": 61,
+	"steps": 4,
+	"width": 1280,
+	"height": 560,
+	"server": "http://192.168.50.200:8188",
+	"generated_utc": "2026-09-17T19:51:46Z"
+}
