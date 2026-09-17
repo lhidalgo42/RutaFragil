@@ -123,7 +123,7 @@ func test_trees_paint_the_canopy_mask_for_the_forest_floor() -> void:
 	var batcher: MeshBatcher = MeshBatcher.new()
 	batcher.tree(Vector3(100.0, 0.0, 50.0), 4.0, 2.0)
 	assert_int(batcher.count("trunk")).is_equal(1)
-	assert_int(batcher.count("crown")).is_equal(7)
+	assert_int(batcher.count("crown")).is_equal(9)
 	assert_int(batcher.count("fern")).is_equal(2)
 	var texture: ImageTexture = MeshBatcher.update_canopy()
 	assert_object(texture).is_not_null()

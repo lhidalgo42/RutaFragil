@@ -13,7 +13,7 @@ extends Node3D
 const COLOURS: Dictionary = {
 	"ground": Color(0.45, 0.5, 0.42), "asphalt": Color(0.24, 0.25, 0.27), "asphalt_plain": Color(0.24, 0.25, 0.27), "asphalt_side": Color(0.3, 0.31, 0.33),
 	"median": Color(0.35, 0.55, 0.3), "curb": Color(0.72, 0.72, 0.7), "sidewalk": Color(0.8, 0.78, 0.72),
-	"hump": Color(0.85, 0.55, 0.15), "paint": Color(0.95, 0.85, 0.2), "paint_white": Color(0.93, 0.93, 0.9),
+	"hump": Color(0.27, 0.28, 0.3), "paint": Color(0.95, 0.85, 0.2), "paint_white": Color(0.93, 0.93, 0.9),
 	"paint_yellow": Color(0.95, 0.8, 0.15), "concrete": Color(0.55, 0.52, 0.48), "warn": Color(0.95, 0.8, 0.1),
 	"post": Color(0.6, 0.6, 0.62), "diamond": Color(0.95, 0.75, 0.1), "disc": Color(0.95, 0.95, 0.95), "dirt": Color(0.5, 0.38, 0.25),
 	"car_a": Color(0.85, 0.85, 0.88), "car_b": Color(0.25, 0.3, 0.55), "car_c": Color(0.6, 0.15, 0.15),

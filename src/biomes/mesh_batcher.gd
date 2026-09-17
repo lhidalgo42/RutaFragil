@@ -54,12 +54,15 @@ const ROCK_TEXTURES: Array[String] = [
 ## kind -> [texturas, metros por baldosa, franja a lo ancho (escala, corrimiento)].
 ## "asphalt_plain" es la avenida: dos calzadas de un sentido, sin la línea central de la
 ## textura — se muestrea solo el asfalto liso entre la línea central y la de borde.
+## El quinto valor es el tinte. El ripio usa las piedras de río de Rocks005 pero a 0,9 m
+## por baldosa y teñidas de tierra: a 2,5 m y sin teñir salían moradas y del tamaño de un
+## plato (D77). Piedra chica y café es ripio; piedra grande y lila es un lecho de río.
 const RIBBON_MATERIALS: Dictionary = {
-	"asphalt": [ROAD_TEXTURES, 9.0, 1.0, 0.0],
-	"asphalt_plain": [ROAD_TEXTURES, 9.0, 0.3, 0.12],
-	"street": [ROAD_TEXTURES, 7.0, 1.0, 0.0],
-	"dirt": [ROCK_TEXTURES, 2.5, 1.0, 0.0],
-	"street_dirt": [ROCK_TEXTURES, 2.5, 1.0, 0.0],
+	"asphalt": [ROAD_TEXTURES, 9.0, 1.0, 0.0, Color(1.0, 1.0, 1.0)],
+	"asphalt_plain": [ROAD_TEXTURES, 9.0, 0.3, 0.12, Color(1.0, 1.0, 1.0)],
+	"street": [ROAD_TEXTURES, 7.0, 1.0, 0.0, Color(1.0, 1.0, 1.0)],
+	"dirt": [ROCK_TEXTURES, 0.9, 1.0, 0.0, Color(0.82, 0.66, 0.5)],
+	"street_dirt": [ROCK_TEXTURES, 0.9, 1.0, 0.0, Color(0.82, 0.66, 0.5)],
 }
 
 ## Vegetación con textura (D76): corteza real en los troncos y mechones de hojas
@@ -72,14 +75,19 @@ const BARK_MATERIALS: Dictionary = {
 }
 ## kind -> [atlas con alfa, repeticiones por tarjeta, tinte]. El recorte es `alpha_scissor`:
 ## sin mezcla de transparencia, así que las tarjetas se ordenan solas en profundidad.
+## La MATA, no el atlas (D77): el atlas son cuatro hojas sueltas sobre transparente y
+## repetido en la tarjeta se veía a través —«hojas separadas en un palo»—; la mata es el
+## mismo atlas estampado 110 veces encimado (`shrink_texture.gd ++ stamp=`), una masa de
+## follaje con borde roto. Una tarjeta = una mata, sin repetir (escala UV 1).
 const LEAF_ATLAS: String = "res://assets/textures/tree/leaf_atlas.png"
+const LEAF_CLUMP: String = "res://assets/textures/tree/leaf_clump.png"
 const CUTOUT_MATERIALS: Dictionary = {
-	"crown": [LEAF_ATLAS, 3.0, Color(0.72, 0.86, 0.5)],
-	"crown_b": [LEAF_ATLAS, 3.0, Color(0.6, 0.78, 0.42)],
-	"poplar": [LEAF_ATLAS, 3.0, Color(0.7, 0.84, 0.44)],
-	"orchard": [LEAF_ATLAS, 3.0, Color(0.6, 0.8, 0.46)],
-	"fern": [LEAF_ATLAS, 2.0, Color(0.3, 0.5, 0.24)],
-	"vine": [LEAF_ATLAS, 2.5, Color(0.34, 0.55, 0.26)],
+	"crown": [LEAF_CLUMP, 1.0, Color(0.62, 0.74, 0.46)],
+	"crown_b": [LEAF_CLUMP, 1.0, Color(0.55, 0.7, 0.4)],
+	"poplar": [LEAF_CLUMP, 1.0, Color(0.66, 0.78, 0.42)],
+	"orchard": [LEAF_CLUMP, 1.0, Color(0.56, 0.72, 0.42)],
+	"fern": [LEAF_CLUMP, 1.0, Color(0.3, 0.48, 0.24)],
+	"vine": [LEAF_CLUMP, 1.0, Color(0.36, 0.56, 0.28)],
 }
 
 static var _grain: NoiseTexture2D
@@ -295,7 +303,7 @@ static func cutout_material(kind: String) -> StandardMaterial3D:
 ## Un árbol (D76): tronco con corteza y una copa de `clumps` mechones de hojas repartidos
 ## dentro del elipsoide de la copa, más `ferns` helechos al pie. Determinista por posición,
 ## como todo lo demás. Deja la copa anotada en la máscara para el suelo de bosque.
-func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 7, ferns: int = 2, trunk_kind: String = "trunk", crown_kind: String = "crown", trunk_w: float = 0.4, column_h: float = 0.0) -> void:
+func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 9, ferns: int = 2, trunk_kind: String = "trunk", crown_kind: String = "crown", trunk_w: float = 0.4, column_h: float = 0.0) -> void:
 	add(trunk_kind, "cyl", Transform3D(Basis.from_scale(Vector3(trunk_w, trunk_h, trunk_w)), p + Vector3.UP * (trunk_h * 0.5)))
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = int(p.x * 73.0 + p.z * 131.0)
@@ -305,7 +313,9 @@ func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 7, ferns: in
 		if column_h > 0.0:
 			# álamo: la copa es una columna, los mechones suben apilados desde media altura
 			off = Vector3(rng.randf_range(-0.4, 0.4), 0.0, rng.randf_range(-0.4, 0.4)) * crown_r + Vector3.UP * (column_h * (float(k) + 0.5) / float(clumps) - crown_r * 0.7 - trunk_h * 0.5)
-		var size: float = crown_r * rng.randf_range(1.3, 1.9)
+		# matas algo más chicas que antes y más juntas: con la textura densa, nueve tarjetas
+		# de 1,2–1,6 radios se solapan en una copa cerrada
+		var size: float = crown_r * rng.randf_range(1.2, 1.6)
 		var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU) * Basis(Vector3.RIGHT, rng.randf_range(-0.35, 0.35)) * Basis.from_scale(Vector3(size, size * 0.85, size))
 		add(crown_kind, "card", Transform3D(basis, top + off))
 	for _f: int in ferns:
@@ -412,6 +422,9 @@ static func ribbon_material(colour: Color, kind: String) -> Material:
 		material.set_shader_parameter("tile_m", float(spec[1]))
 		material.set_shader_parameter("across_scale", float(spec[2]))
 		material.set_shader_parameter("across_offset", float(spec[3]))
+		if spec.size() > 4:
+			# como Color, no Vector3: el uniform es `source_color` y solo así convierte de sRGB
+			material.set_shader_parameter("tint", spec[4])
 		_ribbons[kind] = material
 	return _ribbons[kind]
 

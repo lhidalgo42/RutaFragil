@@ -18,7 +18,8 @@ const COLOURS: Dictionary = {
 	"tower": Color(0.85, 0.8, 0.72), "cross_church": Color(0.9, 0.88, 0.84),
 	"water": Color(0.32, 0.42, 0.45), "bank": Color(0.46, 0.4, 0.3),
 	"vine": Color(0.3, 0.42, 0.22), "vine_post": Color(0.5, 0.42, 0.32), "vine_wire": Color(0.35, 0.35, 0.36),
-	"fountain_stream": Color(0.55, 0.75, 0.8),
+	"fountain_stream": Color(0.55, 0.75, 0.8), "fountain_floor": Color(0.78, 0.8, 0.76),
+	"foam": Color(0.94, 0.97, 0.98), "spray": Color(0.9, 0.95, 0.97),
 	"motorway": Color(0.26, 0.27, 0.29), "motorway_paint": Color(0.92, 0.92, 0.88),
 	"street": Color(0.27, 0.28, 0.3), "street_dirt": Color(0.54, 0.44, 0.32), "street_line": Color(0.86, 0.85, 0.8),
 	"truck_a": Color(0.85, 0.85, 0.85), "truck_b": Color(0.2, 0.35, 0.6),
@@ -181,14 +182,23 @@ func _build_plaza() -> void:
 	var size: Vector3 = hi - lo
 	var reach: float = minf(size.x, size.z) * 0.5
 	_b.box("paving", Transform3D(Basis.from_scale(Vector3(size.x, 0.12, size.z)), centre + Vector3.UP * 0.06))
-	# Césped en cuñas giradas 45°: los cuatro cuadrados leían como una grilla.
+	# Cuatro canteros de césped chicos y a ras (D77): los de antes eran losas de 27 m
+	# flotando 10 cm, «cuatro losas verdes enormes» en la foto. Cada cantero: borde de
+	# seto bajo por sus cuatro lados, dos árboles grandes y una banca.
 	for k: int in 4:
 		var ang: float = TAU * float(k) / 4.0 + PI * 0.25
 		var dir: Vector3 = Vector3(cos(ang), 0.0, sin(ang))
-		var lawn: Vector3 = centre + dir * (reach * 0.58)
-		_b.box("plaza_lawn", Transform3D(Basis(Vector3.UP, -ang) * Basis.from_scale(Vector3(reach * 0.62, 0.16, reach * 0.62)), lawn + Vector3.UP * 0.1))
-		_tree(lawn + dir * (reach * 0.22), 4.6, 2.3)
-		_b.add("hedge", "cyl", Transform3D(Basis.from_scale(Vector3(1.1, 0.7, 1.1)), lawn - dir * (reach * 0.3) + Vector3.UP * 0.4))
+		var side_dir: Vector3 = Vector3(-sin(ang), 0.0, cos(ang))
+		var lawn: Vector3 = centre + dir * (reach * 0.52)
+		var lawn_half: float = reach * 0.17
+		var lawn_rot: Basis = Basis(Vector3.UP, -ang)
+		_b.box("plaza_lawn", Transform3D(lawn_rot * Basis.from_scale(Vector3(lawn_half * 2.0, 0.05, lawn_half * 2.0)), lawn + Vector3.UP * 0.135))
+		for edge: int in 4:
+			var e_ang: float = ang + TAU * float(edge) / 4.0
+			var e_dir: Vector3 = Vector3(cos(e_ang), 0.0, sin(e_ang))
+			_b.box("hedge", Transform3D(Basis(Vector3.UP, -e_ang) * Basis.from_scale(Vector3(0.5, 0.55, lawn_half * 1.9)), lawn + e_dir * lawn_half + Vector3.UP * 0.4))
+		_tree(lawn + side_dir * (lawn_half * 0.45), 5.2, 2.6)
+		_tree(lawn - side_dir * (lawn_half * 0.5) + dir * (lawn_half * 0.3), 4.4, 2.2)
 	# Los cuatro caminos que entran a la fuente, en diagonal
 	for k: int in 4:
 		var ang2: float = TAU * float(k) / 4.0
@@ -213,6 +223,8 @@ func _build_plaza() -> void:
 ## chorro arriba. Nada de esto es un cubo, que era justo el problema.
 func _build_fountain(centre: Vector3) -> void:
 	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(11.0, 0.55, 11.0)), centre + Vector3.UP * 0.28))
+	# fondo claro del estanque: el agua es transparente y tiene que verse algo a través
+	_b.add("fountain_floor", "cyl", Transform3D(Basis.from_scale(Vector3(10.1, 0.06, 10.1)), centre + Vector3.UP * 0.3))
 	_b.add("fountain_water", "cyl", Transform3D(Basis.from_scale(Vector3(10.1, 0.36, 10.1)), centre + Vector3.UP * 0.42))
 	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(3.6, 0.9, 3.6)), centre + Vector3.UP * 0.75))
 	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(4.6, 0.22, 4.6)), centre + Vector3.UP * 1.2))
@@ -222,13 +234,23 @@ func _build_fountain(centre: Vector3) -> void:
 	_b.add("fountain_water", "cyl", Transform3D(Basis.from_scale(Vector3(2.2, 0.08, 2.2)), centre + Vector3.UP * 2.94))
 	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(0.6, 1.1, 0.6)), centre + Vector3.UP * 3.5))
 	_b.add("fountain_water", "sph", Transform3D(Basis.from_scale(Vector3(0.7, 0.9, 0.7)), centre + Vector3.UP * 4.3))
-	# los ocho hilos de agua que caen de la taza al estanque
+	# Ocho CORTINAS de agua de la taza alta a la taza media, y ocho de la media al estanque:
+	# láminas de 35 cm de ancho con el shader corriendo hacia abajo, espuma blanca donde
+	# caen y un penacho de rocío arriba. Con hilos de 9 cm la fuente se leía como palitos
+	# azules (D77): agua cayendo es ancha, blanca y salpica.
 	for k: int in 8:
 		var ang: float = TAU * float(k) / 8.0
-		var from: Vector3 = centre + Vector3(cos(ang), 0.0, sin(ang)) * 2.3 + Vector3.UP * 2.85
-		var to: Vector3 = centre + Vector3(cos(ang), 0.0, sin(ang)) * 2.5 + Vector3.UP * 1.35
-		# hilo que cae: mismo shader de agua, pero con el patrón corriendo hacia abajo
-		_b.box("fountain_stream", MeshBatcher.between(from, to, 0.09))
+		var out_dir: Vector3 = Vector3(cos(ang), 0.0, sin(ang))
+		var facing: Basis = Basis(Vector3.UP, -ang)
+		# taza alta -> taza media
+		_b.box("fountain_stream", Transform3D(facing * Basis.from_scale(Vector3(0.3, 1.55, 0.05)), centre + out_dir * 1.25 + Vector3.UP * 2.1))
+		_b.add("foam", "cyl", Transform3D(Basis.from_scale(Vector3(0.7, 0.05, 0.7)), centre + out_dir * 1.3 + Vector3.UP * 1.36))
+		# taza media -> estanque
+		_b.box("fountain_stream", Transform3D(facing * Basis.from_scale(Vector3(0.38, 0.92, 0.05)), centre + out_dir * 2.35 + Vector3.UP * 0.88))
+		_b.add("foam", "cyl", Transform3D(Basis.from_scale(Vector3(1.1, 0.05, 1.1)), centre + out_dir * 2.45 + Vector3.UP * 0.62))
+	for k2: int in 5:
+		var a2: float = TAU * float(k2) / 5.0 + 0.3
+		_b.add("spray", "sph", Transform3D(Basis.from_scale(Vector3(0.45, 0.8, 0.45)), centre + Vector3(cos(a2), 0.0, sin(a2)) * 0.3 + Vector3.UP * 4.6))
 
 
 func _build_churches() -> void:
