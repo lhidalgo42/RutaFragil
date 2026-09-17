@@ -23,4 +23,27 @@
 
 ## Modelos generativos
 
-*(Sección vacía — se llenará según §10.2 del maestro.)*
+Regla del maestro §10.2: **antes de que un modelo produzca cualquier cosa que llegue al build, su licencia queda copiada aquí** (territorio, uso comercial, atribución, umbrales). Todo contenido generado por IA se declara en Steam al publicar.
+
+Servidor ComfyUI del dueño: `http://192.168.50.200:8188` (ComfyUI 0.33.4, Linux). Inventario revisado el 2026-09-17.
+
+### APROBADO para assets que se publican
+
+| Modelo | Licencia | Uso | Verificado |
+|---|---|---|---|
+| **FLUX.1 [schnell]** (`flux1-schnell.safetensors`) | **Apache 2.0** | Imágenes: style board, referencias, texturas | 2026-09-17 — instalado y disponible |
+
+### PROHIBIDO para assets que se publican
+
+| Modelo | Motivo | Estado |
+|---|---|---|
+| **Hunyuan3D 2.1** (`hunyuan_3d_v2.1.safetensors` + nodos `Hy3D21*`) | Licencia de Tencent: el Territorio excluye **Unión Europea, Reino Unido y Corea del Sur**. Steam vende en todo el mundo. | **Instalado en el servidor.** Solo exploración interna; su salida NO entra al build. |
+| **FLUX.1 [dev]** y `flux2_dev_fp8mixed` | Licencia no comercial. | Instalado; no usar. |
+
+### PENDIENTE de verificar antes de usar
+
+`triposplat_fp16` (3D), `Illustrious-XL-v2.0`, `qwen_image_*`, `z_image_turbo`, `krea2_turbo`, `anima-base`, `Stable-Cascade`, `wan2.*`, `MiniMax_*`, `stable_audio_3_medium_base`. Ninguno ha producido nada que esté en el repositorio.
+
+### FALTA instalar
+
+**Trellis (Microsoft, MIT)** — es la opción **por defecto para 3D** según §10.2 y **no está en el servidor**. Hoy el único generador 3D instalado es el prohibido. Sin Trellis (u otro 3D con licencia limpia) no hay malla generada que pueda publicarse.
