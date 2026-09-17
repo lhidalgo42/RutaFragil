@@ -1,6 +1,6 @@
 # 23 — Iteración 6: el gate pasa el criterio automático. Falta el gate humano.
 
-**Fecha:** 2026-09-17 · **Commit de simulación:** `aa8058f`, árbol limpio verificado por el lanzador · Motor `4.7.2.stable.official.ed1daf0bf`, Jolt. Dos ventanas, VSync off, `max_fps = 0`, `human=none` (guionizada en las dos instancias). 300 s / 18.000 ticks por instancia.
+**Fecha:** 2026-09-17 · **Commit de simulación:** `aa8058f`, árbol limpio verificado por el lanzador — **hash del historial anterior a la compactación del 2026-09-17; ya no existe en la rama.** Todo el trabajo de esos 53 commits vive ahora en uno solo, y la correspondencia completa (hash, fecha y autor de cada uno) está en [24_historial_de_la_rama.md](24_historial_de_la_rama.md). Los `source_commit` de los JSON de esta corrida se conservan sin tocar: registran con verdad qué commit la produjo, aunque ese objeto ya no sea alcanzable · Motor `4.7.2.stable.official.ed1daf0bf`, Jolt. Dos ventanas, VSync off, `max_fps = 0`, `human=none` (guionizada en las dos instancias). 300 s / 18.000 ticks por instancia.
 
 **Veredicto automático: `status: passed`, `valid: true`, `logic_passed: true`, `render_verified: true`, `failures: []`, `invalid_reasons: []`.** Código de salida 0.
 

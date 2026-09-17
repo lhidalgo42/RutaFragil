@@ -4,6 +4,12 @@
 
 Respaldo completo del historial original: `RutaFragil_RESPALDO_20260917.bundle` (57 MB, `git bundle verify` correcto), fuera del repositorio.
 
+## Cómo leer los hashes que aparecen en la evidencia
+
+Los `summary.json`, `*_context.json` y `host.json`/`client.json` de cada corrida guardan su `source_commit`: el commit que estaba en HEAD cuando se ejecutó. **Esos hashes pertenecen al historial de abajo y ya no son alcanzables desde la rama.** No se han modificado a propósito: registran con verdad qué código produjo cada medición, y falsearlos para que apuntaran al commit compactado sería inventar una procedencia. Esta tabla es la correspondencia.
+
+Si hace falta recuperar cualquiera de ellos: `git clone RutaFragil_RESPALDO_20260917.bundle`.
+
 ## Los commits, con su autor
 
 | # | Hash original | Fecha | Autor | Asunto |
