@@ -35,7 +35,12 @@ func test_gravel_builder_covers_the_unpaved_stretch() -> void:
 	assert_int(gravel.zone_shape_count()).is_greater(30)
 	assert_int(gravel.washboard_shape_count()).is_greater(200)
 	var pebbles: MultiMeshInstance3D = gravel.get_node("Batch_pebble") as MultiMeshInstance3D
-	assert_int(pebbles.multimesh.instance_count).is_greater(1500)
+	# D72: a propósito hay muchas menos piedras y más chicas — antes eran 1,1 por metro
+	# cuadrado de 14 cm y el camino se leía como un suelo sembrado de piedrecillas. La
+	# textura ahora la da el material; las piedras solo la acompañan.
+	assert_int(pebbles.multimesh.instance_count).is_greater(400)
+	# y la tierra ya no es una cadena de cajas de 10 m: es una cinta continua
+	assert_object(gravel.get_node_or_null("Ribbon_dirt")).is_not_null()
 
 
 func test_gravel_zone_reports_only_the_bus() -> void:

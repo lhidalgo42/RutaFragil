@@ -15,11 +15,13 @@ uniform float bend_radius = 2.6;
 uniform float bend_strength = 0.9;
 
 varying float v_h;
+varying vec3 v_tint;
 
 void vertex() {
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	float h = UV.y;
 	v_h = h;
+	v_tint = COLOR.rgb;
 	float phase = world.x * 0.7 + world.z * 0.9;
 	float sway = sin(TIME * wind_speed + phase) * wind_strength * h * h;
 	vec2 away = world.xz - bus_position.xz;
@@ -33,11 +35,12 @@ void vertex() {
 }
 
 void fragment() {
-	float half_w = 0.5 * (1.0 - UV.y * 0.92);
+	// Silueta de hoja: se angosta rápido al principio y termina en punta fina.
+	float half_w = 0.5 * pow(1.0 - UV.y, 0.55) * (1.0 - UV.y * 0.55);
 	if (abs(UV.x - 0.5) > half_w) {
 		discard;
 	}
-	ALBEDO = mix(base_colour, tip_colour, v_h);
+	ALBEDO = mix(base_colour, tip_colour, v_h) * v_tint;
 	ROUGHNESS = 0.95;
 	SPECULAR = 0.1;
 }

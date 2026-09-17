@@ -12,6 +12,8 @@ const COLOURS: Dictionary = {
 	"platform": Color(0.72, 0.7, 0.66), "station": Color(0.78, 0.72, 0.6), "roof": Color(0.5, 0.26, 0.2),
 	"barrier": Color(0.92, 0.92, 0.9), "barrier_red": Color(0.8, 0.15, 0.12), "cross": Color(0.95, 0.95, 0.93),
 	"paving": Color(0.74, 0.72, 0.68), "grass": Color(0.34, 0.5, 0.28), "kiosk": Color(0.85, 0.82, 0.74),
+	"path": Color(0.78, 0.73, 0.64), "fountain": Color(0.8, 0.78, 0.72), "fountain_water": Color(0.32, 0.56, 0.62),
+	"hedge": Color(0.24, 0.42, 0.22), "plaza_lawn": Color(0.31, 0.49, 0.25), "lamp_post": Color(0.2, 0.22, 0.24), "lamp_globe": Color(0.96, 0.94, 0.84),
 	"bench": Color(0.45, 0.32, 0.2), "trunk": Color(0.4, 0.28, 0.18), "crown": Color(0.26, 0.48, 0.24),
 	"tower": Color(0.85, 0.8, 0.72), "cross_church": Color(0.9, 0.88, 0.84),
 	"water": Color(0.32, 0.42, 0.45), "bank": Color(0.46, 0.4, 0.3),
@@ -29,6 +31,7 @@ const RAIL_RANGE_M: float = 900.0
 
 var data: OsmMapData
 var _b: MeshBatcher = MeshBatcher.new()
+var _r: RoadRibbon = RoadRibbon.new()
 
 
 func _ready() -> void:
@@ -51,6 +54,7 @@ func build() -> void:
 	_build_vines()
 	_build_motorway()
 	_b.flush(self, COLOURS)
+	_r.flush(self, COLOURS)
 
 
 func batch_count(kind: String) -> int:
@@ -70,19 +74,24 @@ func _build_streets() -> void:
 			continue
 		var street: Dictionary = item
 		var pts: PackedVector3Array = _points(street.get("pts", []))
-		var width: float = float(street.get("w", 6.0))
+		if pts.size() < 2:
+			continue
+		var half: float = float(street.get("w", 6.0)) * 0.5
 		var dirt: bool = str(street.get("surface", "street")) == "gravel"
-		for i: int in maxi(0, pts.size() - 1):
+		# Cinta continua (D72): en las esquinas del pueblo la cadena de cajas dejaba
+		# el mismo diente que en la ruta, y aquí hay 217 calles con esquinas.
+		var lefts: PackedVector3Array = RoadRibbon.lefts(pts)
+		_r.band("street_dirt" if dirt else "street", pts, lefts, -half, half, 0.04)
+		if half < 3.25 or dirt:
+			continue
+		for i: int in pts.size() - 1:
 			var a: Vector3 = pts[i]
 			var b: Vector3 = pts[i + 1]
 			var seg: float = a.distance_to(b)
-			if seg < 0.3:
+			if seg < 6.0:
 				continue
 			var rot: Basis = Basis.looking_at((b - a) / seg, Vector3.UP)
-			var mid: Vector3 = (a + b) * 0.5
-			_b.box("street_dirt" if dirt else "street", Transform3D(rot * Basis.from_scale(Vector3(width, 0.04, seg + 0.5)), mid + Vector3.UP * 0.02))
-			if width >= 6.5 and not dirt and seg > 6.0:
-				_b.box("street_line", Transform3D(rot * Basis.from_scale(Vector3(0.12, 0.02, seg * 0.55)), mid + Vector3.UP * 0.05))
+			_b.box("street_line", Transform3D(rot * Basis.from_scale(Vector3(0.12, 0.02, seg * 0.55)), (a + b) * 0.5 + Vector3.UP * 0.05))
 
 
 func _build_rail() -> void:
@@ -153,6 +162,10 @@ func _build_station() -> void:
 			_b.box("roof", Transform3D(prot * Basis.from_scale(Vector3(4.4, 0.15, plen / 3.4)), pc + prot * Vector3(0.0, 0.0, off) + Vector3.UP * 3.6))
 
 
+## Plaza de Armas (D72). Antes: un pavimento rectangular, cuatro cajas de pasto y un
+## quiosco de cilindros. Ahora tiene su centro — la fuente "Pilón Quenlobo", una taza
+## de tres cuerpos escalonados sobre un estanque redondo — y los caminos llegan a ella
+## en diagonal, con el césped partido en cuñas en vez de en cuatro cuadrados.
 func _build_plaza() -> void:
 	var pz: Dictionary = data.plaza
 	if pz.is_empty():
@@ -167,20 +180,55 @@ func _build_plaza() -> void:
 		hi = hi.max(p)
 	var centre: Vector3 = (lo + hi) * 0.5
 	var size: Vector3 = hi - lo
+	var reach: float = minf(size.x, size.z) * 0.5
 	_b.box("paving", Transform3D(Basis.from_scale(Vector3(size.x, 0.12, size.z)), centre + Vector3.UP * 0.06))
-	for sx: float in [-1.0, 1.0]:
-		for sz: float in [-1.0, 1.0]:
-			var quad: Vector3 = centre + Vector3(sx * size.x * 0.24, 0.0, sz * size.z * 0.24)
-			_b.box("grass", Transform3D(Basis.from_scale(Vector3(size.x * 0.34, 0.16, size.z * 0.34)), quad + Vector3.UP * 0.1))
-			_tree(quad + Vector3(sx * size.x * 0.14, 0.0, sz * size.z * 0.14), 4.4, 2.2)
-	_b.add("kiosk", "cyl", Transform3D(Basis.from_scale(Vector3(7.0, 0.4, 7.0)), centre + Vector3.UP * 0.25))
+	# Césped en cuñas giradas 45°: los cuatro cuadrados leían como una grilla.
+	for k: int in 4:
+		var ang: float = TAU * float(k) / 4.0 + PI * 0.25
+		var dir: Vector3 = Vector3(cos(ang), 0.0, sin(ang))
+		var lawn: Vector3 = centre + dir * (reach * 0.58)
+		_b.box("plaza_lawn", Transform3D(Basis(Vector3.UP, -ang) * Basis.from_scale(Vector3(reach * 0.62, 0.16, reach * 0.62)), lawn + Vector3.UP * 0.1))
+		_tree(lawn + dir * (reach * 0.22), 4.6, 2.3)
+		_b.add("hedge", "cyl", Transform3D(Basis.from_scale(Vector3(1.1, 0.7, 1.1)), lawn - dir * (reach * 0.3) + Vector3.UP * 0.4))
+	# Los cuatro caminos que entran a la fuente, en diagonal
+	for k: int in 4:
+		var ang2: float = TAU * float(k) / 4.0
+		var dir2: Vector3 = Vector3(cos(ang2), 0.0, sin(ang2))
+		_b.box("path", Transform3D(Basis(Vector3.UP, -ang2) * Basis.from_scale(Vector3(reach * 1.05, 0.14, 3.4)), centre + dir2 * (reach * 0.52) + Vector3.UP * 0.09))
+	_build_fountain(centre)
+	for k: int in 8:
+		var a2: float = TAU * float(k) / 8.0
+		var seat: Vector3 = centre + Vector3(cos(a2), 0.0, sin(a2)) * (reach * 0.72)
+		# mirando a la fuente, no cada una para su lado
+		_b.box("bench", Transform3D(Basis(Vector3.UP, -a2) * Basis.from_scale(Vector3(0.5, 0.12, 1.9)), seat + Vector3.UP * 0.5))
+		for leg: float in [-0.7, 0.7]:
+			_b.box("bench", Transform3D(Basis(Vector3.UP, -a2) * Basis.from_scale(Vector3(0.12, 0.44, 0.12)), seat + Vector3(cos(a2 + PI * 0.5), 0.0, sin(a2 + PI * 0.5)) * leg + Vector3.UP * 0.22))
+	for k: int in 4:
+		var a3: float = TAU * float(k) / 4.0 + PI * 0.25
+		var post: Vector3 = centre + Vector3(cos(a3), 0.0, sin(a3)) * (reach * 0.9)
+		_b.add("lamp_post", "cyl", Transform3D(Basis.from_scale(Vector3(0.16, 4.2, 0.16)), post + Vector3.UP * 2.1))
+		_b.add("lamp_globe", "sph", Transform3D(Basis.from_scale(Vector3.ONE * 0.5), post + Vector3.UP * 4.45))
+
+
+## Pilón Quenlobo: estanque redondo, taza de tres cuerpos que se van angostando y el
+## chorro arriba. Nada de esto es un cubo, que era justo el problema.
+func _build_fountain(centre: Vector3) -> void:
+	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(11.0, 0.55, 11.0)), centre + Vector3.UP * 0.28))
+	_b.add("fountain_water", "cyl", Transform3D(Basis.from_scale(Vector3(10.1, 0.36, 10.1)), centre + Vector3.UP * 0.42))
+	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(3.6, 0.9, 3.6)), centre + Vector3.UP * 0.75))
+	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(4.6, 0.22, 4.6)), centre + Vector3.UP * 1.2))
+	_b.add("fountain_water", "cyl", Transform3D(Basis.from_scale(Vector3(4.2, 0.1, 4.2)), centre + Vector3.UP * 1.3))
+	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(1.6, 1.5, 1.6)), centre + Vector3.UP * 2.05))
+	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(2.5, 0.18, 2.5)), centre + Vector3.UP * 2.85))
+	_b.add("fountain_water", "cyl", Transform3D(Basis.from_scale(Vector3(2.2, 0.08, 2.2)), centre + Vector3.UP * 2.94))
+	_b.add("fountain", "cyl", Transform3D(Basis.from_scale(Vector3(0.6, 1.1, 0.6)), centre + Vector3.UP * 3.5))
+	_b.add("fountain_water", "sph", Transform3D(Basis.from_scale(Vector3(0.7, 0.9, 0.7)), centre + Vector3.UP * 4.3))
+	# los ocho hilos de agua que caen de la taza al estanque
 	for k: int in 8:
 		var ang: float = TAU * float(k) / 8.0
-		_b.add("kiosk", "cyl", Transform3D(Basis.from_scale(Vector3(0.22, 3.2, 0.22)), centre + Vector3(cos(ang), 0.0, sin(ang)) * 3.2 + Vector3.UP * 1.8))
-	_b.add("roof", "cyl", Transform3D(Basis.from_scale(Vector3(8.2, 0.9, 8.2)), centre + Vector3.UP * 3.8))
-	for k: int in 6:
-		var a2: float = TAU * float(k) / 6.0
-		_b.box("bench", Transform3D(Basis(Vector3.UP, a2) * Basis.from_scale(Vector3(0.5, 0.12, 1.8)), centre + Vector3(cos(a2), 0.0, sin(a2)) * 11.0 + Vector3.UP * 0.5))
+		var from: Vector3 = centre + Vector3(cos(ang), 0.0, sin(ang)) * 2.3 + Vector3.UP * 2.85
+		var to: Vector3 = centre + Vector3(cos(ang), 0.0, sin(ang)) * 2.5 + Vector3.UP * 1.35
+		_b.box("fountain_water", MeshBatcher.between(from, to, 0.09))
 
 
 func _build_churches() -> void:

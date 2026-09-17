@@ -20,9 +20,61 @@ func test_builds_collision_bodies_and_batches() -> void:
 	if grass is GrassStrip:
 		var strip: GrassStrip = grass
 		assert_int(strip.multimesh.instance_count).is_greater(5000)
-	assert_object(road.get_node_or_null("Batch_asphalt")).is_not_null()
+	# D72: la calzada, la mediana, el cordón y la vereda salen como cintas continuas;
+	# la pintura sigue siendo cajas (los trazos son discontinuos de por sí).
+	for ribbon: String in ["Ribbon_asphalt", "Ribbon_median", "Ribbon_curb", "Ribbon_sidewalk"]:
+		assert_object(road.get_node_or_null(ribbon)).override_failure_message("falta " + ribbon).is_not_null()
 	assert_int(road.batch_count("paint_white")).is_greater(300)
 	assert_int(road.batch_count("paint_yellow")).is_greater(50)
+	# El pasto de los costados va en tramos para que la cámara pueda descartarlos:
+	# en un solo MultiMesh de 5 km se dibujarían las 190.000 matas en cada cuadro.
+	assert_int(road.verge_tuft_count()).is_greater(20000)
+	var verge_root: Node = road.get_node_or_null("Verge")
+	assert_object(verge_root).is_not_null()
+	if verge_root == null:
+		return
+	assert_int(verge_root.get_child_count()).is_greater_equal(2)
+	# ningún tramo se queda con todo: si alguien vuelve a hacerlo de una sola pieza,
+	# la caja envolvente vuelve a cubrir el mapa y esto falla
+	var biggest: int = 0
+	for child: Node in verge_root.get_children():
+		if child is GrassStrip:
+			var piece: GrassStrip = child
+			if piece.multimesh != null:
+				biggest = maxi(biggest, piece.multimesh.instance_count)
+	assert_int(biggest).is_less(road.verge_tuft_count() * 3 / 4)
+
+
+## El corte en las curvas (lo que se veía feo): dos tramos vecinos tienen que compartir
+## la misma fila de vértices. Si alguien vuelve a armar la calzada con cajas sueltas,
+## aparecen vértices de más en el codo y esto falla.
+func test_the_carriageway_has_no_seam_at_a_corner() -> void:
+	var points: PackedVector3Array = PackedVector3Array([Vector3(0.0, 0.0, 0.0), Vector3(20.0, 0.0, 0.0), Vector3(20.0, 0.0, 20.0)])
+	var lefts: PackedVector3Array = RoadRibbon.lefts(points)
+	# el vector del codo se alarga 1/cos(45°): sin eso la cinta se angosta justo ahí
+	assert_float(lefts[1].length()).is_equal_approx(sqrt(2.0), 0.01)
+	var ribbon: RoadRibbon = RoadRibbon.new()
+	ribbon.band("asphalt", points, lefts, -5.0, 5.0, 0.0)
+	var parent: Node3D = auto_free(Node3D.new())
+	ribbon.flush(parent, {"asphalt": Color.BLACK})
+	var node: Node = parent.get_node_or_null("Ribbon_asphalt")
+	assert_bool(node is MeshInstance3D).is_true()
+	if not (node is MeshInstance3D):
+		return
+	var mesh_node: MeshInstance3D = node
+	var faces: PackedVector3Array = mesh_node.mesh.get_faces()
+	assert_int(faces.size()).is_equal(12)
+	# la cara mira hacia arriba: una calzada emitida al revés se ve negra desde el bus
+	var normal: Vector3 = (faces[1] - faces[0]).cross(faces[2] - faces[0]).normalized()
+	assert_float(normal.y).is_greater(0.9)
+	# los dos cuadros del codo usan exactamente los mismos dos puntos del borde
+	for edge: float in [-5.0, 5.0]:
+		var corner: Vector3 = points[1] + lefts[1] * edge
+		var hits: int = 0
+		for v: Vector3 in faces:
+			if v.distance_to(corner) < 0.001:
+				hits += 1
+		assert_int(hits).override_failure_message("el codo no comparte el borde %s" % edge).is_greater_equal(2)
 
 
 func test_curbs_leave_the_station_gap_open() -> void:

@@ -18,6 +18,9 @@ const COLOURS: Dictionary = {
 	"post": Color(0.6, 0.6, 0.62), "diamond": Color(0.95, 0.75, 0.1), "disc": Color(0.95, 0.95, 0.95), "dirt": Color(0.5, 0.38, 0.25),
 	"car_a": Color(0.85, 0.85, 0.88), "car_b": Color(0.25, 0.3, 0.55), "car_c": Color(0.6, 0.15, 0.15),
 	"parapet": Color(0.68, 0.66, 0.62), "pier": Color(0.5, 0.48, 0.46), "island": Color(0.62, 0.6, 0.55), "crown": Color(0.28, 0.5, 0.26), "monument": Color(0.8, 0.78, 0.72),
+	"canopy": Color(0.93, 0.93, 0.9), "canopy_band": Color(0.16, 0.5, 0.45), "pump": Color(0.9, 0.89, 0.86),
+	"pump_dark": Color(0.2, 0.22, 0.24), "hose": Color(0.12, 0.12, 0.13), "shop": Color(0.88, 0.86, 0.8),
+	"glass": Color(0.55, 0.68, 0.72), "totem": Color(0.16, 0.5, 0.45), "forecourt": Color(0.66, 0.65, 0.63),
 }
 const HUMP_H: float = 0.15
 const HUMP_RAMP: float = 1.8
@@ -26,10 +29,19 @@ const SIGN_BEFORE_M: float = 35.0
 
 @export var data_path: String = "res://data/b0_departamental.json"
 @export var grass_per_m2: float = 5.0
+## Pasto a los costados de todo el recorrido (D72). El suelo era una losa verde plana y
+## las únicas matas estaban en la mediana: por eso el pasto se veía como un plano cuadrado.
+## La franja va CORRIDA hacia afuera del pavimento, no centrada en el eje: centrada, casi
+## todas las matas caían sobre la calzada y la máscara las botaba todas.
+@export var verge_half_width_m: float = 11.0
+@export var verge_per_m2: float = 1.1
+## Puntos del eje por tramo de pasto (~300 m): el trozo que la cámara descarta o dibuja.
+const VERGE_CHUNK: int = 30
 @export var seed: int = 5
 
 var data: OsmMapData
 var _b: MeshBatcher = MeshBatcher.new()
+var _r: RoadRibbon = RoadRibbon.new()
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _built_at: PackedVector3Array = PackedVector3Array()
 var _built_dir: PackedVector3Array = PackedVector3Array()
@@ -56,6 +68,7 @@ func build() -> void:
 	_build_pasaje()
 	_build_grass()
 	_b.flush(self, COLOURS)
+	_r.flush(self, COLOURS)
 
 
 func curb_shape_count() -> int:
@@ -130,68 +143,133 @@ func _build_segments() -> void:
 	_built_at.clear()
 	_built_dir.clear()
 	_built_index.clear()
+	var run: PackedVector3Array = PackedVector3Array()
+	var run_s: PackedFloat32Array = PackedFloat32Array()
+	var run_kind: String = ""
 	for i: int in data.segment_count():
 		var a: Vector3 = data.axis[i]
 		var b: Vector3 = data.axis[i + 1]
 		var seg_len: float = a.distance_to(b)
 		var mid: Vector3 = (a + b) * 0.5
-		if _is_repeat(mid, (b - a).normalized(), i):
-			continue
-		var s_mid: float = data.project(mid).x
-		var frame: Transform3D = data.sample(s_mid)
-		var kind: String = data.section_at(s_mid)
-		if kind == "bridge":
-			_bridge_segment(frame, mid, seg_len, s_mid)
-			continue
-		if maxf(a.y, b.y) > 0.05:
-			_deck_collision(frame, mid, seg_len, data.curb_at(s_mid) * 2.0)
-		if kind in ["gravel", "mud", "ford", "causeway"]:
-			continue  # OsmGravel hace el ripio; SwampRoad hace el barro, el vado y la pasarela
-		if kind == "street":
-			_street_segment(frame, mid, seg_len, s_mid)
-		else:
-			_avenue_segment(curbs, frame, mid, seg_len, s_mid)
+		var ribbon: String = ""
+		if not _is_repeat(mid, (b - a).normalized(), i):
+			var s_mid: float = data.project(mid).x
+			var frame: Transform3D = data.sample(s_mid)
+			var kind: String = data.section_at(s_mid)
+			if kind == "bridge":
+				_bridge_segment(frame, mid, seg_len, s_mid)
+			elif not (kind in ["gravel", "mud", "ford", "causeway"]):
+				# OsmGravel hace el ripio; SwampRoad hace el barro, el vado y la pasarela
+				if maxf(a.y, b.y) > 0.05:
+					_deck_collision(frame, mid, seg_len, data.curb_at(s_mid) * 2.0)
+				ribbon = kind
+				if kind == "street":
+					_street_details(frame, mid, seg_len, s_mid)
+				else:
+					_avenue_details(curbs, frame, mid, seg_len, s_mid)
+		# La tirada se corta donde cambia el tipo o donde el tramo se salta por repetido:
+		# cada tirada sale como UNA cinta sin juntas.
+		if ribbon != run_kind:
+			_close_run(run, run_s, run_kind)
+			run = PackedVector3Array()
+			run_s = PackedFloat32Array()
+			run_kind = ribbon
+		if ribbon != "":
+			if run.is_empty():
+				run.append(a)
+				run_s.append(data.s_at(i))
+			run.append(b)
+			run_s.append(data.s_at(i + 1))
+	_close_run(run, run_s, run_kind)
 
 
-## Avenue (D63): two carriageways, median, sidewalks, curbs with collision, markings, parked cars.
-func _avenue_segment(curbs: StaticBody3D, frame: Transform3D, mid: Vector3, seg_len: float, s_mid: float) -> void:
+## Una tirada continua del mismo tipo de calzada, emitida como cinta (D72). Antes cada
+## tramo era una caja rotada y en las curvas dos cajas vecinas dejaban una cuña abierta
+## por fuera y se pisaban por dentro. Aquí los dos tramos comparten la fila de vértices.
+func _close_run(points: PackedVector3Array, s_list: PackedFloat32Array, kind: String) -> void:
+	if kind == "" or points.size() < 2:
+		return
+	var lefts: PackedVector3Array = RoadRibbon.lefts(points)
+	if kind == "avenue":
+		var half_median: float = data.median_width * 0.5
+		var curb: float = data.curb_lateral
+		var walk: float = data.sidewalk_lateral
+		_r.band("median", points, lefts, -half_median, half_median, 0.15)
+		for side: float in [-1.0, 1.0]:
+			_r.wall("median", points, lefts, side * half_median, 0.02, 0.15, side)
+			_side_band("asphalt", points, lefts, side, half_median, curb - 1.0, 0.02)
+			_side_band("sidewalk", points, lefts, side, curb + 1.0, walk + 1.0, 0.15)
+			_curb_ribbon(points, lefts, s_list, side, curb - 1.0, curb + 1.0)
+	else:
+		var street_curb: float = data.curb_at(s_list[0])
+		_r.band("asphalt", points, lefts, -(street_curb - 1.0), street_curb - 1.0, 0.02)
+		for side: float in [-1.0, 1.0]:
+			_side_band("sidewalk", points, lefts, side, street_curb + 0.5, street_curb + 2.3, 0.15)
+			_curb_ribbon(points, lefts, s_list, side, street_curb - 0.5, street_curb + 0.5)
+
+
+## Banda de un costado. `lat_in` es el borde que mira al eje; la cinta siempre se emite
+## con el costado derecho primero para que la cara quede mirando arriba.
+func _side_band(kind: String, points: PackedVector3Array, lefts: PackedVector3Array, side: float, lat_in: float, lat_out: float, y: float) -> void:
+	if side > 0.0:
+		_r.band(kind, points, lefts, lat_in, lat_out, y)
+	else:
+		_r.band(kind, points, lefts, -lat_out, -lat_in, y)
+
+
+## El cordón se corta en cada entrada de calle lateral (los `curb_gaps` reales): una
+## solera cruzando por delante de un pasaje se ve peor que la junta que vinimos a quitar.
+func _curb_ribbon(points: PackedVector3Array, lefts: PackedVector3Array, s_list: PackedFloat32Array, side: float, lat_in: float, lat_out: float) -> void:
+	var sub: PackedVector3Array = PackedVector3Array()
+	var sub_lefts: PackedVector3Array = PackedVector3Array()
+	for i: int in points.size():
+		if data.in_gap(int(side), s_list[i]):
+			_emit_curb(sub, sub_lefts, side, lat_in, lat_out)
+			sub = PackedVector3Array()
+			sub_lefts = PackedVector3Array()
+			continue
+		sub.append(points[i])
+		sub_lefts.append(lefts[i])
+	_emit_curb(sub, sub_lefts, side, lat_in, lat_out)
+
+
+func _emit_curb(points: PackedVector3Array, lefts: PackedVector3Array, side: float, lat_in: float, lat_out: float) -> void:
+	if points.size() < 2:
+		return
+	_side_band("curb", points, lefts, side, lat_in, lat_out, 0.15)
+	_r.wall("curb", points, lefts, side * lat_in, 0.02, 0.15, -side)
+
+
+## Avenue (D63): lo que NO es superficie continua — pintura, colisión del cordón y autos
+## estacionados. El asfalto, la mediana, el cordón y la vereda salen de la cinta.
+func _avenue_details(curbs: StaticBody3D, frame: Transform3D, mid: Vector3, seg_len: float, s_mid: float) -> void:
 	var lane: float = data.lane_offset
-	var cw: float = data.carriageway_width
 	var left: Vector3 = data.left_of(frame)
 	var fwd: Vector3 = -frame.basis.z
 	var rot: Basis = frame.basis
 	for side: float in [-1.0, 1.0]:
-		_b.box("asphalt", MeshBatcher.along(rot, mid + left * (side * lane), Vector3(cw, 0.02, seg_len + 0.4), 0.01))
 		_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * (data.curb_lateral - 1.3)), Vector3(0.12, 0.02, seg_len + 0.2), 0.025))
 		_b.box("paint_yellow", MeshBatcher.along(rot, mid + left * (side * (data.median_width * 0.5 + 0.3)), Vector3(0.12, 0.02, seg_len + 0.2), 0.025))
 		for k: float in [-0.25, 0.25]:
 			_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * lane) + fwd * (seg_len * k), Vector3(0.12, 0.02, 3.0), 0.025))
-		_b.box("sidewalk", MeshBatcher.along(rot, mid + left * (side * data.sidewalk_lateral), Vector3(2.0, 0.15, seg_len + 0.2), 0.075))
 		if not data.in_gap(int(side), s_mid):
-			var curb_t: Transform3D = MeshBatcher.along(rot, mid + left * (side * data.curb_lateral), Vector3(2.0, 0.15, seg_len + 0.2), 0.075)
-			_b.box("curb", curb_t)
-			_shape(curbs, Vector3(2.0, 0.15, seg_len + 0.2), Transform3D(rot, curb_t.origin))
+			var curb_pos: Vector3 = mid + left * (side * data.curb_lateral) + Vector3.UP * 0.075
+			_shape(curbs, Vector3(2.0, 0.15, seg_len + 0.2), Transform3D(rot, curb_pos))
 			if int(s_mid / 20.0) % 2 == 0 and _far_from_features(s_mid, 22.0):
 				var colour: String = ["car_a", "car_b", "car_c"][_rng.randi() % 3]
 				_b.box(colour, MeshBatcher.along(rot, mid + left * (side * (data.curb_lateral - 2.1)), Vector3(1.7, 1.5, 4.4), 0.75))
-	_b.box("median", MeshBatcher.along(rot, mid, Vector3(data.median_width, 0.15, seg_len + 0.2), 0.075))
 
 
-## Población street (D68): one two-way carriageway, dashed yellow centre line, curbs and sidewalks as mesh only
-## (the D48 box would jam on a 15 cm curb this close to its lane; T1.1 gets real curbs here).
-func _street_segment(frame: Transform3D, mid: Vector3, seg_len: float, s_mid: float) -> void:
+## Población street (D68): solo la pintura. La calzada, el cordón y la vereda son cinta.
+func _street_details(frame: Transform3D, mid: Vector3, seg_len: float, s_mid: float) -> void:
 	var left: Vector3 = data.left_of(frame)
 	var fwd: Vector3 = -frame.basis.z
 	var rot: Basis = frame.basis
 	var curb: float = data.curb_at(s_mid)
-	_b.box("asphalt", MeshBatcher.along(rot, mid, Vector3(curb * 2.0 - 2.0, 0.02, seg_len + 0.4), 0.01))
 	for k: float in [-0.25, 0.25]:
 		_b.box("paint_yellow", MeshBatcher.along(rot, mid + fwd * (seg_len * k), Vector3(0.12, 0.02, 3.0), 0.025))
 	for side: float in [-1.0, 1.0]:
 		_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * (curb - 1.5)), Vector3(0.1, 0.02, seg_len + 0.2), 0.025))
-		if not data.in_gap(int(side), s_mid):
-			_b.box("curb", MeshBatcher.along(rot, mid + left * (side * curb), Vector3(1.0, 0.15, seg_len + 0.2), 0.075))
-		_b.box("sidewalk", MeshBatcher.along(rot, mid + left * (side * (curb + 1.4)), Vector3(1.8, 0.15, seg_len + 0.2), 0.075))
 
 
 ## Bridge deck (D69): flat asphalt spanning the trench with its own collision, plus parapets,
@@ -343,13 +421,51 @@ func _build_pasaje() -> void:
 	var lot_along: float = float(pz.get("lot_along", 60.0))
 	var lot_depth: float = float(pz.get("lot_depth", 44.0))
 	var lot_half: float = float(pz.get("lot_half_width", 26.0))
-	_b.box("dirt", MeshBatcher.along(rot, mouth + dir * (lot_along + lot_depth * 0.5), Vector3(lot_half * 2.0, 0.02, lot_depth), 0.015))
+	var lot_centre: Vector3 = mouth + dir * (lot_along + lot_depth * 0.5)
+	_b.box("forecourt", MeshBatcher.along(rot, lot_centre, Vector3(lot_half * 2.0, 0.02, lot_depth), 0.015))
+	_build_fuel_station(lot_centre, rot, dir, left)
+
+
+## Bencinera "Quenlobo" (D72). Antes eran puras cajas superpuestas sobre tierra. Ahora:
+## marquesina con el canto grueso a la vista y cuatro pilares redondos, dos islas con sus
+## surtidores y la manguera colgando, la tienda con su vitrina y el tótem de precios en la
+## entrada. La marca es inventada; ninguna forma copia una estación real.
+func _build_fuel_station(centre: Vector3, rot: Basis, dir: Vector3, left: Vector3) -> void:
+	var canopy_h: float = 5.4
+	_b.box("canopy", MeshBatcher.along(rot, centre, Vector3(20.0, 0.45, 13.0), canopy_h))
+	# el canto: una marquesina de 45 cm vista de perfil es una lámina
+	for side: float in [-1.0, 1.0]:
+		_b.box("canopy_band", MeshBatcher.along(rot, centre + left * (side * 10.0), Vector3(0.55, 1.0, 13.2), canopy_h - 0.2))
+		_b.box("canopy_band", MeshBatcher.along(rot, centre + dir * (side * 6.5), Vector3(20.2, 1.0, 0.55), canopy_h - 0.2))
+	for sx: float in [-1.0, 1.0]:
+		for sz: float in [-1.0, 1.0]:
+			var pillar: Vector3 = centre + left * (sx * 7.6) + dir * (sz * 4.6)
+			_b.add("canopy_band", "cyl", Transform3D(Basis.from_scale(Vector3(0.62, canopy_h - 0.4, 0.62)), pillar + Vector3.UP * (canopy_h - 0.4) * 0.5))
+	for sx2: float in [-1.0, 1.0]:
+		var island: Vector3 = centre + left * (sx2 * 4.6)
+		_b.box("island", MeshBatcher.along(rot, island, Vector3(2.4, 0.22, 9.0), 0.11))
+		for sz2: float in [-1.0, 1.0]:
+			var pump: Vector3 = island + dir * (sz2 * 2.4)
+			_b.box("pump", MeshBatcher.along(rot, pump, Vector3(1.1, 1.5, 0.75), 0.97))
+			_b.box("pump_dark", MeshBatcher.along(rot, pump, Vector3(0.95, 0.5, 0.8), 1.62))
+			_b.add("pump_dark", "cyl", Transform3D(Basis.from_scale(Vector3(1.15, 0.28, 0.82)), pump + Vector3.UP * 1.88))
+			var nozzle: Vector3 = pump + left * (sx2 * 0.75) + Vector3.UP * 0.75
+			_b.box("hose", MeshBatcher.between(pump + left * (sx2 * 0.5) + Vector3.UP * 1.55, nozzle, 0.09))
+	var shop: Vector3 = centre + dir * 11.5
+	_b.box("shop", MeshBatcher.along(rot, shop, Vector3(12.0, 3.6, 7.0), 1.8))
+	_b.box("glass", MeshBatcher.along(rot, shop - dir * 3.55, Vector3(9.4, 2.0, 0.12), 1.7))
+	_b.box("canopy_band", MeshBatcher.along(rot, shop, Vector3(12.6, 0.5, 7.6), 3.75))
+	var totem: Vector3 = centre - dir * 11.0 + left * 8.5
+	_b.add("pump_dark", "cyl", Transform3D(Basis.from_scale(Vector3(0.3, 4.4, 0.3)), totem + Vector3.UP * 2.2))
+	_b.box("totem", MeshBatcher.along(rot, totem, Vector3(2.6, 2.2, 0.35), 5.3))
 
 
 func _build_grass() -> void:
-	var strip: GrassStrip = GrassStrip.new()
-	strip.name = "MedianGrass"
-	add_child(strip)
+	_build_median_grass()
+	_build_verge_grass()
+
+
+func _build_median_grass() -> void:
 	var pts: PackedVector3Array = PackedVector3Array()
 	for i: int in data.axis.size():
 		var s: float = data.project(data.axis[i]).x
@@ -357,8 +473,59 @@ func _build_grass() -> void:
 			pts.append(data.axis[i])
 		elif pts.size() > 1:
 			break
-	if pts.size() > 1:
-		strip.build_along(pts, data.median_width * 0.5 - 0.35, grass_per_m2, seed)
+	if pts.size() < 2:
+		return
+	var strip: GrassStrip = GrassStrip.new()
+	strip.name = "MedianGrass"
+	add_child(strip)
+	strip.build_along(pts, data.median_width * 0.5 - 0.35, grass_per_m2, seed)
+
+
+## Pasto a los costados de todo el recorrido (D72), en tramos de VERGE_CHUNK puntos.
+## En UN solo MultiMesh de 5 km la caja envolvente cubre el mapa entero y la tarjeta
+## dibuja las 190.000 matas en cada cuadro aunque se vean veinte. Partido en tramos,
+## la cámara descarta los que no mira.
+func _build_verge_grass() -> void:
+	if verge_per_m2 <= 0.0 or verge_half_width_m <= 0.0 or data.axis.size() < 2:
+		return
+	var mask: RoadMask = RoadMask.shared(data, data_path)
+	var skip: Callable = func(p: Vector3) -> bool:
+		return mask.is_paved(p, 0.5)
+	var root_node: Node3D = Node3D.new()
+	root_node.name = "Verge"
+	add_child(root_node)
+	for side: int in [-1, 1]:
+		var line: PackedVector3Array = PackedVector3Array()
+		for i: int in data.axis.size():
+			var s_at: float = data.s_at(i)
+			line.append(data.lateral_point(s_at, float(side) * (data.curb_at(s_at) + 3.5 + verge_half_width_m)))
+		var chunk: int = 0
+		var from: int = 0
+		while from < line.size() - 1:
+			var to: int = mini(from + VERGE_CHUNK, line.size() - 1)
+			var piece: PackedVector3Array = line.slice(from, to + 1)
+			var strip: GrassStrip = GrassStrip.new()
+			strip.name = "Verge%s%02d" % ["L" if side > 0 else "R", chunk]
+			strip.base_colour = Color(0.26, 0.38, 0.17)
+			strip.tip_colour = Color(0.62, 0.7, 0.32)
+			root_node.add_child(strip)
+			strip.build_along(piece, verge_half_width_m, verge_per_m2, seed + 1 + side * 100 + chunk, skip)
+			from = to
+			chunk += 1
+
+
+## Matas de pasto sembradas a los costados, sumando todos los tramos.
+func verge_tuft_count() -> int:
+	var total: int = 0
+	var root_node: Node = get_node_or_null("Verge")
+	if root_node == null:
+		return 0
+	for child: Node in root_node.get_children():
+		if child is GrassStrip:
+			var strip: GrassStrip = child
+			if strip.multimesh != null:
+				total += strip.multimesh.instance_count
+	return total
 
 
 # ---------- helpers ----------

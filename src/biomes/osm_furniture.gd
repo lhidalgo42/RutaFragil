@@ -7,7 +7,9 @@ extends Node3D
 ## and sidewalk trees every 12 m where nothing else stands.
 
 const COLOURS: Dictionary = {
-	"stop": Color(0.85, 0.25, 0.25), "stop_roof": Color(0.95, 0.95, 0.93), "signal": Color(0.15, 0.15, 0.15), "post": Color(0.6, 0.6, 0.62),
+	"stop": Color(0.29, 0.33, 0.35), "stop_roof": Color(0.93, 0.93, 0.9),
+	"shelter_frame": Color(0.17, 0.19, 0.2), "shelter_glass": Color(0.6, 0.71, 0.73),
+	"shelter_bench": Color(0.44, 0.32, 0.19), "shelter_sign": Color(0.93, 0.56, 0.12), "signal": Color(0.15, 0.15, 0.15), "post": Color(0.6, 0.6, 0.62),
 	"trunk": Color(0.4, 0.28, 0.18), "crown": Color(0.25, 0.5, 0.25), "crown_b": Color(0.32, 0.56, 0.24),
 	"pole": Color(0.62, 0.6, 0.56), "cable": Color(0.12, 0.12, 0.12), "lamp": Color(0.98, 0.95, 0.8), "light_pole": Color(0.35, 0.36, 0.38),
 	"fence_post": Color(0.4, 0.3, 0.2), "wire": Color(0.35, 0.35, 0.36), "poplar_trunk": Color(0.55, 0.5, 0.42), "poplar": Color(0.36, 0.55, 0.22), "orchard": Color(0.3, 0.5, 0.2),
@@ -20,6 +22,8 @@ const TREE_STEP_M: float = 12.0
 var data: OsmMapData
 var _b: MeshBatcher = MeshBatcher.new()
 var _occupied: Array[Vector2] = []
+## La misma máscara que consulta el pasto: nada de árboles ni postes sobre el asfalto.
+var _mask: RoadMask
 
 
 func _ready() -> void:
@@ -33,11 +37,11 @@ func build() -> void:
 		remove_child(child)
 		child.free()
 	_occupied.clear()
+	_mask = RoadMask.shared(data, data_path)
 	for stop: Dictionary in data.bus_stops:
 		var p: Vector3 = _pt(stop)
 		var rot: Basis = data.sample(float(stop.get("s", 0.0))).basis
-		_b.box("stop", MeshBatcher.along(rot, p, Vector3(1.6, 2.3, 3.6), 1.15))
-		_b.box("stop_roof", MeshBatcher.along(rot, p, Vector3(2.2, 0.15, 4.0), 2.5))
+		_shelter(p, rot, float(stop.get("side", 1.0)))
 		_occupy(stop)
 	for sig: Dictionary in data.traffic_signals:
 		var p: Vector3 = _pt(sig)
@@ -61,6 +65,30 @@ func batch_count(kind: String) -> int:
 		var inst: MultiMeshInstance3D = node
 		return inst.multimesh.instance_count
 	return 0
+
+
+## Refugio de paradero, el "Trepaluz" (D72). Antes era una caja roja con una tapa
+## blanca encima. Ahora: muro corrido al fondo, UN pilar grueso en la punta contraria,
+## un tabique en un solo costado y el techo en voladizo, caído 9° hacia el fondo y
+## volando casi un metro sobre la vereda. La asimetría es a propósito: un refugio
+## simétrico vuelve a leerse como una caja.
+func _shelter(p: Vector3, rot: Basis, side: float) -> void:
+	var out: float = signf(side) if absf(side) > 0.01 else 1.0
+	var along: Vector3 = -rot.z
+	var across: Vector3 = rot.x * out
+	var back: Vector3 = p + across * 1.05
+	_b.box("stop", MeshBatcher.along(rot, back, Vector3(0.14, 2.3, 4.2), 1.15))
+	_b.box("shelter_glass", MeshBatcher.along(rot, p + along * 1.95 + across * 0.4, Vector3(1.4, 1.9, 0.1), 0.95))
+	_b.add("shelter_frame", "cyl", Transform3D(Basis.from_scale(Vector3(0.26, 2.55, 0.26)), p - along * 1.85 - across * 0.8 + Vector3.UP * 1.28))
+	var roof_rot: Basis = rot * Basis(Vector3.BACK, deg_to_rad(9.0) * out)
+	_b.box("stop_roof", Transform3D(roof_rot * Basis.from_scale(Vector3(3.1, 0.13, 5.0)), p + across * 0.1 + Vector3.UP * 2.62))
+	# canto grueso del alero: un techo de 13 cm visto de canto es una lámina
+	_b.box("stop_roof", Transform3D(roof_rot * Basis.from_scale(Vector3(0.16, 0.34, 5.0)), p - across * 1.38 + Vector3.UP * 2.48))
+	_b.box("shelter_bench", MeshBatcher.along(rot, p + across * 0.72, Vector3(0.52, 0.09, 3.1), 0.47))
+	for k: float in [-1.0, 1.0]:
+		_b.box("shelter_frame", MeshBatcher.along(rot, p + across * 0.72 + along * (k * 1.25), Vector3(0.09, 0.45, 0.09), 0.22))
+	_b.add("shelter_frame", "cyl", Transform3D(Basis.from_scale(Vector3(0.1, 2.9, 0.1)), p - along * 2.7 - across * 1.15 + Vector3.UP * 1.45))
+	_b.box("shelter_sign", MeshBatcher.along(rot, p - along * 2.7 - across * 1.15, Vector3(0.06, 0.5, 0.88), 2.45))
 
 
 func _build_lights_and_poles() -> void:
@@ -118,7 +146,8 @@ func _build_sidewalk_trees() -> void:
 		for side: int in [-1, 1]:
 			if _free(s, side) and not data.in_gap(side, s) and absf(s - float(data.underpass.get("s", -1000.0))) > 30.0 and data.section_at(s) != "gravel":
 				var p: Vector3 = data.lateral_point(s, float(side) * (data.property_at(s) - 0.6))
-				_tree(p, 3.6 + 0.4 * float(k % 3), 1.4 + 0.2 * float((k + side) % 3))
+				if not _on_road(p, 0.0):
+					_tree(p, 3.6 + 0.4 * float(k % 3), 1.4 + 0.2 * float((k + side) % 3))
 		s += TREE_STEP_M
 		k += 1
 
@@ -143,12 +172,22 @@ func _build_rural() -> void:
 			s += 3.0
 	for pop: Dictionary in data.poplars:
 		var p: Vector3 = _pt(pop)
+		if _on_road(p, 1.0):
+			continue
 		_b.add("poplar_trunk", "cyl", Transform3D(Basis.from_scale(Vector3(0.35, 9.0, 0.35)), p + Vector3.UP * 4.5))
 		_b.add("poplar", "cyl", Transform3D(Basis.from_scale(Vector3(2.2, 9.0, 2.2)), p + Vector3.UP * 8.0))
 		_b.add("poplar", "sph", Transform3D(Basis.from_scale(Vector3(1.6, 2.4, 1.6)), p + Vector3.UP * 13.0))
 	for o: Vector3 in data.orchards:
+		if _on_road(o, 1.0):
+			continue
 		_b.add("trunk", "cyl", Transform3D(Basis.from_scale(Vector3(0.22, 1.6, 0.22)), o + Vector3.UP * 0.8))
 		_b.add("orchard", "sph", Transform3D(Basis.from_scale(Vector3(2.6, 2.2, 2.6)), o + Vector3.UP * 2.4))
+
+
+## Un árbol en medio de una calle lateral es de las cosas que más saltan a la vista.
+## Se mira la CALZADA, no la vereda: el árbol de vereda va justo sobre el pavimento.
+func _on_road(p: Vector3, margin_m: float) -> bool:
+	return _mask != null and _mask.is_roadway(p, margin_m)
 
 
 func _free(s: float, side: int) -> bool:

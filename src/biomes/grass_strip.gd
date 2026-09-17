@@ -7,8 +7,11 @@ extends MultiMeshInstance3D
 ## can hand it the bus with set_follow().
 
 const SHADER: Shader = preload("res://assets/shaders/grass_tuft.gdshader")
-const TUFT_W: float = 0.5
-const TUFT_H: float = 0.45
+const TUFT_W: float = 0.34
+const TUFT_H: float = 0.62
+## Tres hojas cruzadas en vez de dos: con dos, de frente se ve UN triángulo suelto y el
+## pasto se lee como recortes de cartón. La tercera llena el hueco desde cualquier ángulo.
+const BLADES: int = 3
 
 @export var follow: Node3D
 @export var base_colour: Color = Color(0.22, 0.42, 0.18)
@@ -34,7 +37,11 @@ func _process(_delta: float) -> void:
 
 ## Scatters tufts along the strip centred on `points`, `half_width` each side,
 ## `per_m2` tufts per square metre, deterministic for `seed`. Returns the count.
-func build_along(points: PackedVector3Array, half_width: float, per_m2: float, seed: int) -> int:
+## `skip` (opcional) recibe cada posición y devuelve true si ahí no va mata: es como
+## el pasto deja de crecer encima del asfalto, consultando la misma RoadMask que todos.
+## El azar se consume igual se plante o no, así que sembrar con máscara o sin ella da
+## las mismas posiciones para las matas que sí quedan.
+func build_along(points: PackedVector3Array, half_width: float, per_m2: float, seed: int, skip: Callable = Callable()) -> int:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.seed = seed
 	var transforms: Array[Transform3D] = []
@@ -52,7 +59,9 @@ func build_along(points: PackedVector3Array, half_width: float, per_m2: float, s
 			var along: float = rng.randf() * length
 			var across: float = rng.randf_range(-half_width, half_width)
 			var pos: Vector3 = a + tangent * along + normal * across
-			var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(0.7, 1.3))
+			var basis: Basis = Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(rng.randf_range(0.75, 1.25), rng.randf_range(0.6, 1.5), rng.randf_range(0.75, 1.25)))
+			if skip.is_valid() and skip.call(pos):
+				continue
 			transforms.append(Transform3D(basis, pos))
 	positions = PackedVector3Array()
 	for xf: Transform3D in transforms:
@@ -64,10 +73,13 @@ func build_along(points: PackedVector3Array, half_width: float, per_m2: float, s
 func _apply(transforms: Array[Transform3D]) -> void:
 	var mm: MultiMesh = MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
 	mm.mesh = _make_tuft_mesh()
 	mm.instance_count = transforms.size()
 	for i: int in transforms.size():
 		mm.set_instance_transform(i, transforms[i])
+		# Tono propio por mata: un prado de un solo verde se ve pintado.
+		mm.set_instance_color(i, MeshBatcher.tint_at(transforms[i].origin))
 	multimesh = mm
 	_material = ShaderMaterial.new()
 	_material.shader = SHADER
@@ -82,14 +94,17 @@ func _make_tuft_mesh() -> ArrayMesh:
 	var normals: PackedVector3Array = PackedVector3Array()
 	var uvs: PackedVector2Array = PackedVector2Array()
 	var indices: PackedInt32Array = PackedInt32Array()
-	for q: int in 2:
-		var angle: float = float(q) * PI * 0.5
+	for q: int in BLADES:
+		var angle: float = float(q) * PI / float(BLADES)
 		var side: Vector3 = Vector3(cos(angle), 0.0, sin(angle)) * (TUFT_W * 0.5)
+		# La punta cae hacia un lado y la hoja queda curva: una hoja recta y simétrica
+		# es un triángulo, no pasto.
+		var lean: Vector3 = Vector3(-sin(angle), 0.0, cos(angle)) * (TUFT_H * 0.28)
 		var base: int = verts.size()
 		verts.append(-side)
 		verts.append(side)
-		verts.append(side + Vector3.UP * TUFT_H)
-		verts.append(-side + Vector3.UP * TUFT_H)
+		verts.append(side * 0.45 + Vector3.UP * TUFT_H + lean)
+		verts.append(-side * 0.45 + Vector3.UP * TUFT_H + lean)
 		for _n: int in 4:
 			normals.append(Vector3.UP)
 		uvs.append(Vector2(0.0, 0.0))

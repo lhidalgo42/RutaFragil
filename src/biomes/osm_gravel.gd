@@ -17,11 +17,15 @@ const WASH_RUN: float = 0.6
 const ROAD_W: float = 11.0
 
 @export var data_path: String = "res://data/b0_rancagua.json"
-@export var pebbles_per_m2: float = 1.1
+## Menos piedras y más chicas (D72): a 1,1 por metro cuadrado y 14 cm cada una, el
+## camino de tierra se leía como un suelo sembrado de piedrecillas sueltas en vez de
+## ripio. Lo que da la textura ahora es el material, no mil cajitas.
+@export var pebbles_per_m2: float = 0.32
 @export var seed: int = 27
 
 var data: OsmMapData
 var _b: MeshBatcher = MeshBatcher.new()
+var _r: RoadRibbon = RoadRibbon.new()
 
 
 func _ready() -> void:
@@ -50,10 +54,6 @@ func build() -> void:
 			var seg_len: float = minf(10.0, s1 - s)
 			var frame: Transform3D = data.sample(s + seg_len * 0.5)
 			var left: Vector3 = data.left_of(frame)
-			_b.box("dirt", MeshBatcher.along(frame.basis, frame.origin, Vector3(ROAD_W, 0.03, seg_len + 0.3), 0.012))
-			for side: float in [-1.0, 1.0]:
-				_b.box("dust", MeshBatcher.along(frame.basis, frame.origin + left * (side * (ROAD_W * 0.5 - 0.8)), Vector3(1.6, 0.032, seg_len + 0.3), 0.013))
-				_b.box("ditch", MeshBatcher.along(frame.basis, frame.origin + left * (side * (ROAD_W * 0.5 + 1.2)), Vector3(1.4, 0.02, seg_len + 0.3), 0.005))
 			var area_shape: CollisionShape3D = CollisionShape3D.new()
 			var box: BoxShape3D = BoxShape3D.new()
 			box.size = Vector3(ROAD_W + 2.0, 3.0, seg_len + 0.3)
@@ -63,15 +63,43 @@ func build() -> void:
 			var count: int = int(round(seg_len * ROAD_W * pebbles_per_m2))
 			for _k: int in count:
 				var pos: Vector3 = frame.origin + (-frame.basis.z) * rng.randf_range(-seg_len * 0.5, seg_len * 0.5) + left * rng.randf_range(-ROAD_W * 0.5, ROAD_W * 0.5)
-				var size: float = rng.randf_range(0.06, 0.14)
-				_b.add("pebble" if rng.randf() < 0.6 else "pebble_b", "box", Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3(size, size * 0.6, size * 0.8)), pos + Vector3.UP * (size * 0.3 + 0.03)))
+				var size: float = rng.randf_range(0.04, 0.085)
+				# aplastadas contra el suelo: una piedra que sobresale medio tamaño se
+				# ve como un objeto suelto, no como ripio
+				_b.add("pebble" if rng.randf() < 0.6 else "pebble_b", "box", Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3(size, size * 0.3, size * 0.75)), pos + Vector3.UP * (size * 0.15 + 0.035)))
 			s += seg_len
+		_dirt_ribbon(s0, s1)
 		_washboard(wash, s0 + 6.0, s1 - 6.0)
 	for pothole: Dictionary in data.potholes:
 		var r: float = float(pothole.get("r", 0.8))
 		var p: Vector3 = Vector3(float(pothole.get("x", 0.0)), 0.045, float(pothole.get("z", 0.0)))
 		_b.add("pothole", "cyl", Transform3D(Basis.from_scale(Vector3(r * 2.0, 0.02, r * 1.5)), p))
 	_b.flush(self, COLOURS)
+	_r.flush(self, COLOURS)
+
+
+## La tierra también era una cadena de cajas de 10 m, con el mismo diente en cada curva
+## del camino de ripio. Una sola cinta por tramo (D72).
+func _dirt_ribbon(s0: float, s1: float) -> void:
+	var pts: PackedVector3Array = PackedVector3Array()
+	var s: float = s0
+	while s < s1:
+		pts.append(data.sample(s).origin)
+		s += 4.0
+	pts.append(data.sample(s1).origin)
+	if pts.size() < 2:
+		return
+	var lefts: PackedVector3Array = RoadRibbon.lefts(pts)
+	var half: float = ROAD_W * 0.5
+	_r.band("dirt", pts, lefts, -half, half, 0.03)
+	for side: float in [-1.0, 1.0]:
+		var inner: float = half - 1.6
+		if side > 0.0:
+			_r.band("dust", pts, lefts, inner, half, 0.032)
+			_r.band("ditch", pts, lefts, half + 0.5, half + 1.9, 0.005)
+		else:
+			_r.band("dust", pts, lefts, -half, -inner, 0.032)
+			_r.band("ditch", pts, lefts, -(half + 1.9), -(half + 0.5), 0.005)
 
 
 func washboard_shape_count() -> int:

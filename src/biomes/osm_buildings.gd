@@ -21,7 +21,10 @@ const HOUSE_TYPES: Array[String] = ["house", "terrace", "semidetached_house", "f
 const FACADE_SHADER: Shader = preload("res://assets/shaders/facade.gdshader")
 const FENCE_H_M: float = 1.8
 const DELIVERY_COLOUR: Color = Color(0.95, 0.55, 0.25)
-const LOT_COLOURS: Dictionary = {"rubble": Color(0.62, 0.5, 0.38), "stub": Color(0.7, 0.62, 0.5), "dirt": Color(0.55, 0.45, 0.33), "trash": Color(0.2, 0.2, 0.22), "trash_b": Color(0.8, 0.8, 0.78)}
+const LOT_COLOURS: Dictionary = {"rubble": Color(0.62, 0.5, 0.38), "stub": Color(0.7, 0.62, 0.5), "dirt": Color(0.55, 0.45, 0.33), "trash": Color(0.2, 0.2, 0.22), "trash_b": Color(0.8, 0.8, 0.78), "ridge": Color(0.46, 0.4, 0.36), "eave": Color(0.5, 0.44, 0.4)}
+## Alero: el techo vuela esto por cada lado. Sin alero, el techo termina justo donde
+## termina el muro y la casa vuelve a leerse como un cubo con un triángulo encima.
+const EAVE_M: float = 0.6
 
 @export var data_path: String = "res://data/b0_departamental.json"
 
@@ -47,10 +50,13 @@ func build() -> void:
 			standing.append(b)
 	var facades: MultiMesh = _multimesh(_unit_box(true), true)
 	var roofs: MultiMesh = _multimesh(_unit_prism(), false)
+	var hips: MultiMesh = _multimesh(MeshBatcher.hip_mesh(), false)
 	var fences: MultiMesh = _multimesh(_unit_box(false), false)
 	facades.instance_count = standing.size()
 	var roof_xforms: Array[Transform3D] = []
 	var roof_colours: Array[Color] = []
+	var hip_xforms: Array[Transform3D] = []
+	var hip_colours: Array[Color] = []
 	var fence_xforms: Array[Transform3D] = []
 	var fence_colours: Array[Color] = []
 	var body: StaticBody3D = StaticBody3D.new()
@@ -76,9 +82,20 @@ func build() -> void:
 		body.add_child(shape_node)
 		shape_node.transform = Transform3D(rot, center)
 		if levels <= 2 and (str(b.get("type", "")) in HOUSE_TYPES or style != "default"):
-			var roof_h: float = float(ROOF_H.get(style, 2.2))
-			roof_xforms.append(Transform3D(Basis(Vector3.UP, yaw + PI * 0.5) * Basis.from_scale(Vector3(d, roof_h, w)), Vector3(center.x, h + roof_h * 0.5, center.z)))
-			roof_colours.append(ROOF_COLOUR.get(style, Color(0.55, 0.3, 0.25)))
+			# pendiente distinta por casa: la fila entera con el mismo ángulo se ve estampada
+			var roof_h: float = float(ROOF_H.get(style, 2.2)) * (0.82 + 0.55 * fmod(float(i) * 0.6180339, 1.0))
+			var roof_xf: Transform3D = Transform3D(Basis(Vector3.UP, yaw + PI * 0.5) * Basis.from_scale(Vector3(d + EAVE_M * 2.0, roof_h, w + EAVE_M * 2.0)), Vector3(center.x, h + roof_h * 0.5, center.z))
+			var roof_colour: Color = ROOF_COLOUR.get(style, Color(0.55, 0.3, 0.25))
+			if i % 5 < 2:
+				hip_xforms.append(roof_xf)
+				hip_colours.append(roof_colour)
+			else:
+				roof_xforms.append(roof_xf)
+				roof_colours.append(roof_colour)
+				# caballete: la línea gruesa de la cumbrera
+				_b.box("ridge", Transform3D(Basis(Vector3.UP, yaw + PI * 0.5) * Basis.from_scale(Vector3(0.42, 0.22, w + EAVE_M * 2.0 + 0.1)), Vector3(center.x, h + roof_h + 0.02, center.z)))
+			# canto del alero, para que el techo tenga espesor visto desde abajo
+			_b.box("eave", Transform3D(Basis(Vector3.UP, yaw) * Basis.from_scale(Vector3(w + EAVE_M * 2.0, 0.16, d + EAVE_M * 2.0)), Vector3(center.x, h + 0.06, center.z)))
 		if bool(b.get("delivery", false)):
 			_add_delivery(center, w, d)
 		var fence: Dictionary = b.get("fence", {})
@@ -88,9 +105,11 @@ func build() -> void:
 			fence_xforms.append(Transform3D(fence_rot, Vector3(float(fence.get("x", 0.0)), (1.3 if wire else FENCE_H_M) * 0.5, float(fence.get("z", 0.0)))))
 			fence_colours.append(Color(0.45, 0.42, 0.38) if wire else Color(0.28, 0.28, 0.3))
 	_fill(roofs, roof_xforms, roof_colours)
+	_fill(hips, hip_xforms, hip_colours)
 	_fill(fences, fence_xforms, fence_colours)
 	_add_instance("Facades", facades)
 	_add_instance("Roofs", roofs)
+	_add_instance("RoofsHip", hips)
 	_add_instance("Fences", fences)
 	for lot: Dictionary in data.lots:
 		_lot(lot)

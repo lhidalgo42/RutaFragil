@@ -83,6 +83,14 @@ func segment_count() -> int:
 	return axis.size() - 1
 
 
+## Distancia acumulada hasta el punto `index` del eje. `project()` no sirve para esto en
+## un circuito cerrado: el punto de ida cae igual de cerca del tramo de vuelta.
+func s_at(index: int) -> float:
+	if _cum.is_empty():
+		return 0.0
+	return _cum[clampi(index, 0, _cum.size() - 1)]
+
+
 ## Frame at distance `s` along the axis (extrapolated past both ends):
 ## origin on the axis, local -Z = tangent, left side = -basis.x.
 func sample(s: float) -> Transform3D:
