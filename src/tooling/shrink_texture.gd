@@ -80,5 +80,12 @@ func _shrink(from: String, to: String) -> bool:
 	if err != OK:
 		print("SHRINK error=no_se_pudo_escribir out=%s codigo=%d" % [to, err])
 		return false
-	print("SHRINK ok %dx%d -> %dx%d %s" % [before.x, before.y, _size, _size, to])
+	# El promedio sirve para saber de qué lado está una máscara (blanco = hay, negro = no hay)
+	# sin tener que abrir la imagen: con una máscara invertida el suelo sale al revés.
+	var sum: float = 0.0
+	for y: int in range(0, _size, 8):
+		for x: int in range(0, _size, 8):
+			sum += image.get_pixel(x, y).get_luminance()
+	var samples: float = float((_size / 8) * (_size / 8))
+	print("SHRINK ok %dx%d -> %dx%d luz_media=%.3f %s" % [before.x, before.y, _size, _size, sum / samples, to])
 	return true

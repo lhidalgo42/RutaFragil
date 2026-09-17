@@ -13,17 +13,34 @@ func test_the_ground_material_has_both_texture_sets_loaded() -> void:
 		assert_bool(texture is Texture2D).override_failure_message("falta la textura " + key).is_true()
 		if texture is Texture2D:
 			var image: Texture2D = texture
-			assert_int(image.get_width()).override_failure_message(key + " no mide 512").is_equal(512)
+			# detalle a 512; el escaneo de terreno, que va estirado a 900 m, a 1024
+			assert_int(image.get_width()).override_failure_message(key + " viene sin reducir").is_between(512, 1024)
 	assert_bool(material.get_shader_parameter("blend_noise") is Texture2D).is_true()
 
 
 func test_only_the_ground_uses_the_textured_material() -> void:
 	var ground: Material = MeshBatcher.surface_material(Color.WHITE, "ground")
 	assert_bool(ground is ShaderMaterial).is_true()
-	# todo lo demás sigue con el material de color plano más ruido
-	for kind: String in ["asphalt", "curb", "stop", "fountain"]:
+	# todo lo demás que sale en cajas sigue con el material de color plano más ruido —
+	# también el asfalto en caja (puente, paso bajo nivel): su UV es de caja, no de metros
+	for kind: String in ["asphalt", "curb", "stop", "fountain", "dirt"]:
 		var other: Material = MeshBatcher.surface_material(Color.WHITE, kind)
 		assert_bool(other is StandardMaterial3D).override_failure_message(kind + " no debería llevar el shader del suelo").is_true()
+
+
+## Las cintas de calzada y de ripio llevan textura (D74); las demás cintas, el material común.
+func test_ribbons_get_the_road_and_rock_textures() -> void:
+	for kind: String in ["asphalt", "asphalt_plain", "street", "dirt", "street_dirt"]:
+		var material: Material = MeshBatcher.ribbon_material(Color.WHITE, kind)
+		assert_bool(material is ShaderMaterial).override_failure_message(kind + " sin textura").is_true()
+		if material is ShaderMaterial:
+			var shader_material: ShaderMaterial = material
+			assert_bool(shader_material.get_shader_parameter("albedo_map") is Texture2D).is_true()
+	# la avenida muestrea solo el asfalto liso: sin la línea central de la textura
+	var avenue: ShaderMaterial = MeshBatcher.ribbon_material(Color.WHITE, "asphalt_plain")
+	assert_float(avenue.get_shader_parameter("across_scale")).is_less(0.5)
+	for plain: String in ["curb", "sidewalk", "median", "dust"]:
+		assert_bool(MeshBatcher.ribbon_material(Color.WHITE, plain) is StandardMaterial3D).override_failure_message(plain + " no debería llevar textura de cinta").is_true()
 
 
 func test_the_snow_dial_moves_and_stays_inside_range() -> void:
@@ -64,3 +81,10 @@ func test_the_shaders_actually_compile() -> void:
 	var tuft: Shader = load("res://assets/shaders/grass_tuft.gdshader")
 	assert_object(tuft).is_not_null()
 	assert_int(tuft.get_shader_uniform_list(true).size()).override_failure_message("el shader del pasto no compiló").is_greater(0)
+	var ribbon: Shader = load("res://assets/shaders/ribbon.gdshader")
+	assert_object(ribbon).is_not_null()
+	var ribbon_names: Array[String] = []
+	for u: Dictionary in ribbon.get_shader_uniform_list(true):
+		ribbon_names.append(str(u.get("name", "")))
+	for needed: String in ["albedo_map", "tile_m", "across_scale", "across_offset"]:
+		assert_bool(ribbon_names.has(needed)).override_failure_message("el shader de cinta no compiló: falta " + needed).is_true()

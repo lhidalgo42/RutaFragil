@@ -22,7 +22,9 @@ func test_builds_collision_bodies_and_batches() -> void:
 		assert_int(strip.multimesh.instance_count).is_greater(5000)
 	# D72: la calzada, la mediana, el cordón y la vereda salen como cintas continuas;
 	# la pintura sigue siendo cajas (los trazos son discontinuos de por sí).
-	for ribbon: String in ["Ribbon_asphalt", "Ribbon_median", "Ribbon_curb", "Ribbon_sidewalk"]:
+	# D74: la avenida usa "asphalt_plain" (asfalto liso, sin la línea central de la textura).
+	assert_object(road.get_node_or_null("Ribbon_asphalt_plain")).override_failure_message("falta la cinta de asfalto de la avenida").is_not_null()
+	for ribbon: String in ["Ribbon_median", "Ribbon_curb", "Ribbon_sidewalk"]:
 		assert_object(road.get_node_or_null(ribbon)).override_failure_message("falta " + ribbon).is_not_null()
 	assert_int(road.batch_count("paint_white")).is_greater(300)
 	assert_int(road.batch_count("paint_yellow")).is_greater(50)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://src/biomes/route_greybox.gd" id="1_route"]
 [ext_resource type="Script" path="res://src/biomes/route_circuit.gd" id="2_circuit"]
@@ -8,15 +8,10 @@
 [ext_resource type="PackedScene" path="res://scenes/b0_requinoa.tscn" id="6_b0"]
 [ext_resource type="Script" path="res://src/biomes/overview_camera.gd" id="7_overview"]
 [ext_resource type="Script" path="res://src/tooling/demo_speed_cap.gd" id="8_cap"]
+[ext_resource type="Texture2D" path="res://assets/textures/sky/day_environment.exr" id="hdri_sky"]
 
-[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
-sky_top_color = Color(0.32, 0.5, 0.78, 1)
-sky_horizon_color = Color(0.82, 0.8, 0.74, 1)
-sky_curve = 0.12
-ground_bottom_color = Color(0.3, 0.29, 0.26, 1)
-ground_horizon_color = Color(0.8, 0.78, 0.72, 1)
-sun_angle_max = 24.0
-sun_curve = 0.1
+[sub_resource type="PanoramaSkyMaterial" id="sky_mat"]
+panorama = ExtResource("hdri_sky")
 
 [sub_resource type="Sky" id="sky"]
 sky_material = SubResource("sky_mat")

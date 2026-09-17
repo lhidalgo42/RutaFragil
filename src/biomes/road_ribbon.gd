@@ -92,7 +92,7 @@ func flush(parent: Node, colours: Dictionary) -> void:
 		var st: SurfaceTool = _surfaces[kind]
 		st.generate_normals()
 		var mesh: ArrayMesh = st.commit()
-		mesh.surface_set_material(0, MeshBatcher.surface_material(colours.get(kind, Color.MAGENTA), kind))
+		mesh.surface_set_material(0, MeshBatcher.ribbon_material(colours.get(kind, Color.MAGENTA), kind))
 		var inst: MeshInstance3D = MeshInstance3D.new()
 		inst.name = "Ribbon_" + kind
 		inst.mesh = mesh

@@ -11,7 +11,7 @@ extends Node3D
 ## humps, underpass, pasaje curbs.
 
 const COLOURS: Dictionary = {
-	"ground": Color(0.45, 0.5, 0.42), "asphalt": Color(0.24, 0.25, 0.27), "asphalt_side": Color(0.3, 0.31, 0.33),
+	"ground": Color(0.45, 0.5, 0.42), "asphalt": Color(0.24, 0.25, 0.27), "asphalt_plain": Color(0.24, 0.25, 0.27), "asphalt_side": Color(0.3, 0.31, 0.33),
 	"median": Color(0.35, 0.55, 0.3), "curb": Color(0.72, 0.72, 0.7), "sidewalk": Color(0.8, 0.78, 0.72),
 	"hump": Color(0.85, 0.55, 0.15), "paint": Color(0.95, 0.85, 0.2), "paint_white": Color(0.93, 0.93, 0.9),
 	"paint_yellow": Color(0.95, 0.8, 0.15), "concrete": Color(0.55, 0.52, 0.48), "warn": Color(0.95, 0.8, 0.1),
@@ -206,7 +206,8 @@ func _close_run(points: PackedVector3Array, s_list: PackedFloat32Array, kind: St
 		_r.band("median", points, lefts, -half_median, half_median, 0.15)
 		for side: float in [-1.0, 1.0]:
 			_r.wall("median", points, lefts, side * half_median, 0.02, 0.15, side)
-			_side_band("asphalt", points, lefts, side, half_median, curb - 1.0, 0.02)
+			# asfalto liso: la avenida pinta sus propias marcas (dos calzadas de un sentido)
+			_side_band("asphalt_plain", points, lefts, side, half_median, curb - 1.0, 0.02)
 			_side_band("sidewalk", points, lefts, side, curb + 1.0, walk + 1.0, 0.15)
 			_curb_ribbon(points, lefts, s_list, side, curb - 1.0, curb + 1.0)
 	else:
@@ -269,16 +270,11 @@ func _avenue_details(curbs: StaticBody3D, frame: Transform3D, mid: Vector3, seg_
 				_b.box(colour, MeshBatcher.along(rot, mid + left * (side * (data.curb_lateral - 2.1)), Vector3(1.7, 1.5, 4.4), 0.75))
 
 
-## Población street (D68): solo la pintura. La calzada, el cordón y la vereda son cinta.
-func _street_details(frame: Transform3D, mid: Vector3, seg_len: float, s_mid: float) -> void:
-	var left: Vector3 = data.left_of(frame)
-	var fwd: Vector3 = -frame.basis.z
-	var rot: Basis = frame.basis
-	var curb: float = data.curb_at(s_mid)
-	for k: float in [-0.25, 0.25]:
-		_b.box("paint_yellow", MeshBatcher.along(rot, mid + fwd * (seg_len * k), Vector3(0.12, 0.02, 3.0), 0.025))
-	for side: float in [-1.0, 1.0]:
-		_b.box("paint_white", MeshBatcher.along(rot, mid + left * (side * (curb - 1.5)), Vector3(0.1, 0.02, seg_len + 0.2), 0.025))
+## Población street (D68): la calzada, el cordón y la vereda son cinta, y desde D74 la
+## textura de la calzada (Road008B) trae la línea central y las de borde pintadas, así que
+## aquí ya no se pinta nada. Queda el gancho por si una calle necesita algo propio.
+func _street_details(_frame: Transform3D, _mid: Vector3, _seg_len: float, _s_mid: float) -> void:
+	pass
 
 
 ## Bridge deck (D69): flat asphalt spanning the trench with its own collision, plus parapets,

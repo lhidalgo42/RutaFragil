@@ -25,14 +25,22 @@
 
 - **ambientCG** — licencia **CC0 1.0** (dominio público, sin atribución obligatoria; se
   deja igual por cortesía y para poder rastrear el origen). https://ambientcg.com
-  - `Grass008` — https://ambientcg.com/view?id=Grass008
-  - `Snow015` — https://ambientcg.com/view?id=Snow015
-  - Descargados el 2026-09-17 en 1K-JPG. Del paquete se usan solo **Color, NormalGL y
-    Roughness**; no se versionan AmbientOcclusion, Displacement, `.blend`, `.usdc` ni
-    `.mtlx`. Los seis archivos se **reducen a 512 px** con `src/tooling/shrink_texture.gd`
-    antes de entrar al repo: 9,3 MB en 1K pasan a 464 KB, y los objetos de Git LFS en
-    GitHub son permanentes (nota de D36). Viven en `assets/textures/ground/` y los mezcla
-    `assets/shaders/ground.gdshader` (D73).
+  - `Grass008` — https://ambientcg.com/view?id=Grass008 (pasto del suelo)
+  - `Snow015` — https://ambientcg.com/view?id=Snow015 (nieve del suelo, dial)
+  - `Rocks005` — https://ambientcg.com/view?id=Rocks005 (roca del suelo y ripio, D74)
+  - `Road008B` — https://ambientcg.com/view?id=Road008B (calzada, con sus marcas pintadas, D74)
+  - `Terrain001` — https://ambientcg.com/view?id=Terrain001 (escaneo de terreno; se usan
+    `Color`, `Soil` y `Protrusion` del paquete 2K-JPG, estirados a 900 m como mapa de la
+    zona, no como baldosa, D74)
+  - `DayEnvironmentHDRI108` — https://ambientcg.com/view?id=DayEnvironmentHDRI108 (cielo,
+    `_1K_HDR.exr` tal cual, 1,8 MB, D74)
+  - Descargados el 2026-09-17 en 1K-JPG (Terrain001 en 2K-JPG, el único que ofrece). De
+    cada material se usan solo **Color, NormalGL y Roughness**; no se versionan
+    AmbientOcclusion, Displacement, `.blend`, `.usdc` ni `.mtlx`. Todo se **reduce** con
+    `src/tooling/shrink_texture.gd` antes de entrar al repo —512 px los materiales,
+    1024 px los tres mapas del terreno—: los objetos de Git LFS en GitHub son permanentes
+    (nota de D36). Viven en `assets/textures/{ground,road,sky}/` y los usan
+    `assets/shaders/ground.gdshader` (D73, D74) y `assets/shaders/ribbon.gdshader` (D74).
 
 ## Modelos generativos
 

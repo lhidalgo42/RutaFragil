@@ -1,37 +1,70 @@
 shader_type spatial;
 
-// Suelo del pueblo (D73): dos juegos de texturas de ambientCG (CC0) mezclados por ruido.
+// Suelo del pueblo (D73, ampliado en D74). Cuatro texturas de ambientCG (CC0) y un
+// terreno que decide dónde va cada una:
+//
+//   Grass008  — el pasto, la capa de base
+//   Rocks005  — la piedra, donde el terreno dice que hay roca o suelo desnudo
+//   Snow015   — la nieve, un dial aparte
+//   Terrain001 — NO se repite como baldosa: es un escaneo de terreno de kilómetros.
+//                Entra estirado sobre cientos de metros y manda tres cosas: el color a
+//                gran escala, dónde hay tierra (`soil`) y dónde asoma roca (`protrusion`).
+//                Ese es el papel que le corresponde: un escaneo único tileado se lee como
+//                un estampado; estirado, es el mapa de la zona.
 //
 // Tres decisiones que importan:
 //
 // 1. Las UV salen de la posición en el MUNDO, no de la malla. El suelo es una losa de
 //    2600 m hecha con una caja unitaria escalada: con las UV de la caja, una baldosa de
-//    pasto se estiraría los 2600 m enteros. En mundo, `tile_m` es lo que mide de verdad.
-// 2. La mezcla la manda un ruido de baja frecuencia, así que los dos suelos se meten uno
-//    en otro en manchas grandes y no en un damero.
-// 3. Encima va una segunda pasada de la MISMA textura, muy estirada, que multiplica el
-//    color. Sin eso, una baldosa de 3 m repetida 800 veces se lee como reja desde el aire
-//    — es el defecto clásico de tilear y se ve desde la cámara cenital del mapa.
+//    pasto se estiraría los 2600 m enteros. En mundo, `tile_m` son metros de verdad.
+// 2. La mezcla la mueven las máscaras del terreno MÁS un ruido, porque una máscara sola
+//    corta con borde de mapa y el ruido le devuelve el borde sucio.
+// 3. El color del terreno multiplica el resultado en vez de reemplazarlo. Va normalizado
+//    por su propio promedio medido (0,31) para que aclare y oscurezca por zonas sin teñir
+//    el pueblo entero de verde oliva.
 
+group_uniforms detalle;
 uniform sampler2D base_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D base_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D base_rough : hint_default_white, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D rock_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D rock_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D rock_rough : hint_default_white, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D over_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D over_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D over_rough : hint_default_white, filter_linear_mipmap_anisotropic, repeat_enable;
+
+group_uniforms terreno;
+uniform sampler2D terrain_color : source_color, filter_linear_mipmap, repeat_enable;
+uniform sampler2D terrain_soil : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform sampler2D terrain_protrusion : hint_default_black, filter_linear_mipmap, repeat_enable;
 uniform sampler2D blend_noise : hint_default_white, filter_linear_mipmap, repeat_enable;
 
-// Metros que mide una baldosa del suelo.
+group_uniforms escalas;
+// Metros que mide una baldosa de pasto y una de piedra.
 uniform float tile_m = 3.0;
-// Tamaño de las manchas de la mezcla, en metros.
+uniform float rock_tile_m = 2.2;
+// Metros que abarca el escaneo de terreno completo. Grande a propósito.
+uniform float macro_m = 900.0;
+// Tamaño de las manchas del ruido que ensucia los bordes.
 uniform float patch_m = 85.0;
-// Cuánto del segundo juego se ve: 0 = nada, 1 = todo.
-uniform float over_amount : hint_range(0.0, 1.0) = 0.35;
-// Qué tan cortado es el borde entre los dos: bajo difumina, alto recorta.
+
+group_uniforms mezcla;
+// Cuánta piedra asoma por el mapa de tierra del terreno.
+uniform float soil_amount : hint_range(0.0, 1.0) = 0.45;
+// Cuánta piedra asoma donde el terreno sobresale.
+uniform float rock_amount : hint_range(0.0, 1.0) = 0.55;
+// Cuánta nieve: 0 = nada, 1 = todo nevado.
+uniform float over_amount : hint_range(0.0, 1.0) = 0.0;
+// Qué tan cortado es el borde de la nieve.
 uniform float blend_sharpness : hint_range(1.0, 24.0) = 7.0;
-// Cuánto desvía el color la pasada estirada que rompe el mosaico.
-uniform float macro_strength : hint_range(0.0, 1.0) = 0.4;
+// Cuánto manda el color del terreno sobre el resultado.
+uniform float macro_strength : hint_range(0.0, 1.0) = 0.38;
 uniform vec3 tint : source_color = vec3(1.0, 1.0, 1.0);
+
+// Promedio de luz medido en terrain_color al reducirla (src/tooling/shrink_texture.gd).
+// Divide el color del terreno para que module en vez de oscurecer todo.
+const float TERRAIN_MEAN = 0.31;
 
 varying vec3 v_world;
 
@@ -41,19 +74,29 @@ void vertex() {
 
 void fragment() {
 	vec2 uv = v_world.xz / max(tile_m, 0.01);
-	vec2 patch_uv = v_world.xz / max(patch_m, 1.0);
-	float mask = texture(blend_noise, patch_uv).r;
-	// over_amount 0 deja la máscara entera bajo el umbral; 1 la deja entera encima.
-	float w = clamp((mask - (1.0 - over_amount)) * blend_sharpness + 0.5, 0.0, 1.0);
+	vec2 uv_rock = v_world.xz / max(rock_tile_m, 0.01);
+	vec2 macro_uv = v_world.xz / max(macro_m, 1.0);
+	float noise = texture(blend_noise, v_world.xz / max(patch_m, 1.0)).r;
 
-	vec3 albedo = mix(texture(base_albedo, uv).rgb, texture(over_albedo, uv).rgb, w);
-	float rough = mix(texture(base_rough, uv).r, texture(over_rough, uv).r, w);
-	vec3 normal = mix(texture(base_normal, uv).rgb, texture(over_normal, uv).rgb, w);
+	// Dónde el terreno dice que no hay pasto: tierra desnuda o roca asomada.
+	float soil = texture(terrain_soil, macro_uv).r;
+	float prot = texture(terrain_protrusion, macro_uv).r;
+	float bare = (soil - 0.5) * 2.0 * soil_amount + (prot - 0.15) * 3.0 * rock_amount;
+	bare = smoothstep(0.1, 0.75, bare + (noise - 0.5) * 0.45);
 
-	// Pasada estirada 9 veces: aclara y oscurece por zonas y mata la repetición.
-	vec3 macro = mix(texture(base_albedo, uv / 9.0).rgb, texture(over_albedo, uv / 9.0).rgb, w);
-	float macro_lum = dot(macro, vec3(0.299, 0.587, 0.114));
-	albedo *= mix(1.0, macro_lum * 2.0, macro_strength);
+	vec3 albedo = mix(texture(base_albedo, uv).rgb, texture(rock_albedo, uv_rock).rgb, bare);
+	float rough = mix(texture(base_rough, uv).r, texture(rock_rough, uv_rock).r, bare);
+	vec3 normal = mix(texture(base_normal, uv).rgb, texture(rock_normal, uv_rock).rgb, bare);
+
+	// La nieve va encima de todo, con su propio umbral.
+	float snow = clamp((noise - (1.0 - over_amount)) * blend_sharpness + 0.5, 0.0, 1.0);
+	albedo = mix(albedo, texture(over_albedo, uv).rgb, snow);
+	rough = mix(rough, texture(over_rough, uv).r, snow);
+	normal = mix(normal, texture(over_normal, uv).rgb, snow);
+
+	// El terreno manda el color a gran escala: es lo que mata la sensación de baldosa.
+	vec3 macro = texture(terrain_color, macro_uv).rgb / TERRAIN_MEAN;
+	albedo *= mix(vec3(1.0), macro, macro_strength);
 
 	ALBEDO = albedo * tint * COLOR.rgb;
 	ROUGHNESS = clamp(rough, 0.05, 1.0);

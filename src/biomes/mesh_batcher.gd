@@ -18,21 +18,50 @@ const BIG_SURFACES: Array[String] = [
 ## Lo poco que brilla: vidrio, pintura de auto, agua.
 const GLOSSY: Array[String] = ["car_a", "car_b", "car_c", "glass", "water", "fountain_water"]
 
-## El suelo lleva texturas de verdad (D73): dos juegos de ambientCG mezclados por ruido.
+## El suelo lleva texturas de verdad (D73, D74): pasto, piedra y nieve de ambientCG, y el
+## escaneo de terreno Terrain001 estirado a gran escala decidiendo dónde va cada una.
 const GROUND_SHADER: Shader = preload("res://assets/shaders/ground.gdshader")
 const GROUND_TEXTURES: Dictionary = {
 	"base_albedo": "res://assets/textures/ground/grass_color.jpg",
 	"base_normal": "res://assets/textures/ground/grass_normal.jpg",
 	"base_rough": "res://assets/textures/ground/grass_rough.jpg",
+	"rock_albedo": "res://assets/textures/ground/rock_color.jpg",
+	"rock_normal": "res://assets/textures/ground/rock_normal.jpg",
+	"rock_rough": "res://assets/textures/ground/rock_rough.jpg",
 	"over_albedo": "res://assets/textures/ground/snow_color.jpg",
 	"over_normal": "res://assets/textures/ground/snow_normal.jpg",
 	"over_rough": "res://assets/textures/ground/snow_rough.jpg",
+	"terrain_color": "res://assets/textures/ground/terrain_color.jpg",
+	"terrain_soil": "res://assets/textures/ground/terrain_soil.jpg",
+	"terrain_protrusion": "res://assets/textures/ground/terrain_protrusion.jpg",
 }
 ## Los colores que pasan a llevar textura: el color plano del diccionario deja de mandar.
 const TEXTURED: Array[String] = ["ground"]
 
+## Cintas con textura (D74): la calzada con Road008B —que trae sus marcas pintadas— y el
+## ripio con las piedras de río de Rocks005. Solo para RoadRibbon: una caja del batcher
+## tiene UV de caja, no metros, y la textura se estiraría sobre ella.
+const RIBBON_SHADER: Shader = preload("res://assets/shaders/ribbon.gdshader")
+const ROAD_TEXTURES: Array[String] = [
+	"res://assets/textures/road/road_color.jpg", "res://assets/textures/road/road_normal.jpg", "res://assets/textures/road/road_rough.jpg",
+]
+const ROCK_TEXTURES: Array[String] = [
+	"res://assets/textures/ground/rock_color.jpg", "res://assets/textures/ground/rock_normal.jpg", "res://assets/textures/ground/rock_rough.jpg",
+]
+## kind -> [texturas, metros por baldosa, franja a lo ancho (escala, corrimiento)].
+## "asphalt_plain" es la avenida: dos calzadas de un sentido, sin la línea central de la
+## textura — se muestrea solo el asfalto liso entre la línea central y la de borde.
+const RIBBON_MATERIALS: Dictionary = {
+	"asphalt": [ROAD_TEXTURES, 9.0, 1.0, 0.0],
+	"asphalt_plain": [ROAD_TEXTURES, 9.0, 0.3, 0.12],
+	"street": [ROAD_TEXTURES, 7.0, 1.0, 0.0],
+	"dirt": [ROCK_TEXTURES, 2.5, 1.0, 0.0],
+	"street_dirt": [ROCK_TEXTURES, 2.5, 1.0, 0.0],
+}
+
 static var _grain: NoiseTexture2D
 static var _ground: ShaderMaterial
+static var _ribbons: Dictionary = {}
 
 var _batches: Dictionary = {}
 var _flushed: Dictionary = {}
@@ -173,6 +202,27 @@ static func ground_material() -> ShaderMaterial:
 		material.set_shader_parameter("blend_noise", grain_texture())
 		_ground = material
 	return _ground
+
+
+## Material de una cinta: con textura si el color está en RIBBON_MATERIALS, si no el
+## material común. Lo llama RoadRibbon.flush; MeshBatcher.flush nunca (ver arriba).
+static func ribbon_material(colour: Color, kind: String) -> Material:
+	if not RIBBON_MATERIALS.has(kind):
+		return surface_material(colour, kind)
+	if not _ribbons.has(kind):
+		var spec: Array = RIBBON_MATERIALS[kind]
+		var textures: Array = spec[0]
+		var material: ShaderMaterial = ShaderMaterial.new()
+		material.shader = RIBBON_SHADER
+		material.set_shader_parameter("albedo_map", load(textures[0]))
+		material.set_shader_parameter("normal_map", load(textures[1]))
+		material.set_shader_parameter("rough_map", load(textures[2]))
+		material.set_shader_parameter("grain_noise", grain_texture())
+		material.set_shader_parameter("tile_m", float(spec[1]))
+		material.set_shader_parameter("across_scale", float(spec[2]))
+		material.set_shader_parameter("across_offset", float(spec[3]))
+		_ribbons[kind] = material
+	return _ribbons[kind]
 
 
 ## Cuánto del segundo juego (la nieve) se ve en el suelo, de 0 a 1.

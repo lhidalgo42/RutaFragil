@@ -81,17 +81,8 @@ func _build_streets() -> void:
 		# Cinta continua (D72): en las esquinas del pueblo la cadena de cajas dejaba
 		# el mismo diente que en la ruta, y aquí hay 217 calles con esquinas.
 		var lefts: PackedVector3Array = RoadRibbon.lefts(pts)
+		# La textura de la calzada (D74) trae la línea central pintada: ya no se dibuja aparte.
 		_r.band("street_dirt" if dirt else "street", pts, lefts, -half, half, 0.04)
-		if half < 3.25 or dirt:
-			continue
-		for i: int in pts.size() - 1:
-			var a: Vector3 = pts[i]
-			var b: Vector3 = pts[i + 1]
-			var seg: float = a.distance_to(b)
-			if seg < 6.0:
-				continue
-			var rot: Basis = Basis.looking_at((b - a) / seg, Vector3.UP)
-			_b.box("street_line", Transform3D(rot * Basis.from_scale(Vector3(0.12, 0.02, seg * 0.55)), (a + b) * 0.5 + Vector3.UP * 0.05))
 
 
 func _build_rail() -> void:
