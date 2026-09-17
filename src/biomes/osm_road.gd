@@ -37,6 +37,13 @@ const SIGN_BEFORE_M: float = 35.0
 @export var verge_per_m2: float = 1.1
 ## Puntos del eje por tramo de pasto (~300 m): el trozo que la cámara descarta o dibuja.
 const VERGE_CHUNK: int = 30
+## Suelo con textura (D73): cuánto del segundo juego de texturas —la nieve— se ve
+## mezclado con el pasto, y cuántos metros mide una baldosa. 0.0 deja el suelo solo de
+## pasto; 1.0 lo deja nevado entero. Va en 0 por defecto y lo sube **la escena** que lo
+## quiere: hoy solo Requínoa. El material del suelo es uno solo y compartido, así que en
+## un árbol con dos biomas manda el último que se arma; hoy siempre hay uno.
+@export_range(0.0, 1.0) var ground_snow: float = 0.0
+@export var ground_tile_m: float = 3.0
 @export var seed: int = 5
 
 var data: OsmMapData
@@ -59,6 +66,8 @@ func build() -> void:
 		remove_child(child)
 		child.free()
 	_rng.seed = seed
+	MeshBatcher.set_ground_over_amount(ground_snow)
+	MeshBatcher.set_ground_tile_m(ground_tile_m)
 	_build_ground()
 	_build_segments()
 	_build_roundabout()

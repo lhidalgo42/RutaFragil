@@ -18,7 +18,21 @@ const BIG_SURFACES: Array[String] = [
 ## Lo poco que brilla: vidrio, pintura de auto, agua.
 const GLOSSY: Array[String] = ["car_a", "car_b", "car_c", "glass", "water", "fountain_water"]
 
+## El suelo lleva texturas de verdad (D73): dos juegos de ambientCG mezclados por ruido.
+const GROUND_SHADER: Shader = preload("res://assets/shaders/ground.gdshader")
+const GROUND_TEXTURES: Dictionary = {
+	"base_albedo": "res://assets/textures/ground/grass_color.jpg",
+	"base_normal": "res://assets/textures/ground/grass_normal.jpg",
+	"base_rough": "res://assets/textures/ground/grass_rough.jpg",
+	"over_albedo": "res://assets/textures/ground/snow_color.jpg",
+	"over_normal": "res://assets/textures/ground/snow_normal.jpg",
+	"over_rough": "res://assets/textures/ground/snow_rough.jpg",
+}
+## Los colores que pasan a llevar textura: el color plano del diccionario deja de mandar.
+const TEXTURED: Array[String] = ["ground"]
+
 static var _grain: NoiseTexture2D
+static var _ground: ShaderMaterial
 
 var _batches: Dictionary = {}
 var _flushed: Dictionary = {}
@@ -93,7 +107,7 @@ static func between(a: Vector3, b: Vector3, thickness: float) -> Transform3D:
 
 
 static func unit_mesh(mesh_kind: String, colour: Color, kind: String = "") -> Mesh:
-	var material: StandardMaterial3D = surface_material(colour, kind)
+	var material: Material = surface_material(colour, kind)
 	var mesh: Mesh
 	match mesh_kind:
 		"cyl":
@@ -127,7 +141,9 @@ static func unit_mesh(mesh_kind: String, colour: Color, kind: String = "") -> Me
 ## en triplanar y con el tono de cada instancia (o de cada vértice) encima. Lo usan
 ## tanto MeshBatcher como RoadRibbon, para que la cinta de asfalto y las cajas que
 ## quedan se vean del mismo material.
-static func surface_material(colour: Color, kind: String = "") -> StandardMaterial3D:
+static func surface_material(colour: Color, kind: String = "") -> Material:
+	if kind in TEXTURED:
+		return ground_material()
 	var material: StandardMaterial3D = StandardMaterial3D.new()
 	material.albedo_color = colour
 	material.albedo_texture = grain_texture()
@@ -144,6 +160,29 @@ static func surface_material(colour: Color, kind: String = "") -> StandardMateri
 static func tint_at(p: Vector3) -> Color:
 	var v: float = 0.87 + 0.26 * _hash01(p, 0.0)
 	return Color(v * (0.98 + 0.04 * _hash01(p, 11.0)), v * (0.97 + 0.06 * _hash01(p, 23.0)), v * (0.96 + 0.08 * _hash01(p, 37.0)), 1.0)
+
+
+## Material del suelo, uno solo y compartido: las siete losas del terreno son la misma
+## superficie, y así cambiar la nieve es cambiar un parámetro en un sitio.
+static func ground_material() -> ShaderMaterial:
+	if _ground == null:
+		var material: ShaderMaterial = ShaderMaterial.new()
+		material.shader = GROUND_SHADER
+		for key: String in GROUND_TEXTURES:
+			material.set_shader_parameter(key, load(GROUND_TEXTURES[key]))
+		material.set_shader_parameter("blend_noise", grain_texture())
+		_ground = material
+	return _ground
+
+
+## Cuánto del segundo juego (la nieve) se ve en el suelo, de 0 a 1.
+static func set_ground_over_amount(amount: float) -> void:
+	ground_material().set_shader_parameter("over_amount", clampf(amount, 0.0, 1.0))
+
+
+## Metros que mide una baldosa del suelo.
+static func set_ground_tile_m(metres: float) -> void:
+	ground_material().set_shader_parameter("tile_m", maxf(0.2, metres))
 
 
 static func grain_texture() -> NoiseTexture2D:

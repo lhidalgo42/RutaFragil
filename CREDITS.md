@@ -21,6 +21,19 @@
 - Versión pineada: tag **v6.2.1** (D32), commit `08ffc7c65b61b1b2edd545616061a99973c13ce1`.
 - Se vendoriza la carpeta `addons/gdUnit4/` **sin `test/`**, igual que la distribución oficial (que la excluye por `export-ignore`). Borrado de `test/` autorizado por el dueño el 2026-09-08 por R12. `src/dotnet/GdUnit4CSharpApi.cs` es parte de la distribución oficial y queda inerte en build estándar (D32).
 
+## Texturas
+
+- **ambientCG** — licencia **CC0 1.0** (dominio público, sin atribución obligatoria; se
+  deja igual por cortesía y para poder rastrear el origen). https://ambientcg.com
+  - `Grass008` — https://ambientcg.com/view?id=Grass008
+  - `Snow015` — https://ambientcg.com/view?id=Snow015
+  - Descargados el 2026-09-17 en 1K-JPG. Del paquete se usan solo **Color, NormalGL y
+    Roughness**; no se versionan AmbientOcclusion, Displacement, `.blend`, `.usdc` ni
+    `.mtlx`. Los seis archivos se **reducen a 512 px** con `src/tooling/shrink_texture.gd`
+    antes de entrar al repo: 9,3 MB en 1K pasan a 464 KB, y los objetos de Git LFS en
+    GitHub son permanentes (nota de D36). Viven en `assets/textures/ground/` y los mezcla
+    `assets/shaders/ground.gdshader` (D73).
+
 ## Modelos generativos
 
 *(Sección vacía — se llenará según §10.2 del maestro.)*
