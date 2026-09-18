@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://src/biomes/biome_segment.gd" id="1_segment"]
 [ext_resource type="Script" path="res://src/biomes/axis_circuit.gd" id="2_circuit"]
@@ -9,18 +9,19 @@
 [ext_resource type="Script" path="res://src/biomes/osm_gravel.gd" id="8_gravel"]
 [ext_resource type="Script" path="res://src/biomes/osm_town.gd" id="9_town"]
 [ext_resource type="Script" path="res://src/biomes/biome_hints.gd" id="10_hints"]
+[ext_resource type="Script" path="res://src/biomes/osm_forest.gd" id="11_forest"]
 
 [node name="B0Pueblo" type="Node3D"]
 script = ExtResource("1_segment")
 biome_id = "b0_town_pueblo"
-length_m = 2023.9
+length_m = 1669.9
 
 [node name="Entry" type="Marker3D" parent="."]
-position = Vector3(-292.7, 1.2, -190.9)
-rotation = Vector3(0, -0.1567, 0)
+position = Vector3(-296.1, 1.2, 8.4)
+rotation = Vector3(0, -0.0122, 0)
 
 [node name="Exit" type="Marker3D" parent="."]
-position = Vector3(-292.7, 1.2, -190.9)
+position = Vector3(-296.1, 1.2, 8.4)
 
 [node name="Road" type="Node3D" parent="."]
 script = ExtResource("3_road")
@@ -51,6 +52,10 @@ hill_min_distance_m = 1600.0
 
 [node name="Circuit" type="Node3D" parent="."]
 script = ExtResource("2_circuit")
+data_path = "res://data/b0_pueblo.json"
+
+[node name="Forest" type="Node3D" parent="."]
+script = ExtResource("11_forest")
 data_path = "res://data/b0_pueblo.json"
 
 [node name="Hints" type="Node3D" parent="."]

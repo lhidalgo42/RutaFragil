@@ -54,6 +54,10 @@ var water: Array = []
 var fields: Array[Dictionary] = []
 var vine_rows: Array = []
 var streets: Array = []
+## Bosques (D81): polígonos [[x, z], ...] que OsmForest siembra de pinos.
+var forests: Array[Dictionary] = []
+## Qué árbol va en las veredas y la plaza: "tree" (frondoso) o "palm" (D81).
+var street_trees: String = "tree"
 ## Bioma B2 Pantano (D71): agua, juncales, troncos, hualve, vados, pasarela, muelle.
 var swamp: Dictionary = {}
 
@@ -332,7 +336,8 @@ func axis_centre() -> Vector2:
 ## Devuelve pares [x, z] como los de OSM, para que los tres consumidores no cambien.
 func inhabited_span(street: Dictionary, radius_m: float = 45.0) -> Array:
 	var raw: Array = street.get("pts", []) as Array
-	if raw.size() < 2 or is_exit_street(street):
+	# las salidas y los caminos de tierra (el del fundo lleva a la misión) no se podan
+	if raw.size() < 2 or is_exit_street(street) or str(street.get("surface", "")) == "gravel":
 		return raw
 	_ensure_building_grid()
 	var pts: Array[Vector2] = []
@@ -459,6 +464,8 @@ func _fill(d: Dictionary) -> void:
 	fields = _dicts(d.get("fields"))
 	vine_rows = _array(d.get("vine_rows"))
 	streets = _array(d.get("streets"))
+	forests = _dicts(d.get("forests"))
+	street_trees = str(d.get("street_trees", "tree"))
 	if d.get("swamp") is Dictionary:
 		swamp = d.get("swamp")
 	_cum = PackedFloat32Array([0.0])

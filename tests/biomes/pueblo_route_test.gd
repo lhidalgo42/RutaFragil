@@ -18,7 +18,7 @@ func test_the_ring_is_a_closed_drivable_loop() -> void:
 		return
 	# cerrado: el último punto del eje vuelve al primero
 	assert_float(data.axis[0].distance_to(data.axis[data.axis.size() - 1])).is_less(1.0)
-	assert_float(data.length).is_between(1900.0, 2200.0)
+	assert_float(data.length).is_between(1500.0, 2200.0)
 	assert_str(data.section_at(data.length * 0.5)).is_equal("avenue")
 	var count: int = data.waypoints.size()
 	assert_int(count).is_greater(100)
@@ -41,11 +41,11 @@ func test_streets_are_straight_and_leave_by_the_four_edges() -> void:
 	var data: OsmMapData = OsmMapData.load_from(DATA)
 	if data == null:
 		return
-	# ninguna calle tiene curva: todas son dos puntos
-	for item: Variant in data.streets:
-		var street: Dictionary = item
-		assert_int((street.get("pts", []) as Array).size()).override_failure_message("una calle del pueblo diseñado tiene curva").is_equal(2)
+	# D81: la red interior es irregular a propósito, pero las dos calles principales y las
+	# cuatro salidas siguen rectas: son las que llevan a los otros biomas
 	var exits: Array[Dictionary] = data.exit_streets()
+	for e: Dictionary in exits:
+		assert_int((e.get("pts", []) as Array).size()).override_failure_message("una salida tiene curva").is_equal(2)
 	assert_int(exits.size()).is_equal(4)
 	var quadrants: Dictionary = {}
 	var centre: Vector2 = data.axis_centre()
@@ -55,10 +55,12 @@ func test_streets_are_straight_and_leave_by_the_four_edges() -> void:
 		# cada salida llega hasta 1500 m: lo demás lo pone BiomeHints
 		assert_float(far.distance_to(Vector3(centre.x, 0.0, centre.y))).is_greater(1400.0)
 	assert_int(quadrants.size()).is_equal(4)
-	# ninguna calle se poda: todas tienen casas o son salida
+	# ninguna calle se poda: todas tienen casas, son salida o son el camino de tierra del fundo
 	for item2: Variant in data.streets:
 		var st: Dictionary = item2
-		assert_bool(data.street_is_inhabited(st) or data.is_exit_street(st)).override_failure_message("la poda se llevó una calle del diseño").is_true()
+		var kept: bool = data.street_is_inhabited(st) or data.is_exit_street(st) or str(st.get("surface", "")) == "gravel"
+		assert_bool(kept).override_failure_message("la poda se llevó una calle del diseño").is_true()
+		assert_int(data.inhabited_span(st).size()).override_failure_message("una calle quedó sin puntos tras la poda").is_greater_equal(2)
 
 
 func test_the_railway_is_two_straight_lines_crossing_at_the_station() -> void:
@@ -75,7 +77,64 @@ func test_the_railway_is_two_straight_lines_crossing_at_the_station() -> void:
 	assert_int(town.batch_count("rail")).is_between(4, 14)
 	assert_int(town.batch_count("sleeper")).is_greater(1000)
 	assert_object(town.get_node_or_null("Slab_paving")).is_not_null()
-	assert_int(town.batch_count("crown_core")).override_failure_message("las copas no tienen núcleo sólido").is_greater(0)
+	# D81/D82: en el pueblo de palmeras la plaza lleva palmeras, el modelo real de Quaternius
+	assert_str(data.street_trees).is_equal("palm")
+	assert_int(town.batch_count("palm")).override_failure_message("la plaza no tiene palmeras").is_greater(0)
+	var palm_batch: MultiMeshInstance3D = town.find_child("Batch_palm", true, false)
+	assert_object(palm_batch).is_not_null()
+	if palm_batch != null:
+		assert_int(palm_batch.multimesh.mesh.get_surface_count()).override_failure_message("el modelo de palmera no cargó").is_greater_equal(2)
+		assert_float(palm_batch.multimesh.mesh.get_aabb().size.y).is_between(0.98, 1.02)
+
+
+## Bosque alrededor del pueblo (D81): lo rojo de la foto del dueño. Pinos gigantes densos,
+## en losas que la cámara puede descartar, sin pisar ninguna calzada ni el fundo.
+func test_the_forest_surrounds_the_town_with_giant_pines() -> void:
+	var data: OsmMapData = OsmMapData.load_from(DATA)
+	if data == null:
+		return
+	assert_int(data.forests.size()).is_greater_equal(4)
+	var forest: OsmForest = auto_free(OsmForest.new())
+	forest.data_path = DATA
+	forest.density = 0.5   # la mitad, para que la prueba corra en segundos
+	forest.progressive = false
+	add_child(forest)
+	assert_int(forest.pending_tiles()).is_equal(0)
+	assert_int(forest.pine_count()).override_failure_message("el bosque quedó vacío").is_greater(3000)
+	assert_int(forest.tile_count()).override_failure_message("el bosque no está en losas").is_greater(10)
+	# D82: cada losa lleva el pino de cerca (modelo de Quaternius, con sombra, hasta el cambio
+	# de detalle) y el de lejos (Kenney, sin sombra, desde el cambio), en el mismo lote
+	var checked: int = 0
+	for tile: Node in forest.get_children():
+		var near: MultiMeshInstance3D = tile.get_node_or_null("Batch_pine")
+		var far: MultiMeshInstance3D = tile.get_node_or_null("Batch_pine_far")
+		if near == null:
+			continue
+		assert_object(far).is_not_null()
+		if far == null:
+			continue
+		assert_int(near.multimesh.instance_count).is_equal(far.multimesh.instance_count)
+		assert_float(near.visibility_range_end).is_equal(MeshBatcher.LOD_SWITCH_M)
+		assert_float(far.visibility_range_begin).is_equal(MeshBatcher.LOD_SWITCH_M)
+		assert_int(far.cast_shadow).is_equal(GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
+		assert_int(near.multimesh.mesh.get_surface_count()).override_failure_message("el modelo de pino no cargó").is_greater_equal(2)
+		checked += 1
+		if checked > 6:
+			break
+	assert_int(checked).is_greater(0)
+	# la orla: cerca del borde del polígono hay menos árboles que adentro (el bosque se deshace)
+	var mask: RoadMask = RoadMask.shared(data, DATA)
+	assert_object(mask).is_not_null()
+	assert_object(MeshBatcher.canopy_texture()).override_failure_message("el bosque no dejó sombra en el suelo").is_not_null()
+	# las palmeras del pueblo están en los datos, no en el bosque
+	var palms: int = 0
+	for t: Dictionary in data.trees:
+		if str(t.get("kind", "")) == "palm":
+			palms += 1
+	assert_int(palms).is_greater(300)
+	# la estación está en el recinto del centro-sur (el rectángulo celeste), en la vía N–S
+	assert_float(float(data.rail_station.get("x", 0.0))).is_between(60.0, 100.0)
+	assert_float(float(data.rail_station.get("z", 0.0))).is_between(30.0, 70.0)
 
 
 func test_houses_face_their_street_and_keep_off_the_ring() -> void:
@@ -114,6 +173,12 @@ func test_route_spawns_at_entry_and_reaches_first_waypoints() -> void:
 	assert_bool(scene is RouteGreybox).is_true()
 	var segment_node: Node = scene.get_node_or_null("Segments/B0Pueblo")
 	assert_bool(segment_node is BiomeSegment).is_true()
+	# D82: el marcador Entry de la escena tiene que ser la entrada de los datos. En D81 quedó
+	# el de D80 y el camión nacía en un potrero a 200 m de la avenida, sin llegar a ningún waypoint.
+	var data: OsmMapData = OsmMapData.load_from(DATA)
+	if segment_node is BiomeSegment and data != null:
+		var marker: Vector3 = (segment_node as BiomeSegment).entry_transform().origin
+		assert_float(Vector2(marker.x, marker.z).distance_to(Vector2(data.entry.origin.x, data.entry.origin.z))).override_failure_message("el marcador Entry de la escena no es la entrada de los datos").is_less(1.0)
 	var bus_node: Node = scene.get_node_or_null("PlaceholderBus")
 	var driver_node: Node = scene.get_node_or_null("DemoDriver")
 	if not (bus_node is PlaceholderBus) or not (driver_node is DemoDriver):

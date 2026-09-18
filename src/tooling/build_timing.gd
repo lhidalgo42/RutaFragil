@@ -32,10 +32,11 @@ func _process(_delta: float) -> bool:
 	var mask: RoadMask = RoadMask.new()
 	mask.build(data)
 	print("TIME mask=%d ms celdas=%d" % [Time.get_ticks_msec() - t0, mask.paved_cells()])
-	for entry: Array in [["OsmRoad", OsmRoad], ["OsmGravel", OsmGravel], ["OsmBuildings", OsmBuildings], ["OsmFurniture", OsmFurniture], ["OsmTown", OsmTown]]:
+	for entry: Array in [["OsmRoad", OsmRoad], ["OsmGravel", OsmGravel], ["OsmBuildings", OsmBuildings], ["OsmFurniture", OsmFurniture], ["OsmTown", OsmTown], ["OsmForest", OsmForest]]:
 		var script_class: Variant = entry[1]
 		var node: Node3D = script_class.new()
 		node.set("data_path", _data_path)
+		node.set("progressive", false)   # el bosque: todo de una vez, para medirlo entero
 		t0 = Time.get_ticks_msec()
 		root.add_child(node)
 		var ms: int = Time.get_ticks_msec() - t0

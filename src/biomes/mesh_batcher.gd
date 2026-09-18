@@ -73,6 +73,53 @@ const BARK_MATERIALS: Dictionary = {
 	"trunk": ["res://assets/textures/tree/bark_color.jpg", "res://assets/textures/tree/bark_normal.jpg", "res://assets/textures/tree/bark_rough.jpg", Vector3(2.0, 3.0, 1.0)],
 	"poplar_trunk": ["res://assets/textures/tree/bark_color.jpg", "res://assets/textures/tree/bark_normal.jpg", "res://assets/textures/tree/bark_rough.jpg", Vector3(2.0, 6.0, 1.0)],
 }
+
+## Modelos CC0 de verdad (D82): el «Ultimate Nature Pack» de Quaternius y el «Nature Kit» de
+## Kenney, los que encontró y verificó la cacería multi-fuente de D81 (descarga directa,
+## cabecera glTF y licencia CC0 comprobadas dos veces). Vienen sin texturas: cada superficie
+## trae el nombre de su material («Wood», «Green», «DarkGreen», «Coconuts», «Rock») y aquí se
+## le pone el nuestro con la paleta de abajo, así todos los árboles del mapa comparten tono y
+## grano. `model_mesh()` normaliza el modelo a 1 m de alto con la base en y = 0 y lo cachea;
+## `add(kind, "model:pine_1", xform)` lo escala a su altura como a cualquier otra malla.
+const MODELS: Dictionary = {
+	"pine_1": "res://assets/models/trees/quaternius_PineTree_1.glb",
+	"pine_2": "res://assets/models/trees/quaternius_PineTree_2.glb",
+	"pine_3": "res://assets/models/trees/quaternius_PineTree_3.glb",
+	"pine_4": "res://assets/models/trees/quaternius_PineTree_4.glb",
+	"pine_5": "res://assets/models/trees/quaternius_PineTree_5.glb",
+	"pine_far_1": "res://assets/models/trees/kenney_tree_pineTallA.glb",
+	"pine_far_2": "res://assets/models/trees/kenney_tree_pineTallB.glb",
+	"pine_far_3": "res://assets/models/trees/kenney_tree_pineTallC.glb",
+	"pine_far_4": "res://assets/models/trees/kenney_tree_pineTallD.glb",
+	"palm_1": "res://assets/models/trees/quaternius_PalmTree_1.glb",
+	"palm_2": "res://assets/models/trees/quaternius_PalmTree_2.glb",
+	"palm_3": "res://assets/models/trees/quaternius_PalmTree_3.glb",
+	"palm_4": "res://assets/models/trees/quaternius_PalmTree_4.glb",
+	"broadleaf_1": "res://assets/models/trees/quaternius_CommonTree_1.glb",
+	"broadleaf_2": "res://assets/models/trees/quaternius_CommonTree_3.glb",
+	"broadleaf_3": "res://assets/models/trees/quaternius_CommonTree_5.glb",
+	"bush_1": "res://assets/models/trees/quaternius_Bush_1.glb",
+	"rock_1": "res://assets/models/trees/quaternius_Rock_1.glb",
+	"rock_2": "res://assets/models/trees/quaternius_Rock_4.glb",
+	"rock_3": "res://assets/models/trees/quaternius_Rock_Moss_2.glb",
+	"stump_1": "res://assets/models/trees/quaternius_TreeStump_Moss.glb",
+}
+## Paleta de los modelos: por «familia/material» primero, por material después. Los pinos
+## van más oscuros y azulados que las palmeras; el follaje que no calce en nada sale verde.
+const MODEL_COLOURS: Dictionary = {
+	"Wood": Color(0.36, 0.25, 0.16), "woodBarkDark": Color(0.34, 0.24, 0.16),
+	"Green": Color(0.26, 0.48, 0.2), "DarkGreen": Color(0.15, 0.34, 0.15), "leafsDark": Color(0.13, 0.31, 0.16),
+	"Coconuts": Color(0.42, 0.3, 0.16), "Rock": Color(0.5, 0.49, 0.46),
+	"pine/Green": Color(0.14, 0.34, 0.17), "palm/Green": Color(0.32, 0.58, 0.25), "palm/DarkGreen": Color(0.19, 0.42, 0.18),
+	"broadleaf/Green": Color(0.27, 0.5, 0.21),
+}
+## Nivel de detalle por distancia (D82): el pino de Quaternius (~1900 triángulos) hasta
+## LOD_SWITCH_M y de ahí en adelante el de Kenney (78 triángulos, sin sombra), en el mismo
+## sitio con la misma altura y giro. Un bosque de 40 000 pinos detallados hasta el horizonte
+## no cabe en ningún cuadro; los lejanos son silueta y con 78 triángulos se leen igual.
+const LOD_SWITCH_M: float = 560.0
+const LOD_NEAR: Array[String] = ["pine"]
+const LOD_FAR: Array[String] = ["pine_far"]
 ## kind -> [atlas con alfa, repeticiones por tarjeta, tinte]. El recorte es `alpha_scissor`:
 ## sin mezcla de transparencia, así que las tarjetas se ordenan solas en profundidad.
 ## La MATA, no el atlas (D77): el atlas son cuatro hojas sueltas sobre transparente y
@@ -103,6 +150,7 @@ static var _ribbons: Dictionary = {}
 static var _pbr: Dictionary = {}
 static var _cutouts: Dictionary = {}
 static var _waters: Dictionary = {}
+static var _models: Dictionary = {}
 ## Agua en movimiento (D76): kind -> flow (0 superficie quieta, 1 chorro que cae).
 const WATER_SHADER: Shader = preload("res://assets/shaders/water.gdshader")
 const WATER_MATERIALS: Dictionary = {"fountain_water": 0.0, "fountain_stream": 1.0, "water": 0.0}
@@ -177,6 +225,11 @@ func flush(parent: Node, colours: Dictionary) -> void:
 		var inst: MultiMeshInstance3D = MultiMeshInstance3D.new()
 		inst.name = "Batch_" + kind
 		inst.multimesh = mm
+		if kind in LOD_NEAR:
+			inst.visibility_range_end = LOD_SWITCH_M
+		elif kind in LOD_FAR:
+			inst.visibility_range_begin = LOD_SWITCH_M
+			inst.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		parent.add_child(inst)
 	_batches.clear()
 
@@ -197,6 +250,8 @@ static func between(a: Vector3, b: Vector3, thickness: float) -> Transform3D:
 
 
 static func unit_mesh(mesh_kind: String, colour: Color, kind: String = "") -> Mesh:
+	if mesh_kind.begins_with("model:"):
+		return model_mesh(mesh_kind.substr(6))
 	var material: Material = surface_material(colour, kind)
 	var mesh: Mesh
 	match mesh_kind:
@@ -250,6 +305,8 @@ static func surface_material(colour: Color, kind: String = "") -> Material:
 	material.albedo_color = colour
 	material.albedo_texture = grain_texture()
 	material.uv1_triplanar = true
+	# los modelos son mallas de 1 m escaladas: el grano va en metros del mundo o no se ve
+	material.uv1_world_triplanar = kind == "model"
 	material.uv1_scale = Vector3.ONE * (0.012 if kind in BIG_SURFACES else 0.06)
 	material.vertex_color_use_as_albedo = true
 	material.roughness = 0.5 if kind in GLOSSY else 0.94
@@ -376,6 +433,102 @@ func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 14, ferns: i
 	# frutales de 1,4 m los parches oscuros se leían como manchas sin sentido por el campo.
 	if trunk_h >= 2.0:
 		add_canopy(p, crown_r * 1.8)
+
+
+## Malla de un modelo CC0 (D82), normalizada y cacheada: se carga el .glb, se toma su
+## MeshInstance3D con la transformación acumulada de sus padres (Quaternius exporta con
+## escala 100 y giro de −90° en X; Kenney con un corrimiento), se lleva a 1 m de alto con la
+## base en y = 0 y centrado en x/z, y cada superficie recibe nuestro material según el
+## nombre del suyo. Así `add(kind, "model:pine_1", xform)` lo trata como cualquier malla.
+static func model_mesh(key: String) -> Mesh:
+	if _models.has(key):
+		return _models[key]
+	var packed: PackedScene = load(MODELS[key])
+	var scene: Node = packed.instantiate()
+	var mi: MeshInstance3D = _first_mesh(scene)
+	var out: ArrayMesh = ArrayMesh.new()
+	if mi != null and mi.mesh != null:
+		var xf: Transform3D = mi.transform
+		var up: Node = mi.get_parent()
+		while up != null:
+			if up is Node3D:
+				xf = (up as Node3D).transform * xf
+			up = up.get_parent()
+		var aabb: AABB = xf * mi.mesh.get_aabb()
+		var centre: Vector3 = aabb.get_center()
+		var fit: Transform3D = Transform3D(Basis.from_scale(Vector3.ONE / maxf(aabb.size.y, 0.001)), Vector3.ZERO) \
+			* Transform3D(Basis.IDENTITY, Vector3(-centre.x, -aabb.position.y, -centre.z)) * xf
+		var family: String = key.rsplit("_", true, 1)[0]
+		for s: int in mi.mesh.get_surface_count():
+			var st: SurfaceTool = SurfaceTool.new()
+			st.append_from(mi.mesh, s, fit)
+			var src: Material = mi.mesh.surface_get_material(s)
+			var mat_name: String = src.resource_name if src != null else ""
+			var albedo: Color = (src as BaseMaterial3D).albedo_color if src is BaseMaterial3D else Color.WHITE
+			st.set_material(surface_material(_model_colour(family, mat_name, albedo), "model"))
+			st.commit(out)
+	scene.free()
+	_models[key] = out
+	return out
+
+
+static func _first_mesh(node: Node) -> MeshInstance3D:
+	if node is MeshInstance3D:
+		return node
+	for child: Node in node.get_children():
+		var found: MeshInstance3D = _first_mesh(child)
+		if found != null:
+			return found
+	return null
+
+
+## Color para una superficie del modelo: «familia/material», luego el material solo, y si
+## el nombre no está en la paleta, verde si el albedo original era verdoso y madera si no.
+static func _model_colour(family: String, mat_name: String, albedo: Color) -> Color:
+	if MODEL_COLOURS.has(family + "/" + mat_name):
+		return MODEL_COLOURS[family + "/" + mat_name]
+	if MODEL_COLOURS.has(mat_name):
+		return MODEL_COLOURS[mat_name]
+	return MODEL_COLOURS["Green"] if albedo.g > albedo.r else MODEL_COLOURS["Wood"]
+
+
+## Un PINO (D82): modelo de Quaternius (cinco variantes, copa en pisos irregulares) de cerca
+## y el pino alto de Kenney de lejos, en el mismo sitio con la misma altura y giro. El
+## modelo es más ancho de lo que un pino real: la copa se estrecha a la mitad a lo ancho.
+## `height` en metros: en el bosque van de 16 a 38 m, gigantes a propósito («pinos y cosas
+## por el estilo gigantes», dijo el dueño). Deja anotada la copa en la máscara del suelo.
+func pine(p: Vector3, height: float) -> void:
+	var yaw: float = _hash01(p, 3.0) * TAU
+	var variant: int = int(_hash01(p, 7.0) * 5.0) % 5 + 1
+	var shade: float = 0.84 + 0.3 * _hash01(p, 13.0)
+	var tint: Color = Color(shade * (0.94 + 0.12 * _hash01(p, 17.0)), shade, shade * 0.95, 1.0)
+	add_coloured("pine", "model:pine_%d" % variant, Transform3D(Basis(Vector3.UP, yaw) * Basis.from_scale(Vector3(height * 0.5, height, height * 0.5)), p), tint)
+	add_coloured("pine_far", "model:pine_far_%d" % (variant % 4 + 1), Transform3D(Basis(Vector3.UP, yaw) * Basis.from_scale(Vector3.ONE * height), p), tint)
+	add_canopy(p, height * 0.16)
+
+
+## Una PALMERA (D82): modelo de Quaternius (cuatro variantes, con cocos dos de ellas). El
+## dueño pintó de morado los árboles del pueblo: «serían palmeras». `height` en metros.
+func palm(p: Vector3, height: float) -> void:
+	var variant: int = int(_hash01(p, 7.0) * 4.0) % 4 + 1
+	var shade: float = 0.88 + 0.24 * _hash01(p, 13.0)
+	add_coloured("palm", "model:palm_%d" % variant, Transform3D(Basis(Vector3.UP, _hash01(p, 3.0) * TAU) * Basis.from_scale(Vector3(height * 0.8, height, height * 0.8)), p), Color(shade, shade, shade * 0.96, 1.0))
+	add_canopy(p, height * 0.3)
+
+
+## Un árbol frondoso de modelo (D82): el «CommonTree» de Quaternius, para el bosque mixto.
+func broadleaf(p: Vector3, height: float) -> void:
+	var variant: int = int(_hash01(p, 7.0) * 3.0) % 3 + 1
+	var shade: float = 0.86 + 0.26 * _hash01(p, 13.0)
+	add_coloured("broadleaf", "model:broadleaf_%d" % variant, Transform3D(Basis(Vector3.UP, _hash01(p, 3.0) * TAU) * Basis.from_scale(Vector3(height * 0.8, height, height * 0.8)), p), Color(shade, shade, shade * 0.95, 1.0))
+	add_canopy(p, height * 0.4)
+
+
+## Piedra o tocón del suelo del bosque (D82): `key` = "rock_1".."rock_3" o "stump_1".
+func prop(key: String, p: Vector3, size: float) -> void:
+	var kind: String = key.rsplit("_", true, 1)[0]
+	add(kind, "model:" + key, Transform3D(Basis(Vector3.UP, _hash01(p, 3.0) * TAU) * Basis.from_scale(Vector3.ONE * size), p))
+
 
 
 ## Bulto facetado de radio 0,5 (D80): un icosaedro subdividido una vez (80 caras) con cada

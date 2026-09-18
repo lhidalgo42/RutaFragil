@@ -84,14 +84,15 @@ func _build_streets() -> void:
 		var street: Dictionary = item
 		# Poda (D78): una calle sin casas a 45 m en al menos el 30 % de su largo es campo,
 		# no pueblo, y no se dibuja — salvo las cuatro salidas, que llevan a los otros biomas.
-		if not (data.street_is_inhabited(street) or data.is_exit_street(street)):
+		var dirt: bool = str(street.get("surface", "street")) == "gravel"
+		# el camino de tierra del fundo (D82) no tiene casas al lado y aun así se dibuja: lleva a la misión
+		if not (dirt or data.street_is_inhabited(street) or data.is_exit_street(street)):
 			continue
 		# solo el tramo con casas (D79): una calle no sigue hasta morir en un potrero
 		var pts: PackedVector3Array = _points(data.inhabited_span(street))
 		if pts.size() < 2:
 			continue
 		var half: float = float(street.get("w", 6.0)) * 0.5
-		var dirt: bool = str(street.get("surface", "street")) == "gravel"
 		# Las calles de OSM llegan hasta el EJE de la ruta: la cinta pisaba la calzada
 		# principal con otra textura y otra altura (D76). Se recortan al cordón.
 		pts = _trim_to_route(pts)
@@ -392,8 +393,12 @@ func _build_motorway() -> void:
 				_b.box(colour, Transform3D(rot * Basis.from_scale(Vector3(2.5, 3.6, 14.0)), mid + Vector3.UP * 1.9 + rot.x * 2.6))
 
 
-## Árbol de plaza: tronco con corteza y copa de mechones de hojas (D76), no esferas.
+## Árbol de plaza: tronco con corteza y copa de mechones de hojas (D76), no esferas. En un
+## pueblo de palmeras (D81), palmera alta: la Plaza de Armas con palmeras es lo más chileno.
 func _tree(p: Vector3, trunk_h: float, crown_r: float) -> void:
+	if data.street_trees == "palm":
+		_b.palm(p, 11.0 + 3.0 * MeshBatcher._hash01(p, 2.0))
+		return
 	_b.tree(p, trunk_h, crown_r, 8, 2, "trunk", "crown", 0.45)
 
 

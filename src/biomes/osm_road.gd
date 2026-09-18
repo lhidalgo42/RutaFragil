@@ -630,9 +630,11 @@ func _build_field_grass() -> void:
 		while z < hi.z:
 			var strip: GrassStrip = GrassStrip.new()
 			strip.name = "Field%03d" % k
-			strip.base_colour = Color(0.24, 0.36, 0.16)
-			strip.tip_colour = Color(0.58, 0.68, 0.3)
-			strip.tuft_scale = 1.25
+			# D82: del tono del suelo, no más oscuras. Desde el aire las matas oscuras sobre el
+			# pasto claro se leían como pecas negras por todo el pueblo.
+			strip.base_colour = Color(0.46, 0.62, 0.25)
+			strip.tip_colour = Color(0.92, 1.0, 0.5)
+			strip.tuft_scale = 1.15
 			root_node.add_child(strip)
 			# una línea por el centro del tramo con medio ancho = medio tramo cubre el cuadrado
 			var line: PackedVector3Array = PackedVector3Array([Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z), Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z + FIELD_CHUNK_M)])

@@ -49,7 +49,11 @@ func build() -> void:
 		_b.box("signal", Transform3D(Basis.from_scale(Vector3(0.3, 0.9, 0.3)), p + Vector3.UP * 3.4))
 		_occupy(sig)
 	for tree: Dictionary in data.trees:
-		_tree(_pt(tree), 4.0, 1.6)
+		# D81: un árbol puede venir marcado como palmera (`kind`), o el mapa entero pedirlas
+		if str(tree.get("kind", "")) == "palm" or data.street_trees == "palm":
+			_b.palm(_pt(tree), 8.0 + 4.0 * MeshBatcher._hash01(_pt(tree), 2.0))
+		else:
+			_tree(_pt(tree), 4.0, 1.6)
 		_occupy(tree)
 	for tree: Dictionary in data.median_trees:
 		_tree(_pt(tree), 5.4, 1.7)
@@ -180,8 +184,8 @@ func _build_rural() -> void:
 	for o: Vector3 in data.orchards:
 		if _on_road(o, 1.0):
 			continue
-		# frutal bajo y redondo, sin helechos al pie: es un huerto trabajado
-		_b.tree(o, 1.4, 1.5, 6, 0, "trunk", "orchard", 0.22)
+		# frutal bajo y redondo (D82: el árbol frondoso de Quaternius, a 4 m): es un huerto trabajado
+		_b.broadleaf(o, 3.6 + 0.8 * MeshBatcher._hash01(o, 4.0))
 
 
 ## Un árbol en medio de una calle lateral es de las cosas que más saltan a la vista.
@@ -204,6 +208,9 @@ func _occupy(d: Dictionary) -> void:
 ## Árbol de vereda o de OSM: tronco con corteza y copa de mechones de hojas (D76). Antes
 ## eran tres esferas verdes sobre un cilindro café — «Mickey», dijo el dueño.
 func _tree(p: Vector3, trunk_h: float, crown_r: float) -> void:
+	if data.street_trees == "palm":
+		_b.palm(p, 8.0 + 4.0 * MeshBatcher._hash01(p, 2.0))
+		return
 	_b.tree(p, trunk_h, crown_r)
 
 

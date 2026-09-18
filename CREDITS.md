@@ -57,6 +57,29 @@
   - `tree_small_02` — https://polyhaven.com/a/tree_small_02 (hojas, `assets/textures/tree/leaf_card.png`,
     de reserva: la copa sigue usando la mata estampada de LeafSet010)
 
+## Modelos 3D
+
+Los encontró y verificó una búsqueda multi-fuente en paralelo (D81/D82): cada URL se bajó
+con `curl`, se comprobó la cabecera `glTF` del binario y la licencia en la fuente, y un
+segundo agente repitió la comprobación. Viven en `assets/models/trees/` (Git LFS), sin
+texturas: `MeshBatcher.model_mesh()` les pone nuestro material por nombre de superficie y los
+normaliza a 1 m de alto. Descargados el 2026-09-18.
+
+- **Quaternius — Ultimate Nature Pack** — licencia **CC0 1.0**.
+  https://quaternius.com/packs/ultimatenature.html (la página declara CC0). Los `.glb`
+  vienen del espejo público https://github.com/trebeljahr/quaternius-showcase
+  (`public/glb/nature_pack/`, conversión FBX2glTF del paquete original).
+  - `PineTree_1..5` — los pinos del bosque de cerca (D82)
+  - `PalmTree_1..4` — las palmeras del pueblo y la plaza (D82)
+  - `CommonTree_1`, `CommonTree_3`, `CommonTree_5` — los frondosos del bosque mixto (D82)
+  - `Bush_1`, `Rock_1`, `Rock_4`, `Rock_Moss_2`, `TreeStump_Moss` — suelo del bosque (D82)
+- **Kenney — Nature Kit 2.1** — licencia **CC0 1.0** (`assets/models/trees/LICENSE_kenney_nature_kit.txt`).
+  https://kenney.nl/assets/nature-kit — los `.glb` vienen del espejo público
+  https://github.com/ETdoFresh/kenney.nl (`kenney_natureKit_2.1/Models/GLTF format/`).
+  - `tree_pineTallA..D` — el pino de lejos, 78–98 triángulos: nivel de detalle desde 560 m (D82)
+- **Poly Haven** — `pine_tree_01` (https://polyhaven.com/a/pine_tree_01, CC0) se **evaluó y
+  descartó**: 17 millones de triángulos y ~1 GB, no sirve para un juego sin decimar.
+
 ## Modelos generativos
 
 *(Sección vacía — se llenará según §10.2 del maestro.)*

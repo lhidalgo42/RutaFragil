@@ -16,7 +16,7 @@ uniform float wind_strength = 0.12;
 uniform float wind_speed = 1.4;
 uniform float bend_radius = 2.6;
 uniform float bend_strength = 0.9;
-uniform float alpha_cut : hint_range(0.0, 1.0) = 0.45;
+uniform float alpha_cut : hint_range(0.0, 1.0) = 0.55;   // D82: corta el borde oscuro de la foto de pasto
 
 varying float v_h;
 varying vec3 v_tint;
