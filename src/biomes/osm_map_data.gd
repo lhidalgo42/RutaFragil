@@ -348,13 +348,22 @@ func inhabited_span(street: Dictionary, radius_m: float = 45.0) -> Array:
 	var total: float = cum[cum.size() - 1]
 	var first: float = -1.0
 	var last: float = -1.0
+	var samples: Array[float] = []
 	var s: float = 0.0
-	while s <= total:
-		if _building_near(_point_at(pts, cum, s), radius_m):
-			if first < 0.0:
-				first = s
-			last = s
+	while s < total:
+		samples.append(s)
 		s += 20.0
+	samples.append(total)   # el último punto siempre se mira: ahí está la bocacalle
+	for s_k: float in samples:
+		var q: Vector2 = _point_at(pts, cum, s_k)
+		# Un extremo que llega al corredor de la ruta es una bocacalle y cuenta como habitado
+		# (D80): si no, la calle se recortaba 25 m antes del anillo y quedaba un hueco de pasto
+		# entre la última casa y la avenida.
+		var at_junction: bool = (s_k < 1.0 or s_k > total - 1.0) and absf(project(Vector3(q.x, 0.0, q.y)).y) < curb_lateral + 6.0
+		if at_junction or _building_near(q, radius_m):
+			if first < 0.0:
+				first = s_k
+			last = s_k
 	if first < 0.0:
 		return []
 	first = maxf(0.0, first - 25.0)

@@ -41,8 +41,12 @@ const VERGE_CHUNK: int = 30
 ## Pasto por TODO el campo (D79), no solo la franja: matas grandes y ralas en tramos de
 ## 300 m sobre el rectángulo del pueblo, saltando pavimento. «Más tupido a lo largo de
 ## todo el mapa», dijo el dueño; es lo que quita la sensación de losa verde lisa.
-@export var field_per_m2: float = 0.05
-@export var field_margin_m: float = 250.0
+## Denso y ACOTADO (D80): 0,6 matas/m² dentro del rectángulo del pueblo, desvaneciéndose en
+## 120 m hacia afuera. A 0,05 sobre 2600 m el pasto eran puntos tirados por el campo; lo
+## que se lee como pradera continua desde arriba es densidad alta en una zona, y afuera la
+## textura del suelo hace el resto.
+@export var field_per_m2: float = 0.6
+@export var field_margin_m: float = 120.0
 const FIELD_CHUNK_M: float = 300.0
 ## Suelo con textura (D73): cuánto del segundo juego de texturas —la nieve— se ve
 ## mezclado con el pasto, y cuántos metros mide una baldosa. 0.0 deja el suelo solo de
@@ -628,7 +632,7 @@ func _build_field_grass() -> void:
 			strip.name = "Field%03d" % k
 			strip.base_colour = Color(0.24, 0.36, 0.16)
 			strip.tip_colour = Color(0.58, 0.68, 0.3)
-			strip.tuft_scale = 1.5
+			strip.tuft_scale = 1.25
 			root_node.add_child(strip)
 			# una línea por el centro del tramo con medio ancho = medio tramo cubre el cuadrado
 			var line: PackedVector3Array = PackedVector3Array([Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z), Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z + FIELD_CHUNK_M)])

@@ -90,6 +90,12 @@ const CUTOUT_MATERIALS: Dictionary = {
 	"vine": [LEAF_CLUMP, 1.0, Color(0.36, 0.56, 0.28)],
 }
 
+## Colores que `tree()` emite por su cuenta, para que ningún constructor tenga que saber de
+## ellos (D80). El diccionario del constructor manda si los trae.
+const DEFAULT_COLOURS: Dictionary = {
+	"crown_core": Color(0.17, 0.33, 0.13), "poplar_core": Color(0.2, 0.38, 0.14), "orchard_core": Color(0.19, 0.36, 0.15),
+}
+
 static var _grain: NoiseTexture2D
 static var _blend: NoiseTexture2D
 static var _ground: ShaderMaterial
@@ -156,7 +162,7 @@ func flush(parent: Node, colours: Dictionary) -> void:
 		var mm: MultiMesh = MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
 		mm.use_colors = true
-		mm.mesh = unit_mesh(str(entry["mesh"]), colours.get(kind, Color.MAGENTA), kind)
+		mm.mesh = unit_mesh(str(entry["mesh"]), colours.get(kind, DEFAULT_COLOURS.get(kind, Color.MAGENTA)), kind)
 		mm.instance_count = xforms.size()
 		var own_colours: Array = entry.get("colours", [])
 		for i: int in xforms.size():
@@ -216,6 +222,9 @@ static func unit_mesh(mesh_kind: String, colour: Color, kind: String = "") -> Me
 		"card":
 			# Tres tarjetas cruzadas: un mechón de hojas, un helecho.
 			mesh = card_mesh()
+		"blob":
+			# Bulto facetado: el NÚCLEO sólido de una copa (D80).
+			mesh = blob_mesh()
 		_:
 			var box: BoxMesh = BoxMesh.new()
 			box.size = Vector3.ONE
@@ -323,6 +332,18 @@ func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 14, ferns: i
 	var top: Vector3 = p + Vector3.UP * (trunk_h + crown_r * 0.7)
 	# Ramas (D78): tres o cuatro cilindros de corteza que salen del tronco hacia la copa.
 	# Sin ramas las matas flotaban alrededor de un palo — «planchas pegadas», dijo el dueño.
+	# Núcleo sólido (D80): dos o tres bultos facetados que llenan el interior de la copa. Las
+	# tarjetas de hojas van por fuera; por dentro ya no hay aire, así que desde ningún ángulo
+	# se ve a través del árbol. Para el álamo es un solo bulto alargado.
+	var core_kind: String = crown_kind + "_core"
+	if column_h > 0.0:
+		add(core_kind, "blob", Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3(crown_r * 1.7, column_h * 0.95, crown_r * 1.7)), p + Vector3.UP * (trunk_h * 0.5 + column_h * 0.5)))
+	else:
+		var cores: int = 3 if crown_r > 1.8 else 2
+		for kc: int in cores:
+			var c_off: Vector3 = Vector3(rng.randf_range(-0.35, 0.35), rng.randf_range(-0.15, 0.3), rng.randf_range(-0.35, 0.35)) * crown_r
+			var c_size: float = crown_r * rng.randf_range(1.5, 1.9)
+			add(core_kind, "blob", Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3(c_size, c_size * 0.9, c_size)), top + c_off))
 	var branches: int = 0 if (column_h > 0.0 or trunk_h < 2.0) else 4
 	for _br: int in branches:
 		var ang_b: float = rng.randf() * TAU
@@ -355,6 +376,40 @@ func tree(p: Vector3, trunk_h: float, crown_r: float, clumps: int = 14, ferns: i
 	# frutales de 1,4 m los parches oscuros se leían como manchas sin sentido por el campo.
 	if trunk_h >= 2.0:
 		add_canopy(p, crown_r * 1.8)
+
+
+## Bulto facetado de radio 0,5 (D80): un icosaedro subdividido una vez (80 caras) con cada
+## vértice empujado al azar entre 0,72 y 1,0 del radio, emitido sin índices para que cada
+## cara tenga su propia normal (sombreado plano, aire low-poly). Es el NÚCLEO sólido de la
+## copa: las tarjetas de hojas van por fuera y esto tapa el interior, así nunca más se ve a
+## través del árbol — «planchas pegadas», dijo el dueño cuatro rondas seguidas.
+static func blob_mesh() -> ArrayMesh:
+	var t: float = (1.0 + sqrt(5.0)) * 0.5
+	var base: Array[Vector3] = [
+		Vector3(-1, t, 0), Vector3(1, t, 0), Vector3(-1, -t, 0), Vector3(1, -t, 0),
+		Vector3(0, -1, t), Vector3(0, 1, t), Vector3(0, -1, -t), Vector3(0, 1, -t),
+		Vector3(t, 0, -1), Vector3(t, 0, 1), Vector3(-t, 0, -1), Vector3(-t, 0, 1),
+	]
+	var faces: Array[Vector3i] = [
+		Vector3i(0, 11, 5), Vector3i(0, 5, 1), Vector3i(0, 1, 7), Vector3i(0, 7, 10), Vector3i(0, 10, 11),
+		Vector3i(1, 5, 9), Vector3i(5, 11, 4), Vector3i(11, 10, 2), Vector3i(10, 7, 6), Vector3i(7, 1, 8),
+		Vector3i(3, 9, 4), Vector3i(3, 4, 2), Vector3i(3, 2, 6), Vector3i(3, 6, 8), Vector3i(3, 8, 9),
+		Vector3i(4, 9, 5), Vector3i(2, 4, 11), Vector3i(6, 2, 10), Vector3i(8, 6, 7), Vector3i(9, 8, 1),
+	]
+	var st: SurfaceTool = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for f: Vector3i in faces:
+		var a: Vector3 = base[f.x].normalized()
+		var b: Vector3 = base[f.y].normalized()
+		var c: Vector3 = base[f.z].normalized()
+		var ab: Vector3 = ((a + b) * 0.5).normalized()
+		var bc: Vector3 = ((b + c) * 0.5).normalized()
+		var ca: Vector3 = ((c + a) * 0.5).normalized()
+		for tri: Array in [[a, ab, ca], [ab, b, bc], [ca, bc, c], [ab, bc, ca]]:
+			for v: Vector3 in tri:
+				st.add_vertex(v * (0.5 * (0.72 + 0.28 * _hash01(v * 7.0, 13.0))))
+	st.generate_normals()
+	return st.commit()
 
 
 ## Tres tarjetas verticales cruzadas de 1x1, centradas, normal hacia arriba (así la luz
