@@ -23,6 +23,11 @@ const BLADES: int = 3
 ## Escala de la mata (D79): el pasto de campo va con matas grandes y ralas, la franja con
 ## matas normales y tupidas.
 @export var tuft_scale: float = 1.0
+## Matas por instancia (D83): 1 = una mata suelta. El pasto de campo usa RACIMOS de doce
+## matas repartidas en un disco de CLUSTER_R metros: cubre el suelo entero con la sexta parte
+## de las instancias, y como el racimo es una sola malla no cuesta más armarlo.
+@export var cluster: int = 1
+const CLUSTER_R: float = 1.6
 
 var _material: ShaderMaterial
 ## Tuft origins from the last build (readable in headless tests, unlike the MultiMesh buffer).
@@ -104,29 +109,50 @@ func _make_tuft_mesh() -> ArrayMesh:
 	var verts: PackedVector3Array = PackedVector3Array()
 	var normals: PackedVector3Array = PackedVector3Array()
 	var uvs: PackedVector2Array = PackedVector2Array()
+	var colours: PackedColorArray = PackedColorArray()
 	var indices: PackedInt32Array = PackedInt32Array()
-	for q: int in BLADES:
-		var angle: float = float(q) * PI / float(BLADES)
-		var side: Vector3 = Vector3(cos(angle), 0.0, sin(angle)) * (TUFT_W * 0.5)
-		# Tarjeta rectangular: la forma la da la textura, no la geometría (D78).
-		var base: int = verts.size()
-		verts.append(-side)
-		verts.append(side)
-		verts.append(side + Vector3.UP * TUFT_H)
-		verts.append(-side + Vector3.UP * TUFT_H)
-		for _n: int in 4:
-			normals.append(Vector3.UP)
-		# la raíz de la mata está ABAJO de la imagen (v = 1): la base del quad va a v = 1
-		uvs.append(Vector2(0.0, 1.0))
-		uvs.append(Vector2(1.0, 1.0))
-		uvs.append(Vector2(1.0, 0.0))
-		uvs.append(Vector2(0.0, 0.0))
-		indices.append_array(PackedInt32Array([base, base + 1, base + 2, base, base + 2, base + 3]))
+	# El racimo es siempre el mismo (semilla fija): la variedad la dan el giro, la escala y
+	# el tono de cada instancia. Cada mata del racimo lleva su propio tono en el vértice.
+	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+	rng.seed = 7
+	for t: int in maxi(cluster, 1):
+		var offset: Vector3 = Vector3.ZERO
+		var yaw: float = 0.0
+		var size: Vector3 = Vector3.ONE
+		var tone: Color = Color.WHITE
+		if cluster > 1:
+			var ang: float = rng.randf() * TAU
+			var rad: float = CLUSTER_R * sqrt(rng.randf())
+			offset = Vector3(cos(ang) * rad, 0.0, sin(ang) * rad)
+			yaw = rng.randf() * TAU
+			size = Vector3(rng.randf_range(0.8, 1.2), rng.randf_range(0.7, 1.3), rng.randf_range(0.8, 1.2))
+			var v: float = rng.randf_range(0.82, 1.1)
+			tone = Color(v, v * rng.randf_range(0.96, 1.04), v * 0.95, 1.0)
+		for q: int in BLADES:
+			var angle: float = float(q) * PI / float(BLADES) + yaw
+			var side: Vector3 = Vector3(cos(angle), 0.0, sin(angle)) * (TUFT_W * 0.5 * size.x)
+			var up: Vector3 = Vector3.UP * (TUFT_H * size.y)
+			# Tarjeta rectangular: la forma la da la textura, no la geometría (D78).
+			var base: int = verts.size()
+			verts.append(offset - side)
+			verts.append(offset + side)
+			verts.append(offset + side + up)
+			verts.append(offset - side + up)
+			for _n: int in 4:
+				normals.append(Vector3.UP)
+				colours.append(tone)
+			# la raíz de la mata está ABAJO de la imagen (v = 1): la base del quad va a v = 1
+			uvs.append(Vector2(0.0, 1.0))
+			uvs.append(Vector2(1.0, 1.0))
+			uvs.append(Vector2(1.0, 0.0))
+			uvs.append(Vector2(0.0, 0.0))
+			indices.append_array(PackedInt32Array([base, base + 1, base + 2, base, base + 2, base + 3]))
 	var arrays: Array = []
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = verts
 	arrays[Mesh.ARRAY_NORMAL] = normals
 	arrays[Mesh.ARRAY_TEX_UV] = uvs
+	arrays[Mesh.ARRAY_COLOR] = colours
 	arrays[Mesh.ARRAY_INDEX] = indices
 	var mesh: ArrayMesh = ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)

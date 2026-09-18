@@ -41,13 +41,18 @@ const VERGE_CHUNK: int = 30
 ## Pasto por TODO el campo (D79), no solo la franja: matas grandes y ralas en tramos de
 ## 300 m sobre el rectángulo del pueblo, saltando pavimento. «Más tupido a lo largo de
 ## todo el mapa», dijo el dueño; es lo que quita la sensación de losa verde lisa.
-## Denso y ACOTADO (D80): 0,6 matas/m² dentro del rectángulo del pueblo, desvaneciéndose en
-## 120 m hacia afuera. A 0,05 sobre 2600 m el pasto eran puntos tirados por el campo; lo
-## que se lee como pradera continua desde arriba es densidad alta en una zona, y afuera la
-## textura del suelo hace el resto.
-@export var field_per_m2: float = 0.6
-@export var field_margin_m: float = 120.0
+## Denso y ACOTADO (D80), y sin claros (D83): 0,32 RACIMOS/m² de FIELD_CLUSTER matas cada uno
+## (5 matas/m²: las matas se solapan y el suelo no se ve) dentro del rectángulo del pueblo y
+## FIELD_FULL_M más allá, desvaneciéndose hasta `field_margin_m` ya dentro del bosque. A 0,05
+## sobre 2600 m el pasto eran puntos tirados por el campo; a 0,6 matas sueltas quedaban huecos
+## de suelo liso entre ellas («que no quede verde», dijo el dueño con la foto).
+@export var field_per_m2: float = 0.32
+@export var field_margin_m: float = 200.0
+const FIELD_FULL_M: float = 60.0
+const FIELD_CLUSTER: int = 16
 const FIELD_CHUNK_M: float = 300.0
+## Tope de racimos candidatos por mapa: ~3 s de armado en GDScript (D83).
+const FIELD_BUDGET: int = 460000
 ## Suelo con textura (D73): cuánto del segundo juego de texturas —la nieve— se ve
 ## mezclado con el pasto, y cuántos metros mide una baldosa. 0.0 deja el suelo solo de
 ## pasto; 1.0 lo deja nevado entero. Va en 0 por defecto y lo sube **la escena** que lo
@@ -594,54 +599,92 @@ func _build_grass() -> void:
 	_build_field_grass()
 
 
-## Pasto de campo (D79): el rectángulo del pueblo más `field_margin_m`, en tramos de
-## FIELD_CHUNK_M para que la cámara descarte los que no mira, con matas grandes y ralas.
+## Pasto de campo (D79, D83): cubre el suelo ENTERO del pueblo y del fundo con racimos de
+## matas, en tramos de FIELD_CHUNK_M para que la cámara descarte los que no mira. Sin claros:
+## «podríamos hacer que todo el suelo sea con esas plantas, que no quede verde», pidió el
+## dueño con la foto de los huecos entre matas. Densidad uniforme hasta FIELD_FULL_M más allá
+## del rectángulo y desvanecida hasta `field_margin_m`, ya dentro del bosque: con densidad
+## uniforme el pasto terminaba en una raya recta. La viña se deja ver (sin matas entre las
+## hileras) y el fundo solo siembra lo que el campo del pueblo dejó sin sembrar.
 func _build_field_grass() -> void:
 	if field_per_m2 <= 0.0 or data.axis.size() < 2:
 		return
 	var mask: RoadMask = RoadMask.shared(data, data_path)
-	var lo: Vector3 = data.axis[0]
-	var hi: Vector3 = data.axis[0]
-	for p: Vector3 in data.axis:
-		lo = lo.min(p)
-		hi = hi.max(p)
-	# El campo se desvanece hacia afuera (D79): la densidad baja con la distancia al borde
-	# del pueblo hasta llegar a cero en `field_margin_m`. Con densidad uniforme el pasto
-	# terminaba en una raya recta a 250 m, una costura tan visible como la losa de antes.
-	var fade_from: Vector3 = lo
-	var fade_to: Vector3 = hi
-	lo -= Vector3(field_margin_m, 0.0, field_margin_m)
-	hi += Vector3(field_margin_m, 0.0, field_margin_m)
-	var fade_skip: Callable = func(p: Vector3) -> bool:
-		if mask.is_paved(p, 0.5):
-			return true
-		var dx: float = maxf(fade_from.x - p.x, p.x - fade_to.x)
-		var dz: float = maxf(fade_from.z - p.z, p.z - fade_to.z)
-		var outside: float = maxf(0.0, maxf(dx, dz)) / field_margin_m
-		# afuera del pueblo se conserva (1 - outside)^2 de las matas; el hash es determinista
-		return MeshBatcher._hash01(p, 3.0) > (1.0 - outside) * (1.0 - outside)
 	var root_node: Node3D = Node3D.new()
 	root_node.name = "Field"
 	add_child(root_node)
-	var x: float = lo.x
-	var k: int = 0
-	while x < hi.x:
-		var z: float = lo.z
-		while z < hi.z:
-			var strip: GrassStrip = GrassStrip.new()
-			strip.name = "Field%03d" % k
-			# D82: del tono del suelo, no más oscuras. Desde el aire las matas oscuras sobre el
-			# pasto claro se leían como pecas negras por todo el pueblo.
-			strip.base_colour = Color(0.46, 0.62, 0.25)
-			strip.tip_colour = Color(0.92, 1.0, 0.5)
-			strip.tuft_scale = 1.15
-			root_node.add_child(strip)
-			# una línea por el centro del tramo con medio ancho = medio tramo cubre el cuadrado
-			var line: PackedVector3Array = PackedVector3Array([Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z), Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z + FIELD_CHUNK_M)])
-			strip.build_along(line, FIELD_CHUNK_M * 0.5, field_per_m2, seed + 1000 + k, fade_skip)
-			k += 1
-			z += FIELD_CHUNK_M
-		x += FIELD_CHUNK_M
+	var town: Rect2 = Rect2(Vector2(data.axis[0].x, data.axis[0].z), Vector2.ZERO)
+	for p: Vector3 in data.axis:
+		town = town.expand(Vector2(p.x, p.z))
+	var crops: Array[PackedVector2Array] = []
+	var crop_boxes: Array[Rect2] = []
+	for field: Dictionary in data.fields:
+		var poly: PackedVector2Array = PackedVector2Array()
+		for q: Variant in (field.get("polygon", []) as Array):
+			var pair: Array = q
+			if pair.size() >= 2:
+				poly.append(Vector2(float(pair[0]), float(pair[1])))
+		if poly.size() >= 3:
+			crops.append(poly)
+			var box: Rect2 = Rect2(poly[0], Vector2.ZERO)
+			for v: Vector2 in poly:
+				box = box.expand(v)
+			crop_boxes.append(box)
+	var rects: Array[Rect2] = [town]
+	if not crops.is_empty():
+		var estate: Rect2 = crop_boxes[0]
+		for box: Rect2 in crop_boxes:
+			estate = estate.merge(box)
+		rects.append(estate)
+	# Presupuesto (D83): se siembra lo que quepa en FIELD_BUDGET racimos en total, sea el pueblo o
+	# el lazo de 2,6 km de Requínoa con sus decenas de potreros; sin tope, Requínoa tardaba 78 s.
+	var total_area: float = 0.0
+	for rect: Rect2 in rects:
+		total_area += rect.grow(field_margin_m).get_area()
+	var per_m2: float = minf(field_per_m2, float(FIELD_BUDGET) / maxf(total_area, 1.0))
+	for r: int in rects.size():
+		var rect: Rect2 = rects[r]
+		var skip: Callable = func(p: Vector3) -> bool:
+			if mask.is_paved(p, 1.2):
+				return true
+			var q: Vector2 = Vector2(p.x, p.z)
+			for i: int in crops.size():
+				if crop_boxes[i].has_point(q) and Geometry2D.is_point_in_polygon(q, crops[i]):
+					return true
+			var keep: float = _field_keep(rect, q)
+			if r > 0 and town.grow(field_margin_m).has_point(q):
+				keep *= 1.0 - _field_keep(town, q)   # el complemento de lo que ya sembró el pueblo
+			return MeshBatcher._hash01(p, 3.0) > keep
+		var area: Rect2 = rect.grow(field_margin_m)
+		var x: float = area.position.x
+		var k: int = 0
+		while x < area.end.x:
+			var z: float = area.position.y
+			while z < area.end.y:
+				var strip: GrassStrip = GrassStrip.new()
+				strip.name = "Field%d_%03d" % [r, k]
+				# D82: del tono del suelo, no más oscuras. Desde el aire las matas oscuras sobre el
+				# pasto claro se leían como pecas negras por todo el pueblo.
+				strip.base_colour = Color(0.46, 0.62, 0.25)
+				strip.tip_colour = Color(0.92, 1.0, 0.5)
+				strip.tuft_scale = 1.25
+				strip.cluster = FIELD_CLUSTER
+				root_node.add_child(strip)
+				# una línea por el centro del tramo con medio ancho = medio tramo cubre el cuadrado
+				var line: PackedVector3Array = PackedVector3Array([Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z), Vector3(x + FIELD_CHUNK_M * 0.5, 0.0, z + FIELD_CHUNK_M)])
+				strip.build_along(line, FIELD_CHUNK_M * 0.5, per_m2, seed + 1000 + r * 500 + k, skip)
+				k += 1
+				z += FIELD_CHUNK_M
+			x += FIELD_CHUNK_M
+
+
+## Fracción de racimos que se conserva en `q`: 1 hasta FIELD_FULL_M fuera del rectángulo y
+## (1 - t)² de ahí hasta cero en `field_margin_m`.
+func _field_keep(rect: Rect2, q: Vector2) -> float:
+	var d: float = maxf(maxf(rect.position.x - q.x, q.x - rect.end.x), maxf(rect.position.y - q.y, q.y - rect.end.y))
+	var outside: float = clampf((d - FIELD_FULL_M) / maxf(field_margin_m - FIELD_FULL_M, 1.0), 0.0, 1.0)
+	return (1.0 - outside) * (1.0 - outside)
+
 
 
 ## Matas de pasto de campo, sumando todos los tramos.
