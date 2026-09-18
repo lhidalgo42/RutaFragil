@@ -27,7 +27,7 @@ const BLADES: int = 3
 ## matas repartidas en un disco de CLUSTER_R metros: cubre el suelo entero con la sexta parte
 ## de las instancias, y como el racimo es una sola malla no cuesta más armarlo.
 @export var cluster: int = 1
-const CLUSTER_R: float = 1.6
+const CLUSTER_R: float = 1.8
 
 var _material: ShaderMaterial
 ## Tuft origins from the last build (readable in headless tests, unlike the MultiMesh buffer).

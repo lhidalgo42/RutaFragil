@@ -69,6 +69,39 @@ func build(data: OsmMapData) -> void:
 	_stamp_exits(data)
 	_stamp_plaza(data)
 	_stamp_roundabout(data)
+	_stamp_rails(data)
+
+
+## Las vías del tren también son suelo sin pasto (D84): franja de RAIL_HALF_M a cada lado de
+## cada línea, como PAVIMENTO. Los pasos a nivel siguen siendo calzada (la calzada manda).
+const RAIL_HALF_M: float = 3.5
+
+
+func _stamp_rails(data: OsmMapData) -> void:
+	for line: Variant in data.rail_lines:
+		var raw: Array = line as Array
+		for i: int in maxi(0, raw.size() - 1):
+			var pa: Array = raw[i]
+			var pb: Array = raw[i + 1]
+			if pa.size() < 2 or pb.size() < 2:
+				continue
+			var a: Vector3 = Vector3(float(pa[0]), 0.0, float(pa[1]))
+			var b: Vector3 = Vector3(float(pb[0]), 0.0, float(pb[1]))
+			var seg: Vector3 = b - a
+			var seg_len: float = seg.length()
+			if seg_len < 0.01:
+				continue
+			var tangent: Vector3 = seg / seg_len
+			var left: Vector3 = Vector3.UP.cross(tangent)
+			var t: float = 0.0
+			while t < seg_len:
+				var pos: Vector3 = a + tangent * t
+				var lat: float = 0.0
+				while lat <= RAIL_HALF_M:
+					_mark(pos + left * lat, PAVIMENTO)
+					_mark(pos - left * lat, PAVIMENTO)
+					lat += 1.0
+				t += 1.0
 
 
 ## Calzada, vereda, plaza o rotonda: ahí no se siembra pasto.

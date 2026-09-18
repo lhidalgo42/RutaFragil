@@ -290,14 +290,17 @@ for axis_key, count in (("x", len(BASE_X)), ("z", len(BASE_Z))):
         if chain:
             emit_chain(chain, chain[0][2], NAMES[(idx * 3 + (0 if axis_key == "x" else 1)) % len(NAMES)])
 
-# las cuatro salidas, rectas hasta EXIT_REACH; nacen justo fuera del anillo
+# las cuatro salidas, rectas hasta EXIT_REACH; nacen en el EJE del anillo, como los tramos
+# interiores, y OsmTown las recorta al cordón (D84): nacidas 13 m afuera quedaban separadas de
+# la avenida por la vereda y el cordón, «las 4 salidas no parecen conectadas», dijo el dueño
+exit_starts = []
 for (px, pz, dx, dz) in ((RING_RX, 0.0, 1.0, 0.0), (-RING_RX, 0.0, -1.0, 0.0), (0.0, -RING_RZ, 0.0, -1.0), (0.0, RING_RZ, 0.0, 1.0)):
     s0, _ = project(px, pz)
     (ax, az), _, _ = sample(s0)
-    start = (ax + dx * 13.0, az + dz * 13.0)
-    streets.append({"pts": [[round(start[0], 1), round(start[1], 1)], [round(dx * EXIT_REACH if dx else 0.0, 1), round(dz * EXIT_REACH if dz else 0.0, 1)]],
-                    "w": 9.0, "surface": "street"})
+    far = (dx * EXIT_REACH if dx else 0.0, dz * EXIT_REACH if dz else 0.0)
+    streets.append({"pts": [[round(ax, 1), round(az, 1)], [round(far[0], 1), round(far[1], 1)]], "w": 9.0, "surface": "street"})
     names_used.append("Avenida Quenlobo" if dx else "Calle Trepaluz")
+    exit_starts.append((s0, far))
 
 # camino de tierra del fundo: desde la salida este hacia el norte, hasta la casa patronal
 FUNDO_X = 520.0
@@ -503,6 +506,10 @@ for (p, q, main, key) in segments:
     _, lat_in = project(*other)
     gaps.append({"side": -1 if lat_in < 0 else 1, "s0": round(s_g - 9.0, 1), "s1": round(s_g + 9.0, 1), "name": "calle"})
 gaps.append({"side": 1, "s0": round(s_st - 40.0, 1), "s1": round(s_st + 40.0, 1), "name": "bencinera"})
+# hueco de cordón y vereda para cada salida, del lado de afuera (D84)
+for (s_e, far) in exit_starts:
+    _, lat_far = project(*far)
+    gaps.append({"side": -1 if lat_far < 0 else 1, "s0": round(s_e - 9.0, 1), "s1": round(s_e + 9.0, 1), "name": "salida"})
 
 # ----------------------------------------------------------------------------- comprobaciones
 chk = wps + [wps[0], wps[1]]

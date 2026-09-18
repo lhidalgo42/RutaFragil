@@ -25,6 +25,9 @@ shader_type spatial;
 
 group_uniforms detalle;
 uniform sampler2D base_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+// D84: el pasto del suelo, más oscuro y más verde que la foto de Grass008, para que lo poco que
+// asoma entre los racimos de matas se lea como sombra de pasto y no como una plancha lima.
+uniform vec3 grass_tint : source_color = vec3(0.78, 0.86, 0.62);
 uniform sampler2D base_normal : hint_normal, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D base_rough : hint_default_white, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D rock_albedo : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -103,7 +106,7 @@ void fragment() {
 	float bare = (soil - 0.5) * 2.0 * soil_amount + (prot - 0.15) * 3.0 * rock_amount;
 	bare = smoothstep(0.32, 0.8, bare + (noise - 0.5) * 0.3);
 
-	vec3 albedo = mix(texture(base_albedo, uv).rgb, texture(rock_albedo, uv_rock).rgb, bare);
+	vec3 albedo = mix(texture(base_albedo, uv).rgb * grass_tint, texture(rock_albedo, uv_rock).rgb, bare);
 	float rough = mix(texture(base_rough, uv).r, texture(rock_rough, uv_rock).r, bare);
 	vec3 normal = mix(texture(base_normal, uv).rgb, texture(rock_normal, uv_rock).rgb, bare);
 

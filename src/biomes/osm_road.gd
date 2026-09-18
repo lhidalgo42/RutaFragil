@@ -41,18 +41,18 @@ const VERGE_CHUNK: int = 30
 ## Pasto por TODO el campo (D79), no solo la franja: matas grandes y ralas en tramos de
 ## 300 m sobre el rectángulo del pueblo, saltando pavimento. «Más tupido a lo largo de
 ## todo el mapa», dijo el dueño; es lo que quita la sensación de losa verde lisa.
-## Denso y ACOTADO (D80), y sin claros (D83): 0,32 RACIMOS/m² de FIELD_CLUSTER matas cada uno
-## (5 matas/m²: las matas se solapan y el suelo no se ve) dentro del rectángulo del pueblo y
+## Denso y ACOTADO (D80), y sin claros (D83, D84): 0,4 RACIMOS/m² de FIELD_CLUSTER matas cada uno
+## (8 matas/m²: las matas se solapan y el suelo no se ve) dentro del rectángulo del pueblo y
 ## FIELD_FULL_M más allá, desvaneciéndose hasta `field_margin_m` ya dentro del bosque. A 0,05
 ## sobre 2600 m el pasto eran puntos tirados por el campo; a 0,6 matas sueltas quedaban huecos
 ## de suelo liso entre ellas («que no quede verde», dijo el dueño con la foto).
-@export var field_per_m2: float = 0.32
+@export var field_per_m2: float = 0.4
 @export var field_margin_m: float = 200.0
 const FIELD_FULL_M: float = 60.0
-const FIELD_CLUSTER: int = 16
+const FIELD_CLUSTER: int = 20
 const FIELD_CHUNK_M: float = 300.0
-## Tope de racimos candidatos por mapa: ~3 s de armado en GDScript (D83).
-const FIELD_BUDGET: int = 460000
+## Tope de racimos candidatos por mapa: ~4 s de armado en GDScript (D83, subido en D84).
+const FIELD_BUDGET: int = 600000
 ## Suelo con textura (D73): cuánto del segundo juego de texturas —la nieve— se ve
 ## mezclado con el pasto, y cuántos metros mide una baldosa. 0.0 deja el suelo solo de
 ## pasto; 1.0 lo deja nevado entero. Va en 0 por defecto y lo sube **la escena** que lo
