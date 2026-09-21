@@ -2,6 +2,13 @@
 
 Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código).
 
+## M-ART — pendientes propios del pipeline de arte (2026-09-21)
+
+- **El servidor de ComfyUI queda sin VRAM después de cada corrida de TRELLIS.2.** Medido el 2026-09-21: tras la malla del furgón la RTX 4080 SUPER queda con **865 MB libres de 15,9 GB** y torch reporta solo 64 MB; el resto lo retienen las extensiones CUDA nativas del pipeline de malla (remesh/voxel), fuera del asignador de torch. `POST /free` (`unload_models` + `free_memory`) e `/interrupt` responden 200 y no liberan nada; FLUX genera a 64×64 y falla por OOM a 1024². **Solo un reinicio del proceso lo recupera.** Regla operativa mientras no se entienda: correr TRELLIS.2 al final de la sesión, o reiniciar el contenedor entre malla e imagen. Investigar si es el caché de salidas de nodos (`--cache-none` al arrancar) o una fuga en las extensiones.
+- **Paso 4 de M-ART (paquete, DA5) pendiente por lo anterior:** lámina del paquete sin generar (prompt listo en la sesión), malla sin generar, retopología a ≤800 tris en Blender, pivote en la base, textura ≤1024², `glb_check` en verde, colisión autorada (la caja de 0,4 m de D81 sigue siendo el colisionador), visto en el Playground.
+- **`tools/glb_check.py` no valida el punto 3 (colisión autorada) ni el 6 (board) ni el 7 (CREDITS):** por diseño (DA6). Falta una comprobación mecánica mínima de que la escena `.tscn` que use un `.glb` de `assets/models/` tenga un `CollisionShape3D` propio y no un `create_trimesh_collision`. Cuando exista el primer asset en escena.
+- **Aviso «Built with DINOv3» en los créditos del juego** (licencia de Meta, `CREDITS.md`): pendiente de la pantalla de créditos, que no existe. Anotar en la tarea que la cree.
+
 ## M2-GATE — pendientes y antecedentes hasta ronda 6
 
 - **M4, interacción física de tripulantes con el bus:** caminar perturba la
