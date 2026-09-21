@@ -28,3 +28,6 @@ tools/godot_bin.local
 ._*
 Thumbs.db
 [Dd]esktop.ini
+
+# Python
+__pycache__/

@@ -1,0 +1,14 @@
+{
+	"file": "bus_exterior_trellis_test.glb",
+	"source_image": "docs/referencias/bus_exterior_canonico_v2.png",
+	"model": "trellis_2_int8_convrot.safetensors",
+	"licence": "MIT",
+	"pipeline": "ComfyUI 0.37.0 nativo TRELLIS.2",
+	"seed": 56,
+	"target_faces": 20000,
+	"texture_px": 2048,
+	"prompt_id": "1f7a8e47-6855-48c1-b024-71dcd71e5238",
+	"server": "https://comfy.areum.cl",
+	"purpose": "prueba de camino del pipeline (paso 4 M-ART); NO es asset final ni colision",
+	"generated_utc": "2026-09-21T19:03:18Z"
+}

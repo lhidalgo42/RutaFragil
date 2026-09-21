@@ -25,13 +25,16 @@
 
 Regla del maestro §10.2: **antes de que un modelo produzca cualquier cosa que llegue al build, su licencia queda copiada aquí** (territorio, uso comercial, atribución, umbrales). Todo contenido generado por IA se declara en Steam al publicar.
 
-Servidor ComfyUI del dueño: `http://192.168.50.200:8188` (ComfyUI 0.33.4, Linux). Inventario revisado el 2026-09-17.
+Servidor ComfyUI del dueño: `https://comfy.areum.cl` tras Cloudflare Access (ComfyUI **0.37.0**, Linux, RTX 4080 SUPER 16 GB; actualizado desde 0.33.4 el 2026-09-21). Las credenciales viven en el entorno (`CF_ACCESS_ID`, `CF_ACCESS_SECRET`), nunca en el repo. Inventario revisado el 2026-09-21.
 
 ### APROBADO para assets que se publican
 
 | Modelo | Licencia | Uso | Verificado |
 |---|---|---|---|
 | **FLUX.1 [schnell]** (`flux1-schnell.safetensors`) | **Apache 2.0** | Imágenes: style board, referencias, texturas | 2026-09-17 — instalado y disponible |
+| **TRELLIS.2** (Microsoft; `trellis_2_int8_convrot.safetensors`, `trellis_2_shape_vae_bf16.safetensors`, `trellis_2_texture_vae_bf16.safetensors`, repo HF `Comfy-Org/TRELLIS.2`) | **MIT** (código y pesos). La implementación **nativa** de ComfyUI ≥0.34 reemplazó `nvdiffrast`/`nvdiffrec` (licencia NVIDIA, solo no comercial) por una reescritura en PyTorch/SciPy; por eso se usa la ruta nativa y **no** el custom node `ComfyUI-Trellis2`, que vuelve a traer los wheels de NVIDIA. | Mallas 3D desde imagen (`tools/comfy_mesh.py`) | 2026-09-21 — instalado; nodos `Trellis2*` verificados en `/object_info` |
+| **DINOv3 ViT-L** (`dino_v3_L_naf_fp32.safetensors`, repo HF `Comfy-Org/Pixal3D`; pesos de Meta) | **DINOv3 License** (Meta, custom, https://ai.meta.com/resources/models-and-libraries/dinov3-license/). Licencia «non-exclusive, **worldwide**, non-transferable and royalty-free» para «use, reproduce, distribute, copy, create derivative works»; **sin límite de uso comercial ni de territorio** salvo Trade Controls y usos militares/armas. **Obligaciones al distribuir:** (A) incluir copia del acuerdo y (B) «prominently display “Built with DINOv3”» en web, UI, about o documentación del producto — va en los créditos del juego. Los outputs no tienen cláusula de propiedad de Meta; las derivadas son del usuario. Meta puede modificar los términos (§8). | Codificador de imagen que condiciona TRELLIS.2 (no produce contenido por sí mismo) | 2026-09-21 — instalado; licencia leída y copiada |
+| **BiRefNet** (`birefnet.safetensors`, repo HF `Comfy-Org/BiRefNet`) | **MIT** | Recorte de fondo previo a TRELLIS.2 | 2026-09-21 — instalado |
 
 ### PROHIBIDO para assets que se publican
 
@@ -44,6 +47,7 @@ Servidor ComfyUI del dueño: `http://192.168.50.200:8188` (ComfyUI 0.33.4, Linux
 
 `triposplat_fp16` (3D), `Illustrious-XL-v2.0`, `qwen_image_*`, `z_image_turbo`, `krea2_turbo`, `anima-base`, `Stable-Cascade`, `wan2.*`, `MiniMax_*`, `stable_audio_3_medium_base`. Ninguno ha producido nada que esté en el repositorio.
 
-### FALTA instalar
+### Historial
 
-**Trellis (Microsoft, MIT)** — es la opción **por defecto para 3D** según §10.2 y **no está en el servidor**. Hoy el único generador 3D instalado es el prohibido. Sin Trellis (u otro 3D con licencia limpia) no hay malla generada que pueda publicarse.
+- 2026-09-17: el único 3D instalado era Hunyuan3D (prohibido). Trellis figuraba como «falta instalar».
+- 2026-09-21: TRELLIS.2 nativo disponible tras actualizar ComfyUI a 0.37.0. La DA4 del plan M-ART queda resuelta sin custom node ni instalación aparte.

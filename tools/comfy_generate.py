@@ -1,33 +1,27 @@
 """Genera imágenes en el ComfyUI del dueño con FLUX.1 [schnell] (Apache 2.0).
 
-Único modelo aprobado hoy para lo que entra al repositorio (CREDITS.md, maestro
-§10.2). No usa credenciales: habla con la API HTTP del servidor.
+Único modelo de imagen aprobado hoy para lo que entra al repositorio (CREDITS.md,
+maestro §10.2). Habla con la API HTTP del servidor a través de comfy_api, que lee
+las credenciales de Cloudflare Access del entorno (nunca del repo).
 
     python tools/comfy_generate.py <nombre> "<prompt>" [--w 1024] [--h 576] [--seed N]
 
 Guarda la imagen en docs/referencias/<nombre>.png y, al lado, <nombre>.json con
 el prompt, el modelo, la semilla y la fecha — el registro que exige §10.1 punto 5.
 """
-import argparse, io, json, os, sys, time, urllib.request, urllib.error
+import argparse
+import io
+import json
+import os
+import sys
+import time
 
-SERVER = os.environ.get("COMFY_URL", "http://192.168.50.200:8188")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import comfy_api
+
 MODEL = "flux1-schnell.safetensors"
 LICENCE = "Apache-2.0"
 OUT = os.path.join("docs", "referencias")
-
-
-def post(path, payload):
-    data = json.dumps(payload).encode()
-    req = urllib.request.Request(SERVER + path, data=data,
-                                 headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
-
-
-def get(path):
-    with urllib.request.urlopen(SERVER + path, timeout=30) as r:
-        return json.load(r)
-
 
 def workflow(prompt, width, height, seed, steps):
     return {
@@ -64,45 +58,26 @@ def main():
     ap.add_argument("--steps", type=int, default=4)
     a = ap.parse_args()
 
-    wf = workflow(a.prompt, a.w, a.h, a.seed, a.steps)
-    queued = post("/prompt", {"prompt": wf})
-    pid = queued["prompt_id"]
-    print("encolado %s" % pid)
-
-    deadline = time.time() + 300
-    while time.time() < deadline:
-        hist = get("/history/" + pid)
-        if pid in hist:
-            entry = hist[pid]
-            status = entry.get("status", {})
-            if status.get("status_str") == "error" or not status.get("completed", True):
-                print("ERROR del servidor:", json.dumps(status)[:800])
-                return 1
-            for node in entry.get("outputs", {}).values():
-                for img in node.get("images", []):
-                    q = "/view?filename=%s&subfolder=%s&type=%s" % (
-                        urllib.parse.quote(img["filename"]),
-                        urllib.parse.quote(img.get("subfolder", "")), img["type"])
-                    with urllib.request.urlopen(SERVER + q, timeout=60) as r:
-                        blob = r.read()
-                    os.makedirs(OUT, exist_ok=True)
-                    dest = os.path.join(OUT, a.name + ".png")
-                    with open(dest, "wb") as f:
-                        f.write(blob)
-                    meta = {"file": a.name + ".png", "model": MODEL, "licence": LICENCE,
-                            "prompt": a.prompt, "seed": a.seed, "steps": a.steps,
-                            "width": a.w, "height": a.h, "server": SERVER,
-                            "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
-                    with io.open(os.path.join(OUT, a.name + ".json"), "w",
-                                 encoding="utf-8", newline="\n") as f:
-                        f.write(json.dumps(meta, indent="\t", ensure_ascii=False) + "\n")
-                    print("guardado %s  (%.0f KB)" % (dest, len(blob) / 1024.0))
-                    return 0
-        time.sleep(2)
-    print("ERROR: sin resultado en 300 s")
+    outputs = comfy_api.run(workflow(a.prompt, a.w, a.h, a.seed, a.steps), budget_s=300)
+    for node in outputs.values():
+        for img in node.get("images", []):
+            blob = comfy_api.get_bytes(comfy_api.view_url(img))
+            os.makedirs(OUT, exist_ok=True)
+            dest = os.path.join(OUT, a.name + ".png")
+            with open(dest, "wb") as f:
+                f.write(blob)
+            meta = {"file": a.name + ".png", "model": MODEL, "licence": LICENCE,
+                    "prompt": a.prompt, "seed": a.seed, "steps": a.steps,
+                    "width": a.w, "height": a.h, "server": comfy_api.SERVER,
+                    "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+            with io.open(os.path.join(OUT, a.name + ".json"), "w",
+                         encoding="utf-8", newline="\n") as f:
+                f.write(json.dumps(meta, indent="\t", ensure_ascii=False) + "\n")
+            print("guardado %s  (%.0f KB)" % (dest, len(blob) / 1024.0))
+            return 0
+    print("El servidor terminó sin devolver imagen.")
     return 1
 
 
 if __name__ == "__main__":
-    import urllib.parse
     sys.exit(main())
