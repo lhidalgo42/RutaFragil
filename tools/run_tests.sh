@@ -43,7 +43,7 @@ exit_infra_failure=1
 # a floor: gdUnit in fresh clones has silently dropped a suite's last test
 # three times (T2.2 reviews 04/05, T2.3 review 02), and a ">= N" guard cannot
 # see that. Bump this constant in the SAME commit that adds or removes a test.
-expected_tests=255
+expected_tests=257
 
 # M0-T0.4 (D57): the network multi-instance scenario runs as a final step;
 # --skip-net skips it to iterate over the unit tests only.

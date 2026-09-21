@@ -29,7 +29,7 @@ LICENCE = "MIT"
 OUT = os.path.join("assets", "models")
 
 
-def workflow(image_name, prefix, seed, faces, texture_px):
+def workflow(image_name, prefix, seed, faces, texture_px, resolution=1536):
     """Rama TRELLIS.2 de la plantilla oficial, sin Pixal3D ni los nodos de vista previa."""
     return {
         # --- carga y recorte al sujeto ---
@@ -91,7 +91,7 @@ def workflow(image_name, prefix, seed, faces, texture_px):
         "94": {"class_type": "Trellis2UpsampleStage",
                "inputs": {"positive": ["91", 0], "negative": ["91", 1],
                           "shape_latent": ["18", 0], "vae": ["117", 0],
-                          "target_resolution": 1536}},
+                          "target_resolution": resolution}},
         "23": {"class_type": "KSampler",
                "inputs": {"model": ["126", 0], "positive": ["94", 0],
                           "negative": ["94", 1], "latent_image": ["94", 2],
@@ -164,6 +164,10 @@ def main():
     ap.add_argument("--faces", type=int, default=20000,
                     help="caras tras decimar; la retopologia al presupuesto va aparte")
     ap.add_argument("--texture", type=int, default=2048)
+    ap.add_argument("--resolution", type=int, default=1536, choices=(1024, 1536, 2048),
+                    help="resolución de la etapa de forma; 1536 cabe en 16 GB para un objeto "
+                         "alargado (el furgón) y se queda sin memoria en el decode para uno que "
+                         "llena el recorte (el paquete): usar 1024 en ese caso")
     ap.add_argument("--budget", type=int, default=1800, help="segundos de espera")
     ap.add_argument("--out", default=OUT,
                     help="carpeta de salida; las pruebas de camino van a docs/ (Godot no lo "
@@ -179,7 +183,7 @@ def main():
 
     started = time.time()
     outputs = comfy_api.run(
-        workflow(uploaded, "rutafragil/" + a.name, a.seed, a.faces, a.texture),
+        workflow(uploaded, "rutafragil/" + a.name, a.seed, a.faces, a.texture, a.resolution),
         budget_s=a.budget)
     elapsed = time.time() - started
 
@@ -211,7 +215,7 @@ def main():
             "source_image": a.image.replace("\\", "/"),
             "model": MODEL, "licence": LICENCE,
             "pipeline": "ComfyUI nativo TRELLIS.2",
-            "seed": a.seed, "target_faces": a.faces, "texture_px": a.texture,
+            "seed": a.seed, "target_faces": a.faces, "texture_px": a.texture, "shape_resolution": a.resolution,
             "elapsed_s": round(elapsed, 1), "server": comfy_api.SERVER,
             "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     with open(os.path.join(out_dir, a.name + ".json"), "w",
