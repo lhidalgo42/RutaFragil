@@ -1,0 +1,12 @@
+{
+	"file": "paquete_referencia_v1.png",
+	"model": "flux1-schnell.safetensors",
+	"licence": "Apache-2.0",
+	"prompt": "a single cardboard delivery parcel, plain kraft brown box with one strip of beige packing tape, slightly worn corners, low-poly stylized game asset, flat shading, clean faceted geometry, three-quarter view showing top and two sides, centered, isolated on pure white background, soft even lighting, no text, no labels, no logos, no writing",
+	"seed": 7,
+	"steps": 4,
+	"width": 1024,
+	"height": 1024,
+	"server": "https://comfy.areum.cl",
+	"generated_utc": "2026-09-21T19:58:18Z"
+}

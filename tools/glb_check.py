@@ -164,28 +164,37 @@ def check(path, kind):
                     mn[k] = min(mn[k], p[k])
                     mx[k] = max(mx[k], p[k])
             idx = read_accessor(g, bins, prim["indices"]) if "indices" in prim else list(range(len(pos)))
+            # Los exportadores duplican vértices por normal/UV (shade flat = 3 copias por
+            # cara), así que las aristas se comparan por POSICIÓN soldada, no por índice.
+            canon = {}
+            weld = []
+            for p in pos:
+                key = (round(p[0], 5), round(p[1], 5), round(p[2], 5))
+                weld.append(canon.setdefault(key, len(canon)))
             faces = [tuple(idx[i:i + 3]) for i in range(0, len(idx) - 2, 3)]
+            wfaces = [(weld[f[0]], weld[f[1]], weld[f[2]]) for f in faces]
             tris += len(faces)
 
             # caras sueltas: una cara sin ninguna arista compartida con otra
             edge_count = {}
-            for f in faces:
+            for f in wfaces:
                 for e in ((f[0], f[1]), (f[1], f[2]), (f[2], f[0])):
-                    edge_count[tuple(sorted(e))] = edge_count.get(tuple(sorted(e)), 0) + 1
-            for f in faces:
+                    k = tuple(sorted(e))
+                    edge_count[k] = edge_count.get(k, 0) + 1
+            for f in wfaces:
                 shared = sum(1 for e in ((f[0], f[1]), (f[1], f[2]), (f[2], f[0]))
                              if edge_count[tuple(sorted(e))] > 1)
                 if shared == 0:
                     loose_faces += 1
 
-            # normales invertidas, dos señales independientes de la normal almacenada
+            # normales invertidas, tres señales independientes de la normal almacenada
             # (Blender voltea normal y orden de vértices juntos, así que compararlas
             # entre sí no detecta nada):
             #  a) una arista dirigida recorrida dos veces en el mismo sentido = dos
             #     caras vecinas con orientación opuesta (una está al revés);
             #  b) volumen con signo negativo = la malla entera mira hacia dentro.
             directed = {}
-            for f in faces:
+            for f in wfaces:
                 for e in ((f[0], f[1]), (f[1], f[2]), (f[2], f[0])):
                     directed[e] = directed.get(e, 0) + 1
             inconsistent_edges = sum(1 for e, n in directed.items() if n > 1)
@@ -201,7 +210,9 @@ def check(path, kind):
                 if nrm is not None:
                     geo = cross(sub(b, a), sub(c, a))
                     stored = tuple(nrm[f[0]][k] + nrm[f[1]][k] + nrm[f[2]][k] for k in range(3))
-                    if dot(geo, stored) < 0:
+                    lg = math.sqrt(dot(geo, geo)); ls = math.sqrt(dot(stored, stored))
+                    # caras degeneradas (área ~0) no cuentan: su winding es ruido numérico
+                    if lg > 1e-12 and ls > 1e-9 and dot(geo, stored) / (lg * ls) < -0.2:
                         normal_vs_winding += 1
             signed_volume += vol / 6.0
 
