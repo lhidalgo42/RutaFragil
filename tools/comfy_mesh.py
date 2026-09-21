@@ -165,7 +165,11 @@ def main():
                     help="caras tras decimar; la retopologia al presupuesto va aparte")
     ap.add_argument("--texture", type=int, default=2048)
     ap.add_argument("--budget", type=int, default=1800, help="segundos de espera")
+    ap.add_argument("--out", default=OUT,
+                    help="carpeta de salida; las pruebas de camino van a docs/ (Godot no lo "
+                         "escanea), a assets/models/ solo lo que ya pasó por Blender (§10.1)")
     a = ap.parse_args()
+    out_dir = a.out
 
     if not os.path.isfile(a.image):
         raise SystemExit("no existe la imagen: " + a.image)
@@ -186,8 +190,8 @@ def main():
                 if not isinstance(item, dict) or "filename" not in item:
                     continue
                 blob = comfy_api.get_bytes(comfy_api.view_url(item))
-                os.makedirs(OUT, exist_ok=True)
-                dest = os.path.join(OUT, a.name + ".glb")
+                os.makedirs(out_dir, exist_ok=True)
+                dest = os.path.join(out_dir, a.name + ".glb")
                 with open(dest, "wb") as f:
                     f.write(blob)
                 saved = (dest, len(blob))
@@ -210,7 +214,7 @@ def main():
             "seed": a.seed, "target_faces": a.faces, "texture_px": a.texture,
             "elapsed_s": round(elapsed, 1), "server": comfy_api.SERVER,
             "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
-    with open(os.path.join(OUT, a.name + ".json"), "w",
+    with open(os.path.join(out_dir, a.name + ".json"), "w",
               encoding="utf-8", newline="\n") as f:
         f.write(json.dumps(meta, indent="\t", ensure_ascii=False) + "\n")
     print("guardado %s  (%.1f MB, %.0f s)" % (dest, size / 1048576.0, elapsed))

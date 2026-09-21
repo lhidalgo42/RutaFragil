@@ -1,5 +1,5 @@
 {
-	"file": "bus_exterior_trellis_test.glb",
+	"file": "prueba_trellis_bus_exterior.glb",
 	"source_image": "docs/referencias/bus_exterior_canonico_v2.png",
 	"model": "trellis_2_int8_convrot.safetensors",
 	"licence": "MIT",
