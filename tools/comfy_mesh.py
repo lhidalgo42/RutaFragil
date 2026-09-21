@@ -29,9 +29,14 @@ LICENCE = "MIT"
 OUT = os.path.join("assets", "models")
 
 
-def workflow(image_name, prefix, seed, faces, texture_px, resolution=1536):
-    """Rama TRELLIS.2 de la plantilla oficial, sin Pixal3D ni los nodos de vista previa."""
-    return {
+def workflow(image_name, prefix, seed, faces, texture_px, resolution=1536, upsample=True):
+    """Rama TRELLIS.2 de la plantilla oficial, sin Pixal3D ni los nodos de vista previa.
+
+    upsample=False salta la etapa de 1024–2048 voxels y decodifica la forma desde el
+    latente base: para un prop de ≤800 tris sobra, y es lo que evita el OOM del
+    decode en objetos que llenan el volumen (una caja), no solo en los alargados.
+    """
+    wf = {
         # --- carga y recorte al sujeto ---
         "122": {"class_type": "LoadImage",
                 "inputs": {"image": image_name}},
@@ -98,12 +103,13 @@ def workflow(image_name, prefix, seed, faces, texture_px, resolution=1536):
                           "seed": 42, "steps": 12, "cfg": 7.5,
                           "sampler_name": "euler", "scheduler": "simple", "denoise": 1.0}},
         "92": {"class_type": "VaeDecodeShapeTrellis",
-               "inputs": {"samples": ["23", 0], "vae": ["117", 0]}},
+               "inputs": {"samples": ["23" if upsample else "18", 0], "vae": ["117", 0]}},
 
         # --- 3. color por voxel ---
         "98": {"class_type": "Trellis2TextureStage",
-               "inputs": {"positive": ["94", 0], "negative": ["94", 1],
-                          "shape_latent": ["23", 0]}},
+               "inputs": {"positive": ["94" if upsample else "91", 0],
+                          "negative": ["94" if upsample else "91", 1],
+                          "shape_latent": ["23" if upsample else "18", 0]}},
         "12": {"class_type": "KSampler",
                "inputs": {"model": ["40", 0], "positive": ["98", 0],
                           "negative": ["98", 1], "latent_image": ["98", 2],
@@ -154,6 +160,9 @@ def workflow(image_name, prefix, seed, faces, texture_px, resolution=1536):
         "322": {"class_type": "SaveGLB",
                 "inputs": {"mesh": ["285", 0], "filename_prefix": prefix}},
     }
+    if not upsample:
+        del wf["94"], wf["23"]
+    return wf
 
 
 def main():
@@ -168,6 +177,8 @@ def main():
                     help="resolución de la etapa de forma; 1536 cabe en 16 GB para un objeto "
                          "alargado (el furgón) y se queda sin memoria en el decode para uno que "
                          "llena el recorte (el paquete): usar 1024 en ese caso")
+    ap.add_argument("--no-upsample", action="store_true",
+                    help="decodificar la forma desde el latente base (props pequeños; menos VRAM)")
     ap.add_argument("--budget", type=int, default=1800, help="segundos de espera")
     ap.add_argument("--out", default=OUT,
                     help="carpeta de salida; las pruebas de camino van a docs/ (Godot no lo "
@@ -183,7 +194,8 @@ def main():
 
     started = time.time()
     outputs = comfy_api.run(
-        workflow(uploaded, "rutafragil/" + a.name, a.seed, a.faces, a.texture, a.resolution),
+        workflow(uploaded, "rutafragil/" + a.name, a.seed, a.faces, a.texture, a.resolution,
+                 upsample=not a.no_upsample),
         budget_s=a.budget)
     elapsed = time.time() - started
 
@@ -215,7 +227,7 @@ def main():
             "source_image": a.image.replace("\\", "/"),
             "model": MODEL, "licence": LICENCE,
             "pipeline": "ComfyUI nativo TRELLIS.2",
-            "seed": a.seed, "target_faces": a.faces, "texture_px": a.texture, "shape_resolution": a.resolution,
+            "seed": a.seed, "target_faces": a.faces, "texture_px": a.texture, "shape_resolution": a.resolution, "upsample": not a.no_upsample,
             "elapsed_s": round(elapsed, 1), "server": comfy_api.SERVER,
             "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     with open(os.path.join(out_dir, a.name + ".json"), "w",
