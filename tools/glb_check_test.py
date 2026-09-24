@@ -63,6 +63,32 @@ bm.to_mesh(obj.data); bm.free()
 m = bpy.data.materials.new("kraft"); m.use_nodes = True
 obj.data.materials.append(m)
 export(out + "/good.glb")
+
+# ---------- good_center.glb: la misma caja con el bbox centrado en el origen ----------
+reset()
+bpy.ops.mesh.primitive_cube_add(size=0.4, location=(0, 0, 0))
+obj = bpy.context.active_object
+bm = bmesh.new(); bm.from_mesh(obj.data)
+bmesh.ops.triangulate(bm, faces=bm.faces[:])
+bm.to_mesh(obj.data); bm.free()
+obj.data.materials.append(bpy.data.materials.new("kraft2"))
+export(out + "/good_center.glb")
+
+# ---------- flat.glb / standing.glb: una caja de 0,4 × 0,2 × 0,1 m ----------
+# flat: apoyada sobre su cara grande (alto 0,1). standing: la misma caja de pie
+# sobre su lado corto (alto 0,4), que es como llega un modelo exportado con Y y Z
+# cruzados. Una caja cúbica no sirve para esto: es igual de alta que ancha.
+for name, dims in (("flat", (0.4, 0.2, 0.1)), ("standing", (0.2, 0.1, 0.4))):
+    reset()
+    bpy.ops.mesh.primitive_cube_add(size=1.0, location=(0, 0, dims[2] / 2))
+    obj = bpy.context.active_object
+    obj.scale = dims
+    bpy.ops.object.transform_apply(scale=True)
+    bm = bmesh.new(); bm.from_mesh(obj.data)
+    bmesh.ops.triangulate(bm, faces=bm.faces[:])
+    bm.to_mesh(obj.data); bm.free()
+    obj.data.materials.append(bpy.data.materials.new(name))
+    export(out + "/" + name + ".glb")
 print("FIXTURES_OK")
 '''
 
@@ -77,17 +103,33 @@ def main():
         print(r.stdout[-3000:]); print(r.stderr[-3000:])
         raise SystemExit("Blender no generó los fixtures")
 
-    bad = {f["check"]: f["pass"] for f in glb_check.check(os.path.join(tmp, "bad.glb"), "package")}
-    good = {f["check"]: f["pass"] for f in glb_check.check(os.path.join(tmp, "good.glb"), "package")}
+    def run(name, pivot="base"):
+        return {f["check"]: f["pass"] for f in glb_check.check(os.path.join(tmp, name), "package", pivot)}
+
+    bad = run("bad.glb")
+    good = run("good.glb")
+    good_center = run("good_center.glb", "center")
+    # cruzados: cada fixture bueno debe FALLAR el pivote del otro modo, o el flag no mide nada
+    good_as_center = run("good.glb", "center")
+    center_as_base = run("good_center.glb", "base")
 
     must_fail = ["1.escala", "1.pivote_en_base", "2.triangulos", "2.caras_sueltas",
-                 "2.normales_invertidas", "4.un_material", "5.textura_max_1024"]
+                 "2.normales_invertidas", "4.una_textura", "5.textura_max_1024"]
     for k in must_fail:
         assert bad[k] is False, "bad.glb debía FALLAR en %s y pasó" % k
     for k, v in good.items():
         assert v is True, "good.glb debía PASAR en %s y falló" % k
+    for k, v in good_center.items():
+        assert v is True, "good_center.glb debía PASAR (--pivot center) en %s y falló" % k
+    assert good_as_center["1.pivote_en_centro"] is False, "good.glb (base) no debe pasar como centrado"
+    assert center_as_base["1.pivote_en_base"] is False, "good_center.glb no debe pasar como base"
+    # ejes: antes el check era una tautología (alto <= lado mayor) y nunca fallaba
+    assert run("flat.glb")["1.ejes"] is True, "flat.glb (apoyada) debía pasar ejes"
+    assert run("standing.glb")["1.ejes"] is False, "standing.glb (de pie, Y↔Z) debía FALLAR ejes"
     print("ROJO: bad.glb falla en %d/%d puntos esperados" % (len(must_fail), len(must_fail)))
-    print("VERDE: good.glb pasa %d/%d" % (len(good), len(good)))
+    print("VERDE: good.glb pasa %d/%d (base); good_center.glb pasa %d/%d (center); cruzados fallan"
+          % (len(good), len(good), len(good_center), len(good_center)))
+    print("EJES: flat.glb pasa, standing.glb falla")
     return 0
 
 

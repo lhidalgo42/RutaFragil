@@ -1,6 +1,6 @@
 """Checklist mecánico del maestro §10.1 sobre un .glb (M-ART DA6). Python puro.
 
-    python tools/glb_check.py <archivo.glb> --kind package|prop|bus [--json]
+    python tools/glb_check.py <archivo.glb> --kind package|prop|bus [--pivot base|center] [--json]
 
 Responde sí/no a los puntos 1, 2, 4 y 5 del checklist con el número que falla;
 los puntos 3 (colisión autorada), 6 (coherencia con el board) y 7 (CREDITS) los
@@ -142,7 +142,10 @@ def mesh_instances(g):
     return out
 
 
-def check(path, kind):
+def check(path, kind, pivot="base"):
+    """pivot: 'base' (y mínimo en 0: el modelo se apoya, y la escena lo coloca sobre el
+    colisionador, como el paquete D81 en package.tscn a Y=−0,2) o 'center' (centro del
+    bbox en el origen, para un visual que se instancia sin desplazar)."""
     g, bins = load_glb(path)
     findings = []
     ok = lambda name, passed, detail: findings.append({"check": name, "pass": bool(passed), "detail": detail})
@@ -221,17 +224,35 @@ def check(path, kind):
     lo, hi = SIZES[kind]
     ok("1.escala", lo <= longest <= hi,
        "lado mayor %.3f m (esperado %.2f–%.2f); bbox %.3f × %.3f × %.3f" % (longest, lo, hi, *size))
-    ok("1.pivote_en_base", abs(mn[1]) <= PIVOT_TOL,
-       "y mínimo %.3f m (base en 0 ± %.2f)" % (mn[1], PIVOT_TOL))
-    ok("1.ejes", size[1] <= longest + 1e-6 and (kind != "bus" or size[2] >= size[0]),
-       "alto %.3f, ancho x %.3f, largo z %.3f (glTF: −Z adelante; el bus es más largo en z)" % (size[1], size[0], size[2]))
+    if pivot == "center":
+        ctr = [(mn[k] + mx[k]) / 2 for k in range(3)]
+        ok("1.pivote_en_centro", max(abs(c) for c in ctr) <= PIVOT_TOL,
+           "centro del bbox (%.3f, %.3f, %.3f) m (origen ± %.2f)" % (*ctr, PIVOT_TOL))
+    else:
+        ok("1.pivote_en_base", abs(mn[1]) <= PIVOT_TOL,
+           "y mínimo %.3f m (base en 0 ± %.2f)" % (mn[1], PIVOT_TOL))
+    # Ejes: glTF es +Y arriba. Un modelo exportado Z-up (Y y Z cruzados) o tumbado deja
+    # su dimensión mayor en Y. Una caja, un prop o el bus nunca son más altos que largos
+    # Y anchos a la vez, así que el alto no puede superar a los otros dos. El bus además
+    # tiene que ser más largo en Z que ancho en X (−Z adelante).
+    axes_ok = size[1] <= max(size[0], size[2]) + 1e-6
+    if kind == "bus":
+        axes_ok = axes_ok and size[2] >= size[0]
+    ok("1.ejes", axes_ok,
+       "alto y %.3f, ancho x %.3f, largo z %.3f (glTF +Y arriba: el alto no supera a ambos lados; "
+       "el bus es más largo en z)" % (size[1], size[0], size[2]))
     ok("2.triangulos", tris <= BUDGETS[kind], "%d tris (presupuesto %d)" % (tris, BUDGETS[kind]))
     ok("2.caras_sueltas", loose_faces == 0, "%d caras sin arista compartida" % loose_faces)
     ok("2.normales_invertidas", inverted == 0 and signed_volume >= 0 and normal_vs_winding == 0,
        "%d aristas inconsistentes, %d normales contra el winding, volumen con signo %.4f m³ (%d caras)"
        % (inverted, normal_vs_winding, signed_volume, total_faces_checked))
+    # §10.1 punto 4: «una sola textura por asset (atlas o paleta)». Se cuentan
+    # las imágenes, no los materiales: un material PBR con color, ORM y normal
+    # lleva tres texturas y no cumple. Cero es válido (paleta plana).
     nmat = len(g.get("materials", []))
-    ok("4.un_material", nmat <= 1, "%d materiales" % nmat)
+    nimg = len(g.get("images", []))
+    ok("4.una_textura", nmat <= 1 and nimg <= 1,
+       "%d materiales, %d imágenes (el punto 4 pide 1 material y ≤1 textura)" % (nmat, nimg))
     big = []
     for i, img in enumerate(g.get("images", [])):
         s = image_size(g, bins, img)
@@ -247,9 +268,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("glb")
     ap.add_argument("--kind", choices=sorted(BUDGETS), required=True)
+    ap.add_argument("--pivot", choices=("base", "center"), default="base",
+                    help="base: y mínimo en 0, el modelo se apoya (el paquete usa este); center: "
+                         "centro del bbox en el origen, para un visual instanciado sin desplazar")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args()
-    findings = check(a.glb, a.kind)
+    findings = check(a.glb, a.kind, a.pivot)
     failed = [f for f in findings if not f["pass"]]
     if a.json:
         print(json.dumps({"file": a.glb, "kind": a.kind, "findings": findings,
