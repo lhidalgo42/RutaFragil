@@ -1,0 +1,47 @@
+{
+	"file": "bus_wheel_atlas_v1.png",
+	"kind": "atlas",
+	"generator": "tools/build_van_atlases.py",
+	"size": [
+		1024,
+		1024
+	],
+	"sources": [
+		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_tire_v2.png",
+		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_rim_v1.png"
+	],
+	"regions": [
+		{
+			"name": "tread",
+			"rect_px": [
+				0,
+				0,
+				512,
+				1024
+			],
+			"crop": [
+				0.15,
+				0,
+				0.85,
+				1
+			]
+		},
+		{
+			"name": "rim",
+			"rect_px": [
+				512,
+				0,
+				512,
+				1024
+			],
+			"crop": [
+				0.08,
+				0.08,
+				0.92,
+				0.92
+			]
+		}
+	],
+	"licence": "Apache-2.0 (FLUX.1 schnell sources); deterministic local composition",
+	"not_checked": "logos/text/brand and visual coherence require human review"
+}

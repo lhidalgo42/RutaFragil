@@ -1,0 +1,28 @@
+{
+	"file": "C:/Users/Leo/AppData/Local/Temp/rf_mart_van/floor_seamless.png",
+	"pass": true,
+	"not_checked": "no detecta texto/letras/logos/marcas/perspectiva/luz direccional: revisión humana",
+	"findings": [
+		{
+			"check": "formato",
+			"pass": true,
+			"detail": "8 bits, 3 canales"
+		},
+		{
+			"check": "dimensiones",
+			"pass": true,
+			"detail": "1024x1024 (máximo 1024)"
+		},
+		{
+			"check": "costura",
+			"pass": true,
+			"detail": {
+				"seam_rms": 1.182,
+				"seam_max": 5,
+				"interior_rms": 9.455,
+				"max_seam_ratio": 1.5,
+				"max_seam_max": null
+			}
+		}
+	]
+}

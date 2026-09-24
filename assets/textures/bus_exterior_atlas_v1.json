@@ -1,0 +1,93 @@
+{
+	"file": "bus_exterior_atlas_v1.png",
+	"kind": "atlas",
+	"generator": "tools/build_van_atlases.py",
+	"size": [
+		1024,
+		1024
+	],
+	"sources": [
+		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_yellow_v1.png",
+		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_red_v1.png",
+		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_cream_v1.png"
+	],
+	"regions": [
+		{
+			"name": "yellow_body",
+			"rect_px": [
+				0,
+				0,
+				1024,
+				512
+			],
+			"crop": [
+				0.12,
+				0.12,
+				0.88,
+				0.88
+			]
+		},
+		{
+			"name": "red_stripe",
+			"rect_px": [
+				0,
+				512,
+				256,
+				512
+			],
+			"crop": [
+				0,
+				0,
+				1,
+				0.4
+			]
+		},
+		{
+			"name": "cream_roof",
+			"rect_px": [
+				256,
+				512,
+				256,
+				512
+			],
+			"crop": [
+				0,
+				0.12,
+				1,
+				0.88
+			]
+		},
+		{
+			"name": "glass",
+			"rect_px": [
+				512,
+				512,
+				256,
+				512
+			],
+			"crop": [
+				0,
+				0,
+				1,
+				1
+			]
+		},
+		{
+			"name": "dark_trim",
+			"rect_px": [
+				768,
+				512,
+				256,
+				512
+			],
+			"crop": [
+				0,
+				0,
+				1,
+				1
+			]
+		}
+	],
+	"licence": "Apache-2.0 (FLUX.1 schnell sources); deterministic local composition",
+	"not_checked": "logos/text/brand and visual coherence require human review"
+}

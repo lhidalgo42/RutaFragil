@@ -1,0 +1,12 @@
+{
+	"file": "van_tex_src_tire_v2.png",
+	"model": "flux1-schnell.safetensors",
+	"licence": "Apache-2.0",
+	"prompt": "flat orthographic black rubber material swatch, repeating invented angular tire tread grooves, generic competition rubber, seamless texture patch, uniform even lighting, no tire object, no wheel, no sidewall, no perspective, no text, no letters, no numbers, no logos, no brand names, no trademark",
+	"seed": 207,
+	"steps": 4,
+	"width": 1024,
+	"height": 1024,
+	"server": "https://comfy.areum.cl",
+	"generated_utc": "2026-09-24T04:01:52Z"
+}

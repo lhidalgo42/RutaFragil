@@ -1,0 +1,12 @@
+{
+	"file": "van_tex_src_tire_v1.png",
+	"model": "flux1-schnell.safetensors",
+	"licence": "Apache-2.0",
+	"prompt": "generic black racing tire rubber texture, invented diagonal tread pattern, blank smooth sidewall, no branding, orthographic flat texture swatch, uniform even lighting, no perspective, no objects, no text, no letters, no numbers, no logos, no brand names, no trademark",
+	"seed": 107,
+	"steps": 4,
+	"width": 1024,
+	"height": 1024,
+	"server": "https://comfy.areum.cl",
+	"generated_utc": "2026-09-24T04:00:10Z"
+}
