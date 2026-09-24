@@ -2,6 +2,14 @@
 
 Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código).
 
+## M-ART-VAN — pendientes del plan aprobado (2026-09-24)
+
+- **Implementación completa pendiente:** tres assets/atlases externos, geometría final Blender, integración visual, copiloto local por retícula, cámara fija y ruedas visuales con `steer` replicado. Nada se declara implementado por aprobar el plan.
+- **M4:** replicación de ocupación de asientos, incluido copiloto. En M-ART-VAN queda **NO PROBADO** en red.
+- **Suspensión visual remota:** clientes congelados replican giro y dirección de ruedas, no compresión. Muestran extensión nominal porque no corren raycasts. Si el gate humano en red lo marca como defecto, replicar las cuatro distancias de suspensión como estado visual en `NetBusSync`, nunca escribirlas en física cliente.
+- **Créditos del juego:** mantener pendiente el aviso «Built with DINOv3» exigido por la licencia de Meta; la pantalla aún no existe.
+- **Gate humano M-ART-VAN pendiente:** lectura de furgón, copiloto sin conducción, calidad/flicker interior, ruedas local/remoto, neumático sin marcas y feel sin cambios. Solo el dueño lo cierra.
+
 ## M-ART — pendientes propios del pipeline de arte (2026-09-21)
 
 - **Generación del paquete desbloqueada, 2026-09-24 UTC (23 en Chile).** `--no-upsample` pasó el decode (2.879.997 vértices / 5.772.178 caras), pero `RemeshMesh` agotó VRAM a 768 y 512. Con `--remesh-resolution 256` terminó reutilizando la forma en caché: prompt `ed642bbd-7513-4867-ad9b-eb6d0ce36253`, `docs/referencias/package_raw_v1.glb` y metadatos JSON; 19.996 tris, 2.910.172 bytes. VRAM posterior: 16,26 GB libres y cola vacía; no reprodujo la retención histórica. GLB crudo: 3/8; `--texture 1024` no cambia la resolución fija del normal bake (2048). Fuente cruda conservada sin cambios. Los reportes anteriores de `reports/m_art_remesh/` ya no están: `run_tests` limpia `reports/`; evidencia vigente en `docs/evidencia/M-ART/limpieza/` e `integracion/` (copiada desde `reports/` el 2026-09-24, porque el arnés borra esa carpeta).

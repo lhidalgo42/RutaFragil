@@ -55,3 +55,15 @@ Servidor ComfyUI del dueño: `https://comfy.areum.cl` tras Cloudflare Access (Co
 
 - 2026-09-17: el único 3D instalado era Hunyuan3D (prohibido). Trellis figuraba como «falta instalar».
 - 2026-09-21: TRELLIS.2 nativo disponible tras actualizar ComfyUI a 0.37.0. La DA4 del plan M-ART queda resuelta sin custom node ni instalación aparte.
+
+## M-ART-VAN — assets del build
+
+Geometría final autorada localmente con Blender 5.1.2; ComfyUI/FLUX.1 schnell (Apache 2.0) produjo solo las fuentes de color. Los GLB no embeben imágenes ni colisión: cada wrapper Godot aplica un material `.tres` con un atlas externo bajo `assets/textures/`.
+
+| Asset final | Geometría | Textura y fuentes FLUX | Licencia / registro |
+|---|---|---|---|
+| `assets/models/bus_exterior_clean_v1.glb` | `tools/blender_van.py`; 3.856 tris; 2,53 × 2,30 × 8,00 m; D100, sin ruedas/colisión | `bus_exterior_atlas_v1.png`; `van_tex_src_yellow_v1` seed 101, `red_v1` 102, `cream_v1` 103; prompts/fecha/modelo en JSON adyacentes | Geometría del proyecto; fuentes FLUX.1 schnell Apache 2.0. Sin marcas/logos. |
+| `assets/models/bus_interior_clean_v1.glb` | `tools/blender_bus_interior.py`; 4.320 tris; piso, racks, bench, stretcher, steps y dos asientos; sin colisión | `bus_interior_atlas_v1.png`; `floor_v1` seed 104, `rack_v1` 105, `seat_v1` 106, `cream_v1` 103; piso cerrado por `texture_seamless.py` | Geometría del proyecto; fuentes FLUX.1 schnell Apache 2.0. Mosaico seamless en evidencia. |
+| `assets/models/bus_wheel_clean_v1.glb` | `tools/blender_bus_wheel.py`; 996 tris; radio 0,5 m, eje +X; sin colisión | `bus_wheel_atlas_v1.png`; `tire_v2` seed 207 y `rim_v1` 108. `tire_v1` seed 107 rechazada por lettering fantasma y conservada solo como evidencia | Geometría del proyecto; fuentes FLUX.1 schnell Apache 2.0. Neumático genérico: sin Pirelli, texto, logo ni trade dress. |
+
+Composición determinista: `tools/build_van_atlases.py`; atlas 1024², una imagen por asset. Registro visual y prompts: `docs/evidencia/M-ART-VAN/` y `docs/referencias/van_tex_src_*.json`. La aceptación visual/flicker permanece humana; esta tabla no marca el gate.
