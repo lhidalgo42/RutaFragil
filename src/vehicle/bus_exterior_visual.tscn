@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://src/vehicle/bus_exterior_visual.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://assets/models/bus_exterior_clean_v1.glb" id="2_model"]
@@ -15,6 +15,10 @@ roughness = 0.12
 material = SubResource("mat_windshield")
 size = Vector3(1.84, 1.02, 0.02)
 
+[sub_resource type="BoxMesh" id="mesh_cab_window"]
+material = SubResource("mat_windshield")
+size = Vector3(0.012, 0.76, 1.22)
+
 [node name="BusExteriorVisual" type="Node3D"]
 script = ExtResource("1_script")
 exterior_material = ExtResource("3_mat")
@@ -26,6 +30,14 @@ position = Vector3(0, -0.8, 0)
 [node name="Windshield" type="MeshInstance3D" parent="."]
 position = Vector3(0, 0.72, -3.85)
 mesh = SubResource("mesh_windshield")
+
+[node name="LeftCabWindowPane" type="MeshInstance3D" parent="."]
+position = Vector3(-1.238, 0.84, -2.97)
+mesh = SubResource("mesh_cab_window")
+
+[node name="RightCabWindowPane" type="MeshInstance3D" parent="."]
+position = Vector3(1.238, 0.84, -2.97)
+mesh = SubResource("mesh_cab_window")
 
 [node name="WheelFL" type="Node3D" parent="."]
 

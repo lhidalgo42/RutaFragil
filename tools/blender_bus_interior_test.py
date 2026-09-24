@@ -280,6 +280,9 @@ def validate(glb):
     # Godot/bus-local frame after the unchanged visual wrapper.
     assert_gap(g, bins, ((0.95, 1.10), (-0.59, 1.25), (-2.20, -1.30)))
     assert_gap(g, bins, ((-0.73, 0.63), (-0.59, 1.15), (3.73, 3.91)))
+    # r8: wall liners open behind the exterior driver/copilot windows.
+    for window_x in ((-1.12, -1.02), (1.02, 1.12)):
+        assert_gap(g, bins, (window_x, (0.52, 1.16), (-3.52, -2.42)))
     floor = node_bounds(g, bins, lambda name: name == "FloorLiner")[0]
     roof = node_bounds(g, bins, lambda name: name == "RoofLiner")[0]
     wrapped_floor = wrapped(floor)

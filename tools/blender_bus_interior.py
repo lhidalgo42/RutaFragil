@@ -192,10 +192,26 @@ def seat(prefix, x, y):
 # The full authored bbox is still centered; wrapper (0, .38, .005) is unchanged.
 box("FloorLiner", (0.0, -0.005, 0.025), (2.10, 7.98, 0.05), 0.01)
 box("RoofLiner", (0.0, 0.0, 1.95), (2.10, 7.95, 0.08), 0.025)
-box("LeftWallLiner", (-1.07, 0.0, 1.00), (0.08, 7.95, 1.90), 0.018)
+
+def windowed_liner(name, x, y0, y1, bevel):
+    """Cab wall liner with the side window cut out (bus y 0.50..1.18, z -3.54..-2.40).
+
+    Sill and header are 5 mm thinner than the posts: their butt faces never share
+    vertices or visible coplanar faces with the posts (no weld errors, no flicker).
+    """
+    win_y0, win_y1, sill_top, header_bottom = 2.40, 3.54, 1.15, 1.83
+    parts = [box(name + "Rear", (x, (y0 + win_y0) / 2, 1.00), (0.08, win_y0 - y0, 1.90), bevel),
+             box(name + "Front", (x, (win_y1 + y1) / 2, 1.00), (0.08, y1 - win_y1, 1.90), bevel)]
+    for suffix, z0, z1 in (("Sill", 0.05, sill_top), ("Header", header_bottom, 1.95)):
+        parts.append(box(name + suffix, (x, (win_y0 + win_y1) / 2, (z0 + z1) / 2),
+                         (0.07, win_y1 - win_y0, z1 - z0), bevel))
+    return join_objects(parts, name)
+
+
+windowed_liner("LeftWallLiner", -1.07, -3.975, 3.975, 0.012)
 # Bus z = -Blender y. Jamb faces sit 0.5 mm outside the gap to absorb float noise.
 box("RightCargoWallLiner", (1.07, -1.33775, 1.00), (0.08, 5.2745, 1.90), 0.0)
-box("RightCabWallLiner", (1.07, 3.08775, 1.00), (0.08, 1.7745, 1.90), 0.0)
+windowed_liner("RightCabWallLiner", 1.07, 2.2005, 3.975, 0.0)
 box("RightBoardingHeader", (1.07, 1.75, 1.99), (0.08, 0.90, 0.14), 0.015)
 box("BoardingThreshold", (1.03, 1.75, 0.055), (0.14, 0.90, 0.008), 0.003)
 box("RearLeftLiner", (-0.91, -3.85, 0.93), (0.32, 0.24, 1.78), 0.015)

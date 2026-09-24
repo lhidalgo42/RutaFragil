@@ -12,6 +12,9 @@ import sys
 import bmesh
 import bpy
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import blender_van_side as van_side
+
 
 if bpy.app.version[:2] != (5, 1):
     raise SystemExit("Blender 5.1 required, found %s" % (bpy.app.version_string,))
@@ -43,7 +46,7 @@ def category(name):
         return "red"
     if name.startswith("Roof") or "Headlight" in name or name in ("CabBrow", "RearPlateRecess"):
         return "cream"
-    if "CabSideGlass" in name or "MirrorGlass" in name:
+    if "MirrorGlass" in name:
         return "glass"
     if name in ("RearLowerFascia", "RearStepBumper"):
         return "yellow"
@@ -204,32 +207,21 @@ box("Underbody", -3.88, 3.82, 0.00, 0.10, -0.96, 0.96, 0.025)
 for side, prefix in ((-1, "Left"), (1, "Right")):
     # 1 mm under the stripe keeps merged StaticShell boxes from sharing bevel edges.
     flank(prefix + "LowerRearCorner", side, -3.82, -3.45, 0.10, 1.099)
-    flank(prefix + "LowerCenter", side, -2.05, 2.05, 0.10, 1.10)
+    # Right side ends 1 cm inside the full-height doorway's rear jamb (no shared face).
+    flank(prefix + "LowerCenter", side, -2.05, 2.05 if side < 0 else 1.26, 0.10, 1.10)
     flank(prefix + "LowerFrontCorner", side, 3.45, 3.82, 0.10, 1.099)
     for axle, longitudinal in (("Rear", -2.75), ("Front", 2.75)):
         arch_skirt(prefix + "ArchSkirt" + axle, side, longitudinal, 0.65)
         arch_band(prefix + "WheelArchLip" + axle, side, longitudinal, 0.585, 0.65, 0.045, 0.012)
         arch_band(prefix + "WheelLiner" + axle, side, longitudinal, 0.55, 0.58, 0.105)
 
-# Mostly blind cargo sides, preserving the pinned cab and boarding openings.
+# Mostly blind cargo sides; open, framed driver/copilot windows; full-height slider.
 flank("LeftCargoBlindPanel", -1, -3.82, 2.21, 1.10, 2.05)
 flank("LeftCabLowerPanel", -1, 2.211, 3.82, 1.10, 1.24)
-side_prism("LeftCabSideGlass", -1, ((2.34, 1.28), (3.76, 1.28), (3.60, 2.03), (2.34, 2.03)), 0.022, 0.006)
-flank("LeftCabRearPillar", -1, 2.21, 2.34, 1.24, 2.06, 0.010)
-flank("LeftCabAPillar", -1, 3.60, 3.82, 1.24, 2.06, 0.010)
-
 flank("RightCargoBlindPanel", 1, -3.82, 1.27, 1.10, 2.05)
-flank("RightDoorHeader", 1, 1.27, 2.21, 2.05, 2.10, 0.008)
-flank("RightDoorRearJamb", 1, 1.25, 1.30, 1.10, 2.05, 0.006)
-flank("RightDoorFrontJamb", 1, 2.20, 2.25, 1.10, 2.05, 0.006)
-box("RightDoorThreshold", 1.28, 2.20, 1.04, 1.10, 1.176, 1.25, 0.006)
-# Rear jamb trim stays inboard of the popped leaf (x>=1.287) so it can slide past.
-box("RightDoorRearJambTrim", 1.245, 1.285, 1.10, 2.04, 1.252, 1.282, 0.004)
-box("RightDoorFrontJambTrim", 2.215, 2.255, 1.10, 2.04, 1.282, 1.312, 0.004)
-box("RightDoorHeaderTrim", 1.27, 2.23, 2.052, 2.09, 1.282, 1.312, 0.004)
 flank("RightCabLowerPanel", 1, 2.20, 3.82, 1.10, 1.24)
-side_prism("RightCabSideGlass", 1, ((2.25, 1.28), (3.76, 1.28), (3.60, 2.03), (2.25, 2.03)), 0.022, 0.006)
-flank("RightCabAPillar", 1, 3.60, 3.82, 1.24, 2.06, 0.010)
+side_leaf_parts = van_side.author_side(box, flank, side_prism)
+van_side.author_cab_windows(box, flank)
 
 # One continuous cream crown: no separate cab roof lid or visible seam.
 cargo_roof = ((-1.25, 2.04), (-1.20, 2.20), (-0.88, 2.34), (0.0, 2.39),
@@ -268,14 +260,6 @@ for side, prefix in ((-1, "Left"), (1, "Right")):
     box(prefix + "MirrorPod", 3.34, 3.51, 1.39, 1.73, mx0, mx1, 0.035)
     face_x0, face_x1 = ((-1.582, -1.574) if side < 0 else (1.574, 1.582))
     box(prefix + "MirrorGlass", 3.37, 3.48, 1.43, 1.69, face_x0, face_x1, 0.003)
-
-# Functional sliding leaf, exported closed: pivot parked at the doorway,
-# the visual pops outboard and slides rearward along its rail.
-box("SideDoorPanel", 1.30, 2.20, 1.04, 2.05, 1.252, 1.322, 0.026)
-box("SideDoorInset", 1.40, 2.08, 1.30, 1.90, 1.322, 1.337, 0.010)
-box("SideDoorHandle", 1.34, 1.53, 1.27, 1.33, 1.325, 1.357, 0.008)
-# Fixed rail continues the header line over the rearward travel lane, above the leaf.
-box("SlidingDoorRail", 0.30, 1.27, 2.055, 2.095, 1.26, 1.29, 0.006)
 
 # Finished rear around the pinned 1.40 m clear aperture; leaves export closed.
 box("RearLeftPanel", -4.00, -3.82, 0.10, 2.05, -1.25, -0.71, 0.025)
@@ -316,7 +300,7 @@ for side, prefix in ((-1, "Left"), (1, "Right")):
 
 # Bake static transforms, normalize winding, then map every mesh into its atlas region.
 DOOR_GROUPS = {
-    "SideDoorLeaf": ("SideDoorPanel", "SideDoorInset", "SideDoorHandle", "RedStripeSideDoor"),
+    "SideDoorLeaf": tuple(side_leaf_parts) + ("RedStripeSideDoor",),
     "RearDoorLeftLeaf": ("RearDoorLeftLeaf", "RearDoorLeftInsetUpper", "RearDoorLeftInsetLower",
                          "RearDoorLeftLatch", "RearDoorLeftHinge45", "RearDoorLeftHinge172",
                          "RedStripeRearDoorLeft"),
@@ -326,7 +310,7 @@ DOOR_GROUPS = {
 }
 # Side origin = inner/rear/bottom corner of the closed leaf; rear origins = hinge axes.
 LEAF_ORIGINS = {
-    "SideDoorLeaf": (1.252, 1.30, 1.04),
+    "SideDoorLeaf": (1.252, 1.30, van_side.LEAF_BOTTOM),
     "RearDoorLeftLeaf": (-0.72, REAR_HINGE_Y, 0.0),
     "RearDoorRightLeaf": (0.72, REAR_HINGE_Y, 0.0),
 }

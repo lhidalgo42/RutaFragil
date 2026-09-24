@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://src/vehicle/bus.gd" id="1_bus"]
 [ext_resource type="Script" path="res://src/vehicle/cabin_camera.gd" id="2_cabin"]
 [ext_resource type="PackedScene" path="res://src/vehicle/bus_interior.tscn" id="3_interior"]
 [ext_resource type="PackedScene" path="res://src/vehicle/bus_exterior_visual.tscn" id="4_exterior"]
 [ext_resource type="PackedScene" path="res://src/vehicle/bus_doors.tscn" id="5_doors"]
+[ext_resource type="Script" path="res://src/vehicle/copilot_camera.gd" id="6_copilot"]
 
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_body"]
@@ -51,4 +52,5 @@ current = false
 
 [node name="CopilotCamera" type="Camera3D" parent="." groups=["copilot_camera"]]
 position = Vector3(0.6, 0.75, -2.9)
+script = ExtResource("6_copilot")
 current = false

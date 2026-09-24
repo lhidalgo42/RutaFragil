@@ -108,7 +108,7 @@ func test_exterior_model_exposes_door_pivots_and_follows_bus_doors() -> void:
 		return
 	# Doors start open: side slid aft, rear leaves swung.
 	visual.update_doors()
-	var closed_side: Vector3 = Vector3(1.252, 1.04, -1.30)
+	var closed_side: Vector3 = Vector3(1.252, 0.24, -1.30)
 	assert_vector(side.position).is_equal_approx(closed_side + BusExteriorVisual.side_pose(1.0),
 		Vector3.ONE * 0.002)
 	assert_float(rad_to_deg(left.rotation.y)).is_equal_approx(-132.0, 0.01)

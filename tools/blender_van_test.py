@@ -136,7 +136,7 @@ def validate(glb):
              for index in g["scenes"][g.get("scene", 0)].get("nodes", [])}
     assert set(roots) == {"StaticShell", "SideDoorPivot", "RearDoorLeftPivot", "RearDoorRightPivot"}, roots
     for pivot_name, leaf_name, expected in (
-            ("SideDoorPivot", "SideDoorLeaf", (1.252, 1.04, -1.30)),
+            ("SideDoorPivot", "SideDoorLeaf", (1.252, 0.24, -1.30)),
             ("RearDoorLeftPivot", "RearDoorLeftLeaf", (-0.72, 0.0, 4.10)),
             ("RearDoorRightPivot", "RearDoorRightLeaf", (0.72, 0.0, 4.10))):
         pivot = g["nodes"][roots[pivot_name]]
@@ -163,7 +163,7 @@ def validate(glb):
         ((0.78, 0.70, -4.19), "cream"),           # Headlight face
         ((-1.10, 0.10, 4.11), "red"),             # RearLightLeft face
         ((-1.268, 1.10, 3.80), "red"),            # RedStripeLeft
-        ((-1.256, 1.28, -3.76), "glass"),         # LeftCabSideGlass corner
+        ((-1.578, 1.56, -3.425), "glass"),        # LeftMirrorGlass face
         ((0.95, 0.01, 3.87), "dark"),             # Underbody
         ((1.12, 0.044, 4.216), "yellow"),         # RearStepBumper
     ]
@@ -189,6 +189,11 @@ def validate(glb):
     # Openings (Godot frame: -Z front; wrapper puts model y0 at bus y -0.8).
     # Doorway moved aft: Godot z[-2.2,-1.3]; the closed SideDoorLeaf is the only face inside.
     assert_gap(g, bins, ((1.15, 1.27), (1.12, 2.02), (-2.19, -1.31)), excluded=("SideDoorLeaf",))
+    # r8: the doorway is open down to the floor behind the front arch (no body panel below).
+    assert_gap(g, bins, ((1.15, 1.27), (0.25, 1.10), (-2.04, -1.31)), excluded=("SideDoorLeaf",))
+    # r8: driver/copilot side windows are real openings (the wrapper adds the glass).
+    for side in (-1.0, 1.0):
+        assert_gap(g, bins, (tuple(sorted((1.15 * side, 1.27 * side))), (1.30, 1.98), (-3.54, -2.40)))
     # The old doorway column above the front wheel is now closed body.
     old_doorway = ((1.15, 1.27), (1.12, 2.02), (-3.19, -2.31))
     covered = False
@@ -219,10 +224,13 @@ def validate(glb):
         wheel_rear_z = -2.75 + 0.50 * abs(math.cos(steer)) + 0.11 * abs(math.sin(steer))
         assert doorway_front_z - wheel_rear_z >= 0.05, (steer_deg, wheel_rear_z, doorway_front_z)
 
-    # Closed side leaf fills the doorway: y 1.12..2.02 x z -2.20..-1.30 in the x 1.24..1.36 slab.
+    # Closed side leaf fills the full-height doorway: y 0.24..2.05 x z -2.20..-1.30.
     side = node_bounds(g, bins, lambda name: name == "SideDoorLeaf")[0]
     assert 1.24 <= side["low"][0] and side["high"][0] <= 1.36, side["name"]
-    assert side["low"][1] <= 1.12 and side["high"][1] >= 2.02, side["name"]
+    assert side["low"][1] <= 0.25 and side["high"][1] >= 2.04, side["name"]
+    # Stepped over the front arch: nothing of the leaf below the stripe ahead of y=-2.05.
+    notch = [p for p in side["positions"] if p[2] < -2.06]
+    assert notch and min(p[1] for p in notch) >= 1.03, "la hoja no se escalona sobre el arco"
     assert abs(side["low"][2] + 2.20) <= 0.01 and abs(side["high"][2] + 1.30) <= 0.01, side["name"]
     # Leaf origin sits on its slide pivot: local mesh minimum corner is the pivot itself.
     pivot_local = g["meshes"][g["nodes"][g["nodes"][roots["SideDoorPivot"]]["children"][0]]["mesh"]]
@@ -335,7 +343,7 @@ def validate(glb):
     assert lips, "labios de arco perdidos en la unión"
 
     total = tris(g, bins)
-    assert total <= 10000, "exterior %d > 10000" % total
+    assert total <= 10500, "exterior %d > 10500" % total
     return total
 
 

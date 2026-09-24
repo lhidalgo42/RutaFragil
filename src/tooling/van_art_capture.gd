@@ -40,6 +40,9 @@ static func views() -> Array[Dictionary]:
 		{"name":"seats_close", "pos":Vector3(0.0, 0.55, -1.35), "at":Vector3(0.0, -0.05, -2.9), "fov":42.0, "interior":true},
 		{"name":"wheel_close", "pos":Vector3(3.6, -0.45, -2.75), "at":Vector3(1.1, -0.5, -2.75), "fov":34.0},
 		{"name":"cab", "camera":"CabinCamera"},
+		{"name":"copilot_look_right", "camera":"CopilotCamera", "yaw":-80.0},
+		{"name":"copilot_look_back", "camera":"CopilotCamera", "yaw":170.0, "pitch":-8.0},
+		{"name":"cab_window_left", "pos":Vector3(-6.5, 0.9, -4.4), "at":Vector3(-1.2, 0.85, -2.97), "fov":36.0},
 		{"name":"cab_seats", "pos":Vector3(0.0, 0.85, -1.2), "at":Vector3(0.0, 0.1, -3.4), "fov":70.0},
 		{"name":"interior", "pos":Vector3(0.0, 0.65, 3.2), "at":Vector3(0.0, 0.2, 0.0), "fov":70.0},
 		{"name":"interior_to_rear", "pos":Vector3(0.0, 0.65, -2.2), "at":Vector3(0.0, 0.3, 3.5), "fov":70.0},
@@ -69,17 +72,20 @@ func _process(_delta: float) -> bool:
 
 
 func _apply_view(view: Dictionary) -> void:
-	var cabin: Camera3D = _bus.get_node_or_null("CabinCamera")
 	var name: String = String(view["name"])
-	var is_interior: bool = view.has("camera") or view.get("interior", false) or name.begins_with("cab_") or name.begins_with("interior") or name == "seats_close"
+	var is_interior: bool = view.has("camera") or view.get("interior", false) or name.begins_with("cab_seats") or name.begins_with("interior") or name == "seats_close"
 	_interior_fill.visible = is_interior
+	for cam_name: String in ["CabinCamera", "CopilotCamera"]:
+		var cam: Camera3D = _bus.get_node_or_null(cam_name)
+		if cam != null: cam.current = false
 	if view.has("camera"):
 		_camera.current = false
-		if cabin == null: push_error("van_art_capture: camera missing"); quit(1); return
-		_interior_fill.global_position = cabin.global_position
-		cabin.current = true
+		var seat_cam: Camera3D = _bus.get_node_or_null(String(view["camera"]))
+		if seat_cam == null: push_error("van_art_capture: camera missing"); quit(1); return
+		seat_cam.rotation_degrees = Vector3(float(view.get("pitch", 0.0)), float(view.get("yaw", 0.0)), 0.0)
+		_interior_fill.global_position = seat_cam.global_position
+		seat_cam.current = true
 		return
-	if cabin != null: cabin.current = false
 	_camera.fov = float(view["fov"])
 	_camera.position = view["pos"]
 	_camera.look_at(view["at"], Vector3.UP)
