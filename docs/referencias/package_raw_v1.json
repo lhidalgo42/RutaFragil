@@ -1,0 +1,17 @@
+{
+	"file": "package_raw_v1.glb",
+	"source_image": "docs/referencias/paquete_referencia_v1.png",
+	"model": "trellis_2_int8_convrot.safetensors",
+	"licence": "MIT",
+	"pipeline": "ComfyUI nativo TRELLIS.2",
+	"seed": 56,
+	"target_faces": 20000,
+	"texture_px": 1024,
+	"shape_resolution": null,
+	"shape_resolution_note": "corregido 2026-09-24: la corrida pasó --resolution 1024, que no se aplica con --no-upsample (solo alimenta el nodo de upsample, que se salta)",
+	"upsample": false,
+	"remesh_resolution": 256,
+	"elapsed_s": 19.7,
+	"server": "https://comfy.areum.cl",
+	"generated_utc": "2026-09-24T00:19:06Z"
+}

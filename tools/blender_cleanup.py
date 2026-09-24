@@ -1,7 +1,7 @@
 """Limpieza Blender del maestro §10.1 para una malla generada: de .glb denso a asset.
 
     blender -b --python tools/blender_cleanup.py -- <in.glb> <out.glb> \
-        --size 0.4 --tris 800 --texture 1024 [--pivot base|center]
+        --size 0.4 --tris 800 --texture 1024 [--pivot base|center] [--outer-shell]
 
 Hace, en orden: une todas las mallas en una; escala para que el lado mayor mida
 `--size` metros; coloca el pivote en la base (y=0) o en el centro; decima a
@@ -28,6 +28,8 @@ ap.add_argument("--size", type=float, required=True, help="lado mayor en metros"
 ap.add_argument("--tris", type=int, required=True)
 ap.add_argument("--texture", type=int, default=1024)
 ap.add_argument("--pivot", choices=("base", "center"), default="base")
+ap.add_argument("--outer-shell", action="store_true",
+                help="retirar capas internas invertidas de un prop cerrado tipo caja")
 a = ap.parse_args(argv)
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -71,6 +73,46 @@ bm = bmesh.new()
 bm.from_mesh(obj.data)
 bmesh.ops.remove_doubles(bm, verts=bm.verts[:], dist=1e-5)
 bmesh.ops.triangulate(bm, faces=bm.faces[:])
+if a.outer_shell:
+    remaining = set(bm.faces)
+    shells = []
+    while remaining:
+        seed = remaining.pop()
+        pending = [seed]
+        component = [seed]
+        while pending:
+            face = pending.pop()
+            for edge in face.edges:
+                for adjacent in edge.link_faces:
+                    if adjacent in remaining:
+                        remaining.remove(adjacent)
+                        pending.append(adjacent)
+                        component.append(adjacent)
+        volume = sum(face.verts[0].co.dot(face.verts[1].co.cross(face.verts[2].co))
+                     for face in component) / 6
+        shells.append((component, volume))
+    if not shells:
+        raise SystemExit("--outer-shell: no faces")
+    exterior, exterior_volume = max(shells, key=lambda shell: abs(shell[1]))
+    if abs(exterior_volume) < 1e-12 or any(len(edge.link_faces) != 2
+                                         for face in exterior for edge in face.edges):
+        raise SystemExit("--outer-shell: exterior must be closed and manifold")
+    lower = [min(vertex.co[axis] for face in exterior for vertex in face.verts)
+             for axis in range(3)]
+    upper = [max(vertex.co[axis] for face in exterior for vertex in face.verts)
+             for axis in range(3)]
+    interior = []
+    # ponytail: bbox containment for closed box-like props; hollow assets need authored retopology.
+    for component, volume in shells:
+        if component is exterior:
+            continue
+        if volume * exterior_volume >= 0 or any(
+                not all(lower[axis] < vertex.co[axis] < upper[axis] for axis in range(3))
+                for face in component for vertex in face.verts):
+            raise SystemExit("--outer-shell: refusing to discard a non-enclosed or outward shell")
+        interior.extend(component)
+    print("INNER_SHELLS removed=%d faces=%d" % (len(shells) - 1, len(interior)))
+    bmesh.ops.delete(bm, geom=interior, context="FACES")
 # caras sin arista compartida
 loose = [f for f in bm.faces if all(len(e.link_faces) == 1 for e in f.edges)]
 bmesh.ops.delete(bm, geom=loose, context="FACES")

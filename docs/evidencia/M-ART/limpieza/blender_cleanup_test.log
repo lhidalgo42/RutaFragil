@@ -1,0 +1,28 @@
+21:33:29 | INFO: Data are loaded, start creating Blender stuff
+21:33:29 | INFO: Blender create Mesh node 0
+21:33:29 | INFO: glTF import finished in 0.03s
+INNER_SHELLS removed=4 faces=13774
+INFO Draco mesh compression is available, use library at C:\Program Files\Blender Foundation\Blender 5.1\5.1\scripts\addons_core\io_scene_gltf2\extern_draco.dll
+21:33:29 | INFO: Starting glTF 2.0 export
+21:33:29 | INFO: Extracting primitive: Mesh_0
+21:33:29 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+21:33:29 | INFO: Primitives created: 1
+21:33:29 | INFO: Finished glTF 2.0 export in 0.1313948631286621 s
+
+CLEANUP_OK faces=800 (antes 6222) size_xyz=0.400,0.362,0.319 textures=3
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:37:34)
+
+Blender quit
+OK   1.escala                 lado mayor 0.400 m (esperado 0.35–0.45); bbox 0.400 × 0.319 × 0.362
+OK   1.pivote_en_base         y mínimo 0.000 m (base en 0 ± 0.02)
+OK   1.ejes                   alto 0.319, ancho x 0.400, largo z 0.362 (glTF: −Z adelante; el bus es más largo en z)
+OK   2.triangulos             800 tris (presupuesto 800)
+OK   2.caras_sueltas          0 caras sin arista compartida
+OK   2.normales_invertidas    0 aristas inconsistentes, 0 normales contra el winding, volumen con signo 0.0450 m³ (800 caras)
+OK   4.un_material            1 materiales
+OK   5.textura_max_1024       3 imágenes, todas ≤1024
+=> PASA (8/8)
+
+PASS: package cleanup meets every mechanical check; source unchanged
+
+Exit code: 0

@@ -1,8 +1,10 @@
 class_name Package
 extends RigidBody3D
 
-## A cargo box (D81): a 0.4 m greybox box, mass from TuningTable
-## .package_mass_kg, collision layer 2 (cargo), mask world + cargo + crew.
+## A cargo box (D81): an authored 0.4 m BoxShape3D collider, mass from
+## TuningTable.package_mass_kg, collision layer 2 (cargo), mask world + cargo
+## + crew. The visual is a separate instanced .glb (M-ART,
+## assets/models/package_clean_v1.glb); the physics never reads it (§10.1.3).
 ## The three physical states of ADR-003: FREE (real RigidBody3D in world
 ## space), HELD (kinematic, collision OFF, follows the HandAnchor every
 ## physics tick), STRAPPED (frozen kinematic child of the bus at a

@@ -1,0 +1,17 @@
+Extracto de salida observada de sesión 62933; comando: powershell -ExecutionPolicy Bypass -File tools/run_tests.ps1
+Proceso terminado con salida 0.
+
+gdUnit4 exit code 0: OK: all discovered tests passed
+Discovered tests: 257 (expected exactly: 257)
+SUCCESS: all tests passed and 257 tests were discovered.
+
+NET launcher spawned host + 3 clients (base port 47810)
+NET summary port=47810 pids=[4800, 47628, 44824, 36356]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+
+net scenario exit code: 0
+SUCCESS: network scenario passed (1 host + 3 clients).
+
+Mensajes preexistentes observados: CameraArbiter: no Camera3D in group 'eye_camera' / 'cabin_camera'. Ver BACKLOG.md.

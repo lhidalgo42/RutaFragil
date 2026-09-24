@@ -29,7 +29,8 @@ LICENCE = "MIT"
 OUT = os.path.join("assets", "models")
 
 
-def workflow(image_name, prefix, seed, faces, texture_px, resolution=1536, upsample=True):
+def workflow(image_name, prefix, seed, faces, texture_px, resolution=1536, upsample=True,
+             remesh_resolution=768):
     """Rama TRELLIS.2 de la plantilla oficial, sin Pixal3D ni los nodos de vista previa.
 
     upsample=False salta la etapa de 1024–2048 voxels y decodifica la forma desde el
@@ -122,7 +123,7 @@ def workflow(image_name, prefix, seed, faces, texture_px, resolution=1536, upsam
         # --- 4. limpieza de malla y UVs ---
         "202": {"class_type": "GetMeshInfo", "inputs": {"mesh": ["92", 0]}},
         "241": {"class_type": "RemeshMesh",
-                "inputs": {"mesh": ["202", 0], "resolution": 768, "sign_mode": "udf",
+                "inputs": {"mesh": ["202", 0], "resolution": remesh_resolution, "sign_mode": "udf",
                            "sign_mode.qef": False, "sign_mode.drop_inverted_components": False,
                            "sign_mode.drop_enclosed_components": False,
                            "band": 1.0, "project_back": 0.0, "fix_poles": False,
@@ -180,11 +181,18 @@ def main():
     ap.add_argument("--no-upsample", action="store_true",
                     help="decodificar la forma desde el latente base (props pequeños; menos VRAM)")
     ap.add_argument("--budget", type=int, default=1800, help="segundos de espera")
+    ap.add_argument("--remesh-resolution", type=int, default=768,
+                    help="resolución del remallado (32–2048); reducir para bajar uso de VRAM")
     ap.add_argument("--out", default=OUT,
                     help="carpeta de salida; las pruebas de camino van a docs/ (Godot no lo "
                          "escanea), a assets/models/ solo lo que ya pasó por Blender (§10.1)")
     a = ap.parse_args()
     out_dir = a.out
+    if a.no_upsample and a.resolution != 1536:
+        print("aviso: --resolution %d no se aplica con --no-upsample (solo afecta a la etapa "
+              "de upsample, que se salta)" % a.resolution)
+    if not 32 <= a.remesh_resolution <= 2048:
+        ap.error("--remesh-resolution debe estar entre 32 y 2048")
 
     if not os.path.isfile(a.image):
         raise SystemExit("no existe la imagen: " + a.image)
@@ -195,7 +203,7 @@ def main():
     started = time.time()
     outputs = comfy_api.run(
         workflow(uploaded, "rutafragil/" + a.name, a.seed, a.faces, a.texture, a.resolution,
-                 upsample=not a.no_upsample),
+                 upsample=not a.no_upsample, remesh_resolution=a.remesh_resolution),
         budget_s=a.budget)
     elapsed = time.time() - started
 
@@ -227,7 +235,12 @@ def main():
             "source_image": a.image.replace("\\", "/"),
             "model": MODEL, "licence": LICENCE,
             "pipeline": "ComfyUI nativo TRELLIS.2",
-            "seed": a.seed, "target_faces": a.faces, "texture_px": a.texture, "shape_resolution": a.resolution, "upsample": not a.no_upsample,
+            "seed": a.seed, "target_faces": a.faces, "texture_px": a.texture,
+            # --resolution solo alimenta la etapa de upsample (nodo 94); sin ella no se
+            # aplica, y registrarla sería mentir sobre cómo se generó el asset.
+            "shape_resolution": None if a.no_upsample else a.resolution,
+            "upsample": not a.no_upsample,
+            "remesh_resolution": a.remesh_resolution,
             "elapsed_s": round(elapsed, 1), "server": comfy_api.SERVER,
             "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     with open(os.path.join(out_dir, a.name + ".json"), "w",

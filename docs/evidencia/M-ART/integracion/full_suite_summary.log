@@ -1,0 +1,21 @@
+Extracto de la suite completa (run_tests.ps1, 2026-09-24 UTC). El log original de 176 KB
+vivía en reports/, que el arnés borra; aquí quedan solo las líneas de veredicto.
+XML completo: full_suite_results.xml.
+
+=== Step 1/7: Resolve Godot binary and verify version ===
+=== Step 2/7: Clean reports directory ===
+=== Step 3/7: Headless import (two passes) ===
+=== Step 4/7: Run gdUnit4 test suites ===
+Overall Summary: 257 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+=== Step 5/7: gdUnit4 exit code ===
+=== Step 6/7: Verify discovered test count in the fresh JUnit report ===
+Discovered tests: 257 (expected exactly: 257)
+=== Step 7/7: Final verdict ===
+SUCCESS: all tests passed and 257 tests were discovered.
+=== Step 8/8: Network multi-instance scenario (1 host + 3 clients) ===
+NET summary port=47810 pids=[39972, 3392, 36456, 42360]
+NET summary clients_connected=3/3 markers_per_client=[4, 4, 4]
+NET summary max_pos_dev=0.000 m max_yaw_dev=0.00 deg
+NET result=pass asserts=children_exited,host_exit,clients_connect,markers,convergence
+net scenario exit code: 0
+SUCCESS: network scenario passed (1 host + 3 clients).
