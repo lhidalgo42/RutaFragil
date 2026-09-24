@@ -41,13 +41,13 @@ def box(name, location, dimensions, bevel=0.015, rotation=(0.0, 0.0, 0.0)):
 
 
 def rack(prefix, x, y, length):
-    for index, z in enumerate((0.42, 1.18, 1.92)):
+    for index, z in enumerate((0.10, 0.75, 1.40)):
         box(prefix + "Shelf%d" % index, (x, y, z), (0.34, length, 0.055), 0.008)
     for end in (-length / 2 + 0.04, length / 2 - 0.04):
         for edge in (-0.14, 0.14):
             box(prefix + "Post_%s_%s" % ("Rear" if end < 0 else "Front",
                                            "Outer" if edge * x > 0 else "Inner"),
-                (x + edge, y + end, 1.12), (0.045, 0.045, 1.78), 0.005)
+                (x + edge, y + end, 0.75), (0.045, 0.045, 1.30), 0.005)
 
 
 def seat(prefix, x, y):
@@ -70,27 +70,29 @@ box("RightBoardingHeader", (1.07, 2.75, 1.99), (0.08, 0.90, 0.14), 0.015)
 
 # Narrow inner wheel wells hide the tire portion above the floor. They stay
 # visual-only and leave the outer half of every wheel visible from outside.
-for side, x in (("L", -0.90), ("R", 0.90)):
-    for axle, y in (("F", 2.75), ("R", -2.75)):
-        box("WheelWell%s%s" % (axle, side), (x, y, 0.36), (0.08, 1.08, 0.68), 0.015)
+for name, x, y in (("WheelWellFL", -0.90, 2.75), ("WheelWellFR", 0.90, 2.75),
+                   ("WheelWellRR", 0.90, -2.75)):
+    box(name, (x, y, 0.36), (0.08, 1.08, 0.68), 0.015)
 
 # Rear liner surrounds the same 1.4 x 1.9 m usable opening as the exterior.
 box("RearLeftLiner", (-0.91, -3.77, 0.93), (0.32, 0.08, 1.78), 0.015)
 box("RearRightLiner", (0.91, -3.77, 0.93), (0.32, 0.08, 1.78), 0.015)
 box("RearOpeningHeader", (0.0, -3.77, 1.91), (1.50, 0.08, 0.16), 0.015)
 
+# Fixtures align with the authored collision boxes after centering and wrapper offset.
 # Rack inner edges are x=+-0.72: a measured 1.44 m central corridor.
-rack("LeftRack", -0.89, -1.55, 2.45)
-rack("RightRack", 0.89, -1.55, 2.45)
+rack("LeftRack", -0.875, 0.0, 2.35)
+rack("RightRack", 0.875, 0.0, 2.35)
 
-# Cargo fixtures stay outside the corridor.
-box("BenchCushion", (-0.88, 0.43, 0.54), (0.34, 1.28, 0.18), 0.045)
-box("BenchBack", (-1.00, 0.43, 0.98), (0.10, 1.28, 0.70), 0.035)
-box("BenchFrontSupport", (-0.78, 0.43, 0.28), (0.08, 1.12, 0.38), 0.012)
-box("StretcherDeck", (0.88, 0.42, 0.73), (0.34, 1.70, 0.10), 0.025)
-for y in (-0.31, 1.15):
-    box("StretcherLeg_%s" % ("Rear" if y < 0 else "Front"),
-        (0.88, y, 0.39), (0.22, 0.08, 0.62), 0.012)
+# Bench and stretcher sit inside their existing colliders. The solid bench also
+# covers the rear-left tire; the narrow stretcher leaves room for its wheel well.
+box("BenchBase", (-0.875, -2.9, 0.275), (0.46, 1.16, 0.43), 0.02)
+box("BenchCushion", (-0.875, -2.9, 0.57), (0.46, 1.16, 0.16), 0.045)
+box("BenchBack", (-1.03, -2.9, 0.80), (0.10, 1.16, 0.30), 0.035)
+box("StretcherDeck", (0.68, -2.2, 0.26), (0.32, 1.76, 0.08), 0.025)
+for y in (-2.95, -1.45):
+    box("StretcherLeg_%s" % ("Rear" if y < -2.2 else "Front"),
+        (0.68, y, 0.14), (0.22, 0.08, 0.16), 0.012)
 
 # Two visual-only front seats.
 seat("DriverSeat", -0.52, 3.10)

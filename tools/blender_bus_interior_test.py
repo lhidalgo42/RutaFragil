@@ -67,6 +67,18 @@ def node_bounds(g, bins, predicate):
     return out
 
 
+WRAPPER_OFFSET = (0.05, 0.38, 0.005)
+
+
+def assert_inside(items, low, high, label):
+    for item in items:
+        wrapped_low = [item["low"][axis] + WRAPPER_OFFSET[axis] for axis in range(3)]
+        wrapped_high = [item["high"][axis] + WRAPPER_OFFSET[axis] for axis in range(3)]
+        assert all(wrapped_low[axis] >= low[axis] - 0.01 and
+                   wrapped_high[axis] <= high[axis] + 0.01 for axis in range(3)), \
+            "%s fuera de colision: %s %s..%s" % (label, item["name"], wrapped_low, wrapped_high)
+
+
 def assert_gap(g, bins, dimensions):
     for mesh_index, world in glb_check.mesh_instances(g):
         for primitive in g["meshes"][mesh_index]["primitives"]:
@@ -141,16 +153,19 @@ def validate(glb):
     right_inner = min(item["low"][0] for item in rack_right)
     corridor = right_inner - left_inner
     assert corridor >= 1.2, "corredor %.3f < 1.2" % corridor
-    for prefix in ("Bench", "Stretcher", "BoardingStep"):
-        items = node_bounds(g, bins, lambda name, p=prefix: name.startswith(p))
-        side = -1.0 if prefix == "Bench" else 1.0
-        inner = max(item["high"][0] for item in items) if side < 0 else min(item["low"][0] for item in items)
-        assert abs(inner) >= 0.60, "%s entra al corredor: %.3f" % (prefix, inner)
+    # Bus-local collider boxes from src/vehicle/bus_interior.tscn.
+    assert_inside(rack_left, (-1.15, -0.60, -1.20), (-0.60, 0.80, 1.20), "rack izquierdo")
+    assert_inside(rack_right, (0.60, -0.60, -1.20), (1.15, 0.80, 1.20), "rack derecho")
+    assert_inside(node_bounds(g, bins, lambda name: name.startswith("Bench")),
+        (-1.15, -0.60, 2.30), (-0.60, 0.30, 3.50), "banco")
+    assert_inside(node_bounds(g, bins, lambda name: name.startswith("Stretcher")),
+        (0.50, -0.60, 1.30), (1.10, -0.35, 3.10), "camilla")
+    steps = node_bounds(g, bins, lambda name: name.startswith("BoardingStep"))
+    assert min(item["low"][0] for item in steps) >= 0.60, steps
     seats = node_bounds(g, bins, lambda name: name.startswith(("DriverSeat", "CopilotSeat")))
     assert len(seats) >= 8, "asientos visuales incompletos"
     wheel_wells = node_bounds(g, bins, lambda name: name.startswith("WheelWell"))
-    assert {item["name"] for item in wheel_wells} == {
-        "WheelWellFL", "WheelWellFR", "WheelWellRL", "WheelWellRR"}, wheel_wells
+    assert {item["name"] for item in wheel_wells} == {"WheelWellFL", "WheelWellFR", "WheelWellRR"}, wheel_wells
     assert all(item["high"][1] >= -0.33 for item in wheel_wells), wheel_wells
 
     tris = sum(len(glb_check.read_accessor(g, bins, p["indices"])) // 3

@@ -64,8 +64,8 @@ func test_exterior_interior_seats_racks_floor_and_wheels_use_the_external_atlase
 		assert_object(visual).override_failure_message("missing visual " + path).is_not_null()
 		assert_int(_mesh_count(visual)).is_greater(0)
 	for name: String in ["FloorLiner", "LeftRackShelf0", "RightRackShelf0",
-		"DriverSeatCushion", "CopilotSeatCushion", "WheelWellFL", "WheelWellFR",
-		"WheelWellRL", "WheelWellRR"]:
+		"DriverSeatCushion", "CopilotSeatCushion", "BenchBase", "StretcherDeck",
+		"WheelWellFL", "WheelWellFR", "WheelWellRR"]:
 		assert_object(_find_name(interior, name)).override_failure_message(
 			"missing interior part " + name).is_not_null()
 
