@@ -148,6 +148,10 @@ def validate(glb):
         assert abs(inner) >= 0.60, "%s entra al corredor: %.3f" % (prefix, inner)
     seats = node_bounds(g, bins, lambda name: name.startswith(("DriverSeat", "CopilotSeat")))
     assert len(seats) >= 8, "asientos visuales incompletos"
+    wheel_wells = node_bounds(g, bins, lambda name: name.startswith("WheelWell"))
+    assert {item["name"] for item in wheel_wells} == {
+        "WheelWellFL", "WheelWellFR", "WheelWellRL", "WheelWellRR"}, wheel_wells
+    assert all(item["high"][1] >= -0.33 for item in wheel_wells), wheel_wells
 
     tris = sum(len(glb_check.read_accessor(g, bins, p["indices"])) // 3
                for mesh in g.get("meshes", []) for p in mesh["primitives"])

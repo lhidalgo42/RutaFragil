@@ -26,6 +26,15 @@ func test_final_visuals_are_separate_from_the_sixteen_authored_colliders() -> vo
 	assert_int(_mesh_count(exterior)).is_greater(4)
 	assert_int(_mesh_count(interior)).is_greater(4)
 	assert_int(_triangle_count(exterior) + _triangle_count(interior)).is_less_equal(MAX_VISIBLE_TRIS)
+	# D89 pane replaces the hidden greybox glass; the GLB leaves the opening empty.
+	var glass: Node = bus.get_node_or_null("BusExteriorVisual/Windshield")
+	assert_bool(glass is MeshInstance3D).override_failure_message("windshield pane missing").is_true()
+	if glass is MeshInstance3D:
+		var pane: MeshInstance3D = glass
+		assert_bool(pane.get_active_material(0) is StandardMaterial3D).is_true()
+		if pane.get_active_material(0) is StandardMaterial3D:
+			var glass_mat: StandardMaterial3D = pane.get_active_material(0)
+			assert_int(glass_mat.transparency).is_not_equal(BaseMaterial3D.TRANSPARENCY_DISABLED)
 
 
 func test_exterior_interior_seats_racks_floor_and_wheels_use_the_external_atlases() -> void:
@@ -55,7 +64,8 @@ func test_exterior_interior_seats_racks_floor_and_wheels_use_the_external_atlase
 		assert_object(visual).override_failure_message("missing visual " + path).is_not_null()
 		assert_int(_mesh_count(visual)).is_greater(0)
 	for name: String in ["FloorLiner", "LeftRackShelf0", "RightRackShelf0",
-		"DriverSeatCushion", "CopilotSeatCushion"]:
+		"DriverSeatCushion", "CopilotSeatCushion", "WheelWellFL", "WheelWellFR",
+		"WheelWellRL", "WheelWellRR"]:
 		assert_object(_find_name(interior, name)).override_failure_message(
 			"missing interior part " + name).is_not_null()
 

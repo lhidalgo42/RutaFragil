@@ -68,6 +68,12 @@ box("RightCargoWallLiner", (1.07, -0.77, 1.00), (0.08, 6.06, 1.90), 0.018)
 box("RightCabWallLiner", (1.07, 3.51, 1.00), (0.08, 0.58, 1.90), 0.018)
 box("RightBoardingHeader", (1.07, 2.75, 1.99), (0.08, 0.90, 0.14), 0.015)
 
+# Narrow inner wheel wells hide the tire portion above the floor. They stay
+# visual-only and leave the outer half of every wheel visible from outside.
+for side, x in (("L", -0.90), ("R", 0.90)):
+    for axle, y in (("F", 2.75), ("R", -2.75)):
+        box("WheelWell%s%s" % (axle, side), (x, y, 0.36), (0.08, 1.08, 0.68), 0.015)
+
 # Rear liner surrounds the same 1.4 x 1.9 m usable opening as the exterior.
 box("RearLeftLiner", (-0.91, -3.77, 0.93), (0.32, 0.08, 1.78), 0.015)
 box("RearRightLiner", (0.91, -3.77, 0.93), (0.32, 0.08, 1.78), 0.015)

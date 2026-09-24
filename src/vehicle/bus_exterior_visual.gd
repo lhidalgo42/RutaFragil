@@ -25,7 +25,8 @@ func _ready() -> void:
 
 
 func _apply_materials() -> void:
-	if VisualMaterialApplier.apply(get_node_or_null("Model"), exterior_material) == 0:
+	var model: Node = get_node_or_null("Model")
+	if model != null and VisualMaterialApplier.apply(model, exterior_material) == 0:
 		push_error("BusExteriorVisual: exterior model has no MeshInstance3D")
 	for wheel_name: String in WHEEL_NAMES:
 		var wheel: Node = get_node_or_null(wheel_name)

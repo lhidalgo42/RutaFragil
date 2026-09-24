@@ -4,5 +4,3 @@ SUCCESS: all tests passed and 271 tests were discovered.
 net scenario exit code: 0
 SUCCESS: network scenario passed (1 host + 3 clients).
 suite_exit=0
-
-[exited with code 0]
