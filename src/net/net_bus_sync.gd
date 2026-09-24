@@ -15,10 +15,12 @@ var last_write_distance_m: float = 0.0
 var buffer_underrun_ticks: int = 0
 var _replicated_linear: Vector3 = Vector3.ZERO
 var _replicated_angular: Vector3 = Vector3.ZERO
+var _replicated_steer: float = 0.0
 var _poses: Array[Transform3D] = []
 var _times: Array[float] = []
 var _linear: Array[Vector3] = []
 var _angular: Array[Vector3] = []
+var _steer: Array[float] = []
 var _playback_s: float = 0.0
 var _last_source_s: float = -INF
 var _source_s: float = 0.0
@@ -40,19 +42,22 @@ func _physics_process(delta: float) -> void:
 
 
 func accept_snapshot(at: Transform3D, source_s: float = -1.0,
-		linear: Vector3 = Vector3.ZERO, angular: Vector3 = Vector3.ZERO, sent_utc_us: int = 0) -> void:
+		linear: Vector3 = Vector3.ZERO, angular: Vector3 = Vector3.ZERO,
+		sent_utc_us: int = 0, steer_input: float = 0.0) -> void:
 	if source_s < 0.0:
 		source_s = 0.0 if _times.is_empty() else _last_source_s + 1.0 / snapshot_hz
 	if not is_finite(source_s) or not at.is_finite() or source_s <= _last_source_s \
-			or not linear.is_finite() or not angular.is_finite():
+			or not linear.is_finite() or not angular.is_finite() or not is_finite(steer_input):
 		rejected_count += 1
 		return
+	var steer_sample: float = clampf(steer_input, -1.0, 1.0)
 	if _times.is_empty():
 		_playback_s = source_s - interpolation_delay_s
 	_times.append(source_s)
 	_poses.append(at)
 	_linear.append(linear)
 	_angular.append(angular)
+	_steer.append(steer_sample)
 	_last_source_s = source_s
 	_latest = at
 	received_count += 1
@@ -64,13 +69,11 @@ func accept_snapshot(at: Transform3D, source_s: float = -1.0,
 			"arrival_utc_us": last_arrival_utc_us, "source_s": source_s, "sent_utc_us": sent_utc_us,
 			"position": [at.origin.x, at.origin.y, at.origin.z],
 			"quaternion": [orientation.x, orientation.y, orientation.z, orientation.w],
-			"linear": [linear.x, linear.y, linear.z], "angular": [angular.x, angular.y, angular.z]})
+			"linear": [linear.x, linear.y, linear.z], "angular": [angular.x, angular.y, angular.z],
+			"steer": steer_sample})
 	# Bound retained history even if the receiver is paused by its caller.
 	while _times.size() > 32:
-		_times.pop_front()
-		_poses.pop_front()
-		_linear.pop_front()
-		_angular.pop_front()
+		_pop_oldest()
 
 
 func advance(delta: float) -> void:
@@ -82,29 +85,29 @@ func advance(delta: float) -> void:
 		if _send_elapsed + 0.000001 >= 1.0 / snapshot_hz:
 			_send_elapsed = maxf(0.0, _send_elapsed - 1.0 / snapshot_hz)
 			_receive.rpc(bus.global_transform, _source_s, bus.linear_velocity, bus.angular_velocity,
-				int(Time.get_unix_time_from_system() * 1000000.0))
+				int(Time.get_unix_time_from_system() * 1000000.0), _authoritative_steer())
 		return
 	if _times.is_empty():
 		return
 	while _times.size() > 2 and _times[1] <= _playback_s:
-		_times.pop_front()
-		_poses.pop_front()
-		_linear.pop_front()
-		_angular.pop_front()
+		_pop_oldest()
 	var target: Transform3D = _latest
 	_replicated_linear = _linear.back()
 	_replicated_angular = _angular.back()
+	_replicated_steer = _steer.back()
 	if interpolate:
 		if _playback_s > _last_source_s + 0.000001:
 			buffer_underrun_ticks += 1
 		target = _poses[0]
 		_replicated_linear = _linear[0]
 		_replicated_angular = _angular[0]
+		_replicated_steer = _steer[0]
 		if _times.size() > 1:
 			var weight: float = clampf((_playback_s - _times[0]) / (_times[1] - _times[0]), 0.0, 1.0)
 			target = _poses[0].interpolate_with(_poses[1], weight)
 			_replicated_linear = _linear[0].lerp(_linear[1], weight)
 			_replicated_angular = _angular[0].lerp(_angular[1], weight)
+			_replicated_steer = lerpf(_steer[0], _steer[1], weight)
 	last_write_distance_m = bus.global_position.distance_to(target.origin)
 	last_write_playback_s = _playback_s
 	bus.global_transform = target
@@ -115,9 +118,24 @@ func timing_sample() -> Array[float]:
 	return [float(received_count), _last_source_s if received_count > 0 else _source_s, _playback_s, last_write_distance_m]
 
 
+## Visual-only snapshot state for wheels. It never writes the frozen client's
+## physics velocity or drive state.
+func replicated_linear_velocity() -> Vector3:
+	return _replicated_linear
+
+
+func replicated_angular_velocity() -> Vector3:
+	return _replicated_angular
+
+
+func replicated_steer_input() -> float:
+	return _replicated_steer
+
+
 @rpc("authority", "call_remote", "unreliable_ordered")
-func _receive(at: Transform3D, source_s: float, linear: Vector3, angular: Vector3, sent_utc_us: int) -> void:
-	accept_snapshot(at, source_s, linear, angular, sent_utc_us)
+func _receive(at: Transform3D, source_s: float, linear: Vector3, angular: Vector3,
+		sent_utc_us: int, steer_input: float = 0.0) -> void:
+	accept_snapshot(at, source_s, linear, angular, sent_utc_us, steer_input)
 
 
 static func point_velocity(body: RigidBody3D, point: Vector3) -> Vector3:
@@ -132,3 +150,18 @@ static func point_velocity(body: RigidBody3D, point: Vector3) -> Vector3:
 					angular = sync._replicated_angular
 					break
 	return linear + angular.cross(point - body.global_position)
+
+
+func _authoritative_steer() -> float:
+	if bus is Bus:
+		var real_bus: Bus = bus
+		return real_bus.drive_steer
+	return 0.0
+
+
+func _pop_oldest() -> void:
+	_times.pop_front()
+	_poses.pop_front()
+	_linear.pop_front()
+	_angular.pop_front()
+	_steer.pop_front()

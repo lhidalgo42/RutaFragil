@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/vehicle/bus_exterior_visual.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/models/bus_exterior_clean_v1.glb" id="2_model"]
+[ext_resource type="Material" path="res://assets/materials/bus_exterior_v1.tres" id="3_mat"]
+[ext_resource type="PackedScene" path="res://assets/models/bus_wheel_clean_v1.glb" id="4_wheel"]
+[ext_resource type="Material" path="res://assets/materials/bus_wheel_v1.tres" id="5_mat"]
+
+[node name="BusExteriorVisual" type="Node3D"]
+script = ExtResource("1_script")
+exterior_material = ExtResource("3_mat")
+wheel_material = ExtResource("5_mat")
+
+[node name="Model" parent="." instance=ExtResource("2_model")]
+position = Vector3(0, -0.8, 0)
+
+[node name="WheelFL" type="Node3D" parent="."]
+
+[node name="SteerPivot" type="Node3D" parent="WheelFL"]
+
+[node name="SpinPivot" type="Node3D" parent="WheelFL/SteerPivot"]
+
+[node name="Wheel" parent="WheelFL/SteerPivot/SpinPivot" instance=ExtResource("4_wheel")]
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="WheelFR" type="Node3D" parent="."]
+
+[node name="SteerPivot" type="Node3D" parent="WheelFR"]
+
+[node name="SpinPivot" type="Node3D" parent="WheelFR/SteerPivot"]
+
+[node name="Wheel" parent="WheelFR/SteerPivot/SpinPivot" instance=ExtResource("4_wheel")]
+
+[node name="WheelRL" type="Node3D" parent="."]
+
+[node name="SteerPivot" type="Node3D" parent="WheelRL"]
+
+[node name="SpinPivot" type="Node3D" parent="WheelRL/SteerPivot"]
+
+[node name="Wheel" parent="WheelRL/SteerPivot/SpinPivot" instance=ExtResource("4_wheel")]
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="WheelRR" type="Node3D" parent="."]
+
+[node name="SteerPivot" type="Node3D" parent="WheelRR"]
+
+[node name="SpinPivot" type="Node3D" parent="WheelRR/SteerPivot"]
+
+[node name="Wheel" parent="WheelRR/SteerPivot/SpinPivot" instance=ExtResource("4_wheel")]

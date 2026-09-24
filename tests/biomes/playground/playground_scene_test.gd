@@ -42,11 +42,16 @@ func test_scene_structure() -> void:
 		assert_float(bus.global_position.y).is_less(3.0)
 	# The driver's seat must keep its marker: the same re-save dropped
 	# seat_marker, and occupy() silently stopped teleporting to the wheel.
-	var seat_node: Node = scene.get_tree().get_first_node_in_group("seat")
-	assert_bool(seat_node is Seat).is_true()
-	if seat_node is Seat:
-		var seat: Seat = seat_node
-		assert_object(seat.seat_marker).is_not_null()
+	var driver_seat: Seat = null
+	for seat_node: Node in scene.get_tree().get_nodes_in_group("seat"):
+		if seat_node is Seat:
+			var candidate: Seat = seat_node
+			if candidate.seat_name == "driver":
+				driver_seat = candidate
+	assert_object(driver_seat).override_failure_message("driver Seat missing from group").is_not_null()
+	if driver_seat != null:
+		assert_object(driver_seat.seat_marker).is_not_null()
+		assert_bool(driver_seat.drives_bus).is_true()
 	# D80 pins: the driver sits on the LEFT (Chile drives on the right), the
 	# door stays on the right. An accidental editor drag must not move them
 	# back in silence.
@@ -171,13 +176,17 @@ func test_leaving_the_demo_follows_the_crew_state() -> void:
 	# Seated, leaving the demo restores the wheel.
 	var bus_node: Node = scene.get_tree().get_first_node_in_group("bus")
 	var crew_node: Node = scene.get_tree().get_first_node_in_group("crew")
-	var seat_node: Node = scene.get_tree().get_first_node_in_group("seat")
-	if not (bus_node is Bus) or not (crew_node is CrewMember) or not (seat_node is Seat):
-		assert_bool(false).override_failure_message("cast missing").is_true()
+	var seat: Seat = null
+	for seat_node: Node in scene.get_tree().get_nodes_in_group("seat"):
+		if seat_node is Seat:
+			var candidate: Seat = seat_node
+			if candidate.seat_name == "driver":
+				seat = candidate
+	if not (bus_node is Bus) or not (crew_node is CrewMember) or seat == null:
+		assert_bool(false).override_failure_message("bus, crew or driver seat missing").is_true()
 		return
 	var bus: Bus = bus_node
 	var crew: CrewMember = crew_node
-	var seat: Seat = seat_node
 	crew.global_position = bus.global_transform * Vector3(0.0, -0.55, 0.0)
 	crew.aboard = true
 	for i: int in range(30):
@@ -189,6 +198,43 @@ func test_leaving_the_demo_follows_the_crew_state() -> void:
 	playground.set_demo_mode(false)
 	assert_bool(bus_input.enabled).override_failure_message("leaving the demo did not restore the wheel while seated").is_true()
 	seat.vacate()
+	assert_bool(bus_input.enabled).is_false()
+
+
+func test_leaving_the_demo_as_copilot_restores_the_passenger_view_without_drive_input() -> void:
+	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
+	var scene: Node = runner.scene()
+	assert_bool(scene is Playground).is_true()
+	if not (scene is Playground):
+		return
+	var playground: Playground = scene
+	var bus_input_node: Node = scene.get_node_or_null("BusInput")
+	var bus_node: Node = scene.get_tree().get_first_node_in_group("bus")
+	var crew_node: Node = scene.get_tree().get_first_node_in_group("crew")
+	var copilot: Seat = null
+	for node: Node in scene.get_tree().get_nodes_in_group("seat"):
+		if node is Seat:
+			var candidate: Seat = node
+			if candidate.seat_name == "copilot":
+				copilot = candidate
+	if not (bus_input_node is BusInput) or not (bus_node is Bus) \
+			or not (crew_node is CrewMember) or copilot == null:
+		assert_bool(false).override_failure_message("bus input, bus, crew or copilot Seat missing").is_true()
+		return
+	var bus_input: BusInput = bus_input_node
+	var bus: Bus = bus_node
+	var crew: CrewMember = crew_node
+	crew.global_position = bus.global_transform * Vector3(0.4, -0.55, -2.7)
+	crew.aboard = true
+	for i: int in range(30):
+		await scene.get_tree().physics_frame
+	assert_bool(copilot.occupy(crew)).is_true()
+	assert_bool(bus_input.enabled).is_false()
+	playground.set_demo_mode(true)
+	assert_bool(bus_input.enabled).is_false()
+	playground.set_demo_mode(false)
+	assert_bool(bus_input.enabled).override_failure_message("the demo handed the wheel to the copilot").is_false()
+	copilot.vacate()
 	assert_bool(bus_input.enabled).is_false()
 
 

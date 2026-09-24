@@ -1,7 +1,9 @@
-[gd_scene load_steps=32 format=3]
+[gd_scene load_steps=34 format=3]
 
 [ext_resource type="Script" path="res://src/vehicle/bus_interior.gd" id="1_interior"]
 [ext_resource type="Script" path="res://src/cargo/restraint_anchor.gd" id="2_anchor"]
+[ext_resource type="PackedScene" path="res://src/vehicle/bus_interior_visual.tscn" id="3_visual"]
+[ext_resource type="Script" path="res://src/crew/seat.gd" id="4_seat"]
 
 [sub_resource type="StandardMaterial3D" id="mat_floor_dark"]
 albedo_color = Color(0.25, 0.25, 0.27, 1)
@@ -172,6 +174,7 @@ position = Vector3(0.8, -0.475, 2.2)
 shape = SubResource("shape_Stretcher")
 
 [node name="Visuals" type="Node3D" parent="."]
+visible = false
 
 [node name="Floor" type="MeshInstance3D" parent="Visuals"]
 position = Vector3(0.0, -0.65, 0.0)
@@ -252,6 +255,16 @@ position = Vector3(0.85, 0.4, 0.0)
 
 [node name="stretcher" type="Marker3D" parent="Positions"]
 position = Vector3(0.8, -0.35, 2.2)
+
+[node name="BusInteriorVisual" parent="." instance=ExtResource("3_visual")]
+# The Blender asset is centred; this puts its authored floor back at y=-0.6.
+position = Vector3(0.05, 0.38, 0.005)
+
+[node name="CopilotSeat" type="Node" parent="." node_paths=["seat_marker"]]
+script = ExtResource("4_seat")
+seat_name = "copilot"
+drives_bus = false
+seat_marker = NodePath("../Positions/copilot")
 
 [node name="Restraints" type="Node3D" parent="."]
 

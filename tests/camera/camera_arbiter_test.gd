@@ -17,6 +17,7 @@ func test_apply_on_foot_activates_only_the_eye_camera() -> void:
 	var eye: Camera3D = _make_camera("eye_camera")
 	var cabin: Camera3D = _make_camera("cabin_camera")
 	var chase: Camera3D = _make_camera("chase_camera")
+	var copilot: Camera3D = _make_camera("copilot_camera")
 	CameraArbiter.apply(get_tree(), CameraArbiter.Mode.ON_FOOT)
 	var cams: Array[Camera3D] = [eye, cabin, chase]
 	assert_bool(eye.current).is_true()
@@ -33,6 +34,20 @@ func test_apply_seated_prefers_the_cabin_camera() -> void:
 	var cams: Array[Camera3D] = [eye, cabin, chase]
 	assert_bool(cabin.current).is_true()
 	assert_bool(eye.current).is_false()
+	assert_bool(chase.current).is_false()
+	assert_int(_count_current(cams)).is_equal(1)
+
+
+func test_apply_passenger_activates_only_the_copilot_camera() -> void:
+	var eye: Camera3D = _make_camera("eye_camera")
+	var cabin: Camera3D = _make_camera("cabin_camera")
+	var chase: Camera3D = _make_camera("chase_camera")
+	var copilot: Camera3D = _make_camera("copilot_camera")
+	CameraArbiter.apply(get_tree(), CameraArbiter.Mode.PASSENGER)
+	var cams: Array[Camera3D] = [eye, cabin, chase, copilot]
+	assert_bool(copilot.current).is_true()
+	assert_bool(eye.current).is_false()
+	assert_bool(cabin.current).is_false()
 	assert_bool(chase.current).is_false()
 	assert_int(_count_current(cams)).is_equal(1)
 
@@ -65,6 +80,7 @@ func test_toggle_bus_view_switches_the_seated_camera_to_chase() -> void:
 
 
 func test_seat_occupy_and_vacate_switch_the_camera() -> void:
+	var copilot: Camera3D = _make_camera("copilot_camera")
 	var packed: Resource = load(CREW_SCENE)
 	assert_bool(packed is PackedScene).override_failure_message("crew_member.tscn did not load").is_true()
 	if not (packed is PackedScene):

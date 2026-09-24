@@ -1,0 +1,51 @@
+extends SceneTree
+
+func _initialize() -> void:
+	process_frame.connect(_capture, CONNECT_ONE_SHOT)
+
+func _capture() -> void:
+	var packed: PackedScene = load("res://scenes/playground.tscn")
+	if packed == null:
+		push_error("Playground did not load")
+		quit(1)
+		return
+	var playground: Node = packed.instantiate()
+	root.add_child(playground)
+	for tick: int in range(120):
+		await physics_frame
+	var cargo: Node = playground.get_node_or_null("Cargo")
+	if cargo == null or cargo.get_child_count() == 0:
+		push_error("Playground cargo did not spawn")
+		quit(1)
+		return
+	for package: Node in cargo.get_children():
+		var visual: Node = package.get_node_or_null("Mesh")
+		if visual == null or visual.scene_file_path != "res://assets/models/package_clean_v1.glb":
+			push_error("Playground package is not using the validated GLB")
+			quit(1)
+			return
+	var target: Node3D = cargo.get_child(0) as Node3D
+	if target == null:
+		push_error("Cargo target is not Node3D")
+		quit(1)
+		return
+	var camera: Camera3D = Camera3D.new()
+	root.add_child(camera)
+	camera.global_position = target.global_position + Vector3(0.65, 0.15, 0.75)
+	camera.look_at(target.global_position + Vector3(0.0, -0.04, 0.0), Vector3.UP)
+	camera.current = true
+	for frame: int in range(30):
+		await process_frame
+	var image: Image = root.get_texture().get_image()
+	if image == null:
+		push_error("Playground capture has no rendered image")
+		quit(1)
+		return
+	var output: String = "res://docs/evidencia/M-ART-VAN/integracion/playground_van.png"
+	var result: Error = image.save_png(output)
+	if result != OK:
+		push_error("Playground capture save failed: %d" % result)
+		quit(1)
+		return
+	print("PLAYGROUND_CAPTURE packages=%d model=package_clean_v1.glb saved=%s" % [cargo.get_child_count(), output])
+	quit(0)

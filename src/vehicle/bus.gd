@@ -103,6 +103,49 @@ func is_grounded() -> bool:
 	return _grounded
 
 
+## Visual-only suspension queries. Physics owns the direct Wheel* markers and
+## distances; art reads them without another raycast or moving the markers.
+func wheel_radius_m() -> float:
+	return _radius
+
+
+func suspension_rest_m() -> float:
+	return _rest
+
+
+func last_suspension_distance(wheel_name: String) -> float:
+	var fallback: float = _rest + _radius
+	var value: Variant = _prev_distances.get(wheel_name, fallback)
+	return clampf(float(value), 0.0, fallback) if value is float else fallback
+
+
+func has_wheel_contact(wheel_name: String) -> bool:
+	return _prev_distances.has(wheel_name) \
+		and last_suspension_distance(wheel_name) < _rest + _radius - 0.0001
+
+
+static func visual_wheel_center_for(marker: Vector3, distance: float,
+		radius: float, rest: float) -> Vector3:
+	var safe_radius: float = maxf(radius, 0.001)
+	var safe_rest: float = maxf(rest, 0.0)
+	var safe_distance: float = clampf(distance, 0.0, safe_rest + safe_radius)
+	return marker - Vector3.UP * (safe_distance - safe_radius)
+
+
+func visual_wheel_center(wheel_name: String) -> Vector3:
+	var node: Node = get_node_or_null(wheel_name)
+	if not (node is Marker3D):
+		return Vector3.ZERO
+	var marker: Marker3D = node
+	return visual_wheel_center_for(
+		marker.position, last_suspension_distance(wheel_name), _radius, _rest)
+
+
+func visual_steer_angle_deg(speed_mps_value: float, steer_input: float) -> float:
+	return steer_angle_deg_for(speed_mps_value, steer_input,
+		_steer_max_deg, _max_speed_mps, _steer_falloff)
+
+
 static func upright_dot(basis: Basis) -> float:
 	return basis.y.dot(Vector3.UP)
 

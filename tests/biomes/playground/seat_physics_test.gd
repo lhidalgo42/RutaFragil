@@ -308,10 +308,12 @@ func _group_crew() -> CrewMember:
 
 
 func _group_seat() -> Seat:
-	var node: Node = get_tree().get_first_node_in_group("seat")
-	if node is Seat:
-		return node
-	assert_bool(false).override_failure_message("no seat in group 'seat'").is_true()
+	for node: Node in get_tree().get_nodes_in_group("seat"):
+		if node is Seat:
+			var seat: Seat = node
+			if seat.seat_name == "driver":
+				return seat
+	assert_bool(false).override_failure_message("no driver seat in group 'seat'").is_true()
 	return null
 
 

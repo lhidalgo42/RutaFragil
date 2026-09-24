@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-09-24" name="report_1" tests="271" failures="0" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="game_config_autoload_test" package="tests/autoloads" timestamp="2026-09-24T05:26:29" hostname="localhost" tests="6" failures="0" errors="0" skipped="0" flaky="0" time="0.063">
+		<testcase name="test_autoload_exists_in_runner" classname="game_config_autoload_test" time="0.003">
+		</testcase>
+		<testcase name="test_data_and_tuning_are_present" classname="game_config_autoload_test" time="0.004">
+		</testcase>
+		<testcase name="test_max_players_comes_from_the_data" classname="game_config_autoload_test" time="0.004">
+		</testcase>
+		<testcase name="test_reload_emits_reloaded" classname="game_config_autoload_test" time="0.006">
+		</testcase>
+		<testcase name="test_reload_push_warning_on_rejected_mod" classname="game_config_autoload_test" time="0.009">
+		</testcase>
+		<testcase name="test_reload_push_error_on_empty_dirs" classname="game_config_autoload_test" time="0.007">
+		</testcase>
+	</testsuite>
+	<testsuite id="1" name="circuit_test" package="tests/biomes/playground" timestamp="2026-09-24T05:26:30" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.036">
+		<testcase name="test_counts_only_marker3d_children" classname="circuit_test" time="0.004">
+		</testcase>
+		<testcase name="test_positions_follow_tree_order" classname="circuit_test" time="0.004">
+		</testcase>
+		<testcase name="test_empty_circuit_has_zero_waypoints" classname="circuit_test" time="0.004">
+		</testcase>
+		<testcase name="test_out_of_range_index_push_error" classname="circuit_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="2" name="playground_scene_test" package="tests/biomes/playground" timestamp="2026-09-24T05:26:30" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="4.791">
+		<testcase name="test_scene_structure" classname="playground_scene_test" time="2.026">
+		</testcase>
+		<testcase name="test_demo_reaches_three_waypoints_without_rolling_over" classname="playground_scene_test" time="1.679">
+		</testcase>
+		<testcase name="test_leaving_the_demo_follows_the_crew_state" classname="playground_scene_test" time="0.510">
+		</testcase>
+		<testcase name="test_leaving_the_demo_as_copilot_restores_the_passenger_view_without_drive_input" classname="playground_scene_test" time="0.514">
+		</testcase>
+		<testcase name="test_circuit_waypoints_match_the_authored_positions" classname="playground_scene_test" time="0.024">
+		</testcase>
+	</testsuite>
+	<testsuite id="3" name="seat_physics_test" package="tests/biomes/playground" timestamp="2026-09-24T05:26:34" hostname="localhost" tests="6" failures="0" errors="0" skipped="0" flaky="0" time="48.196">
+		<testcase name="test_sitting_does_not_move_the_bus_and_standing_is_clean" classname="seat_physics_test" time="11.369">
+		</testcase>
+		<testcase name="test_standing_up_while_driving_keeps_the_crew_aboard" classname="seat_physics_test" time="8.645">
+		</testcase>
+		<testcase name="test_neutral_when_the_driver_stands" classname="seat_physics_test" time="6.779">
+		</testcase>
+		<testcase name="test_standing_restores_to_the_corridor_when_the_saved_point_is_invalid" classname="seat_physics_test" time="3.261">
+		</testcase>
+		<testcase name="test_seated_body_is_dragged_to_the_marker_while_driving" classname="seat_physics_test" time="8.712">
+		</testcase>
+		<testcase name="test_occupying_the_seat_while_driving_keeps_the_bus_calm" classname="seat_physics_test" time="9.395">
+		</testcase>
+	</testsuite>
+	<testsuite id="4" name="water_zone_test" package="tests/biomes/playground" timestamp="2026-09-24T05:27:23" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="1.662">
+		<testcase name="test_bus_body_triggers_bus_entered" classname="water_zone_test" time="0.567">
+		</testcase>
+		<testcase name="test_plain_body_does_not_trigger_bus_entered" classname="water_zone_test" time="1.079">
+		</testcase>
+	</testsuite>
+	<testsuite id="5" name="camera_arbiter_test" package="tests/camera" timestamp="2026-09-24T05:27:24" hostname="localhost" tests="6" failures="0" errors="0" skipped="0" flaky="0" time="0.060">
+		<testcase name="test_apply_on_foot_activates_only_the_eye_camera" classname="camera_arbiter_test" time="0.006">
+		</testcase>
+		<testcase name="test_apply_seated_prefers_the_cabin_camera" classname="camera_arbiter_test" time="0.006">
+		</testcase>
+		<testcase name="test_apply_passenger_activates_only_the_copilot_camera" classname="camera_arbiter_test" time="0.003">
+		</testcase>
+		<testcase name="test_apply_demo_activates_only_the_chase_camera" classname="camera_arbiter_test" time="0.004">
+		</testcase>
+		<testcase name="test_toggle_bus_view_switches_the_seated_camera_to_chase" classname="camera_arbiter_test" time="0.003">
+		</testcase>
+		<testcase name="test_seat_occupy_and_vacate_switch_the_camera" classname="camera_arbiter_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="6" name="cargo_ride_test" package="tests/cargo" timestamp="2026-09-24T05:27:24" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="14.379">
+		<testcase name="test_lap_with_strapped_free_and_a_walking_crew" classname="cargo_ride_test" time="14.370">
+		</testcase>
+	</testsuite>
+	<testsuite id="7" name="free_cargo_ride_test" package="tests/cargo" timestamp="2026-09-24T05:27:39" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="10.924">
+		<testcase name="test_free_packages_ride_the_lap_contained" classname="free_cargo_ride_test" time="6.893">
+		</testcase>
+		<testcase name="test_wheel_ray_ignores_cargo_and_crew_in_its_column" classname="free_cargo_ride_test" time="4.011">
+		</testcase>
+	</testsuite>
+	<testsuite id="8" name="package_authored_collision_test" package="tests/cargo" timestamp="2026-09-24T05:27:50" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.056">
+		<testcase name="test_collision_is_one_authored_box_not_the_mesh" classname="package_authored_collision_test" time="0.021">
+		</testcase>
+		<testcase name="test_visual_mesh_fits_inside_the_collider" classname="package_authored_collision_test" time="0.022">
+		</testcase>
+	</testsuite>
+	<testsuite id="9" name="package_test" package="tests/cargo" timestamp="2026-09-24T05:27:50" hostname="localhost" tests="12" failures="0" errors="0" skipped="0" flaky="0" time="3.521">
+		<testcase name="test_spawn_reads_mass_from_tuning" classname="package_test" time="0.021">
+		</testcase>
+		<testcase name="test_hold_only_from_free" classname="package_test" time="0.021">
+		</testcase>
+		<testcase name="test_release_only_from_held" classname="package_test" time="0.022">
+		</testcase>
+		<testcase name="test_release_runs_the_full_pair_in_order" classname="package_test" time="0.021">
+		</testcase>
+		<testcase name="test_strap_requires_held_and_a_free_anchor" classname="package_test" time="0.039">
+		</testcase>
+		<testcase name="test_unstrap_returns_to_held_and_frees_the_anchor" classname="package_test" time="0.022">
+		</testcase>
+		<testcase name="test_restraint_changed_covers_every_transition" classname="package_test" time="0.021">
+		</testcase>
+		<testcase name="test_rigid_point_velocity_is_v_plus_w_cross_r" classname="package_test" time="0.004">
+		</testcase>
+		<testcase name="test_vertical_damping_force_is_pure_vertical" classname="package_test" time="0.003">
+		</testcase>
+		<testcase name="test_a_free_box_falls_like_a_box" classname="package_test" time="2.293">
+		</testcase>
+		<testcase name="test_damper_brakes_vertical_motion_inside_the_hull" classname="package_test" time="0.499">
+		</testcase>
+		<testcase name="test_no_bus_means_no_damper" classname="package_test" time="0.493">
+		</testcase>
+	</testsuite>
+	<testsuite id="10" name="restraint_anchor_test" package="tests/cargo" timestamp="2026-09-24T05:27:53" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="0.177">
+		<testcase name="test_twelve_anchors_carry_script_and_group_and_start_free" classname="restraint_anchor_test" time="0.019">
+		</testcase>
+		<testcase name="test_strap_occupies_the_anchor_and_rejects_a_second_package" classname="restraint_anchor_test" time="0.039">
+		</testcase>
+		<testcase name="test_strap_requires_held_state" classname="restraint_anchor_test" time="0.024">
+		</testcase>
+		<testcase name="test_strap_parents_freezes_and_enables_collision_at_the_anchor" classname="restraint_anchor_test" time="0.029">
+		</testcase>
+		<testcase name="test_unstrap_returns_to_held_and_frees_the_anchor" classname="restraint_anchor_test" time="0.036">
+		</testcase>
+	</testsuite>
+	<testsuite id="11" name="restraint_lap_test" package="tests/cargo" timestamp="2026-09-24T05:27:53" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="9.892">
+		<testcase name="test_strapped_packages_have_zero_drift_for_a_full_lap" classname="restraint_lap_test" time="6.843">
+		</testcase>
+		<testcase name="test_crew_bumps_into_a_strapped_package_like_a_shelf" classname="restraint_lap_test" time="1.686">
+		</testcase>
+		<testcase name="test_corridor_stays_clear_between_two_strapped_boxes" classname="restraint_lap_test" time="1.341">
+		</testcase>
+	</testsuite>
+	<testsuite id="12" name="data_load_report_test" package="tests/core/data" timestamp="2026-09-24T05:28:03" hostname="localhost" tests="6" failures="0" errors="0" skipped="0" flaky="0" time="0.050">
+		<testcase name="test_fresh_report_is_ok_and_empty" classname="data_load_report_test" time="0.003">
+		</testcase>
+		<testcase name="test_errors_make_is_ok_false" classname="data_load_report_test" time="0.005">
+		</testcase>
+		<testcase name="test_warnings_alone_keep_is_ok_true" classname="data_load_report_test" time="0.005">
+		</testcase>
+		<testcase name="test_add_error_and_warning_format_source_then_message" classname="data_load_report_test" time="0.004">
+		</testcase>
+		<testcase name="test_summary_has_header_and_one_tagged_line_per_entry" classname="data_load_report_test" time="0.004">
+		</testcase>
+		<testcase name="test_summary_of_empty_report_is_only_the_header" classname="data_load_report_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="13" name="data_mirror_test" package="tests/core/data" timestamp="2026-09-24T05:28:03" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.030">
+		<testcase name="test_real_data_mirror_is_in_sync" classname="data_mirror_test" time="0.009">
+		</testcase>
+		<testcase name="test_write_and_check_round_trip_in_temp_dir" classname="data_mirror_test" time="0.008">
+		</testcase>
+	</testsuite>
+	<testsuite id="14" name="game_data_loader_test" package="tests/core/data" timestamp="2026-09-24T05:28:03" hostname="localhost" tests="17" failures="0" errors="0" skipped="0" flaky="0" time="0.234">
+		<testcase name="test_base_only_loads_values" classname="game_data_loader_test" time="0.009">
+		</testcase>
+		<testcase name="test_reload_picks_up_json_rewrite_in_same_process" classname="game_data_loader_test" time="0.010">
+		</testcase>
+		<testcase name="test_mod_overrides_base" classname="game_data_loader_test" time="0.008">
+		</testcase>
+		<testcase name="test_two_mods_apply_in_byte_order" classname="game_data_loader_test" time="0.010">
+		</testcase>
+		<testcase name="test_partial_mod_preserves_untouched_siblings" classname="game_data_loader_test" time="0.009">
+		</testcase>
+		<testcase name="test_mod_with_error_is_rejected_entirely" classname="game_data_loader_test" time="0.009">
+		</testcase>
+		<testcase name="test_mod_with_failing_section_is_rejected_entirely" classname="game_data_loader_test" time="0.008">
+		</testcase>
+		<testcase name="test_tres_layer_only_loads_values" classname="game_data_loader_test" time="0.012">
+		</testcase>
+		<testcase name="test_base_json_wins_over_tres_layer" classname="game_data_loader_test" time="0.013">
+		</testcase>
+		<testcase name="test_invalid_base_json_error_points_at_the_truncated_file" classname="game_data_loader_test" time="0.010">
+		</testcase>
+		<testcase name="test_tres_layer_reload_rereads_the_file" classname="game_data_loader_test" time="0.011">
+		</testcase>
+		<testcase name="test_empty_dirs_fail_with_one_error_per_document" classname="game_data_loader_test" time="0.006">
+		</testcase>
+		<testcase name="test_mc1a_empty_object_base_json_is_an_error" classname="game_data_loader_test" time="0.007">
+		</testcase>
+		<testcase name="test_mc1b_empty_object_mod_applies_with_a_warning" classname="game_data_loader_test" time="0.009">
+		</testcase>
+		<testcase name="test_mod_with_only_unknown_sections_applies_with_warning" classname="game_data_loader_test" time="0.009">
+		</testcase>
+		<testcase name="test_mc3_tres_of_wrong_class_is_an_error" classname="game_data_loader_test" time="0.010">
+		</testcase>
+		<testcase name="test_real_res_data_loads_without_errors" classname="game_data_loader_test" time="0.007">
+		</testcase>
+	</testsuite>
+	<testsuite id="15" name="json_file_test" package="tests/core/data" timestamp="2026-09-24T05:28:04" hostname="localhost" tests="6" failures="0" errors="0" skipped="0" flaky="0" time="0.063">
+		<testcase name="test_read_valid_file_returns_object" classname="json_file_test" time="0.010">
+		</testcase>
+		<testcase name="test_missing_file_records_error_and_returns_empty" classname="json_file_test" time="0.006">
+		</testcase>
+		<testcase name="test_malformed_json_reports_line_and_message" classname="json_file_test" time="0.006">
+		</testcase>
+		<testcase name="test_root_array_is_rejected" classname="json_file_test" time="0.005">
+		</testcase>
+		<testcase name="test_list_json_files_is_sorted_and_filtered" classname="json_file_test" time="0.006">
+		</testcase>
+		<testcase name="test_list_json_files_on_missing_dir_is_empty_without_engine_error" classname="json_file_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="16" name="json_merge_test" package="tests/core/data" timestamp="2026-09-24T05:28:04" hostname="localhost" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="0.078">
+		<testcase name="test_scalar_override_replaces_value" classname="json_merge_test" time="0.003">
+		</testcase>
+		<testcase name="test_nested_dictionaries_keep_sibling_keys" classname="json_merge_test" time="0.004">
+		</testcase>
+		<testcase name="test_key_only_in_base_is_kept" classname="json_merge_test" time="0.003">
+		</testcase>
+		<testcase name="test_key_only_in_override_is_added" classname="json_merge_test" time="0.004">
+		</testcase>
+		<testcase name="test_arrays_are_replaced_not_concatenated" classname="json_merge_test" time="0.010">
+		</testcase>
+		<testcase name="test_scalar_over_dictionary_replaces_it" classname="json_merge_test" time="0.009">
+		</testcase>
+		<testcase name="test_inputs_are_never_mutated" classname="json_merge_test" time="0.008">
+		</testcase>
+	</testsuite>
+	<testsuite id="17" name="resource_json_codec_test" package="tests/core/data" timestamp="2026-09-24T05:28:04" hostname="localhost" tests="14" failures="0" errors="0" skipped="0" flaky="0" time="0.163">
+		<testcase name="test_schema_contains_only_exported_fields" classname="resource_json_codec_test" time="0.009">
+		</testcase>
+		<testcase name="test_neutral_defaults_are_zero_and_empty" classname="resource_json_codec_test" time="0.008">
+		</testcase>
+		<testcase name="test_int_field_accepts_integral_float" classname="resource_json_codec_test" time="0.007">
+		</testcase>
+		<testcase name="test_int_field_rejects_fractional_float_and_keeps_previous_value" classname="resource_json_codec_test" time="0.005">
+		</testcase>
+		<testcase name="test_int_field_rejects_string" classname="resource_json_codec_test" time="0.006">
+		</testcase>
+		<testcase name="test_bool_field_accepts_bool_and_rejects_number_and_string" classname="resource_json_codec_test" time="0.006">
+		</testcase>
+		<testcase name="test_unknown_key_is_a_warning_in_mod_mode" classname="resource_json_codec_test" time="0.005">
+		</testcase>
+		<testcase name="test_unknown_key_is_an_error_in_base_mode" classname="resource_json_codec_test" time="0.006">
+		</testcase>
+		<testcase name="test_typed_dictionary_is_validated_and_applied_with_assign" classname="resource_json_codec_test" time="0.005">
+		</testcase>
+		<testcase name="test_to_dictionary_round_trip_through_apply" classname="resource_json_codec_test" time="0.008">
+		</testcase>
+		<testcase name="test_lenient_mode_with_type_error_voids_the_whole_file" classname="resource_json_codec_test" time="0.006">
+		</testcase>
+		<testcase name="test_string_field_accepts_a_string" classname="resource_json_codec_test" time="0.005">
+		</testcase>
+		<testcase name="test_string_field_rejects_non_string_and_keeps_previous_value" classname="resource_json_codec_test" time="0.004">
+		</testcase>
+		<testcase name="test_mc2_int_field_rejects_non_finite_float" classname="resource_json_codec_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="18" name="mouse_look_test" package="tests/core" timestamp="2026-09-24T05:28:04" hostname="localhost" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="0.055">
+		<testcase name="test_yaw_decreases_when_mouse_moves_right" classname="mouse_look_test" time="0.004">
+		</testcase>
+		<testcase name="test_pitch_increases_when_mouse_moves_up" classname="mouse_look_test" time="0.005">
+		</testcase>
+		<testcase name="test_pitch_is_clamped_at_both_ends" classname="mouse_look_test" time="0.003">
+		</testcase>
+		<testcase name="test_unbounded_yaw_accumulates_past_pi_without_normalizing" classname="mouse_look_test" time="0.004">
+		</testcase>
+		<testcase name="test_yaw_cone_clamps_to_cabin_limits" classname="mouse_look_test" time="0.003">
+		</testcase>
+		<testcase name="test_sensitivity_is_linear" classname="mouse_look_test" time="0.004">
+		</testcase>
+		<testcase name="test_zero_delta_keeps_yaw_and_pitch" classname="mouse_look_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="19" name="crew_air_inertia_test" package="tests/crew" timestamp="2026-09-24T05:28:04" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="5.492">
+		<testcase name="test_jump_preserves_platform_inertia_through_landing_and_second_jump" classname="crew_air_inertia_test" time="3.330">
+		</testcase>
+		<testcase name="test_walk_input_in_air_adds_to_carry_and_seat_discards_it" classname="crew_air_inertia_test" time="0.477">
+		</testcase>
+		<testcase name="test_jump_under_moving_ceiling_keeps_horizontal_carry" classname="crew_air_inertia_test" time="1.666">
+		</testcase>
+	</testsuite>
+	<testsuite id="20" name="crew_hands_test" package="tests/crew" timestamp="2026-09-24T05:28:10" hostname="localhost" tests="8" failures="0" errors="0" skipped="0" flaky="0" time="19.516">
+		<testcase name="test_closest_to_ray_prefers_ray_then_reach" classname="crew_hands_test" time="0.057">
+		</testcase>
+		<testcase name="test_throw_velocity_sign_and_magnitude" classname="crew_hands_test" time="0.005">
+		</testcase>
+		<testcase name="test_tap_grabs_the_ray_box_which_follows_the_hand_and_seat_is_rejected" classname="crew_hands_test" time="1.613">
+		</testcase>
+		<testcase name="test_hold_straps_with_progress_and_tap_unstraps" classname="crew_hands_test" time="3.500">
+		</testcase>
+		<testcase name="test_release_before_the_hold_cancels_the_strap" classname="crew_hands_test" time="1.795">
+		</testcase>
+		<testcase name="test_click_with_free_pointer_recaptures_and_never_throws" classname="crew_hands_test" time="1.689">
+		</testcase>
+		<testcase name="test_drop_click_lands_at_the_hand_or_clear_floor_beside_the_feet" classname="crew_hands_test" time="1.715">
+		</testcase>
+		<testcase name="test_held_package_inside_the_bus_at_speed_does_not_kick_it" classname="crew_hands_test" time="9.096">
+		</testcase>
+	</testsuite>
+	<testsuite id="21" name="crew_input_test" package="tests/crew" timestamp="2026-09-24T05:28:29" hostname="localhost" tests="10" failures="0" errors="0" skipped="0" flaky="0" time="17.607">
+		<testcase name="test_walk_forward_action_moves_the_crew_forward" classname="crew_input_test" time="2.034">
+		</testcase>
+		<testcase name="test_walk_left_and_right_actions_give_the_right_sign" classname="crew_input_test" time="2.520">
+		</testcase>
+		<testcase name="test_interact_action_seats_and_lifts_the_crew" classname="crew_input_test" time="1.632">
+		</testcase>
+		<testcase name="test_toggle_nearest_seat_callable_without_input" classname="crew_input_test" time="1.534">
+		</testcase>
+		<testcase name="test_reticle_selects_aimed_driver_over_nearer_copilot" classname="crew_input_test" time="1.526">
+		</testcase>
+		<testcase name="test_toggle_nearest_seat_out_of_reach_does_nothing" classname="crew_input_test" time="1.525">
+		</testcase>
+		<testcase name="test_captured_mouse_motion_turns_the_crew" classname="crew_input_test" time="1.562">
+		</testcase>
+		<testcase name="test_escape_frees_the_pointer_and_parks_the_look" classname="crew_input_test" time="1.594">
+		</testcase>
+		<testcase name="test_left_click_recaptures_the_mouse_when_allowed" classname="crew_input_test" time="1.588">
+		</testcase>
+		<testcase name="test_walking_follows_the_new_heading" classname="crew_input_test" time="2.032">
+		</testcase>
+	</testsuite>
+	<testsuite id="22" name="crew_member_test" package="tests/crew" timestamp="2026-09-24T05:28:47" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="9.512">
+		<testcase name="test_jump_velocity_for_height" classname="crew_member_test" time="0.007">
+		</testcase>
+		<testcase name="test_horizontal_speed_selects_sprint" classname="crew_member_test" time="0.006">
+		</testcase>
+		<testcase name="test_wish_direction_forward_and_normalized" classname="crew_member_test" time="0.006">
+		</testcase>
+		<testcase name="test_crew_settles_and_walks_with_drive_move" classname="crew_member_test" time="2.455">
+		</testcase>
+		<testcase name="test_crew_rides_the_bus_without_drifting" classname="crew_member_test" time="7.005">
+		</testcase>
+	</testsuite>
+	<testsuite id="23" name="crew_ride_test" package="tests/crew" timestamp="2026-09-24T05:28:56" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="16.315">
+		<testcase name="test_one_minute_ride_at_speed_over_the_bumps" classname="crew_ride_test" time="16.305">
+		</testcase>
+	</testsuite>
+	<testsuite id="24" name="door_transit_test" package="tests/crew" timestamp="2026-09-24T05:29:12" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="1.377">
+		<testcase name="test_crossing_the_door_plane_boards_and_exits" classname="door_transit_test" time="1.368">
+		</testcase>
+	</testsuite>
+	<testsuite id="25" name="seat_test" package="tests/crew" timestamp="2026-09-24T05:29:14" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.026">
+		<testcase name="test_occupy_hides_and_vacate_restores" classname="seat_test" time="0.007">
+		</testcase>
+		<testcase name="test_passenger_occupy_and_vacate_use_copilot_camera_and_disable_inputs" classname="seat_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="26" name="authority_lookup_test" package="tests/net" timestamp="2026-09-24T05:29:14" hostname="localhost" tests="6" failures="0" errors="0" skipped="0" flaky="0" time="1.094">
+		<testcase name="test_local_lookup_skips_remote_first_and_resolves_each_peer_eye" classname="authority_lookup_test" time="0.004">
+		</testcase>
+		<testcase name="test_input_created_before_spawn_moves_only_the_late_local_crew" classname="authority_lookup_test" time="0.412">
+		</testcase>
+		<testcase name="test_null_network_peer_keeps_local_input_and_door_working" classname="authority_lookup_test" time="0.373">
+		</testcase>
+		<testcase name="test_mouse_look_and_hands_belong_to_local_crew_when_remote_is_first" classname="authority_lookup_test" time="0.049">
+		</testcase>
+		<testcase name="test_door_transit_created_before_spawn_boards_only_late_local_crew" classname="authority_lookup_test" time="0.198">
+		</testcase>
+		<testcase name="test_package_joins_stable_identity_group_on_ready" classname="authority_lookup_test" time="0.022">
+		</testcase>
+	</testsuite>
+	<testsuite id="27" name="bus_snapshot_timing_test" package="tests/net" timestamp="2026-09-24T05:29:15" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="0.046">
+		<testcase name="test_irregular_delivery_preserves_uniform_motion_after_buffer_warmup" classname="bus_snapshot_timing_test" time="0.006">
+		</testcase>
+		<testcase name="test_batched_snapshots_follow_the_source_clock_without_skipping_history" classname="bus_snapshot_timing_test" time="0.005">
+		</testcase>
+		<testcase name="test_stale_packets_are_rejected_and_loss_holds_the_last_known_pose" classname="bus_snapshot_timing_test" time="0.003">
+		</testcase>
+		<testcase name="test_point_velocity_uses_interpolated_snapshot_without_simulating_the_bus" classname="bus_snapshot_timing_test" time="0.004">
+		</testcase>
+		<testcase name="test_steer_is_clamped_interpolated_and_never_writes_client_physics" classname="bus_snapshot_timing_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="28" name="cargo_release_geometry_test" package="tests/net" timestamp="2026-09-24T05:29:15" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="3.188">
+		<testcase name="test_blocked_hand_drop_does_not_place_kinematic_cargo_inside_crew" classname="cargo_release_geometry_test" time="0.773">
+		</testcase>
+		<testcase name="test_drop_without_free_space_retains_holder_and_sends_no_release" classname="cargo_release_geometry_test" time="0.564">
+		</testcase>
+		<testcase name="test_throw_from_blocked_hand_retains_holder_and_sends_no_release" classname="cargo_release_geometry_test" time="0.573">
+		</testcase>
+		<testcase name="test_confirmed_release_does_not_turn_teleport_into_platform_velocity" classname="cargo_release_geometry_test" time="0.667">
+		</testcase>
+		<testcase name="test_drop_does_not_choose_free_space_across_a_thin_wall" classname="cargo_release_geometry_test" time="0.580">
+		</testcase>
+	</testsuite>
+	<testsuite id="29" name="cargo_release_phase_test" package="tests/net" timestamp="2026-09-24T05:29:18" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="0.544">
+		<testcase name="test_release_received_in_idle_keeps_confirmed_bus_local_pose_after_physics" classname="cargo_release_phase_test" time="0.534">
+		</testcase>
+	</testsuite>
+	<testsuite id="30" name="cargo_replica_motion_test" package="tests/net" timestamp="2026-09-24T05:29:19" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="1.170">
+		<testcase name="test_client_strapped_collider_follows_bus_after_a_completed_physics_step" classname="cargo_replica_motion_test" time="1.013">
+		</testcase>
+		<testcase name="test_free_state_follows_bus_before_first_unreliable_pose_arrives" classname="cargo_replica_motion_test" time="0.113">
+		</testcase>
+		<testcase name="test_outside_free_state_waits_in_world_before_first_pose" classname="cargo_replica_motion_test" time="0.022">
+		</testcase>
+	</testsuite>
+	<testsuite id="31" name="cargo_sync_test" package="tests/net" timestamp="2026-09-24T05:29:20" hostname="localhost" tests="17" failures="0" errors="0" skipped="0" flaky="0" time="1.186">
+		<testcase name="test_client_impulse_never_simulates_but_host_free_box_does" classname="cargo_sync_test" time="0.245">
+		</testcase>
+		<testcase name="test_host_grant_and_release_transfer_authority_to_holder_and_back" classname="cargo_sync_test" time="0.026">
+		</testcase>
+		<testcase name="test_unknown_peer_distance_and_occupied_hand_deny_hold" classname="cargo_sync_test" time="0.037">
+		</testcase>
+		<testcase name="test_reach_validation_uses_remote_hand_in_the_same_bus_frame" classname="cargo_sync_test" time="0.022">
+		</testcase>
+		<testcase name="test_nonholder_and_occupied_anchor_cannot_change_restraint" classname="cargo_sync_test" time="0.038">
+		</testcase>
+		<testcase name="test_only_full_confirmed_sequence_counts_a_cycle" classname="cargo_sync_test" time="0.022">
+		</testcase>
+		<testcase name="test_replicated_strapped_to_free_clears_anchor_and_restores_cargo_parent" classname="cargo_sync_test" time="0.024">
+		</testcase>
+		<testcase name="test_late_holder_resolves_exact_peer_and_updates_only_local_hands" classname="cargo_sync_test" time="0.024">
+		</testcase>
+		<testcase name="test_repeated_state_is_idempotent_and_holder_change_is_observable" classname="cargo_sync_test" time="0.020">
+		</testcase>
+		<testcase name="test_interpolation_rejects_pose_from_previous_state_revision" classname="cargo_sync_test" time="0.021">
+		</testcase>
+		<testcase name="test_release_uses_current_bus_frame_and_point_velocity_after_bus_moves" classname="cargo_sync_test" time="0.021">
+		</testcase>
+		<testcase name="test_held_snapshots_reject_other_peer_and_obsolete_revision" classname="cargo_sync_test" time="0.022">
+		</testcase>
+		<testcase name="test_host_rejects_release_inside_real_crew_capsule_before_authority_transfer" classname="cargo_sync_test" time="0.021">
+		</testcase>
+		<testcase name="test_host_strapped_box_follows_a_dynamic_bus" classname="cargo_sync_test" time="0.478">
+		</testcase>
+		<testcase name="test_outside_drop_accepts_zero_world_velocity_beside_moving_bus" classname="cargo_sync_test" time="0.026">
+		</testcase>
+		<testcase name="test_malformed_held_pose_is_rejected_without_changing_package" classname="cargo_sync_test" time="0.024">
+		</testcase>
+		<testcase name="test_release_with_frozen_client_and_moving_host_preserves_velocity_frame" classname="cargo_sync_test" time="0.023">
+		</testcase>
+	</testsuite>
+	<testsuite id="32" name="crew_sync_test" package="tests/net" timestamp="2026-09-24T05:29:21" hostname="localhost" tests="6" failures="0" errors="0" skipped="0" flaky="0" time="0.439">
+		<testcase name="test_network_remote_does_not_simulate_while_local_falls" classname="crew_sync_test" time="0.194">
+		</testcase>
+		<testcase name="test_spawner_builds_named_crews_with_distinct_authorities_and_one_local_camera" classname="crew_sync_test" time="0.030">
+		</testcase>
+		<testcase name="test_remote_snapshots_interpolate_without_advancing_physics" classname="crew_sync_test" time="0.080">
+		</testcase>
+		<testcase name="test_remote_hands_cannot_grab_and_bind_to_their_own_eye" classname="crew_sync_test" time="0.029">
+		</testcase>
+		<testcase name="test_client_replaces_authored_crew_and_activates_local_view_after_spawn" classname="crew_sync_test" time="0.046">
+		</testcase>
+		<testcase name="test_interaction_hand_uses_source_bus_frame_while_ground_hand_stays_in_world" classname="crew_sync_test" time="0.030">
+		</testcase>
+	</testsuite>
+	<testsuite id="33" name="gate_config_test" package="tests/net" timestamp="2026-09-24T05:29:22" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.035">
+		<testcase name="test_reduction_propagates_no_cargo_and_does_not_enable_a_gate" classname="gate_config_test" time="0.005">
+		</testcase>
+		<testcase name="test_gate_deadline_covers_300_seconds_independently_of_waypoints" classname="gate_config_test" time="0.004">
+		</testcase>
+		<testcase name="test_human_client_is_windowed_while_host_is_headless" classname="gate_config_test" time="0.004">
+		</testcase>
+		<testcase name="test_the_human_gate_is_a_session_not_a_d96_attempt" classname="gate_config_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="34" name="gate_metrics_test" package="tests/net" timestamp="2026-09-24T05:29:22" hostname="localhost" tests="13" failures="0" errors="0" skipped="0" flaky="0" time="0.168">
+		<testcase name="test_percentiles_and_fps_report_tails_not_average" classname="gate_metrics_test" time="0.004">
+		</testcase>
+		<testcase name="test_capsule_height_and_rotated_cargo_measure_real_shape_extents" classname="gate_metrics_test" time="0.004">
+		</testcase>
+		<testcase name="test_authored_door_hole_excludes_air_but_keeps_floor_and_jamb" classname="gate_metrics_test" time="0.006">
+		</testcase>
+		<testcase name="test_penetration_run_resets_without_losing_peak_or_total" classname="gate_metrics_test" time="0.003">
+		</testcase>
+		<testcase name="test_resting_penetration_does_not_extend_a_run_or_pollute_excluded_histogram" classname="gate_metrics_test" time="0.005">
+		</testcase>
+		<testcase name="test_judge_uses_same_run_p99_not_outlier_maximum" classname="gate_metrics_test" time="0.004">
+		</testcase>
+		<testcase name="test_short_or_idle_iterations_are_invalid_and_headless_is_unverified" classname="gate_metrics_test" time="0.006">
+		</testcase>
+		<testcase name="test_low_support_does_not_replace_the_filtered_slip_judgment" classname="gate_metrics_test" time="0.004">
+		</testcase>
+		<testcase name="test_capped_or_vsynced_fps_is_unverified_instead_of_failure" classname="gate_metrics_test" time="0.004">
+		</testcase>
+		<testcase name="test_trace_interpolates_position_and_quaternion_at_observation_utc" classname="gate_metrics_test" time="0.004">
+		</testcase>
+		<testcase name="test_trace_does_not_interpolate_handover_or_fake_zero_without_matches" classname="gate_metrics_test" time="0.004">
+		</testcase>
+		<testcase name="test_observer_filters_remote_penetration_and_preserves_simulation_counters" classname="gate_metrics_test" time="0.036">
+		</testcase>
+		<testcase name="test_a_package_without_an_active_shape_is_excluded_not_missing_instrumentation" classname="gate_metrics_test" time="0.022">
+		</testcase>
+	</testsuite>
+	<testsuite id="35" name="gate_readiness_test" package="tests/net" timestamp="2026-09-24T05:29:22" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.030">
+		<testcase name="test_low_support_and_an_open_short_push_do_not_fail_v5_readiness" classname="gate_readiness_test" time="0.004">
+		</testcase>
+		<testcase name="test_hull_exit_long_push_insufficient_cycles_and_short_duration_fail_readiness" classname="gate_readiness_test" time="0.003">
+		</testcase>
+		<testcase name="test_gate_requires_same_clean_commit_and_configuration_as_completed_experiment" classname="gate_readiness_test" time="0.005">
+		</testcase>
+	</testsuite>
+	<testsuite id="36" name="gate_support_probe_test" package="tests/net" timestamp="2026-09-24T05:29:22" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="0.013">
+		<testcase name="test_loss_preserves_previous_contact_and_does_not_repeat_airborne_ticks" classname="gate_support_probe_test" time="0.005">
+		</testcase>
+	</testsuite>
+	<testsuite id="37" name="gate_v5_test" package="tests/net" timestamp="2026-09-24T05:29:22" hostname="localhost" tests="9" failures="0" errors="0" skipped="0" flaky="0" time="0.076">
+		<testcase name="test_judge_rejects_one_tick_outside_the_hull_for_either_peer" classname="gate_v5_test" time="0.005">
+		</testcase>
+		<testcase name="test_forty_five_push_ticks_are_allowed_but_forty_six_fail_for_either_peer" classname="gate_v5_test" time="0.005">
+		</testcase>
+		<testcase name="test_judge_uses_filtered_samples_instead_of_large_raw_displacements" classname="gate_v5_test" time="0.003">
+		</testcase>
+		<testcase name="test_empty_filtered_samples_cannot_produce_a_passing_slip_ratio" classname="gate_v5_test" time="0.004">
+		</testcase>
+		<testcase name="test_readiness_uses_travel_coverage_instead_of_penetration_shape_warnings" classname="gate_v5_test" time="0.005">
+		</testcase>
+		<testcase name="test_readiness_rejects_legacy_and_incomplete_travel_records" classname="gate_v5_test" time="0.004">
+		</testcase>
+		<testcase name="test_readiness_accepts_half_support_and_an_open_push_within_the_limit" classname="gate_v5_test" time="0.004">
+		</testcase>
+		<testcase name="test_judge_keeps_the_known_penetration_coverage_limitation" classname="gate_v5_test" time="0.005">
+		</testcase>
+		<testcase name="test_the_cargo_contact_tick_itself_is_excluded_from_the_filtered_series" classname="gate_v5_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="38" name="network_backend_test" package="tests/net" timestamp="2026-09-24T05:29:22" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="7.547">
+		<testcase name="test_initial_state_is_idle" classname="network_backend_test" time="0.004">
+		</testcase>
+		<testcase name="test_host_game_makes_us_host_and_emits_hosted" classname="network_backend_test" time="0.005">
+		</testcase>
+		<testcase name="test_leave_returns_to_idle_and_frees_the_port" classname="network_backend_test" time="0.005">
+		</testcase>
+		<testcase name="test_join_without_server_fails_without_hanging" classname="network_backend_test" time="7.513">
+		</testcase>
+	</testsuite>
+	<testsuite id="39" name="net_marker_test" package="tests/net" timestamp="2026-09-24T05:29:29" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="0.015">
+		<testcase name="test_owner_peer_id_is_stored" classname="net_marker_test" time="0.004">
+		</testcase>
+	</testsuite>
+	<testsuite id="40" name="playground_client_mode_test" package="tests/net" timestamp="2026-09-24T05:29:30" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.031">
+		<testcase name="test_client_role_disables_demo_and_freezes_bus" classname="playground_client_mode_test" time="0.009">
+		</testcase>
+		<testcase name="test_single_role_keeps_demo_running" classname="playground_client_mode_test" time="0.011">
+		</testcase>
+	</testsuite>
+	<testsuite id="41" name="smoke_test" package="tests" timestamp="2026-09-24T05:29:30" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="0.027">
+		<testcase name="test_engine_is_pinned_to_4_7_2" classname="smoke_test" time="0.005">
+		</testcase>
+		<testcase name="test_physics_engine_is_jolt" classname="smoke_test" time="0.004">
+		</testcase>
+		<testcase name="test_rendering_method_is_forward_plus" classname="smoke_test" time="0.003">
+		</testcase>
+	</testsuite>
+	<testsuite id="42" name="input_actions_test" package="tests/static" timestamp="2026-09-24T05:29:30" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="0.028">
+		<testcase name="test_every_action_read_in_src_is_registered" classname="input_actions_test" time="0.021">
+		</testcase>
+	</testsuite>
+	<testsuite id="43" name="bus_interior_test" package="tests/vehicle" timestamp="2026-09-24T05:29:30" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="12.591">
+		<testcase name="test_interior_loads_on_the_bus_and_shapes_attach_to_the_body" classname="bus_interior_test" time="2.514">
+		</testcase>
+		<testcase name="test_six_positions_exist_with_exact_names" classname="bus_interior_test" time="2.514">
+		</testcase>
+		<testcase name="test_restraints_exist_six_per_wall" classname="bus_interior_test" time="2.512">
+		</testcase>
+		<testcase name="test_corridor_width_and_free_height_measured_on_the_shapes" classname="bus_interior_test" time="2.514">
+		</testcase>
+		<testcase name="test_bus_with_interior_settles_at_rest_height" classname="bus_interior_test" time="2.506">
+		</testcase>
+	</testsuite>
+	<testsuite id="44" name="bus_test" package="tests/vehicle" timestamp="2026-09-24T05:29:42" hostname="localhost" tests="14" failures="0" errors="0" skipped="0" flaky="0" time="30.212">
+		<testcase name="test_suspension_force_spring_plus_damper" classname="bus_test" time="0.004">
+		</testcase>
+		<testcase name="test_compression_rate_sign_and_zero_delta" classname="bus_test" time="0.005">
+		</testcase>
+		<testcase name="test_lateral_grip_force_opposes_slide" classname="bus_test" time="0.003">
+		</testcase>
+		<testcase name="test_steer_angle_deg_for_falloff_and_sign" classname="bus_test" time="0.004">
+		</testcase>
+		<testcase name="test_traction_force_per_wheel" classname="bus_test" time="0.004">
+		</testcase>
+		<testcase name="test_set_drive_clamps_inputs" classname="bus_test" time="0.012">
+		</testcase>
+		<testcase name="test_upright_dot_reference_orientations" classname="bus_test" time="0.006">
+		</testcase>
+		<testcase name="test_bus_settles_at_rest_height_and_stays_still" classname="bus_test" time="2.007">
+		</testcase>
+		<testcase name="test_bus_accelerates_straight" classname="bus_test" time="4.023">
+		</testcase>
+		<testcase name="test_bus_brakes_and_loses_most_of_its_speed" classname="bus_test" time="6.025">
+		</testcase>
+		<testcase name="test_bus_steer_turns_left_with_positive_steer" classname="bus_test" time="3.024">
+		</testcase>
+		<testcase name="test_handbrake_increases_lateral_slip" classname="bus_test" time="10.018">
+		</testcase>
+		<testcase name="test_rolled_over_emitted_once_when_flipped" classname="bus_test" time="1.988">
+		</testcase>
+		<testcase name="test_one_wheel_off_the_edge_tilts_the_bus" classname="bus_test" time="3.010">
+		</testcase>
+	</testsuite>
+	<testsuite id="45" name="bus_visuals_test" package="tests/vehicle" timestamp="2026-09-24T05:30:12" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="0.082">
+		<testcase name="test_final_visuals_are_separate_from_the_sixteen_authored_colliders" classname="bus_visuals_test" time="0.007">
+		</testcase>
+		<testcase name="test_exterior_interior_seats_racks_floor_and_wheels_use_the_external_atlases" classname="bus_visuals_test" time="0.007">
+		</testcase>
+		<testcase name="test_texture_imports_generate_mipmaps_for_the_anisotropic_materials" classname="bus_visuals_test" time="0.005">
+		</testcase>
+		<testcase name="test_two_named_seats_and_copilot_camera_are_authored" classname="bus_visuals_test" time="0.040">
+		</testcase>
+	</testsuite>
+	<testsuite id="46" name="bus_wheel_visuals_test" package="tests/vehicle" timestamp="2026-09-24T05:30:13" hostname="localhost" tests="5" failures="0" errors="0" skipped="0" flaky="0" time="0.062">
+		<testcase name="test_spin_step_tracks_forward_and_reverse_signed_speed" classname="bus_wheel_visuals_test" time="0.005">
+		</testcase>
+		<testcase name="test_front_steers_and_rear_stays_straight" classname="bus_wheel_visuals_test" time="0.007">
+		</testcase>
+		<testcase name="test_visual_center_keeps_tire_on_hit_plane_and_clamps_droop" classname="bus_wheel_visuals_test" time="0.007">
+		</testcase>
+		<testcase name="test_bus_queries_default_to_full_extension_without_contact" classname="bus_wheel_visuals_test" time="0.005">
+		</testcase>
+		<testcase name="test_frozen_replica_uses_snapshot_steer_and_velocity" classname="bus_wheel_visuals_test" time="0.007">
+		</testcase>
+	</testsuite>
+	<testsuite id="47" name="cabin_look_test" package="tests/vehicle" timestamp="2026-09-24T05:30:13" hostname="localhost" tests="2" failures="0" errors="0" skipped="0" flaky="0" time="0.068">
+		<testcase name="test_cabin_camera_turns_with_the_mouse_in_cabin_view" classname="cabin_look_test" time="0.023">
+		</testcase>
+		<testcase name="test_chase_view_parks_the_cabin_look" classname="cabin_look_test" time="0.030">
+		</testcase>
+	</testsuite>
+	<testsuite id="48" name="chase_camera_test" package="tests/vehicle" timestamp="2026-09-24T05:30:13" hostname="localhost" tests="1" failures="0" errors="0" skipped="0" flaky="0" time="0.072">
+		<testcase name="test_camera_sits_behind_target_and_aims_at_it" classname="chase_camera_test" time="0.061">
+		</testcase>
+	</testsuite>
+	<testsuite id="49" name="demo_driver_test" package="tests/vehicle" timestamp="2026-09-24T05:30:13" hostname="localhost" tests="3" failures="0" errors="0" skipped="0" flaky="0" time="4.206">
+		<testcase name="test_waypoint_reached_when_driving_to_it" classname="demo_driver_test" time="1.590">
+		</testcase>
+		<testcase name="test_stuck_emitted_when_bus_cannot_move" classname="demo_driver_test" time="1.021">
+		</testcase>
+		<testcase name="test_stuck_emitted_against_unclimbable_wall" classname="demo_driver_test" time="1.568">
+		</testcase>
+	</testsuite>
+	<testsuite id="50" name="demo_steering_test" package="tests/vehicle" timestamp="2026-09-24T05:30:17" hostname="localhost" tests="10" failures="0" errors="0" skipped="0" flaky="0" time="0.083">
+		<testcase name="test_steer_straight_ahead_is_zero" classname="demo_steering_test" time="0.004">
+		</testcase>
+		<testcase name="test_steer_left_is_positive_under_one" classname="demo_steering_test" time="0.004">
+		</testcase>
+		<testcase name="test_steer_right_is_negative" classname="demo_steering_test" time="0.006">
+		</testcase>
+		<testcase name="test_steer_90_left_saturates" classname="demo_steering_test" time="0.003">
+		</testcase>
+		<testcase name="test_steer_90_right_saturates" classname="demo_steering_test" time="0.005">
+		</testcase>
+		<testcase name="test_target_behind_saturates_throttles_low_and_brakes" classname="demo_steering_test" time="0.003">
+		</testcase>
+		<testcase name="test_throttle_fades_from_full_to_minimum" classname="demo_steering_test" time="0.004">
+		</testcase>
+		<testcase name="test_brake_only_when_turn_is_sharp_and_moving" classname="demo_steering_test" time="0.005">
+		</testcase>
+		<testcase name="test_has_reached_inside_outside_border_and_ignores_height" classname="demo_steering_test" time="0.005">
+		</testcase>
+		<testcase name="test_next_index_wraps" classname="demo_steering_test" time="0.005">
+		</testcase>
+	</testsuite>
+</testsuites>

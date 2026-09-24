@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/vehicle/bus_interior_visual.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/models/bus_interior_clean_v1.glb" id="2_model"]
+[ext_resource type="Material" path="res://assets/materials/bus_interior_v1.tres" id="3_mat"]
+
+[node name="BusInteriorVisual" type="Node3D"]
+script = ExtResource("1_script")
+material = ExtResource("3_mat")
+
+[node name="Model" parent="." instance=ExtResource("2_model")]

@@ -17,6 +17,7 @@ signal occupied(seat_name: String)
 signal vacated(seat_name: String)
 
 @export var seat_name: String = "driver"
+@export var drives_bus: bool = true
 @export var seat_marker: Marker3D
 
 ## Where standing puts the crew when the saved point is not inside the hull
@@ -118,18 +119,19 @@ func _apply_seat_transform(target: Vector3) -> void:
 	_dragging = true
 
 
-func _set_driving_ui(driving: bool) -> void:
+func _set_driving_ui(seated: bool) -> void:
 	var tree: SceneTree = get_tree()
-	# The arbiter owns the camera switch (M2-T2.2 r3): seated goes to the
-	# bus view, standing up returns the crew member's own eyes — that return
-	# was the bug this round closes.
-	if driving:
+	if not seated:
+		CameraArbiter.apply(tree, CameraArbiter.Mode.ON_FOOT)
+	elif drives_bus:
 		CameraArbiter.apply(tree, CameraArbiter.Mode.SEATED)
 	else:
-		CameraArbiter.apply(tree, CameraArbiter.Mode.ON_FOOT)
+		CameraArbiter.apply(tree, CameraArbiter.Mode.PASSENGER)
 	var bus_input: Node = tree.get_first_node_in_group("bus_input")
 	if bus_input != null:
-		bus_input.set("enabled", driving)
+		bus_input.set("enabled", seated and drives_bus)
 	var crew_input: Node = tree.get_first_node_in_group("crew_input")
 	if crew_input != null:
-		crew_input.set("enabled", not driving)
+		# Disabled while either seat is occupied. CrewInput still polls interact
+		# for seated members, preserving E-to-vacate.
+		crew_input.set("enabled", not seated)

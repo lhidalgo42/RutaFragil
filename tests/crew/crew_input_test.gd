@@ -83,6 +83,26 @@ func test_toggle_nearest_seat_callable_without_input() -> void:
 	assert_bool(crew.seated).is_false()
 
 
+func test_reticle_selects_aimed_driver_over_nearer_copilot() -> void:
+	_make_ground()
+	var crew: CrewMember = await _spawn_settled_crew(Vector3(0.0, 1.0, 0.0))
+	if crew == null:
+		return
+	var eye_node: Node = crew.get_node_or_null("EyeCamera")
+	assert_bool(eye_node is Camera3D).is_true()
+	if not (eye_node is Camera3D):
+		return
+	var eye: Camera3D = eye_node
+	# Driver lies straight ahead of the look ray but farther from the feet;
+	# copilot is closer yet lateral. Both stay inside the 2.5 m reach.
+	var driver: Seat = _make_named_seat("driver", eye.global_position + Vector3(0.0, 0.0, -1.2))
+	var copilot: Seat = _make_named_seat("copilot", eye.global_position + Vector3(0.8, -0.2, -0.6))
+	var input: CrewInput = await _spawn_input(false)
+	var selected: Seat = input.best_free_seat_in_reach(crew.global_position, eye)
+	assert_object(selected).is_same(driver)
+	assert_object(copilot.occupied_by).is_null()
+
+
 func test_toggle_nearest_seat_out_of_reach_does_nothing() -> void:
 	_make_ground()
 	var crew: CrewMember = await _spawn_settled_crew(Vector3(0.0, 1.0, 0.0))
@@ -228,6 +248,12 @@ func _send_left_click_press() -> void:
 	click.button_index = MOUSE_BUTTON_LEFT
 	click.pressed = true
 	Input.parse_input_event(click)
+
+
+func _make_named_seat(name: String, marker_pos: Vector3) -> Seat:
+	var seat: Seat = _make_seat(marker_pos)
+	seat.seat_name = name
+	return seat
 
 
 func _make_seat(marker_pos: Vector3) -> Seat:

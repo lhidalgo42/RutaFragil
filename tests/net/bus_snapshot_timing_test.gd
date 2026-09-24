@@ -84,3 +84,28 @@ func test_point_velocity_uses_interpolated_snapshot_without_simulating_the_bus()
 	assert_vector(body.angular_velocity).is_equal(Vector3.ZERO)
 	receiver.accept_snapshot(Transform3D.IDENTITY, 1.0, Vector3(INF, 0.0, 0.0))
 	assert_int(receiver.rejected_count).is_equal(1)
+
+
+func test_steer_is_clamped_interpolated_and_never_writes_client_physics() -> void:
+	var body: RigidBody3D = auto_free(RigidBody3D.new())
+	body.freeze = true
+	add_child(body)
+	var receiver: NetBusSync = auto_free(NetBusSync.new())
+	receiver.bus = body
+	receiver.interpolation_delay_s = 0.0
+	receiver.accept_snapshot(Transform3D.IDENTITY, 0.0,
+		Vector3(10.0, 0.0, 0.0), Vector3.UP, 0, -2.0)
+	receiver.accept_snapshot(Transform3D(Basis.IDENTITY, Vector3.RIGHT), 1.0,
+		Vector3(20.0, 0.0, 0.0), Vector3.UP * 3.0, 0, 2.0)
+	receiver.advance(0.5)
+	receiver.advance(0.0)
+	assert_float(receiver.replicated_steer_input()).is_equal_approx(0.0, 0.0001)
+	assert_vector(receiver.replicated_linear_velocity()).is_equal_approx(
+		Vector3(15.0, 0.0, 0.0), Vector3.ONE * 0.0001)
+	assert_vector(body.linear_velocity).is_equal(Vector3.ZERO)
+	assert_vector(body.angular_velocity).is_equal(Vector3.ZERO)
+	var accepted: int = receiver.received_count
+	receiver.accept_snapshot(Transform3D.IDENTITY, 2.0,
+		Vector3.ZERO, Vector3.ZERO, 0, NAN)
+	assert_int(receiver.received_count).is_equal(accepted)
+	assert_int(receiver.rejected_count).is_equal(1)

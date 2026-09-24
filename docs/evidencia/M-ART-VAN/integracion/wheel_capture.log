@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5060 Laptop GPU
+
+WHEEL_CAPTURE name=steer_left steer_front_deg=18.24 steer_rear_deg=0.00 spin=-3.000
+WHEEL_CAPTURE name=steer_right steer_front_deg=-18.24 steer_rear_deg=0.00 spin=-0.100
+WHEEL_CAPTURE name=reverse steer_front_deg=0.00 steer_rear_deg=0.00 spin=1.850

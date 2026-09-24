@@ -84,7 +84,7 @@ func set_demo_mode(on: bool) -> void:
 	if demo_driver != null:
 		demo_driver.enabled = demo_mode
 	if bus_input != null:
-		bus_input.enabled = _crew_seated() and not demo_mode
+		bus_input.enabled = _crew_drives() and not demo_mode
 	# The camera follows the mode change, and the cursor with it: the demo
 	# is watched with a free mouse, playing captures it again.
 	if demo_mode:
@@ -115,23 +115,33 @@ func _refresh_network_view() -> void:
 	CameraArbiter.apply(get_tree(), mode)
 
 
-## Whether the crew member is seated at the wheel right now.
-func _crew_seated() -> bool:
+## The seat holding the local crew member, or null when she stands.
+func _occupied_seat() -> Seat:
 	var crew_node: Node = NetAuthority.local_crew(get_tree())
-	if crew_node is CrewMember:
-		var member: CrewMember = crew_node
-		return member.seated
-	return false
+	if not (crew_node is CrewMember):
+		return null
+	for node: Node in get_tree().get_nodes_in_group("seat"):
+		if node is Seat:
+			var seat: Seat = node
+			if seat.occupied_by == crew_node:
+				return seat
+	return null
+
+
+## True only when the occupied seat actually owns the wheel: a passenger seat
+## keeps BusInput off after the demo hands control back.
+func _crew_drives() -> bool:
+	var seat: Seat = _occupied_seat()
+	return seat != null and seat.drives_bus
 
 
 ## The camera the crew returns to when the demo hands control back: the
-## seat's bus view if she is seated, her own eyes otherwise.
+## occupied seat's bus view (cabin for the driver, copilot for a passenger),
+## her own eyes otherwise.
 func _crew_camera_mode() -> CameraArbiter.Mode:
-	var crew_node: Node = NetAuthority.local_crew(get_tree())
-	if crew_node is CrewMember:
-		var member: CrewMember = crew_node
-		if member.seated:
-			return CameraArbiter.Mode.SEATED
+	var seat: Seat = _occupied_seat()
+	if seat != null:
+		return CameraArbiter.Mode.SEATED if seat.drives_bus else CameraArbiter.Mode.PASSENGER
 	return CameraArbiter.Mode.ON_FOOT
 
 

@@ -1,0 +1,8 @@
+Overall Summary: 271 test cases | 0 errors | 0 failures | 0 flaky | 0 skipped | 0 orphans |
+Discovered tests: 271 (expected exactly: 271)
+SUCCESS: all tests passed and 271 tests were discovered.
+net scenario exit code: 0
+SUCCESS: network scenario passed (1 host + 3 clients).
+suite_exit=0
+
+[exited with code 0]

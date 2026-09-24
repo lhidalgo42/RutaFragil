@@ -216,8 +216,8 @@ func _interact_tap(hands: CrewHands) -> void:
 			# falls through to the seat below.
 			var best_radial: float = INF
 			var best: String = ""
-			var seat: Seat = nearest_free_seat_in_reach(_crew.global_position)
-			if seat != null and seat.seat_marker != null:
+			var seat: Seat = best_free_seat_in_reach(_crew.global_position, eye)
+			if seat != null:
 				var radial: float = _ray_radial(eye.global_position, -eye.global_basis.z, seat.seat_marker.global_position)
 				if radial < best_radial:
 					best_radial = radial
@@ -235,7 +235,9 @@ func _interact_tap(hands: CrewHands) -> void:
 					best_radial = radial
 					best = "unstrap"
 			if best == "seat":
-				toggle_nearest_seat(_crew)
+				# The EXACT seat the reticle chose — not the nearest.
+				if not _crew.network_member:
+					seat.occupy(_crew)
 				return
 			if best == "grab":
 				if hands.try_grab():
@@ -312,6 +314,41 @@ func occupied_seat_of(crew: CrewMember) -> Seat:
 	return null
 
 
+## Reticle seat choice: consider every free seat in reach. Ray alignment wins,
+## then feet distance, then authored seat_name. If every seat is behind the eye,
+## preserve the old nearest-seat fallback.
+func best_free_seat_in_reach(from: Vector3, eye: Camera3D) -> Seat:
+	var tuning: TuningTable = GameConfig.tuning
+	if tuning == null:
+		push_error("CrewInput: GameConfig.tuning is null; cannot reach seats")
+		return null
+	var best: Seat = null
+	var best_radial: float = INF
+	var best_dist: float = INF
+	for node: Node in get_tree().get_nodes_in_group("seat"):
+		if not (node is Seat):
+			continue
+		var seat: Seat = node
+		if seat.occupied_by != null or seat.seat_marker == null:
+			continue
+		var dist: float = from.distance_to(seat.seat_marker.global_position)
+		if dist > tuning.interaction_reach_m:
+			continue
+		var radial: float = _ray_radial(
+			eye.global_position, -eye.global_basis.z, seat.seat_marker.global_position)
+		if not is_finite(radial):
+			continue
+		var tied_radial: bool = is_equal_approx(radial, best_radial)
+		var tied_dist: bool = is_equal_approx(dist, best_dist)
+		if best == null or radial < best_radial and not tied_radial \
+				or tied_radial and (dist < best_dist and not tied_dist \
+				or tied_dist and seat.seat_name.naturalnocasecmp_to(best.seat_name) < 0):
+			best = seat
+			best_radial = radial
+			best_dist = dist
+	return best if best != null else nearest_free_seat_in_reach(from)
+
+
 func nearest_free_seat_in_reach(from: Vector3) -> Seat:
 	var tuning: TuningTable = GameConfig.tuning
 	if tuning == null:
@@ -320,12 +357,14 @@ func nearest_free_seat_in_reach(from: Vector3) -> Seat:
 	var best: Seat = null
 	var best_dist: float = tuning.interaction_reach_m
 	for node: Node in get_tree().get_nodes_in_group("seat"):
-		if node is Seat:
-			var seat: Seat = node
-			if seat.occupied_by != null or seat.seat_marker == null:
-				continue
-			var dist: float = from.distance_to(seat.seat_marker.global_position)
-			if dist <= best_dist:
-				best = seat
-				best_dist = dist
+		if not (node is Seat):
+			continue
+		var seat: Seat = node
+		if seat.occupied_by != null or seat.seat_marker == null:
+			continue
+		var dist: float = from.distance_to(seat.seat_marker.global_position)
+		if dist < best_dist or is_equal_approx(dist, best_dist) \
+				and (best == null or seat.seat_name.naturalnocasecmp_to(best.seat_name) < 0):
+			best = seat
+			best_dist = dist
 	return best
