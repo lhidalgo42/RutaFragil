@@ -18,15 +18,15 @@ Suma instanciada: 12.484 / 25.000 tris. Generadores y pruebas: `tools/blender_va
 - `src/vehicle/bus_interior.tscn`: 55 nodos. `Visuals.visible=false`; instancia `BusInteriorVisual`; `CopilotSeat` sin convertir `Positions/copilot`.
 - Las 16 formas físicas, seis posiciones, doce restraints, masa/capas/tuning quedan sin cambios.
 - Materiales externos: tres `.tres` con albedo a atlas ≤1024², filtros mipmaps anisotrópicos. Cada GLB: un material, cero imágenes.
-- `tests/vehicle/bus_visuals_test.gd`: colliders intactos, greybox oculto, visuales sin colisión, presupuesto, dos asientos/cámara. 2/2.
+- `tests/vehicle/bus_visuals_test.gd`: colliders intactos, greybox oculto, visuales sin colisión, presupuesto, parabrisas, atlases, mipmaps, dos asientos/cámara. 4/4.
 - F1 copiloto: 5/5 de `playground_scene_test.gd`, incluido `test_leaving_the_demo_as_copilot_restores_the_passenger_view_without_drive_input`.
 
 ## Capturas
 
 - `van_preview_bus_v3.png`: furgón amarillo, franja roja, techo crema, hueco trasero/lateral y cuatro ruedas.
-- `van_exterior.png`, `van_cab.png`, `van_interior.png`: atlas aplicado, asientos, racks, suelo y parabrisas.
+- `van_exterior.png`, `van_cab.png`, `van_interior.png`: atlas aplicado, asientos, racks, suelo y parabrisas. `van_cab.png` usa la cámara autorada `CabinCamera`, no una cámara fuera del casco.
 - `playground_van.png` se conserva como captura preliminar dentro del Playground, pero apunta al paquete; no demuestra la van y no se usa como criterio.
-- Ruedas en movimiento/dirección: pendiente de captura dedicada y corrida en cliente.
+- `wheels_steer_left.png`, `wheels_steer_right.png`, `wheels_reverse.png` y `wheel_capture.log`: dirección delantera ±18,24°, trasera 0°, reversa inversa.
 
 ## Limitaciones declaradas
 

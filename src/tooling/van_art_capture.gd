@@ -24,20 +24,30 @@ func _process(_delta: float) -> bool:
 	_frames += 1
 	var views: Array[Dictionary] = [
 		{"name":"exterior", "pos":Vector3(8.5, 4.0, 9.0), "at":Vector3(0, 0.2, 0)},
-		{"name":"cab", "pos":Vector3(0, 0.65, -2.0), "at":Vector3(0, 0.4, -3.5)},
+		{"name":"cab", "camera":"CabinCamera"},
 		{"name":"interior", "pos":Vector3(0, 0.65, 3.2), "at":Vector3(0, 0.2, 0)},
 	]
 	if _shot >= views.size(): quit(0); return true
 	var view: Dictionary = views[_shot]
 	if _frames == 20:
-		_camera.position = view["pos"]
-		_camera.look_at(view["at"], Vector3.UP)
+		if view.has("camera"):
+			_camera.current = false
+			var cabin: Camera3D = _bus.get_node_or_null(String(view["camera"]))
+			if cabin == null: push_error("van_art_capture: camera missing"); quit(1); return true
+			cabin.current = true
+		else:
+			_camera.position = view["pos"]
+			_camera.look_at(view["at"], Vector3.UP)
 		return false
 	if _frames < 22: return false
 	var path: String = "%s_%s.png" % [_prefix, view["name"]]
 	var err: Error = root.get_texture().get_image().save_png(path)
 	if err != OK: push_error("van_art_capture: save failed %d" % err); quit(1); return true
 	print("VAN_CAPTURE saved=", path)
+	if view.has("camera"):
+		var cabin: Camera3D = _bus.get_node_or_null(String(view["camera"]))
+		if cabin != null: cabin.current = false
+		_camera.current = true
 	_shot += 1
 	_frames = 0
 	return false
