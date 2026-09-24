@@ -23,8 +23,8 @@ v5 volvió a fallar en revisión adversarial: seguía leyendo autobús, faltaba 
 ## Validación automática
 
 - `blender_van_test.py`: 9.844 tris, determinista.
-- `blender_bus_interior_test.py`: 6.872 tris, pasillo 1,204 m, determinista.
-- `blender_bus_wheel_test.py`: 1.476 tris, radio 0,500 m, total visible 22.620/25.000.
+- `blender_bus_interior_test.py`: 6.872 tris, pasillo 1,204 m, determinista (**resultado histórico v6; sustituido por r7, ver 04**).
+- `blender_bus_wheel_test.py`: 1.476 tris, radio 0,500 m, total visible 22.620/25.000 (**histórico v6**).
 - `build_van_atlases_test.py`: tres atlas 1024², RGB exacto por región, determinista.
 - Suite: 271/271; red 1 host + 3 clientes verde.
 

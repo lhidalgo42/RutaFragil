@@ -4,11 +4,13 @@ Todo pendiente del proyecto vive aquí (R10: sin TODOs silenciosos en el código
 
 ## M-ART-VAN — pendientes del plan aprobado (2026-09-24)
 
-- **Implementación completa pendiente:** tres assets/atlases externos, geometría final Blender, integración visual, copiloto local por retícula, cámara fija y ruedas visuales con `steer` replicado. Nada se declara implementado por aprobar el plan.
+- **Implementado en `art/m-art-style-board`, gate humano pendiente:** tres assets/atlases externos, geometría Blender v6/r7, copiloto local por retícula, puertas funcionales, cámara fija y ruedas visuales con `steer` replicado. No está mergeado; solo el dueño cierra el gate.
 - **M4:** replicación de ocupación de asientos, incluido copiloto. En M-ART-VAN queda **NO PROBADO** en red.
 - **Suspensión visual remota:** clientes congelados replican giro y dirección de ruedas, no compresión. Muestran extensión nominal porque no corren raycasts. Si el gate humano en red lo marca como defecto, replicar las cuatro distancias de suspensión como estado visual en `NetBusSync`, nunca escribirlas en física cliente.
 - **Créditos del juego:** mantener pendiente el aviso «Built with DINOv3» exigido por la licencia de Meta; la pantalla aún no existe.
 - **Gate humano M-ART-VAN pendiente:** lectura de furgón, copiloto sin conducción, calidad/flicker interior, ruedas local/remoto, neumático sin marcas y feel sin cambios. Solo el dueño lo cierra.
+- **D103, gate humano de puertas pendiente:** probar abrir/cerrar lateral desde fuera y dentro, cierre con tripulante/carga en el recorrido, animación trasera, carga suelta con trasera cerrada y conducción cerrada. El 1+3 prueba convergencia del estado cerrado; falta un cliente humano pulsando E con latencia real.
+- **Salida trasera y `aboard`:** la trasera sigue siendo puerta de carga. Si una tripulante sale por ella, conserva `aboard=true` como antes de D103; si se permite abordar por atrás, añadir un plano de tránsito trasero.
 
 ## M-ART — pendientes propios del pipeline de arte (2026-09-21)
 

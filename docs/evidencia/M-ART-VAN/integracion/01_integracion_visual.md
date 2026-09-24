@@ -7,10 +7,10 @@ Fecha: 2026-09-24. Alcance: integración y pruebas automáticas. El gate humano 
 | Asset | Tris | Validación | Imagen |
 |---|---:|---|---|
 | `assets/models/bus_exterior_clean_v1.glb` | 9.844 | `glb_check --kind bus --pivot base`: 8/8 | `assets/textures/bus_exterior_atlas_v1.png` |
-| `assets/models/bus_interior_clean_v1.glb` | 6.872 | `glb_check --kind bus --pivot center`: 8/8 | `assets/textures/bus_interior_atlas_v1.png` |
+| `assets/models/bus_interior_clean_v1.glb` | 6.100 | `glb_check --kind bus --pivot center`: 8/8 | `assets/textures/bus_interior_atlas_v1.png` |
 | `assets/models/bus_wheel_clean_v1.glb` | 1.476 | `glb_check --kind prop --pivot center`: 8/8 | `assets/textures/bus_wheel_atlas_v1.png` |
 
-Suma instanciada: 22.620 / 25.000 tris. Generadores y pruebas: `tools/blender_van*.py`, `tools/blender_bus_*.py`. Geometría determinista; tests de UV por región, alineación de fixtures con colliders y presupuesto agregado en verde.
+Suma instanciada: 21.848 / 25.000 tris. Generadores y pruebas: `tools/blender_van*.py`, `tools/blender_bus_*.py`. Geometría determinista; tests de UV por región, alineación de fixtures con colliders y presupuesto agregado en verde.
 
 ## Integración
 

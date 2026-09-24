@@ -11,9 +11,9 @@ Fecha: 2026-09-24. **No es el gate humano.**
 | Red | 1 host + 3 clientes, pass |
 | Demo | vuelta completa, 17 waypoints, 27,3 s, 64,6 km/h, upright mínimo 0,97 |
 | Exterior GLB | 9.844 tris, 8/8, 1 material, 0 imágenes embebidas |
-| Interior GLB | 6.872 tris, 8/8, 1 material, 0 imágenes embebidas |
+| Interior GLB | 6.100 tris, 8/8, 1 material, 0 imágenes embebidas |
 | Rueda GLB | 1.476 tris, 8/8, 1 material, 0 imágenes embebidas |
-| Presupuesto visible | 22.620 / 25.000 tris |
+| Presupuesto visible | 21.848 / 25.000 tris |
 | Atlases | 3 PNG externos, 1024², validación formato/tamaño verde; mipmaps activados y pin rojo/verde |
 | Piso fuente | seam RMS 1,182 vs interior RMS 9,455; mosaico 3×3 adjunto |
 | Colliders | 16 directos, sin colisión dentro de GLBs; racks/banco/camilla medidos dentro de sus colliders |
