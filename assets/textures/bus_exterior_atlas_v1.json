@@ -6,10 +6,11 @@
 		1024,
 		1024
 	],
+	"composition": "canonical palette plus zero-mean high-pass FLUX microdetail",
 	"sources": [
-		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_yellow_v1.png",
-		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_red_v1.png",
-		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_cream_v1.png"
+		"docs/referencias/van_tex_src_cream_v1.png",
+		"docs/referencias/van_tex_src_red_v1.png",
+		"docs/referencias/van_tex_src_yellow_v1.png"
 	],
 	"regions": [
 		{
@@ -20,12 +21,14 @@
 				1024,
 				512
 			],
-			"crop": [
-				0.12,
-				0.12,
-				0.88,
-				0.88
-			]
+			"rgb_mean": [
+				232,
+				177,
+				20
+			],
+			"source": "docs/referencias/van_tex_src_yellow_v1.png",
+			"source_usage": "FLUX high-pass microdetail",
+			"detail_amplitude": 4
 		},
 		{
 			"name": "red_stripe",
@@ -35,12 +38,14 @@
 				256,
 				512
 			],
-			"crop": [
-				0,
-				0,
-				1,
-				0.4
-			]
+			"rgb_mean": [
+				200,
+				32,
+				28
+			],
+			"source": "docs/referencias/van_tex_src_red_v1.png",
+			"source_usage": "FLUX high-pass microdetail",
+			"detail_amplitude": 2
 		},
 		{
 			"name": "cream_roof",
@@ -50,12 +55,14 @@
 				256,
 				512
 			],
-			"crop": [
-				0,
-				0.12,
-				1,
-				0.88
-			]
+			"rgb_mean": [
+				225,
+				215,
+				190
+			],
+			"source": "docs/referencias/van_tex_src_cream_v1.png",
+			"source_usage": "FLUX high-pass microdetail",
+			"detail_amplitude": 2
 		},
 		{
 			"name": "glass",
@@ -65,11 +72,10 @@
 				256,
 				512
 			],
-			"crop": [
-				0,
-				0,
-				1,
-				1
+			"rgb_mean": [
+				35,
+				78,
+				92
 			]
 		},
 		{
@@ -80,11 +86,10 @@
 				256,
 				512
 			],
-			"crop": [
-				0,
-				0,
-				1,
-				1
+			"rgb_mean": [
+				28,
+				30,
+				32
 			]
 		}
 	],

@@ -3,7 +3,6 @@
     python tools/blender_bus_wheel_test.py [--blender <path>]
 """
 import argparse
-import hashlib
 import json
 import math
 import os
@@ -20,6 +19,11 @@ import blender_van_test
 import blender_bus_interior_test
 
 WINDOWS_DEFAULT = r"C:\Program Files\Blender Foundation\Blender 5.1\blender.exe"
+REGIONS = {
+    "tread": (0.02, 0.02, 0.31, 0.98),
+    "sidewall": (0.34, 0.02, 0.48, 0.98),
+    "rim": (0.52, 0.02, 0.98, 0.98),
+}
 
 
 def find_blender(explicit=None):
@@ -40,41 +44,85 @@ def invoked_findings(path):
                              "--pivot", "center", "--json"],
                             capture_output=True, encoding="utf-8", timeout=30)
     assert result.returncode == 0, result.stdout[-3000:] + result.stderr[-3000:]
-    return {f["check"]: f["pass"] for f in json.loads(result.stdout)["findings"]}
+    return {finding["check"]: finding["pass"] for finding in json.loads(result.stdout)["findings"]}
+
+
+def region_for(name):
+    if name == "TireTread":
+        return "tread"
+    if name.startswith("TireSidewall"):
+        return "sidewall"
+    return "rim"
 
 
 def validate(path):
     checks = invoked_findings(path)
     assert all(checks.values()), [name for name, ok in checks.items() if not ok]
-    g, bins = glb_check.load_glb(str(path))
-    assert not g.get("images", []) and len(g.get("materials", [])) == 1
+    gltf, bins = glb_check.load_glb(str(path))
+    assert not gltf.get("images", []), "GLB no debe embeber imágenes"
+    assert len(gltf.get("materials", [])) == 1
+    assert gltf["materials"][0]["name"] == "placeholder_wheel"
+
     positions = []
-    tris = 0
-    for node in g.get("nodes", []):
-        assert "-col" not in node.get("name", "").lower()
+    triangles = 0
+    names = {node.get("name", "") for node in gltf.get("nodes", []) if "mesh" in node}
+    required = {"TireTread", "TireSidewallInner", "TireSidewallOuter", "RimOuter",
+                "RimDisc", "RimHubCap", "ValveStem"}
+    required.update("RimLug%02d" % index for index in range(6))
+    assert required <= names, sorted(required - names)
+    assert not any(name.startswith("RimSpoke") for name in names), "rin deportivo con radios"
+    assert sum(name.startswith("RimLug") for name in names) == 6
+    assert sum(name == "ValveStem" for name in names) == 1
+
+    categories = set()
+    for node in gltf.get("nodes", []):
+        name = node.get("name", "")
+        assert "-col" not in name.lower()
         if "mesh" not in node:
             continue
-        # Atlas: tread is the left half, rim the right half.
-        u0, u1 = (0.02, 0.48) if node.get("name") == "GenericTire" else (0.52, 0.98)
-        for primitive in g["meshes"][node["mesh"]]["primitives"]:
+        category = region_for(name)
+        categories.add(category)
+        u0, v0, u1, v1 = REGIONS[category]
+        for primitive in gltf["meshes"][node["mesh"]]["primitives"]:
+            assert primitive.get("material") == 0
             assert "TEXCOORD_0" in primitive["attributes"], "UV0 ausente"
-            for u, v in glb_check.read_accessor(g, bins, primitive["attributes"]["TEXCOORD_0"]):
-                assert u0 - 1e-3 <= u <= u1 + 1e-3 and 0.02 - 1e-3 <= v <= 0.98 + 1e-3, \
-                    "%s UV (%.3f, %.3f) fuera de su mitad" % (node.get("name"), u, v)
-            positions.extend(glb_check.read_accessor(g, bins, primitive["attributes"]["POSITION"]))
-            tris += len(glb_check.read_accessor(g, bins, primitive["indices"])) // 3
-    assert tris <= 1500, "rueda %d > 1500" % tris
-    center = [sum(p[k] for p in positions) / len(positions) for k in range(3)]
-    assert max(abs(c) for c in center) <= 0.03, "rueda no centrada"
-    width = max(p[0] for p in positions) - min(p[0] for p in positions)
-    radii = [math.hypot(p[1], p[2]) for p in positions]
-    assert width >= 0.18, "eje local no parece +X (width %.3f)" % width
-    assert 0.48 <= max(radii) <= 0.502, "radio máximo %.3f" % max(radii)
-    assert min(radii) <= 0.10, "sin buje"
-    names = [node.get("name", "") for node in g.get("nodes", []) if "mesh" in node]
+            for u, v in glb_check.read_accessor(gltf, bins, primitive["attributes"]["TEXCOORD_0"]):
+                assert u0 - 1e-3 <= u <= u1 + 1e-3 and v0 - 1e-3 <= v <= v1 + 1e-3, \
+                    "%s UV (%.3f, %.3f) fuera de %s" % (name, u, v, category)
+            positions.extend(glb_check.read_accessor(gltf, bins, primitive["attributes"]["POSITION"]))
+            triangles += len(glb_check.read_accessor(gltf, bins, primitive["indices"])) // 3
+    assert categories == set(REGIONS)
+    assert triangles <= 1500, "rueda %d > 1500" % triangles
+
+    minimum = [min(position[axis] for position in positions) for axis in range(3)]
+    maximum = [max(position[axis] for position in positions) for axis in range(3)]
+    center = [(minimum[axis] + maximum[axis]) / 2 for axis in range(3)]
+    assert max(abs(value) for value in center) <= 0.002, "rueda no centrada: %s" % center
+    width = maximum[0] - minimum[0]
+    radii = [math.hypot(position[1], position[2]) for position in positions]
+    assert 0.17 <= width <= 0.22, "neumático no estrecho o eje incorrecto: %.3f" % width
+    assert math.isclose(max(radii), 0.5, abs_tol=0.002), "radio máximo %.4f" % max(radii)
+    hub_positions = []
+    disc_positions = []
+    for node in gltf.get("nodes", []):
+        if "mesh" not in node or node.get("name") not in ("RimHubCap", "RimDisc"):
+            continue
+        target = hub_positions if node["name"] == "RimHubCap" else disc_positions
+        for primitive in gltf["meshes"][node["mesh"]]["primitives"]:
+            target.extend(glb_check.read_accessor(
+                gltf, bins, primitive["attributes"]["POSITION"]))
+    assert hub_positions and 0.098 <= max(math.hypot(p[1], p[2]) for p in hub_positions) <= 0.102, \
+        "buje pesado inválido"
+    # Boolean hole rims must leave vertices around each of four expected centers.
+    for index in range(4):
+        angle = math.tau * index / 4 + math.pi / 4
+        center_y, center_z = 0.168 * math.cos(angle), 0.168 * math.sin(angle)
+        distances = [math.hypot(p[1] - center_y, p[2] - center_z) for p in disc_positions]
+        assert distances and min(abs(distance - 0.030) for distance in distances) <= 0.003, \
+            "ventilación %d ausente" % index
     forbidden = ("pirelli", "michelin", "goodyear", "logo", "text")
-    assert not any(word in name.lower() for name in names for word in forbidden), names
-    return tris, max(radii)
+    assert not any(word in name.lower() for name in names for word in forbidden), sorted(names)
+    return triangles, max(radii)
 
 
 def main():

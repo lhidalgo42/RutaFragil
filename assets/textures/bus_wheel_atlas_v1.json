@@ -6,9 +6,10 @@
 		1024,
 		1024
 	],
+	"composition": "canonical palette plus zero-mean high-pass FLUX microdetail",
 	"sources": [
-		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_tire_v2.png",
-		"C:/Users/Leo/Documents/RutaFragil/docs/referencias/van_tex_src_rim_v1.png"
+		"docs/referencias/van_tex_src_rim_v1.png",
+		"docs/referencias/van_tex_src_tire_v2.png"
 	],
 	"regions": [
 		{
@@ -16,14 +17,45 @@
 			"rect_px": [
 				0,
 				0,
-				512,
+				328,
 				1024
 			],
-			"crop": [
-				0.15,
+			"rgb_mean": [
+				32,
+				32,
+				32
+			],
+			"source": "docs/referencias/van_tex_src_tire_v2.png",
+			"source_usage": "FLUX high-pass microdetail",
+			"detail_amplitude": 4,
+			"uv_blender": [
+				0.02,
+				0.02,
+				0.31,
+				0.98
+			]
+		},
+		{
+			"name": "sidewall",
+			"rect_px": [
+				328,
 				0,
-				0.85,
-				1
+				184,
+				1024
+			],
+			"rgb_mean": [
+				24,
+				24,
+				24
+			],
+			"source": "docs/referencias/van_tex_src_tire_v2.png",
+			"source_usage": "FLUX high-pass microdetail",
+			"detail_amplitude": 1,
+			"uv_blender": [
+				0.34,
+				0.02,
+				0.48,
+				0.98
 			]
 		},
 		{
@@ -34,11 +66,19 @@
 				512,
 				1024
 			],
-			"crop": [
-				0.08,
-				0.08,
-				0.92,
-				0.92
+			"rgb_mean": [
+				121,
+				121,
+				121
+			],
+			"source": "docs/referencias/van_tex_src_rim_v1.png",
+			"source_usage": "FLUX high-pass microdetail",
+			"detail_amplitude": 3,
+			"uv_blender": [
+				0.52,
+				0.02,
+				0.98,
+				0.98
 			]
 		}
 	],

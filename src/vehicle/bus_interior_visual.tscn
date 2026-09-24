@@ -9,3 +9,4 @@ script = ExtResource("1_script")
 material = ExtResource("3_mat")
 
 [node name="Model" parent="." instance=ExtResource("2_model")]
+position = Vector3(0, 0.38, 0.005)

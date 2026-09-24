@@ -67,7 +67,7 @@ def node_bounds(g, bins, predicate):
     return out
 
 
-WRAPPER_OFFSET = (0.05, 0.38, 0.005)
+WRAPPER_OFFSET = (0.0, 0.38, 0.005)
 
 
 def assert_inside(items, low, high, label):
@@ -107,9 +107,11 @@ UV_REGIONS = {
 def uv_category(name):
     if name.startswith(("Floor", "BoardingStep")):
         return "floor"
-    if name.startswith(("LeftRack", "RightRack")):
+    if name.startswith(("LeftRack", "RightRack", "LeftParcel", "RightParcel")):
         return "rack"
-    if name.startswith(("DriverSeat", "CopilotSeat", "Bench", "Stretcher")):
+    if name.startswith(("DriverSeat", "CopilotSeat", "Bench", "Stretcher",
+                        "Dashboard", "Steering", "WheelWellDark", "RearDoorSill",
+                        "RearOpeningHeader")):
         return "seat"
     return "wall"
 
@@ -140,12 +142,23 @@ def validate(glb):
     assert_uv_regions(g, bins)
 
     # Godot/glTF frame: -Z is front, +Z rear.
-    # Center shift is x=-0.05, y=-1.03, Blender-y=-0.005 (glTF z=+0.005).
+    # Model wrapper restores the centered GLB vertically and longitudinally; X is symmetric.
     assert_gap(g, bins, ((0.95, 1.10), (-0.63, 0.87), (-3.185, -2.305)))     # side opening above steps
     assert_gap(g, bins, ((-0.73, 0.63), (-0.97, 0.77), (3.725, 3.905)))      # rear opening
     floor = node_bounds(g, bins, lambda name: name == "FloorLiner")[0]
     roof = node_bounds(g, bins, lambda name: name == "RoofLiner")[0]
     assert -1.04 <= floor["low"][1] <= -1.02 and -0.99 <= floor["high"][1] <= -0.97, floor
+    # v6: el piso llega al portal trasero (z GLB 3.995) y al morro (z GLB -3.985).
+    assert floor["high"][2] >= 3.98 and floor["low"][2] <= -3.98, floor
+    # El sillon oscuro cubre el portal de 1.40 m sin entrar en la apertura fisica
+    # (la apertura termina en z GLB 3.905; el sillon empieza en 3.915).
+    sill = node_bounds(g, bins, lambda name: name == "RearDoorSill")[0]
+    assert sill["low"][2] > 3.905 and sill["high"][2] <= 3.991, sill
+    assert sill["high"][0] - sill["low"][0] >= 1.40, sill
+    # Cabecera y montantes traseros profundizados cierran la costura con el shell.
+    for rear_name in ("RearLeftLiner", "RearRightLiner", "RearOpeningHeader"):
+        piece = node_bounds(g, bins, lambda name: name == rear_name)[0]
+        assert piece["high"][2] >= 3.95, piece
     assert 0.87 <= roof["low"][1] and roof["high"][1] <= 0.97, roof
     rack_left = node_bounds(g, bins, lambda name: name.startswith("LeftRack"))
     rack_right = node_bounds(g, bins, lambda name: name.startswith("RightRack"))
@@ -160,13 +173,81 @@ def validate(glb):
         (-1.15, -0.60, 2.30), (-0.60, 0.30, 3.50), "banco")
     assert_inside(node_bounds(g, bins, lambda name: name.startswith("Stretcher")),
         (0.50, -0.60, 1.30), (1.10, -0.35, 3.10), "camilla")
-    steps = node_bounds(g, bins, lambda name: name.startswith("BoardingStep"))
-    assert min(item["low"][0] for item in steps) >= 0.60, steps
+    # D90 door column is the front-right wheel sweep: no visual step may cross it.
+    assert not any(g["nodes"][i].get("name", "").startswith("BoardingStep") for i in scene_nodes(g))
     seats = node_bounds(g, bins, lambda name: name.startswith(("DriverSeat", "CopilotSeat")))
     assert len(seats) >= 8, "asientos visuales incompletos"
-    wheel_wells = node_bounds(g, bins, lambda name: name.startswith("WheelWell"))
-    assert {item["name"] for item in wheel_wells} == {"WheelWellFL", "WheelWellFR", "WheelWellRR"}, wheel_wells
-    assert all(item["high"][1] >= -0.33 for item in wheel_wells), wheel_wells
+    assert {item["name"].split(".")[0] for item in seats} == {
+        "DriverSeatBase", "DriverSeatCushion", "DriverSeatBack", "DriverSeatHeadrest",
+        "DriverSeatSeatbelt", "DriverSeatBuckle",
+        "CopilotSeatBase", "CopilotSeatCushion", "CopilotSeatBack", "CopilotSeatHeadrest",
+        "CopilotSeatSeatbelt", "CopilotSeatBuckle"}, seats
+    # Los markers driver/copilot del bus fijan el centro (x, z) de cada cushion tras el wrapper.
+    for prefix, target_x in (("DriverSeat", -0.6), ("CopilotSeat", 0.6)):
+        cushion = node_bounds(g, bins, lambda name: name == prefix + "Cushion")[0]
+        center_x = (cushion["low"][0] + cushion["high"][0]) / 2 + WRAPPER_OFFSET[0]
+        center_z = (cushion["low"][2] + cushion["high"][2]) / 2 + WRAPPER_OFFSET[2]
+        assert abs(center_x - target_x) < 1e-3, (prefix, center_x)
+        assert abs(center_z + 2.9) < 1e-3, (prefix, center_z)
+    cockpit = node_bounds(g, bins,
+        lambda name: name.startswith(("Dashboard", "Steering")))
+    assert {item["name"] for item in cockpit} == {
+        "Dashboard", "DashboardConsole", "SteeringWheel", "SteeringColumn"}, cockpit
+    wheel_wells = node_bounds(g, bins,
+        lambda name: name.startswith("WheelWellDark") and not name.endswith("Fascia"))
+    assert {item["name"] for item in wheel_wells} == \
+        {"WheelWellDarkFL", "WheelWellDarkFR", "WheelWellDarkRR"}, wheel_wells
+    fascias = node_bounds(g, bins, lambda name: name.startswith("WheelWellDark") and name.endswith("Fascia"))
+    assert {item["name"] for item in fascias} == \
+        {"WheelWellDarkFLFascia", "WheelWellDarkFRFascia", "WheelWellDarkRRFascia"}, fascias
+    assert all(item["high"][1] - item["low"][1] >= 0.50 for item in fascias), fascias
+    for item in wheel_wells:
+        vertices = set()
+        for index in scene_nodes(g):
+            node = g["nodes"][index]
+            if node.get("name", "") != item["name"]:
+                continue
+            world = glb_check.node_matrix(node)
+            for primitive in g["meshes"][node["mesh"]]["primitives"]:
+                vertices |= {(round(p[0], 4), round(p[1], 4), round(p[2], 4))
+                             for p in (glb_check.apply(world, raw) for raw in
+                                       glb_check.read_accessor(g, bins, primitive["attributes"]["POSITION"]))}
+        base_y = min(p[1] for p in vertices)
+        apex_y = max(p[1] for p in vertices)
+        z0 = min(p[2] for p in vertices)
+        z1 = max(p[2] for p in vertices)
+        center_z = (z0 + z1) / 2
+        span_z = z1 - z0
+        assert len(vertices) == 22, (item["name"], len(vertices))
+        # Semicirculo: ancho z ≈ 2 * elevación sobre el suelo del interior.
+        assert abs((apex_y - base_y) - span_z / 2) < 0.02, (item["name"], vertices)
+        assert any(abs(p[2] - z0) < 1e-3 and abs(p[1] - base_y) < 1e-3 for p in vertices), item["name"]
+        assert any(abs(p[2] - center_z) < 1e-3 and abs(p[1] - apex_y) < 1e-3 for p in vertices), item["name"]
+    ribs = node_bounds(g, bins, lambda name: name.startswith(("FloorRib", "FloorThreshold")))
+    assert len(ribs) == 5, ribs
+    # Sin caras coplanares: los nervios arrancan por encima de la cara superior del suelo.
+    assert all(item["low"][1] >= floor["high"][1] + 0.003 for item in ribs), (floor, ribs)
+    assert sum(1 for item in ribs if item["high"][2] - item["low"][2] > 6.0) == 3, ribs
+    for rack, sign in ((rack_left, -1), (rack_right, 1)):
+        names = {item["name"] for item in rack}
+        assert {"LowerCabinet", "LowerDoorRear", "LowerDoorFront"} <= \
+            {name[len("LeftRack" if sign < 0 else "RightRack"):] for name in names}, names
+        shelves = [item for item in rack if "UpperShelf" in item["name"]]
+        assert len(shelves) == 3, names
+        # Estantes superiores parciales: nada vertical cubre la cara del pasillo sobre el gabinete.
+        uprights = [item for item in rack if item["low"][1] > -0.4 and
+                    item["high"][1] - item["low"][1] > 0.3 and
+                    item["high"][2] - item["low"][2] > 0.3]
+        assert not uprights, uprights
+        width = max(item["high"][0] - item["low"][0] for item in rack)
+        assert width >= 0.46, (names, width)
+    parcels = node_bounds(g, bins, lambda name: "Parcel" in name)
+    assert 3 <= len(parcels) <= 6, parcels
+    left_parcels = [item for item in parcels if item["name"].startswith("Left")]
+    right_parcels = [item for item in parcels if item["name"].startswith("Right")]
+    assert left_parcels and right_parcels, parcels
+    assert_inside(left_parcels, (-1.15, -0.60, -1.20), (-0.60, 0.80, 1.20), "parcel izquierdo")
+    assert_inside(right_parcels, (0.60, -0.60, -1.20), (1.15, 0.80, 1.20), "parcel derecho")
 
     tris = sum(len(glb_check.read_accessor(g, bins, p["indices"])) // 3
                for mesh in g.get("meshes", []) for p in mesh["primitives"])
@@ -181,10 +262,14 @@ def main():
     blender = find_blender(arguments.blender)
     with tempfile.TemporaryDirectory(prefix="rutafragil_interior_") as directory:
         glb = Path(directory) / "interior.glb"
+        duplicate = Path(directory) / "interior_duplicate.glb"
         run = generate(blender, glb)
         assert run.returncode == 0 and "INTERIOR_OK" in run.stdout, run.stdout[-3000:] + run.stderr[-3000:]
+        rerun = generate(blender, duplicate)
+        assert rerun.returncode == 0 and "INTERIOR_OK" in rerun.stdout, rerun.stdout[-3000:] + rerun.stderr[-3000:]
+        assert glb.read_bytes() == duplicate.read_bytes(), "generacion GLB no determinista"
         tris, corridor = validate(glb)
-        print("INTERIOR_TEST_OK tris=%d corridor=%.3f" % (tris, corridor))
+        print("INTERIOR_TEST_OK tris=%d corridor=%.3f deterministic=yes" % (tris, corridor))
         return glb, tris
 
 

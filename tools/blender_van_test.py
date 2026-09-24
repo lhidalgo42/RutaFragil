@@ -7,6 +7,7 @@ Godot frame: -Z is front, +Z rear; the wrapper puts the GLB base at bus y=-0.8.
 """
 import argparse
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -90,15 +91,18 @@ def assert_gap(g, bins, dimensions):
 
 def assert_uv_regions(g, bins):
     def category(name):
-        if name.startswith("RedStripe"):
+        if name.startswith("RedStripe") or "RearLight" in name or "Marker" in name:
             return "red"
-        if name.startswith("Roof"):
+        if name.startswith("Roof") or "Headlight" in name or name in ("CabBrow", "RearPlateRecess"):
             return "cream"
-        if "HighWindow" in name:
+        if "CabSideGlass" in name or "MirrorGlass" in name:
             return "glass"
-        if name == "Underbody" or "WheelArch" in name:
-            return "dark"
-        return "yellow"
+        if name in ("RearLowerFascia", "RearStepBumper"):
+            return "yellow"
+        dark_words = ("Underbody", "WheelArch", "WheelLiner", "Gasket", "Rail", "Handle",
+                      "Bumper", "MirrorArm", "Hinge", "Threshold", "JambTrim", "HeaderTrim",
+                      "DarkFascia", "Grille", "Bezel", "Inset", "Latch", "SillTrim")
+        return "dark" if any(word in name for word in dark_words) else "yellow"
 
     for _i, node in mesh_nodes(g, lambda _name: True):
         u0, v0, u1, v1 = UV_REGIONS[category(node.get("name", ""))]
@@ -134,21 +138,94 @@ def validate(glb):
     # Openings (Godot frame: -Z front; wrapper puts model y0 at bus y -0.8).
     assert_gap(g, bins, ((1.15, 1.27), (1.12, 2.02), (-3.19, -2.31)))        # boarding above arch
     assert_gap(g, bins, ((-0.68, 0.68), (0.15, 2.18), (3.84, 4.01)))         # rear, >=1.4 x 1.9
-    assert_gap(g, bins, ((-0.90, 0.90), (1.05, 2.02), (-4.01, -3.83)))       # windshield
-    assert_gap(g, bins, ((-1.27, -1.15), (1.28, 2.02), (-3.51, -2.37)))      # left cab high window
-    assert_gap(g, bins, ((1.15, 1.27), (1.28, 2.02), (-3.61, -3.29)))        # right cab high window
+    assert_gap(g, bins, ((-0.90, 0.90), (1.06, 2.00), (-4.08, -3.70)))       # raked windshield
+    assert_gap(g, bins, ((-0.68, -0.52), (1.40, 1.70), (-3.76, -3.55)))      # CabinCamera cone
+    assert_gap(g, bins, ((0.52, 0.68), (1.40, 1.70), (-3.76, -3.55)))        # CopilotCamera cone
 
-    # Static wheel centre: bus y -0.48 = model y 0.32 (wrapper -0.8); radius 0.5.
-    for item in node_bounds(g, bins, lambda name: "WheelArch" in name):
+    # Only thin concentric lips may carry WheelArch: reject the old giant black patches.
+    arches = node_bounds(g, bins, lambda name: "WheelArch" in name)
+    assert len(arches) == 4
+    for item in arches:
+        assert "Lip" in item["name"], "parche rectangular antiguo: %s" % item["name"]
+        assert item["high"][0] - item["low"][0] <= 0.06, item["name"]
         z_center = (item["low"][2] + item["high"][2]) / 2
-        y_center = item["low"][1]  # the arch's straight bottom edge passes through its centre
+        y_center = item["low"][1]
         assert abs(abs(z_center) - 2.75) <= 0.02, (item["name"], z_center)
         assert 0.32 <= y_center <= 0.45, (item["name"], y_center)
-        side = -1.0 if item["name"].startswith("Left") else 1.0
-        assert abs(item["high"][0] * side - 1.25) <= 0.01 or abs(item["low"][0] * side - 1.25) <= 0.01
-        inner = min(((p[2] - z_center) ** 2 + (p[1] - y_center) ** 2) ** 0.5 for p in item["positions"])
-        # the static wheel (centre 0.32, radius 0.5) must fit inside the arch's inner edge
+        inner = min(math.hypot(p[2] - z_center, p[1] - y_center) for p in item["positions"])
         assert inner - (y_center - 0.32) >= 0.5, (item["name"], inner, y_center)
+
+    # Liners clear the steered front wheel sweep: sqrt(0.5^2 + 0.11^2) = 0.512.
+    liners = node_bounds(g, bins, lambda name: "WheelLiner" in name)
+    assert len(liners) == 4
+    for item in liners:
+        z_center = (item["low"][2] + item["high"][2]) / 2
+        y_center = item["low"][1]
+        inner = min(math.hypot(p[2] - z_center, p[1] - y_center) for p in item["positions"])
+        assert inner >= 0.515, (item["name"], inner)
+
+    # v6 silhouette and finishing cues; each rejects a conspicuous v5 shortcut.
+    names = {node.get("name", "") for _i, node in mesh_nodes(g, lambda _name: True)}
+    required = {"RoofCrown", "CabBrow", "FrontRoundedNose", "FrontDarkFascia",
+                "FasciaGrille", "FrontBumper", "HeadlightLeft", "HeadlightRight",
+                "HeadlightBezelLeft", "HeadlightBezelRight",
+                "WindshieldPillarLeft", "WindshieldPillarRight",
+                "WindshieldGasketLeft", "WindshieldGasketRight",
+                "WindshieldGasketLower", "WindshieldGasketUpper",
+                "WindshieldInnerLowerTrim", "WindshieldInnerUpperTrim",
+                "LeftCabSideGlass", "RightCabSideGlass",
+                "LeftMirrorPod", "RightMirrorPod", "LeftMirrorGlass", "RightMirrorGlass",
+                "RightDoorRearJambTrim", "RightDoorFrontJambTrim",
+                "RightDoorHeaderTrim", "RightDoorThreshold",
+                "SlidingDoorParked", "SlidingDoorInset", "SlidingDoorRail", "SlidingDoorHandle",
+                "RearDoorLeftOpen", "RearDoorRightOpen",
+                "RearDoorLeftInsetUpper", "RearDoorRightInsetUpper",
+                "RearDoorLeftInsetLower", "RearDoorRightInsetLower",
+                "RearDoorLeftLatch", "RearDoorRightLatch",
+                "RearApertureGasketLeft", "RearApertureGasketRight",
+                "RearHeaderTrim", "RearSillTrim", "RearLowerFascia", "RearPlateRecess",
+                "RearStepBumper", "RearLightLeft", "RearLightRight",
+                "RearUpperMarker0", "RearUpperMarker1", "RearUpperMarker2",
+                "RedStripeSlidingDoor", "RedStripeRearDoorLeft", "RedStripeRearDoorRight"}
+    assert required <= names, sorted(required - names)
+    assert not any("HighWindow" in name or "DoorWindow" in name or
+                   "RearDoorLeftWindow" in name or "RearDoorRightWindow" in name
+                   for name in names), "v5 cargo/rear glazing survived"
+    assert sum(name.startswith("RearDoor") and "Hinge" in name for name in names) == 4
+
+    roof = node_bounds(g, bins, lambda name: name == "RoofCrown")[0]
+    assert roof["high"][1] >= 2.34 and roof["high"][2] >= 4.00, roof["high"]
+    # Raked A-pillar face, yet deep enough to seat the wrapper's flat glass (z=-3.85).
+    for item in node_bounds(g, bins, lambda name: name.startswith("WindshieldPillar")):
+        lower_front = min(p[2] for p in item["positions"] if p[1] < 1.1)
+        upper_front = min(p[2] for p in item["positions"] if p[1] > 1.9)
+        assert upper_front - lower_front >= 0.20, (item["name"], lower_front, upper_front)
+        assert upper_front <= -3.86 and item["high"][2] >= -3.84, item["name"]
+
+    # Half-height datum remains aligned across shell, parked panel and both leaves.
+    stripes = node_bounds(g, bins, lambda name: name.startswith("RedStripe"))
+    assert len(stripes) == 6
+    for item in stripes:
+        band = item["high"][1] - item["low"][1]
+        assert 0.12 <= band <= 0.14, (item["name"], band)
+        assert 1.03 <= item["low"][1] <= 1.05 and 1.16 <= item["high"][1] <= 1.18, item["name"]
+
+    # Parked panel: thin slab with an inset, never a fake doorway.
+    door = node_bounds(g, bins, lambda name: name == "SlidingDoorParked")[0]
+    assert 1.28 <= door["low"][0] and door["high"][0] <= 1.40, door["name"]
+    assert door["low"][2] >= -2.30 and door["high"][2] <= -1.20, door["name"]
+    threshold = node_bounds(g, bins, lambda name: name == "RightDoorThreshold")[0]
+    assert threshold["high"][1] <= 1.105, threshold["high"]
+
+    # Rear leaves visibly swing outboard and aft of the rear body plane.
+    for side in ("Left", "Right"):
+        leaf = node_bounds(g, bins, lambda name: name == "RearDoor%sOpen" % side)[0]
+        assert leaf["high"][2] >= 4.15, (leaf["name"], leaf["high"][2])
+        assert max(abs(leaf["low"][0]), abs(leaf["high"][0])) >= 1.10, leaf["name"]
+
+    for side in ("Left", "Right"):
+        pod = node_bounds(g, bins, lambda name: name == "%sMirrorPod" % side)[0]
+        assert max(abs(pod["low"][0]), abs(pod["high"][0])) >= 1.45, pod["name"]
 
     total = tris(g, bins)
     assert total <= 10000, "exterior %d > 10000" % total
