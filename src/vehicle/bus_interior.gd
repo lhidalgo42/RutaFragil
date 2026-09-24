@@ -17,7 +17,8 @@ extends Node3D
 ## sill, a pane or a ramp. Free cargo sliding out of the back while the bus
 ## accelerates is what the straps exist for: in the owner's 300 s session all
 ## four boxes left through it at floor level, the first after 5.4 s untouched.
-## A closable door would be M3 mechanics, not a correction.
+## D103 supersedes D99: side and rear gaps now have animated, closable blockers
+## owned by BusDoors. The open rear remains the cargo door.
 
 
 ## The ONE definition of "inside the hull" (interior bounds D67/D72):

@@ -56,6 +56,8 @@ func leave() -> void:
 		_impl = null
 	if multiplayer.multiplayer_peer != null:
 		multiplayer.multiplayer_peer = null
+	ready_peers.clear()
+	done_peers.clear()
 	_disconnect_tree_signals()
 
 
@@ -100,6 +102,8 @@ func _on_peer_connected(id: int) -> void:
 
 
 func _on_peer_disconnected(id: int) -> void:
+	ready_peers.erase(id)
+	done_peers.erase(id)
 	peer_left.emit(id)
 
 

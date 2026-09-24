@@ -19,7 +19,7 @@ func test_crossing_the_door_plane_boards_and_exits() -> void:
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	# Put the crew INSIDE the doorway, inside the interior (local x < 1.05).
-	crew.global_position = bus.global_transform * Vector3(0.0, 0.0, -2.75)
+	crew.global_position = bus.global_transform * Vector3(0.0, 0.0, -1.75)
 	await _wait_ticks(10)
 	assert_bool(crew.aboard).is_true()
 	# The crew rides in the world frame (D74 measured): it is NOT reparented
@@ -27,7 +27,22 @@ func test_crossing_the_door_plane_boards_and_exits() -> void:
 	# ride in crew_ride_test.gd and the note in door_transit.gd).
 	assert_bool(crew.get_parent() != bus).is_true()
 	# And back out through the door (local x > 1.30).
-	crew.global_position = bus.global_transform * Vector3(1.5, 0.0, -2.75)
+	crew.global_position = bus.global_transform * Vector3(1.5, 0.0, -1.75)
+	await _wait_ticks(10)
+	assert_bool(crew.aboard).is_false()
+
+
+func test_closed_side_door_does_not_change_logical_aboard_state() -> void:
+	_make_ground()
+	var bus: Bus = await _spawn_bus(Vector3(0.0, 1.6, 0.0))
+	if bus == null: return
+	await _wait_ticks(60)
+	var doors: BusDoors = bus.get_node("BusDoors") as BusDoors
+	doors.apply_state(&"side", BusDoors.DoorPhase.CLOSED, 0.0)
+	var crew: CrewMember = await _spawn_crew(bus.global_transform * Vector3(0.0, 0.0, -1.75))
+	if crew == null: return
+	var transit: DoorTransit = auto_free(DoorTransit.new())
+	add_child(transit)
 	await _wait_ticks(10)
 	assert_bool(crew.aboard).is_false()
 

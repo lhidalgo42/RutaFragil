@@ -92,8 +92,12 @@ func test_leave_returns_to_idle_and_frees_the_port() -> void:
 	if port == -1:
 		return
 	assert_bool(_call_ok("host_game", [port])).is_true()
+	_backend.set("ready_peers", [2])
+	_backend.set("done_peers", [2])
 	_backend.call("leave")
 	assert_bool(_is_host()).is_false()
+	assert_array(_backend.get("ready_peers")).is_empty()
+	assert_array(_backend.get("done_peers")).is_empty()
 	assert_bool(_call_ok("host_game", [port])).is_true()
 
 

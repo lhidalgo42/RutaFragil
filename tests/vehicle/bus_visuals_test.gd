@@ -5,12 +5,15 @@ const EXPECTED_COLLIDERS: int = 16
 const MAX_VISIBLE_TRIS: int = 25000
 
 
-func test_final_visuals_are_separate_from_the_sixteen_authored_colliders() -> void:
+func test_final_visuals_are_separate_from_the_sixteen_bus_colliders() -> void:
 	var bus: Bus = await _spawn_bus()
 	if bus == null: return
 	var shapes: Array[Node] = bus.get_children().filter(
 		func(node: Node) -> bool: return node is CollisionShape3D)
 	assert_int(shapes.size()).is_equal(EXPECTED_COLLIDERS)
+	var blockers: Node = bus.get_node_or_null("BusDoors/Blockers")
+	assert_bool(blockers is AnimatableBody3D).is_true()
+	assert_int(blockers.get_child_count()).is_equal(2)
 	var legacy: Node = bus.get_node_or_null("MeshInstance3D")
 	assert_bool(legacy is MeshInstance3D).is_true()
 	if legacy is MeshInstance3D: assert_bool(legacy.visible).is_false()

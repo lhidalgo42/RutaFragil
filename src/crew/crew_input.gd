@@ -234,6 +234,13 @@ func _interact_tap(hands: CrewHands) -> void:
 				if radial < best_radial:
 					best_radial = radial
 					best = "unstrap"
+			var door_id: StringName = _door_in_reach()
+			if door_id != &"":
+				var doors: BusDoors = _doors_node()
+				if doors.can_toggle(door_id, _crew) and _ray_radial(eye.global_position,
+						-eye.global_basis.z, doors.handle_position(door_id)) < best_radial:
+					doors.send_toggle(door_id)
+					return
 			if best == "seat":
 				# The EXACT seat the reticle chose — not the nearest.
 				if not _crew.network_member:
@@ -246,6 +253,18 @@ func _interact_tap(hands: CrewHands) -> void:
 				if hands.try_unstrap():
 					return
 	toggle_nearest_seat(_crew)
+
+
+func _doors_node() -> BusDoors:
+	return get_tree().get_first_node_in_group("bus_doors") as BusDoors
+
+
+func _door_in_reach() -> StringName:
+	var doors: BusDoors = _doors_node()
+	var tuning: TuningTable = GameConfig.tuning
+	if doors == null or tuning == null:
+		return &""
+	return doors.nearest_handle(_crew.global_position, tuning.interaction_reach_m)
 
 
 ## Lateral distance of a point to the look ray (INF behind the camera).

@@ -95,7 +95,7 @@ func _sample(bus: Bus, crew: CrewMember, packages: Array[Package], anchors: Arra
 		var outside: bool = absf(local.x) > 1.30 or absf(local.z) > 4.05 or local.y > 2.50
 		if outside:
 			# Door exits (side gap or open rear) are counted, never asserted.
-			if (local.x > 1.15 and local.z > -3.2 and local.z < -2.3) or local.z > 3.9:
+			if (local.x > 1.15 and local.z > -2.2 and local.z < -1.3) or local.z > 3.9:
 				_door_exits += 1
 			else:
 				_hard_exits += 1

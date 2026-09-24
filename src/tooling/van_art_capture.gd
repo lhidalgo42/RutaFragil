@@ -12,6 +12,7 @@ var _prefix: String = "res://docs/evidencia/M-ART-VAN/integracion/van"
 var _world: Node3D = null
 var _camera: Camera3D = null
 var _bus: Node3D = null
+var _doors: Node = null
 var _interior_fill: OmniLight3D = null
 var _shot: int = 0
 var _frames: int = 0
@@ -32,7 +33,11 @@ static func views() -> Array[Dictionary]:
 		{"name":"exterior_side_left", "pos":Vector3(-22.0, 0.35, 0.0), "at":Vector3(0.0, 0.35, 0.0), "fov":24.0},
 		{"name":"exterior_rear", "pos":Vector3(0.0, 0.45, 14.0), "at":Vector3(0.0, 0.35, 0.0), "fov":24.0},
 		{"name":"exterior_front", "pos":Vector3(0.0, 0.45, -14.0), "at":Vector3(0.0, 0.35, 0.0), "fov":24.0},
-		{"name":"side_door", "pos":Vector3(5.5, 0.4, -3.4), "at":Vector3(1.2, 0.2, -2.75), "fov":40.0},
+		{"name":"side_door", "pos":Vector3(5.5, 0.4, -2.4), "at":Vector3(1.2, 0.2, -1.75), "fov":40.0},
+		{"name":"side_door_half", "pos":Vector3(5.5, 0.4, -2.4), "at":Vector3(1.2, 0.2, -1.75), "fov":40.0, "side_t":0.5, "rear_t":0.5},
+		{"name":"side_door_closed", "pos":Vector3(5.5, 0.4, -2.4), "at":Vector3(1.2, 0.2, -1.75), "fov":40.0, "side_t":0.0, "rear_t":0.0},
+		{"name":"rear_doors_closed", "pos":Vector3(0.0, 0.45, 14.0), "at":Vector3(0.0, 0.35, 0.0), "fov":24.0, "side_t":0.0, "rear_t":0.0},
+		{"name":"seats_close", "pos":Vector3(0.0, 0.55, -1.35), "at":Vector3(0.0, -0.05, -2.9), "fov":42.0, "interior":true},
 		{"name":"wheel_close", "pos":Vector3(3.6, -0.45, -2.75), "at":Vector3(1.1, -0.5, -2.75), "fov":34.0},
 		{"name":"cab", "camera":"CabinCamera"},
 		{"name":"cab_seats", "pos":Vector3(0.0, 0.85, -1.2), "at":Vector3(0.0, 0.1, -3.4), "fov":70.0},
@@ -51,6 +56,7 @@ func _process(_delta: float) -> bool:
 	_frames += 1
 	if _frames == 1:
 		_apply_view(view)
+		_set_door_pose(view)
 		return false
 	if _frames < SETTLE_FRAMES: return false
 	var path: String = "%s_%s.png" % [_prefix, view["name"]]
@@ -64,7 +70,8 @@ func _process(_delta: float) -> bool:
 
 func _apply_view(view: Dictionary) -> void:
 	var cabin: Camera3D = _bus.get_node_or_null("CabinCamera")
-	var is_interior: bool = view.has("camera") or String(view["name"]).begins_with("cab_") or String(view["name"]).begins_with("interior")
+	var name: String = String(view["name"])
+	var is_interior: bool = view.has("camera") or view.get("interior", false) or name.begins_with("cab_") or name.begins_with("interior") or name == "seats_close"
 	_interior_fill.visible = is_interior
 	if view.has("camera"):
 		_camera.current = false
@@ -80,12 +87,25 @@ func _apply_view(view: Dictionary) -> void:
 	_camera.current = true
 
 
+func _set_door_pose(view: Dictionary) -> void:
+	if _doors == null:
+		return
+	for door_id: StringName in [&"side", &"rear"]:
+		var key: String = "side_t" if door_id == &"side" else "rear_t"
+		var progress: float = float(view.get(key, 1.0))
+		_doors.call("apply_state", door_id, 0, progress)
+	var visual: Node = _bus.get_node_or_null("BusExteriorVisual")
+	if visual != null and visual.has_method("update_doors"):
+		visual.call("update_doors")
+
+
 func _setup() -> bool:
 	var packed: Resource = load("res://src/vehicle/bus.tscn")
 	if not (packed is PackedScene): return false
 	_world = Node3D.new(); root.add_child(_world)
 	var scene: PackedScene = packed
 	_bus = scene.instantiate()
+	_doors = _bus.get_node_or_null("BusDoors")
 	if _bus is RigidBody3D:
 		var body: RigidBody3D = _bus
 		body.freeze = true

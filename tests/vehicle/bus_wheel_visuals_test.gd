@@ -67,6 +67,61 @@ func test_frozen_replica_uses_snapshot_steer_and_velocity() -> void:
 	assert_float(bus.linear_velocity.length()).is_equal_approx(0.0, 0.0001)
 
 
+func test_side_door_pose_pops_then_slides_rearward() -> void:
+	assert_vector(BusExteriorVisual.side_pose(0.0)).is_equal_approx(Vector3.ZERO, Vector3.ONE * 0.0001)
+	var popped: Vector3 = BusExteriorVisual.side_pose(BusExteriorVisual.SIDE_POP_SHARE)
+	assert_vector(popped).is_equal_approx(Vector3(0.035, 0.0, 0.0), Vector3.ONE * 0.0001)
+	assert_vector(BusExteriorVisual.side_pose(1.0)).is_equal_approx(
+		Vector3(0.035, 0.0, 0.95), Vector3.ONE * 0.0001)
+	assert_vector(BusExteriorVisual.side_pose(2.0)).is_equal_approx(
+		BusExteriorVisual.side_pose(1.0), Vector3.ONE * 0.0001)
+
+
+func test_rear_leaves_yaw_outward_in_opposite_directions() -> void:
+	assert_float(BusExteriorVisual.rear_yaw(0.0, -1)).is_equal_approx(0.0, 0.0001)
+	assert_float(BusExteriorVisual.rear_yaw(1.0, -1)).is_equal_approx(-132.0, 0.0001)
+	assert_float(BusExteriorVisual.rear_yaw(1.0, 1)).is_equal_approx(132.0, 0.0001)
+	assert_float(BusExteriorVisual.rear_yaw(0.5, 1)).is_equal_approx(66.0, 0.0001)
+
+
+func test_exterior_model_exposes_door_pivots_and_follows_bus_doors() -> void:
+	var packed: PackedScene = load("res://src/vehicle/bus.tscn") as PackedScene
+	var bus: Bus = auto_free(packed.instantiate()) as Bus
+	bus.freeze = true
+	add_child(bus)
+	await get_tree().process_frame
+	var visual: BusExteriorVisual = bus.get_node("BusExteriorVisual") as BusExteriorVisual
+	visual.set_physics_process(false)
+	var side: Node3D = visual.get_node_or_null("Model/SideDoorPivot") as Node3D
+	var left: Node3D = visual.get_node_or_null("Model/RearDoorLeftPivot") as Node3D
+	var right: Node3D = visual.get_node_or_null("Model/RearDoorRightPivot") as Node3D
+	assert_object(side).is_not_null()
+	assert_object(left).is_not_null()
+	assert_object(right).is_not_null()
+	assert_object(visual.get_node_or_null("Model/StaticShell")).is_not_null()
+	for pivot: Node3D in [side, left, right]:
+		if pivot != null:
+			assert_int(pivot.get_child_count()).is_equal(1)
+			assert_bool(pivot.get_child(0) is MeshInstance3D).is_true()
+	var doors: Node = bus.get_node_or_null("BusDoors")
+	if doors == null or side == null or left == null or right == null:
+		return
+	# Doors start open: side slid aft, rear leaves swung.
+	visual.update_doors()
+	var closed_side: Vector3 = Vector3(1.252, 1.04, -1.30)
+	assert_vector(side.position).is_equal_approx(closed_side + BusExteriorVisual.side_pose(1.0),
+		Vector3.ONE * 0.002)
+	assert_float(rad_to_deg(left.rotation.y)).is_equal_approx(-132.0, 0.01)
+	assert_float(rad_to_deg(right.rotation.y)).is_equal_approx(132.0, 0.01)
+	# Closed snapshot drives every leaf back to its authored pose.
+	doors.call("apply_state", &"side", 2, 0.0)
+	doors.call("apply_state", &"rear", 2, 0.0)
+	visual.update_doors()
+	assert_vector(side.position).is_equal_approx(closed_side, Vector3.ONE * 0.002)
+	assert_float(left.rotation.y).is_equal_approx(0.0, 0.0001)
+	assert_float(right.rotation.y).is_equal_approx(0.0, 0.0001)
+
+
 func _add_markers(bus: Bus) -> void:
 	for wheel_name: String in ["WheelFL", "WheelFR", "WheelRL", "WheelRR"]:
 		var marker: Marker3D = Marker3D.new()

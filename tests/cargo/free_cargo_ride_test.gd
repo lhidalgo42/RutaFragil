@@ -86,13 +86,10 @@ func test_free_packages_ride_the_lap_contained() -> void:
 
 
 func test_wheel_ray_ignores_cargo_and_crew_in_its_column() -> void:
-	# D90 (the authorized scope amendment): the suspension ray read CARGO as
-	# ground — measured: a box in a wheel column launches the parked bus
-	# (~54 kN in one corner, y=3.84 m; exit 100 without the fix). The FR
-	# column (x=1.1, z=-2.75) sits in the side-door gap, where the crew steps
-	# every boarding. This test parks a box AND the crew inside that column:
-	# without the fix the bus flies; with it the ray only sees the WORLD and
-	# the bus rests at its normal height (measured rest: 0.977 m).
+	# D90 measured the suspension ray reading cargo as ground: a box in the FR
+	# wheel column launched the parked bus (~54 kN in one corner, y=3.84 m).
+	# D103 moved the doorway away from that column. The fixtures still touch
+	# the ray at x=1.1 but stop at the new solid wall instead of penetrating it.
 	var runner: GdUnitSceneRunner = scene_runner("res://scenes/playground.tscn")
 	var scene: Node = runner.scene()
 	for i: int in range(120):
@@ -106,11 +103,10 @@ func test_wheel_ray_ignores_cargo_and_crew_in_its_column() -> void:
 	var bus: Bus = bus_node
 	var crew: CrewMember = crew_node
 	var rest_y: float = bus.global_position.y
-	# The box covers the ray line (column x=1.1, the box spans 0.8-1.2);
-	# positioned before add_child, inside the open doorway of the FR column.
-	var box: Package = _spawn(scene, bus.global_transform * Vector3(1.0, -0.4, -2.75))
+	# The box reaches the x=1.1 ray line and ends at the wall's x=1.15 face.
+	var box: Package = _spawn(scene, bus.global_transform * Vector3(0.95, -0.4, -2.75))
 	assert_object(box).is_not_null()
-	crew.global_position = bus.global_transform * Vector3(1.0, -0.55, -2.55)
+	crew.global_position = bus.global_transform * Vector3(0.85, -0.55, -2.55)
 	crew.aboard = true
 	var max_omega: float = 0.0
 	var min_y: float = rest_y
@@ -191,11 +187,11 @@ func _sample_tick(bus: Bus, packages: Array[Package], rest_ys: Array[float]) -> 
 
 
 ## The real openings (D89 pins): the rear gap (z=3.85, |x| < 0.7 between the
-## rear wall posts) and the side door (x=+1.2, z in -3.2..-2.3 between the
+## rear wall posts) and the side door (x=+1.2, z in -2.2..-1.3 between the
 ## right wall segments). Walls, windshield, roof and floor are NOT doors.
 func _is_door_exit(local: Vector3) -> bool:
 	if local.z > 3.8 and absf(local.x) < 0.7:
 		return true
-	if local.x > 1.15 and local.z >= -3.2 and local.z <= -2.3:
+	if local.x > 1.15 and local.z >= -2.2 and local.z <= -1.3:
 		return true
 	return false

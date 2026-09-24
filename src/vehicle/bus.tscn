@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://src/vehicle/bus.gd" id="1_bus"]
 [ext_resource type="Script" path="res://src/vehicle/cabin_camera.gd" id="2_cabin"]
 [ext_resource type="PackedScene" path="res://src/vehicle/bus_interior.tscn" id="3_interior"]
 [ext_resource type="PackedScene" path="res://src/vehicle/bus_exterior_visual.tscn" id="4_exterior"]
+[ext_resource type="PackedScene" path="res://src/vehicle/bus_doors.tscn" id="5_doors"]
+
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_body"]
 size = Vector3(2.5, 0.2, 8.0)
@@ -39,6 +41,8 @@ position = Vector3(1.1, 0, 2.75)
 [node name="BusInterior" parent="." instance=ExtResource("3_interior")]
 
 [node name="BusExteriorVisual" parent="." instance=ExtResource("4_exterior")]
+
+[node name="BusDoors" parent="." instance=ExtResource("5_doors")]
 
 [node name="CabinCamera" type="Camera3D" parent="."]
 position = Vector3(-0.6, 0.75, -2.9)

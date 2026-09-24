@@ -45,7 +45,7 @@ func test_authored_door_hole_excludes_air_but_keeps_floor_and_jamb() -> void:
 	var body: CharacterBody3D = auto_free(CharacterBody3D.new())
 	body.collision_layer = 0
 	body.collision_mask = 0
-	body.position = Vector3(1.2, -0.59, -2.75)
+	body.position = Vector3(1.2, -0.59, -1.75)
 	var collision: CollisionShape3D = CollisionShape3D.new()
 	var capsule: CapsuleShape3D = CapsuleShape3D.new()
 	capsule.radius = 0.3
@@ -60,10 +60,10 @@ func test_authored_door_hole_excludes_air_but_keeps_floor_and_jamb() -> void:
 	assert_int(hull.pieces.size()).is_equal(9)
 	var hole: Dictionary = hull.measure(body, bus.global_transform)
 	assert_float(GateMetricsUtil.number(hole["depth_m"])).is_equal_approx(0.0, 0.000001)
-	body.position.z = -2.2
+	body.position.z = -1.2
 	var jamb: Dictionary = hull.measure(body, bus.global_transform)
 	assert_float(GateMetricsUtil.number(jamb["depth_m"])).is_greater(0.05)
-	body.position = Vector3(1.0, -0.66, -2.75)
+	body.position = Vector3(1.0, -0.66, -1.75)
 	var floor_hit: Dictionary = hull.measure(body, bus.global_transform)
 	assert_float(GateMetricsUtil.number(floor_hit["depth_m"])).is_equal_approx(0.06, 0.000001)
 	assert_str(str(floor_hit["piece"])).is_equal("Floor")

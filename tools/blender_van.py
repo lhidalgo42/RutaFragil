@@ -177,14 +177,12 @@ def arch_skirt(name, side, longitudinal, inner, half=0.70, segments=16):
     return mesh_object(name, vertices, faces)
 
 
-def hinged_box(name, hinge_x, hinge_y, width, z0, z1, angle, depth=0.065, offset=0.0):
-    """Rear door detail extending away from a hinge; rotation is baked before export."""
-    direction = -1.0 if hinge_x < 0 else 1.0
-    local_center = direction * (offset + width / 2)
-    center_x = hinge_x + math.cos(angle) * local_center
-    center_y = hinge_y + math.sin(angle) * local_center
-    return box(name, center_y - depth / 2, center_y + depth / 2, z0, z1,
-               center_x - width / 2, center_x + width / 2, 0.008, angle)
+REAR_HINGE_Y = -4.10
+def rear_leaf_box(name, side, width, z0, z1, depth=0.065, offset=0.0, y=REAR_HINGE_Y):
+    """Closed rear-door detail extending inward from its hinge at x=0.72*side."""
+    center_x = 0.72 * side - side * (offset + width / 2)
+    return box(name, y - depth / 2, y + depth / 2, z0, z1,
+               center_x - width / 2, center_x + width / 2, 0.008)
 
 
 def front_strip(name, lower_outer, lower_inner, upper_outer, upper_inner):
@@ -204,9 +202,10 @@ def front_strip(name, lower_outer, lower_inner, upper_outer, upper_inner):
 # Underbody and side shell. Wheel cavities stay open for the 0.5 m wheels.
 box("Underbody", -3.88, 3.82, 0.00, 0.10, -0.96, 0.96, 0.025)
 for side, prefix in ((-1, "Left"), (1, "Right")):
-    flank(prefix + "LowerRearCorner", side, -3.82, -3.45, 0.10, 1.10)
+    # 1 mm under the stripe keeps merged StaticShell boxes from sharing bevel edges.
+    flank(prefix + "LowerRearCorner", side, -3.82, -3.45, 0.10, 1.099)
     flank(prefix + "LowerCenter", side, -2.05, 2.05, 0.10, 1.10)
-    flank(prefix + "LowerFrontCorner", side, 3.45, 3.82, 0.10, 1.10)
+    flank(prefix + "LowerFrontCorner", side, 3.45, 3.82, 0.10, 1.099)
     for axle, longitudinal in (("Rear", -2.75), ("Front", 2.75)):
         arch_skirt(prefix + "ArchSkirt" + axle, side, longitudinal, 0.65)
         arch_band(prefix + "WheelArchLip" + axle, side, longitudinal, 0.585, 0.65, 0.045, 0.012)
@@ -214,21 +213,22 @@ for side, prefix in ((-1, "Left"), (1, "Right")):
 
 # Mostly blind cargo sides, preserving the pinned cab and boarding openings.
 flank("LeftCargoBlindPanel", -1, -3.82, 2.21, 1.10, 2.05)
-flank("LeftCabLowerPanel", -1, 2.21, 3.82, 1.10, 1.24)
+flank("LeftCabLowerPanel", -1, 2.211, 3.82, 1.10, 1.24)
 side_prism("LeftCabSideGlass", -1, ((2.34, 1.28), (3.76, 1.28), (3.60, 2.03), (2.34, 2.03)), 0.022, 0.006)
 flank("LeftCabRearPillar", -1, 2.21, 2.34, 1.24, 2.06, 0.010)
 flank("LeftCabAPillar", -1, 3.60, 3.82, 1.24, 2.06, 0.010)
 
-flank("RightCargoBlindPanel", 1, -3.82, 2.27, 1.10, 2.05)
-flank("RightDoorHeader", 1, 2.27, 3.21, 2.05, 2.10, 0.008)
-flank("RightDoorRearJamb", 1, 2.25, 2.30, 1.10, 2.05, 0.006)
-flank("RightDoorFrontJamb", 1, 3.20, 3.25, 1.10, 2.05, 0.006)
-box("RightDoorThreshold", 2.28, 3.20, 1.04, 1.10, 1.176, 1.25, 0.006)
-box("RightDoorRearJambTrim", 2.245, 2.285, 1.10, 2.04, 1.282, 1.312, 0.004)
-box("RightDoorFrontJambTrim", 3.215, 3.255, 1.10, 2.04, 1.282, 1.312, 0.004)
-box("RightDoorHeaderTrim", 2.27, 3.23, 2.045, 2.085, 1.282, 1.312, 0.004)
-flank("RightCabLowerPanel", 1, 3.20, 3.82, 1.10, 1.24)
-side_prism("RightCabSideGlass", 1, ((3.29, 1.28), (3.76, 1.28), (3.60, 2.03), (3.29, 2.03)), 0.022, 0.006)
+flank("RightCargoBlindPanel", 1, -3.82, 1.27, 1.10, 2.05)
+flank("RightDoorHeader", 1, 1.27, 2.21, 2.05, 2.10, 0.008)
+flank("RightDoorRearJamb", 1, 1.25, 1.30, 1.10, 2.05, 0.006)
+flank("RightDoorFrontJamb", 1, 2.20, 2.25, 1.10, 2.05, 0.006)
+box("RightDoorThreshold", 1.28, 2.20, 1.04, 1.10, 1.176, 1.25, 0.006)
+# Rear jamb trim stays inboard of the popped leaf (x>=1.287) so it can slide past.
+box("RightDoorRearJambTrim", 1.245, 1.285, 1.10, 2.04, 1.252, 1.282, 0.004)
+box("RightDoorFrontJambTrim", 2.215, 2.255, 1.10, 2.04, 1.282, 1.312, 0.004)
+box("RightDoorHeaderTrim", 1.27, 2.23, 2.052, 2.09, 1.282, 1.312, 0.004)
+flank("RightCabLowerPanel", 1, 2.20, 3.82, 1.10, 1.24)
+side_prism("RightCabSideGlass", 1, ((2.25, 1.28), (3.76, 1.28), (3.60, 2.03), (2.25, 2.03)), 0.022, 0.006)
 flank("RightCabAPillar", 1, 3.60, 3.82, 1.24, 2.06, 0.010)
 
 # One continuous cream crown: no separate cab roof lid or visible seam.
@@ -269,52 +269,68 @@ for side, prefix in ((-1, "Left"), (1, "Right")):
     face_x0, face_x1 = ((-1.582, -1.574) if side < 0 else (1.574, 1.582))
     box(prefix + "MirrorGlass", 3.37, 3.48, 1.43, 1.69, face_x0, face_x1, 0.003)
 
-# Parked sliding panel reads as a panel, never as a second walkable opening.
-box("SlidingDoorParked", 1.22, 2.24, 0.45, 2.03, 1.285, 1.355, 0.026)
-box("SlidingDoorInset", 1.34, 2.12, 1.37, 1.90, 1.356, 1.370, 0.010)
-box("SlidingDoorRail", 1.06, 3.28, 1.99, 2.045, 1.272, 1.302, 0.006)
-box("SlidingDoorHandle", 1.94, 2.13, 1.27, 1.33, 1.358, 1.390, 0.008)
+# Functional sliding leaf, exported closed: pivot parked at the doorway,
+# the visual pops outboard and slides rearward along its rail.
+box("SideDoorPanel", 1.30, 2.20, 1.04, 2.05, 1.252, 1.322, 0.026)
+box("SideDoorInset", 1.40, 2.08, 1.30, 1.90, 1.322, 1.337, 0.010)
+box("SideDoorHandle", 1.34, 1.53, 1.27, 1.33, 1.325, 1.357, 0.008)
+# Fixed rail continues the header line over the rearward travel lane, above the leaf.
+box("SlidingDoorRail", 0.30, 1.27, 2.055, 2.095, 1.26, 1.29, 0.006)
 
-# Finished rear around the pinned 1.40 m clear aperture; leaves remain visibly open.
+# Finished rear around the pinned 1.40 m clear aperture; leaves export closed.
 box("RearLeftPanel", -4.00, -3.82, 0.10, 2.05, -1.25, -0.71, 0.025)
 box("RearRightPanel", -4.00, -3.82, 0.10, 2.05, 0.71, 1.25, 0.025)
 box("RearApertureGasketLeft", -4.035, -3.985, 0.15, 2.19, -0.75, -0.70, 0.005)
 box("RearApertureGasketRight", -4.035, -3.985, 0.15, 2.19, 0.70, 0.75, 0.005)
 box("RearHeaderTrim", -4.035, -3.985, 2.19, 2.25, -0.75, 0.75, 0.006)
 box("RearSillTrim", -4.035, -3.985, 0.10, 0.135, -0.75, 0.75, 0.005)
-rear_angle = math.radians(48)
+# Leaves hinge just aft of the fixed frame: the 132-degree swing sweeps outside the
+# body instead of through the rear panels. Lights sit below the leaf bottom.
 for side, prefix in ((-1, "Left"), (1, "Right")):
-    angle = rear_angle if side < 0 else -rear_angle
-    hinge_x = 0.72 * side
-    hinged_box("RearDoor" + prefix + "Open", hinge_x, -3.92, 0.68, 0.18, 2.04, angle)
-    hinged_box("RearDoor" + prefix + "InsetUpper", hinge_x, -3.958, 0.48, 1.28, 1.86, angle, 0.018, 0.10)
-    hinged_box("RearDoor" + prefix + "InsetLower", hinge_x, -3.958, 0.48, 0.38, 0.91, angle, 0.018, 0.10)
+    rear_leaf_box("RearDoor" + prefix + "Leaf", side, 0.715, 0.18, 2.04)
+    rear_leaf_box("RearDoor" + prefix + "InsetUpper", side, 0.48, 1.28, 1.86, 0.018, 0.12, REAR_HINGE_Y - 0.038)
+    rear_leaf_box("RearDoor" + prefix + "InsetLower", side, 0.48, 0.38, 0.91, 0.018, 0.12, REAR_HINGE_Y - 0.038)
+    rear_leaf_box("RearDoor" + prefix + "Latch", side, 0.12, 0.98, 1.15, 0.025, 0.55, REAR_HINGE_Y - 0.055)
+    # Hinge knuckles bridge the frame to the aft pin.
     for z in (0.45, 1.72):
-        x0 = hinge_x - 0.045 if side < 0 else hinge_x - 0.005
-        box("RearDoor%sHinge%d" % (prefix, int(z * 100)), -3.99, -3.84,
+        x0 = 0.72 * side - 0.045 if side < 0 else 0.72 * side - 0.005
+        box("RearDoor%sHinge%d" % (prefix, int(z * 100)), REAR_HINGE_Y - 0.035, REAR_HINGE_Y + 0.035,
             z - 0.08, z + 0.08, x0, x0 + 0.05, 0.006)
-hinged_box("RearDoorLeftLatch", -0.72, -3.975, 0.12, 0.98, 1.15, rear_angle, 0.025, 0.42)
-hinged_box("RearDoorRightLatch", 0.72, -3.975, 0.12, 0.98, 1.15, -rear_angle, 0.025, 0.42)
-for x, suffix in ((-0.98, "Left"), (0.98, "Right")):
-    box("RearLight" + suffix, -4.075, -4.025, 0.34, 0.78, x - 0.13, x + 0.13, 0.018)
+for x, suffix in ((-1.10, "Left"), (1.10, "Right")):
+    box("RearLight" + suffix, -4.135, -4.09, 0.04, 0.15, x - 0.13, x + 0.13, 0.012)
 for index, x in enumerate((-0.34, 0.0, 0.34)):
     box("RearUpperMarker%d" % index, -4.055, -4.015, 2.21, 2.29, x - 0.07, x + 0.07, 0.012)
-box("RearLowerFascia", -4.16, -4.02, 0.08, 0.26, -1.18, 1.18, 0.035)
+box("RearLowerFascia", -4.16, -4.02, 0.08, 0.17, -1.18, 1.18, 0.03)
 box("RearStepBumper", -4.24, -4.08, 0.02, 0.14, -1.12, 1.12, 0.035)
-box("RearPlateRecess", -4.245, -4.205, 0.16, 0.37, -0.34, 0.34, 0.025)
+box("RearPlateRecess", -4.255, -4.235, 0.035, 0.125, -0.17, 0.17, 0.008)
 
-# Half-height red datum aligned across fixed shell, parked panel and rear leaves.
+# Half-height red datum aligned across fixed shell and every door leaf.
 stripe_z0, stripe_z1 = 1.04, 1.17
 box("RedStripeLeft", -3.82, 3.82, stripe_z0, stripe_z1, -1.272, -1.246, 0.004)
-box("RedStripeRightRear", -3.82, 2.30, stripe_z0, stripe_z1, 1.246, 1.272, 0.004)
-box("RedStripeRightFront", 3.20, 3.82, stripe_z0, stripe_z1, 1.246, 1.272, 0.004)
-box("RedStripeSlidingDoor", 1.22, 2.24, stripe_z0, stripe_z1, 1.356, 1.380, 0.004)
+box("RedStripeRightRear", -3.82, 1.30, stripe_z0, stripe_z1, 1.246, 1.272, 0.004)
+box("RedStripeRightFront", 2.20, 3.82, stripe_z0, stripe_z1, 1.246, 1.272, 0.004)
+box("RedStripeSideDoor", 1.30, 2.20, stripe_z0, stripe_z1, 1.322, 1.346, 0.004)
 for side, prefix in ((-1, "Left"), (1, "Right")):
-    hinged_box("RedStripeRearDoor" + prefix, 0.72 * side, -3.962,
-               0.68, stripe_z0, stripe_z1, rear_angle if side < 0 else -rear_angle, 0.018)
+    rear_leaf_box("RedStripeRearDoor" + prefix, side, 0.715, stripe_z0, stripe_z1, 0.018, 0.0, REAR_HINGE_Y - 0.042)
 
 
-# Bake transforms, normalize winding, then map every mesh into its atlas region.
+# Bake static transforms, normalize winding, then map every mesh into its atlas region.
+DOOR_GROUPS = {
+    "SideDoorLeaf": ("SideDoorPanel", "SideDoorInset", "SideDoorHandle", "RedStripeSideDoor"),
+    "RearDoorLeftLeaf": ("RearDoorLeftLeaf", "RearDoorLeftInsetUpper", "RearDoorLeftInsetLower",
+                         "RearDoorLeftLatch", "RearDoorLeftHinge45", "RearDoorLeftHinge172",
+                         "RedStripeRearDoorLeft"),
+    "RearDoorRightLeaf": ("RearDoorRightLeaf", "RearDoorRightInsetUpper", "RearDoorRightInsetLower",
+                          "RearDoorRightLatch", "RearDoorRightHinge45", "RearDoorRightHinge172",
+                          "RedStripeRearDoorRight"),
+}
+# Side origin = inner/rear/bottom corner of the closed leaf; rear origins = hinge axes.
+LEAF_ORIGINS = {
+    "SideDoorLeaf": (1.252, 1.30, 1.04),
+    "RearDoorLeftLeaf": (-0.72, REAR_HINGE_Y, 0.0),
+    "RearDoorRightLeaf": (0.72, REAR_HINGE_Y, 0.0),
+}
+door_parts = {name for names in DOOR_GROUPS.values() for name in names}
 bpy.ops.object.select_all(action="DESELECT")
 for obj in sorted((item for item in bpy.context.scene.objects if item.type == "MESH"), key=lambda item: item.name):
     bpy.context.view_layer.objects.active = obj
@@ -333,6 +349,47 @@ for obj in sorted((item for item in bpy.context.scene.objects if item.type == "M
     for uv in obj.data.uv_layers.active.data:
         uv.uv = (u0 + uv.uv.x * (u1 - u0), v0 + uv.uv.y * (v1 - v0))
     obj.select_set(False)
+
+
+def join_group(new_name, names):
+    members = [bpy.context.scene.objects[name] for name in names]
+    bpy.ops.object.select_all(action="DESELECT")
+    for member in members:
+        member.select_set(True)
+    bpy.context.view_layer.objects.active = members[0]
+    bpy.ops.object.join()
+    merged = bpy.context.object
+    merged.name = new_name
+    merged.data.name = new_name + "_mesh"
+    return merged
+
+
+# One static shell plus one merged mesh per door leaf, each origin at its pivot.
+join_group("StaticShell", sorted(obj.name for obj in bpy.context.scene.objects
+                                 if obj.type == "MESH" and obj.name not in door_parts))
+for leaf, parts in DOOR_GROUPS.items():
+    merged = join_group(leaf, sorted(parts))
+    origin = LEAF_ORIGINS[leaf]
+    for vertex in merged.data.vertices:
+        vertex.co[0] -= origin[0]
+        vertex.co[1] -= origin[1]
+        vertex.co[2] -= origin[2]
+    merged.location = origin
+bpy.ops.object.empty_add(type="PLAIN_AXES", location=LEAF_ORIGINS["SideDoorLeaf"])
+side_pivot = bpy.context.object
+side_pivot.name = "SideDoorPivot"
+side_leaf = bpy.context.scene.objects["SideDoorLeaf"]
+side_leaf.parent = side_pivot
+side_leaf.matrix_parent_inverse.identity()
+side_leaf.location = (0.0, 0.0, 0.0)
+for side, prefix in ((-1, "RearDoorLeftPivot"), (1, "RearDoorRightPivot")):
+    bpy.ops.object.empty_add(type="PLAIN_AXES", location=(0.72 * side, REAR_HINGE_Y, 0.0))
+    pivot = bpy.context.object
+    pivot.name = prefix
+    leaf = bpy.context.scene.objects[prefix.replace("Pivot", "Leaf")]
+    leaf.parent = pivot
+    leaf.matrix_parent_inverse.identity()
+    leaf.location = (0.0, 0.0, 0.0)
 
 bpy.ops.export_scene.gltf(filepath=str(out), export_format="GLB", export_yup=True,
                           export_apply=True, export_image_format="NONE",

@@ -103,6 +103,25 @@ func test_reticle_selects_aimed_driver_over_nearer_copilot() -> void:
 	assert_object(copilot.occupied_by).is_null()
 
 
+func test_reticle_toggles_aimed_side_door_but_carrying_refuses() -> void:
+	var bus: Bus = await _spawn_frozen_bus()
+	var doors: BusDoors = bus.get_node("BusDoors") as BusDoors
+	var crew: CrewMember = await _spawn_settled_crew(Vector3(0.0, 1.0, -1.75))
+	if crew == null:
+		return
+	crew.set_physics_process(false)
+	var input: CrewInput = await _spawn_input(false)
+	var eye: Camera3D = crew.get_node("EyeCamera") as Camera3D
+	eye.look_at(doors.handle_position(&"side"))
+	input._interact_tap(crew.get_node("CrewHands") as CrewHands)
+	assert_int(doors.phase(&"side")).is_equal(BusDoors.DoorPhase.CLOSING)
+	doors.apply_state(&"side", BusDoors.DoorPhase.OPEN, 1.0)
+	var hands: CrewHands = crew.get_node("CrewHands") as CrewHands
+	hands.held = auto_free(Package.new())
+	input._interact_tap(hands)
+	assert_int(doors.phase(&"side")).is_equal(BusDoors.DoorPhase.OPEN)
+
+
 func test_toggle_nearest_seat_out_of_reach_does_nothing() -> void:
 	_make_ground()
 	var crew: CrewMember = await _spawn_settled_crew(Vector3(0.0, 1.0, 0.0))
@@ -278,6 +297,15 @@ func _spawn_settled_crew(pos: Vector3) -> CrewMember:
 		return crew
 	assert_bool(false).override_failure_message("crew_member.tscn did not load").is_true()
 	return null
+
+
+func _spawn_frozen_bus() -> Bus:
+	var bus: Bus = auto_free((load("res://src/vehicle/bus.tscn") as PackedScene).instantiate()) as Bus
+	bus.position = Vector3(0.0, 1.6, 0.0)
+	bus.freeze = true
+	add_child(bus)
+	await _wait_ticks(3)
+	return bus
 
 
 func _spawn_input(on: bool) -> CrewInput:

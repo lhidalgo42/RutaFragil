@@ -15,16 +15,31 @@ func test_interior_loads_on_the_bus_and_shapes_attach_to_the_body() -> void:
 		return
 	var interior: Node = bus.get_node_or_null("BusInterior")
 	assert_object(interior).is_not_null()
-	# The reparenting is deferred (bus_interior.gd): one process frame later
-	# the collision shapes must be DIRECT children of the bus body. 15 from
-	# the interior + chassis, 16 since the D89 windshield wall (2026-09-14).
+	# Interior shapes reparent to Bus: 15 interior + chassis. Door blockers live
+	# on a separate AnimatableBody3D so opening/closing cannot change bus inertia.
 	await get_tree().process_frame
 	await get_tree().process_frame
 	var count: int = 0
 	for child: Node in bus.get_children():
-		if child is CollisionShape3D:
-			count += 1
+		if child is CollisionShape3D: count += 1
 	assert_int(count).is_equal(16)
+	var blockers: AnimatableBody3D = bus.get_node("BusDoors/Blockers") as AnimatableBody3D
+	assert_int(blockers.get_child_count()).is_equal(2)
+	for child: Node in blockers.get_children():
+		assert_bool((child as CollisionShape3D).disabled).is_true()
+
+
+func test_side_gap_is_clear_at_new_center_and_wall_blocks_wheel_arc() -> void:
+	var bus: Bus = await _spawn_settled_bus()
+	if bus == null:
+		return
+	var space: PhysicsDirectSpaceState3D = bus.get_world_3d().direct_space_state
+	var clear: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
+		bus.global_transform * Vector3(1.05, 0.35, -1.75), bus.global_transform * Vector3(1.35, 0.35, -1.75))
+	assert_bool(space.intersect_ray(clear).is_empty()).is_true()
+	var wall: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(
+		bus.global_transform * Vector3(1.05, 0.35, -2.75), bus.global_transform * Vector3(1.35, 0.35, -2.75))
+	assert_bool(space.intersect_ray(wall).is_empty()).is_false()
 
 
 func test_six_positions_exist_with_exact_names() -> void:

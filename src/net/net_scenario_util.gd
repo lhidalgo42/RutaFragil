@@ -92,7 +92,10 @@ static func write_text(file_name: String, text: String) -> void:
 
 
 static func write_json(name: String, data: Dictionary) -> void:
-	write_text(name + ".json", JSON.stringify(data, "\t"))
+	var payload: Dictionary = data.duplicate(true)
+	if payload.has("bus_pos") and not payload.has("door_phases"):
+		payload["door_phases"] = Array(door_phases((Engine.get_main_loop() as SceneTree).root))
+	write_text(name + ".json", JSON.stringify(payload, "\t"))
 
 
 static func read_json(path: String) -> Dictionary:
@@ -155,6 +158,8 @@ static func find_bus(scene: Node) -> Node:
 
 static func make_sync(scene: Node) -> void:
 	var bus: Node = find_bus(scene)
+	if scene.get("network_role") == "host":
+		close_doors_for_snapshot(scene)
 	var sync: MultiplayerSynchronizer = MultiplayerSynchronizer.new()
 	sync.name = "NetSync"
 	bus.add_child(sync)
@@ -163,6 +168,22 @@ static func make_sync(scene: Node) -> void:
 	config.add_property(".:global_transform")
 	sync.replication_config = config
 	sync.replication_interval = 1.0 / 30.0
+
+
+static func close_doors_for_snapshot(scene: Node) -> void:
+	var doors: Node = scene.get_tree().get_first_node_in_group("bus_doors")
+	if doors == null or not doors.has_method("host_close"):
+		return
+	doors.call("host_close", &"side")
+	doors.call("host_close", &"rear")
+
+
+static func door_phases(scene: Node) -> Array[float]:
+	var node: Node = scene.get_tree().get_first_node_in_group("bus_doors")
+	if node == null:
+		return [-1.0, -1.0]
+	return [float(node.call("phase", &"side")), float(node.call("phase", &"rear"))]
+
 
 static func aggregate(pids: Dictionary, clients: int, killed: Array[String]) -> Array[String]:
 	var failures: Array[String] = []
@@ -183,10 +204,15 @@ static func aggregate(pids: Dictionary, clients: int, killed: Array[String]) -> 
 		failures.append("clients_connect (host saw %d of %d)" % [peers_count, clients])
 	var max_pos_dev: float = 0.0
 	var max_yaw_dev: float = 0.0
+	var door_mismatches: Array[String] = []
 	var markers_each: Array[String] = []
 	var clients_connected: int = 0
 	var host_pos: Vector3 = array_to_vec3(host_data.get("bus_pos"))
 	var host_yaw: float = dict_float(host_data, "bus_yaw_deg", 0.0)
+	var host_phases_v: Variant = host_data.get("door_phases", [])
+	var host_phases: Array = host_phases_v if host_phases_v is Array else []
+	if host_ok and host_phases != [2.0, 2.0]:
+		failures.append("door_phases (host not closed: %s)" % str(host_phases))
 	for index: int in range(clients):
 		var client_data: Dictionary = read_json(
 			NetScenarioUtil.RESULTS_DIR + "/client_%d.json" % index)
@@ -211,6 +237,13 @@ static func aggregate(pids: Dictionary, clients: int, killed: Array[String]) -> 
 			if pos_dev > MAX_DEVIATION_M or yaw_dev > MAX_DEVIATION_DEG:
 				failures.append(
 					"convergence (client_%d: %.3f m, %.2f deg)" % [index, pos_dev, yaw_dev])
+			var client_phases_v: Variant = client_data.get("door_phases", [])
+			if client_phases_v is Array:
+				var client_phases: Array = client_phases_v
+				if client_phases != host_phases:
+					door_mismatches.append("client_%d" % index)
+	if not door_mismatches.is_empty():
+		failures.append("door_phases (%s != host %s)" % [", ".join(door_mismatches), str(host_phases)])
 	var port_used: int = dict_int(host_data, "port", -1)
 	print("NET summary port=%d pids=%s" % [port_used, str(pids.values())])
 	print("NET summary clients_connected=%d/%d markers_per_client=[%s]" % [

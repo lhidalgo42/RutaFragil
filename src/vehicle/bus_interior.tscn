@@ -31,10 +31,10 @@ size = Vector3(2.5, 0.1, 7.8)
 size = Vector3(0.1, 1.9, 7.6)
 
 [sub_resource type="BoxShape3D" id="shape_WallRightRear"]
-size = Vector3(0.1, 1.9, 6.1)
+size = Vector3(0.1, 1.9, 5.1)
 
 [sub_resource type="BoxShape3D" id="shape_WallRightFront"]
-size = Vector3(0.1, 1.9, 0.6)
+size = Vector3(0.1, 1.9, 1.6)
 
 [sub_resource type="BoxShape3D" id="shape_WallFront"]
 size = Vector3(2.5, 0.8, 0.1)
@@ -70,11 +70,11 @@ size = Vector3(0.1, 1.9, 7.6)
 
 [sub_resource type="BoxMesh" id="mesh_WallRightRear"]
 material = SubResource("mat_wall_light")
-size = Vector3(0.1, 1.9, 6.1)
+size = Vector3(0.1, 1.9, 5.1)
 
 [sub_resource type="BoxMesh" id="mesh_WallRightFront"]
 material = SubResource("mat_wall_light")
-size = Vector3(0.1, 1.9, 0.6)
+size = Vector3(0.1, 1.9, 1.6)
 
 [sub_resource type="BoxMesh" id="mesh_WallFront"]
 material = SubResource("mat_wall_light")
@@ -122,11 +122,11 @@ position = Vector3(-1.2, 0.35, 0.0)
 shape = SubResource("shape_WallLeft")
 
 [node name="WallRightRear" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(1.2, 0.35, 0.75)
+position = Vector3(1.2, 0.35, 1.25)
 shape = SubResource("shape_WallRightRear")
 
 [node name="WallRightFront" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(1.2, 0.35, -3.5)
+position = Vector3(1.2, 0.35, -3.0)
 shape = SubResource("shape_WallRightFront")
 
 [node name="WallFront" type="CollisionShape3D" parent="Shapes"]
@@ -150,11 +150,11 @@ position = Vector3(0.0, 1.35, 0.0)
 shape = SubResource("shape_Roof")
 
 [node name="Step1" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(1.2, -0.725, -2.75)
+position = Vector3(1.2, -0.725, -1.75)
 shape = SubResource("shape_Step")
 
 [node name="Step2" type="CollisionShape3D" parent="Shapes"]
-position = Vector3(1.2, -0.775, -2.75)
+position = Vector3(1.2, -0.775, -1.75)
 shape = SubResource("shape_Step")
 
 [node name="RackLeft" type="CollisionShape3D" parent="Shapes"]
@@ -185,11 +185,11 @@ position = Vector3(-1.2, 0.35, 0.0)
 mesh = SubResource("mesh_WallLeft")
 
 [node name="WallRightRear" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(1.2, 0.35, 0.75)
+position = Vector3(1.2, 0.35, 1.25)
 mesh = SubResource("mesh_WallRightRear")
 
 [node name="WallRightFront" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(1.2, 0.35, -3.5)
+position = Vector3(1.2, 0.35, -3.0)
 mesh = SubResource("mesh_WallRightFront")
 
 [node name="WallFront" type="MeshInstance3D" parent="Visuals"]
@@ -213,11 +213,11 @@ position = Vector3(0.0, 1.35, 0.0)
 mesh = SubResource("mesh_Roof")
 
 [node name="Step1" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(1.2, -0.725, -2.75)
+position = Vector3(1.2, -0.725, -1.75)
 mesh = SubResource("mesh_Step")
 
 [node name="Step2" type="MeshInstance3D" parent="Visuals"]
-position = Vector3(1.2, -0.775, -2.75)
+position = Vector3(1.2, -0.775, -1.75)
 mesh = SubResource("mesh_Step")
 
 [node name="RackLeft" type="MeshInstance3D" parent="Visuals"]

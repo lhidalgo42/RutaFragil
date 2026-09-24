@@ -44,8 +44,8 @@ func test_null_network_peer_keeps_local_input_and_door_working() -> void:
 	bus.freeze = true
 	bus.add_to_group("bus")
 	add_child(bus)
-	var remote: CrewMember = _spawn_crew(23, Vector3(10.0, 0.0, -2.75))
-	var local: CrewMember = _spawn_crew(1, Vector3(0.0, 0.0, -2.75))
+	var remote: CrewMember = _spawn_crew(23, Vector3(10.0, 0.0, -1.75))
+	var local: CrewMember = _spawn_crew(1, Vector3(0.0, 0.0, -1.75))
 	await _ticks(3)
 	var boarded: bool = local.aboard
 	Input.action_press("walk_forward")
@@ -54,8 +54,8 @@ func test_null_network_peer_keeps_local_input_and_door_working() -> void:
 	multiplayer.multiplayer_peer = saved_peer
 	assert_bool(boarded).is_true()
 	assert_bool(remote.aboard).is_false()
-	assert_float(local.position.z).is_less(-3.25)
-	assert_float(remote.position.z).is_equal(-2.75)
+	assert_float(local.position.z).is_less(-2.25)
+	assert_float(remote.position.z).is_equal(-1.75)
 
 
 func test_mouse_look_and_hands_belong_to_local_crew_when_remote_is_first() -> void:
@@ -85,10 +85,10 @@ func test_door_transit_created_before_spawn_boards_only_late_local_crew() -> voi
 	bus.freeze = true
 	bus.add_to_group("bus")
 	add_child(bus)
-	var remote: CrewMember = _spawn_crew(23, Vector3(0.0, 0.0, -2.75))
+	var remote: CrewMember = _spawn_crew(23, Vector3(0.0, 0.0, -1.75))
 	remote.set_physics_process(false)
 	await _ticks(3)
-	var local: CrewMember = _spawn_crew(1, Vector3(0.0, 0.0, -2.75))
+	var local: CrewMember = _spawn_crew(1, Vector3(0.0, 0.0, -1.75))
 	local.set_physics_process(false)
 	await _ticks(3)
 	assert_bool(local.aboard).is_true()

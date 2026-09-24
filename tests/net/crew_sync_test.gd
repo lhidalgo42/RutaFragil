@@ -81,7 +81,12 @@ func test_client_replaces_authored_crew_and_activates_local_view_after_spawn() -
 	scene.add_child(sync)
 	sync.spawn_crews([23, 1])
 	await _ticks(3)
-	await get_tree().process_frame
+	for frame: int in range(10):
+		if scene.get("_network_view_ready"):
+			break
+		await get_tree().process_frame
+	assert_bool(scene.get("_network_view_ready")).override_failure_message(
+		"client view never became ready after crew spawn").is_true()
 	var local: CrewMember = NetAuthority.local_crew(get_tree())
 	assert_bool(NetAuthority.scoped_eye(local).current).is_true()
 	assert_bool((scene.get_node("CrewInput") as CrewInput).enabled).is_true()

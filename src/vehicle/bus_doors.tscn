@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/vehicle/bus_doors.gd" id="1_doors"]
+
+[sub_resource type="BoxShape3D" id="shape_side"]
+size = Vector3(0.1, 1.9, 0.9)
+
+[sub_resource type="BoxShape3D" id="shape_rear"]
+size = Vector3(1.4, 1.9, 0.1)
+
+[node name="BusDoors" type="Node3D" groups=["bus_doors"]]
+script = ExtResource("1_doors")
+side_duration_s = 0.7
+rear_duration_s = 0.8
+side_initially_open = true
+rear_initially_open = true
+
+[node name="Blockers" type="AnimatableBody3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+sync_to_physics = true
+
+[node name="SideDoorBlocker" type="CollisionShape3D" parent="Blockers"]
+position = Vector3(1.2, 0.35, -1.75)
+shape = SubResource("shape_side")
+disabled = true
+
+[node name="RearDoorBlocker" type="CollisionShape3D" parent="Blockers"]
+position = Vector3(0, 0.35, 3.85)
+shape = SubResource("shape_rear")
+disabled = true
