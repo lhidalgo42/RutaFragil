@@ -31,3 +31,6 @@ Thumbs.db
 
 # Python
 __pycache__/
+
+# Configuración local de Claude Code (permisos de la máquina, no del proyecto)
+.claude/
