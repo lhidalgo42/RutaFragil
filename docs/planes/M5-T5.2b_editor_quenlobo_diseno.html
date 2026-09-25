@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diseño editor Quenlobo</title>
+<style>
+:root{--bg:#f6f3ec;--paper:#fffdf8;--ink:#25313f;--muted:#62707f;--accent:#14532d;
+--line:#d8d0bd;--code:#edf1e8;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171b18;--paper:#20261f;
+--ink:#e8e4d8;--muted:#a8b0a2;--accent:#8fd0a5;--line:#3a4438;--code:#232b24;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171b18;--paper:#20261f;--ink:#e8e4d8;--muted:#a8b0a2;
+--accent:#8fd0a5;--line:#3a4438;--code:#232b24;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;
+font-size:19px;line-height:1.65;padding:32px 18px}
+main{max-width:820px;margin:0 auto;background:var(--paper);border:1px solid var(--line);
+border-radius:10px;padding:clamp(22px,5vw,56px)}
+h1{font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.2;color:var(--accent);margin:0 0 4px;text-wrap:balance}
+h2{font-size:1.35rem;color:var(--accent);border-bottom:2px solid var(--line);padding-bottom:6px;margin-top:2em}
+h3{font-size:1.1rem;margin-top:1.6em}
+h1+p,h2+p{margin-top:.6em}
+p,li{max-width:65ch}
+ul{padding-left:1.3em}
+li{margin:.35em 0}
+code{font-family:'Cascadia Code',Consolas,monospace;font-size:.85em;background:var(--code);
+padding:.1em .35em;border-radius:4px}
+.tw{overflow-x:auto;margin:1em 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:.5em .7em;text-align:left;vertical-align:top}
+th{background:var(--code);color:var(--accent)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--code) 35%,transparent)}
+strong{color:var(--accent)}
+@media (max-width:480px){body{font-size:17px;padding:12px}main{padding:18px}}
+</style>
+</head>
+<body><main>
+<h1>M5-T5.2b — Editor nativo del pueblo Quenlobo · Diseño</h1>
+<p><strong>Versión:</strong> 1.0 (2026-09-24) · <strong>Proyecto:</strong> Ruta Frágil (Godot 4.7.2, GDScript tipado) · <strong>Solicita y aprueba:</strong> José Grayde</p>
+<p><strong>Jerarquía:</strong> maestro v0.2 &gt; briefing v0.2 &gt; este diseño &gt; criterio del agente. Contradicciones se reportan, no se resuelven en silencio.</p>
+<h2>1. Intención y éxito</h2>
+<p>Mati necesita abrir Quenlobo en el editor 3D de Godot, ver el mapa completo y modificar directamente sus elementos sin editar Python ni JSON a mano. Debe poder seleccionar, mover, girar, escalar, agregar y borrar piezas; guardar el resultado en el mismo formato que consume el juego; deshacer cambios; y subir el mapa resultante a GitHub.</p>
+<p>La escena de juego actual se conserva. <code>scenes/mapa_pueblo.tscn</code> seguirá armando el mapa al ejecutarse. La edición ocurre en una escena nueva y mediante un plugin acotado a Quenlobo.</p>
+<p>Éxito verificable:</p>
+<p>1. Un clon limpio abre <code>scenes/editar_pueblo.tscn</code> y muestra Quenlobo dentro de la vista 3D del editor.</p>
+<p>2. Mati mueve una casa, gira un árbol, modifica un vértice de calle y guarda.</p>
+<p>3. Cerrar y reabrir conserva los cuatro cambios.</p>
+<p>4. <code>scenes/mapa_pueblo.tscn</code> reproduce esos cambios con F6.</p>
+<p>5. Ctrl+Z/Ctrl+Y funciona antes de guardar; guardar deja un respaldo recuperable.</p>
+<h2>2. Estado de partida</h2>
+<ul><li><code>data/b0_pueblo.json</code> es la fuente de verdad del mapa. Contiene anillo, calles, edificios, árboles, bosques, rieles, plaza, parques, iglesia, fundo y mobiliario mediante coordenadas.</li><li>Nueve constructores cargan ese archivo en <code>_ready()</code> y generan mallas optimizadas en tiempo de ejecución. La escena base solo tiene 12 nodos y no contiene una casa por nodo.</li><li>El mapa resultante usa 148 lotes <code>MultiMesh</code> y aproximadamente 24,8 millones de triángulos. En juego, después de compilar shaders, se midieron 149 fps en el equipo de José.</li><li><code>tools/design_town.py</code> regenera determinísticamente el JSON completo. Ejecutarlo después de una edición manual la borra.</li><li>Regla R8: cada script ≤400 líneas y cada escena ≤60 nodos.</li></ul>
+<h2>3. Decisiones aprobadas</h2>
+<div class='tw'><table><thead><tr><th>#</th><th>Decisión</th><th>Razón</th></tr></thead><tbody><tr><td>E1</td><td>Implementar un plugin nativo <code>EditorPlugin</code>, no un editor dentro del juego.</td><td>José eligió explícitamente editar en Godot.</td></tr><tr><td>E2</td><td>No convertir cada objeto visible en nodo persistente. El plugin mantiene controles livianos y usa los constructores existentes para la vista previa.</td><td>Miles de nodos y millones de triángulos harían lenta la escena y duplicarían datos.</td></tr><tr><td>E3</td><td><code>data/b0_pueblo.json</code> sigue siendo la fuente de verdad.</td><td>El juego ya lo consume y todos los biomas comparten el esquema.</td></tr><tr><td>E4</td><td>La edición manual domina al generador. <code>design_town.py</code> se conserva solo como reinicio deliberado, con confirmación y respaldo.</td><td>Evita que una regeneración accidental borre el trabajo de Mati.</td></tr><tr><td>E5</td><td>El anillo del bus, sus carriles y los anchos globales quedan fuera de la primera entrega.</td><td>Sus coordenadas gobiernan waypoints, entrada, salida, bordillos y mobiliario; mover un vértice aislado rompería la ruta.</td></tr><tr><td>E6</td><td>La vista previa no recompone el mapa en cada píxel arrastrado: mueve controles y fantasma durante el gesto; recompone al soltar.</td><td>Mantiene el editor responsivo.</td></tr></tbody></table></div>
+<h2>4. Arquitectura</h2>
+<h3>4.1 Plugin</h3>
+<p><code>addons/quenlobo_editor/plugin.gd</code> registra un <code>EditorPlugin</code>, un panel lateral <strong>Quenlobo</strong> y un <code>EditorNode3DGizmoPlugin</code>. Solo se activa al editar una escena cuyo nodo raíz usa <code>pueblo_editor_root.gd</code>; no afecta otras escenas ni otros biomas.</p>
+<p>El panel ofrece:</p>
+<ul><li><strong>Cargar/Revertir</strong>, <strong>Guardar</strong>, <strong>Deshacer/Rehacer</strong> (también Ctrl+Z/Ctrl+Y).</li><li>Filtro de capas: calles, edificios, vegetación, lugares, rieles y entorno.</li><li><strong>Agregar</strong> según el tipo activo; <strong>Duplicar</strong>; <strong>Borrar</strong>.</li><li>Campos numéricos para posición X/Z, giro, tamaño y propiedades específicas.</li><li><strong>Vista liviana</strong>: ocultar bosque, fondo y pasto de campo mientras se edita.</li><li>Mensaje permanente: “Regenerar con <code>design_town.py</code> reemplaza esta edición”.</li></ul>
+<h3>4.2 Modelo editable</h3>
+<p><code>pueblo_document.gd</code> carga el JSON como <code>Dictionary</code>, valida su forma mínima y asigna a cada elemento editable una referencia estable durante la sesión: categoría, índice y subíndice/vértice. No agrega IDs al JSON en la primera entrega.</p>
+<p>Categorías editables:</p>
+<ul><li><strong>Puntuales:</strong> edificios, árboles, palmeras, álamos, paraderos, lomos y filas de viña.</li><li><strong>Poligonales:</strong> plaza, parques, iglesias, campos y bosques.</li><li><strong>Lineales:</strong> calles y líneas férreas.</li><li><strong>Lugares compuestos:</strong> estación, bencinera y fundo, movidos como grupo cuando sus datos lo permitan.</li></ul>
+<p>Cada categoría declara operaciones soportadas. “Todo” significa todo lo anterior. Propiedades derivadas (waypoints del bus, huecos de bordillo, distancias <code>s</code>, <code>lat</code>) se conservan o recalculan según su dependencia; nunca se dejan silenciosamente incoherentes.</p>
+<h3>4.3 Controles 3D</h3>
+<p><code>pueblo_edit_handle.gd</code> representa una selección con pocos <code>Node3D</code> visibles solo en el editor. No representa la geometría final. El gizmo usa el manipulador de traslado/rotación/escala de Godot cuando aplica. Polígonos y líneas exponen un control por vértice al seleccionarse; no todos a la vez.</p>
+<p>El plugin proyecta el arrastre sobre el plano Y=0. Acciones de creación toman la posición del cursor 3D. La vista previa fantasma usa primitivas simples; al confirmar, el documento cambia mediante <code>EditorUndoRedoManager</code> y la vista final se reconstruye.</p>
+<h3>4.4 Vista previa</h3>
+<p><code>scenes/editar_pueblo.tscn</code> tiene menos de 60 nodos y raíz <code>pueblo_editor_root.gd</code> con <code>@tool</code>. El root carga datos y llama explícitamente a los <code>build()</code> existentes; los nueve constructores originales no cambian a <code>@tool</code>.</p>
+<p>La vista:</p>
+<ul><li>limpia antes de reconstruir;</li><li>invalida caches compartidos del camino cuando cambian calles o rieles;</li><li>no guarda mallas generadas dentro del <code>.tscn</code>;</li><li>usa la vista liviana por defecto para bosque/pasto, con botón <strong>Vista completa</strong>.</li></ul>
+<p>Si un constructor no puede ejecutarse con seguridad en editor, un adaptador lo invoca o dibuja una previsualización equivalente. No se añade <code>@tool</code> indiscriminadamente a código de juego.</p>
+<h2>5. Guardado, respaldo y fallos</h2>
+<ul><li>Guardar valida que el documento sea JSON serializable, que cada línea/polígono tenga suficientes puntos, que números sean finitos y que no falten claves obligatorias.</li><li>Antes de reemplazar <code>data/b0_pueblo.json</code>, copia el archivo anterior a <code>data/b0_pueblo.json.bak</code>.</li><li>Escribe primero un archivo temporal, lo vuelve a parsear y recién entonces reemplaza el original. Un fallo no destruye el mapa vigente.</li><li><code>EditorPlugin._save_external_data()</code> llama la misma rutina cuando Godot guarda/cierra, pero solo si hay cambios y muestra error si no pudo persistir.</li><li>Un objeto sobre la calzada, fuera del área o superpuesto produce advertencia visual; no bloquea el guardado. Un dato inválido sí bloquea.</li><li><strong>Revertir</strong> recarga el JSON del disco después de confirmación si hay cambios sin guardar.</li><li><code>design_town.py</code> detecta un mapa editado manualmente y exige <code>--reset</code>, crea respaldo y explica la pérdida antes de regenerar.</li></ul>
+<h2>6. Alcance de la primera entrega</h2>
+<p>Incluido:</p>
+<ul><li>visualización completa dentro del editor;</li><li>selección por clic y por lista;</li><li>mover, girar, escalar, duplicar, agregar y borrar según categoría;</li><li>edición de vértices de calles, rieles y polígonos;</li><li>propiedades numéricas;</li><li>Undo/Redo, guardar atómico, respaldo, revertir;</li><li>advertencias de solape básicas;</li><li>lanzador <code>EDITAR PUEBLO QUENLOBO.bat</code>;</li><li>instrucciones de uso para Mati en <code>COMO JUGAR.html</code> y documentación del repo.</li></ul>
+<p>Fuera de alcance:</p>
+<ul><li>editar topología del anillo principal del bus, carriles y waypoints;</li><li>modelado de mallas o edición de texturas;</li><li>edición simultánea por varias personas;</li><li>editor genérico para otros biomas;</li><li>importación de cambios de vuelta a <code>design_town.py</code>.</li></ul>
+<h2>7. Pruebas y evidencia</h2>
+<p>Una prueba headless pequeña cubre <code>pueblo_document.gd</code>: mover, agregar, borrar, editar vértice, deshacer mediante comando, serializar y recargar sin pérdida. Otra valida rechazo de NaN, polígono corto y escritura fallida sin pérdida del original.</p>
+<p>Prueba integrada manual en un clon limpio:</p>
+<p>1. abrir <code>editar_pueblo.tscn</code>;</p>
+<p>2. comprobar la vista completa;</p>
+<p>3. mover casa, girar árbol, cambiar vértice y agregar objeto;</p>
+<p>4. Ctrl+Z/Ctrl+Y;</p>
+<p>5. guardar, cerrar y reabrir;</p>
+<p>6. ejecutar <code>mapa_pueblo.tscn</code> con F6;</p>
+<p>7. ejecutar las suites existentes de biomas y ruta;</p>
+<p>8. guardar capturas antes/después en evidencia (no se versionan).</p>
+<p>Sabotaje requerido: reemplazar temporalmente una operación de guardado por una que no persista y comprobar que la prueba falla; luego restaurar.</p>
+<h2>8. Riesgos y mitigaciones</h2>
+<ul><li><strong>Editor lento:</strong> vista liviana inicial y reconstrucción solo al confirmar.</li><li><strong>Código de juego ejecutado en editor:</strong> adaptador/root aislado; no se marca todo <code>@tool</code>.</li><li><strong>JSON corrupto:</strong> validación, temporal, relectura y respaldo.</li><li><strong>Cambios borrados por Python:</strong> <code>--reset</code> explícito más respaldo.</li><li><strong>Índices inestables al borrar:</strong> referencias de sesión se reconstruyen después de cada operación estructural.</li><li><strong>Dependencias derivadas:</strong> operaciones que afecten la ruta principal quedan bloqueadas; el resto recalcula o advierte explícitamente.</li></ul>
+<h2>9. Archivos previstos</h2>
+<p>Nuevos:</p>
+<ul><li><code>addons/quenlobo_editor/plugin.cfg</code></li><li><code>addons/quenlobo_editor/plugin.gd</code></li><li><code>addons/quenlobo_editor/pueblo_document.gd</code></li><li><code>addons/quenlobo_editor/pueblo_edit_handle.gd</code></li><li><code>addons/quenlobo_editor/pueblo_gizmo_plugin.gd</code></li><li><code>addons/quenlobo_editor/pueblo_panel.gd</code></li><li><code>src/biomes/pueblo_editor_root.gd</code></li><li><code>scenes/editar_pueblo.tscn</code></li><li><code>tests/biomes/pueblo_document_test.gd</code></li><li><code>EDITAR PUEBLO QUENLOBO.bat</code></li></ul>
+<p>Modificados:</p>
+<ul><li><code>project.godot</code> (habilitar plugin)</li><li><code>tools/design_town.py</code> (protección <code>--reset</code>)</li><li><code>COMO JUGAR.html</code></li><li><code>DECISIONS.md</code></li><li>el plan/evidencia de M5-T5.2b</li></ul>
+<p>R8 se respeta separando documento, UI, gizmo y vista. Ningún script excede 400 líneas ni la escena 60 nodos.</p>
+</main></body></html>
